@@ -1,0 +1,70 @@
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <div style="color: black">Twitch (live)</div>
+    </ng-template>
+    <div class="streams-panel" style="">
+      @for (stream of streams; track stream.username; let idx = $index, e = $even) {
+
+    <div class="stream-thumbnail">
+      <a href={{stream.url}} target="_blank" style="color:black"><img src={{stream.thumbnailUrl}}>
+        <mat-grid-list cols="4" rowHeight="20px" [matTooltipPosition]="'above'" matTooltip={{stream.title}}>
+          <mat-grid-tile [colspan]="1" [rowspan]="2"><img class="stream-profilePic" src={{stream.profileImage}}></mat-grid-tile>
+          <mat-grid-tile [colspan]="3" [rowspan]="1"> <div class="stream-title"> {{ stream.title }}</div></mat-grid-tile>
+          <mat-grid-tile [colspan]="3" [rowspan]="1"><div class="stream-displayName">{{ stream.displayName }}</div></mat-grid-tile>
+        </mat-grid-list>
+      </a>
+    </div>
+      }
+      @empty {
+      <li>Nobody's here for now</li>
+      }
+    </div>
+
+
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <div style="color: black">Twitch (Vod)</div>
+    </ng-template>
+    <div class="streams-panel" style="">
+      @for (vod of vods; track vod.id; let idx = $index, e = $even) {
+      <div class="stream-thumbnail">
+        <a href={{vod.url}} target="_blank" style="color:black"><img src={{vod.thumbnailUrl}}>
+       <mat-grid-list cols="4" rowHeight="20px" [matTooltipPosition]="'above'" matTooltip={{vod.title}}>
+      <mat-grid-tile [colspan]="1" [rowspan]="2"><img class="stream-profilePic" src={{vod.profileImage}}></mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="1"> <div class="stream-title"> {{ vod.title }}</div></mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="1"><div class="stream-displayName">{{ vod.displayName }}</div></mat-grid-tile>
+    </mat-grid-list>
+    </a>
+      </div>
+      }
+      @empty {
+      <li>No VOD? Something is probably broken somewhere</li>
+      }
+    </div>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <div style="color: black">Youtube</div>
+    </ng-template>
+    <div class="streams-panel" style="">
+      @for (video of videos; track video.url; let idx = $index, e = $even) {
+      <div class="stream-thumbnail">
+        <a href={{video.url}} target="_blank" style="color:black"><img src={{video.thumbnailUrl}}>
+       <mat-grid-list cols="4" rowHeight="20px" [matTooltipPosition]="'above'" matTooltip={{video.title}}>
+       <mat-grid-tile [colspan]="1" [rowspan]="2"><img class="stream-profilePic" src={{video.profileImage}}></mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="1"> <div class="stream-title"> {{ video.title }}</div></mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="1"><div class="stream-displayName">{{ video.channelTitle }}</div></mat-grid-tile>
+    </mat-grid-list>
+    </a>
+      </div>
+      }
+      @empty {
+      <li>Probably forgot to turn this section on</li>
+      }
+    </div>
+  </mat-tab>
+</mat-tab-group>

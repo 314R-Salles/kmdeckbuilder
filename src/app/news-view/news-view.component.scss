@@ -1,0 +1,22 @@
+.nav-button {
+  background: darkgoldenrod;
+  color: honeydew;
+  border-radius: 5px;
+  padding: 10px 5px;
+  width: 10%;
+
+  position: fixed;
+  bottom: 20%;
+}
+
+.nav-button.right{
+  right: 5%;
+  -webkit-box-shadow: -9px 9px 20px 1px rgba(0,0,0,0.5);
+  box-shadow: -9px 9px 20px 1px rgba(0,0,0,0.5);
+}
+
+.nav-button.left{
+  left: 5%;
+  -webkit-box-shadow: 9px 9px 20px 1px rgba(0,0,0,0.5);
+  box-shadow: 9px 9px 20px 1px rgba(0,0,0,0.5);
+}

@@ -1,0 +1,62 @@
+//media query, en dessous de 660px? environ, le header doit avoir que Logo + triple barre pour afficher le menu latéral.
+
+
+.header-menu {
+  position: fixed;
+  top: 0;
+  z-index: 500;
+  width: 100%;
+
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  background: #313282;
+  color: #ffd8eb;
+}
+
+// Revoir les menus dans les headers pour avoir du routerLinkActive?
+.active {
+  border-radius: 10px;
+  background: cornflowerblue;
+}
+
+//.header-menu a {
+//  text-decoration: none;
+//}
+
+.logo-button {
+  position: fixed;
+  left: 0;
+  min-width: 160px;
+  font-size: xx-large;
+  //color: #ffd8eb !important; // theme material par defaut
+}
+
+.home-button {
+  text-align: center;
+  width: 60px;
+}
+
+.deckbuilder-button {
+  text-align: center;
+  width: 120px;
+}
+
+.library-button {
+  text-align: center;
+  width: 100px;
+}
+
+.mat-menu-content {
+  //background-color: darkgrey !important;
+}
+
+.mat-menu-content a {
+  text-decoration: none;
+}
+
+.tooltipClass {
+  background: #137a7a;
+}

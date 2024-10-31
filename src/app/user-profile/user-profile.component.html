@@ -1,0 +1,37 @@
+Profil
+<br>
+
+@if (user) {
+
+  @if (!username) {
+    !!! Vous devez définir un nom d'utilisateur avant de pouvoir pleinement utiliser le site
+  }
+
+  <form [formGroup]="form" (ngSubmit)="updateUser()">
+    <label>
+      Username :
+      <input formControlName="username">
+    </label>
+    <br>
+    <label>
+      Icon
+      <input type="number" formControlName="iconId">
+    </label>
+    <br>
+    <button type="submit">Enregistrer</button>
+  </form>
+
+  <br>
+  @if (user.twitchUsername) {
+    Compte Twitch : {{ user.twitchUsername }}
+    <button (click)="unlink()">Retirer l'association</button>
+  } @else {
+    Lier un compte Twitch <a href={{url}}> <i style="font-size: 2em;" class="material-icons">login</i></a>
+  }
+
+  <br>
+  Derniere connexion le : {{ user.lastLogin |date : 'mediumDate' }}
+}
+
+
+

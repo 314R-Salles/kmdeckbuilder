@@ -1,0 +1,91 @@
+<div style="display: flex; justify-content: center">
+  <mat-stepper [linear]="false" #stepper style="width: 66%;">
+    <mat-step label="Miniature de la news">
+      <form [formGroup]="newsForm">
+        <mat-grid-list cols="7" rowHeight="30px">
+          <mat-grid-tile [colspan]="1" [rowspan]="5">
+            Illustration
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="3" [rowspan]="5">
+            @if (titles.length) {
+            <div style="height: 100%; overflow: auto; width: 500px">
+              <table mat-table [dataSource]="titles">
+                <ng-container matColumnDef="id">
+                  <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+              </ng-container>
+              <ng-container matColumnDef="title">
+                <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+              </ng-container>
+
+              <tr (click)="setIllustration(row.id)" mat-row *matRowDef="let row; columns: ['id', 'title'];"></tr>
+            </table>
+          </div>
+            } @else { <div> Pas d'image dispo </div>}
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="3" [rowspan]="1"></mat-grid-tile>
+
+          <mat-grid-tile [colspan]="3" [rowspan]="8">
+            <div style="display: flex; flex-direction: column">
+              <img style="width:300px; height: 200px; background: red" [src]="displayedIllustration">
+              <pre
+                style="width:300px; margin:0; font-weight: bold; color: rebeccapurple">{{newsForm.get('title').value}} </pre>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="4" [rowspan]="2">
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="2">
+            Titre
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1" [rowspan]="2">
+          <textarea style="width: 100%"
+                    formControlName="title" matInput
+                    cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1" cdkAutosizeMaxRows="2"></textarea>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </form>
+
+      <hr>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Enregistrer une nouvelle image</mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <form [formGroup]="illustrationForm">
+          Titre : <input matInput type="text" formControlName="title">
+          Fichier : <input type="file" (change)="handleUpload($event)">
+          <button [disabled]="illustrationForm.invalid" (click)="uploadIllustration()">Sauvegarder</button>
+          @if (savedIllustrationId) {
+          <div>
+          Illustration {{savedIllustrationId}} - {{illustrationForm.get('title').value }} sauvée
+        </div>
+          }
+        </form>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Editer la banque d'images</mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        liste des titres. au clic : affichage + input titre modifiable + bouton save (V2)
+      </mat-expansion-panel>
+
+      <!--    <button mat-button matStepperNext>Next</button>-->
+
+    </mat-step>
+    <mat-step label="Corps de la news">
+      <quill-editor (onContentChanged)=handleContentChange($event)></quill-editor>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <button mat-button [disabled]="newsForm.invalid" (click)="save()">Sauvegarder</button>
+      <hr>
+      <div [innerHTML]="newsForm.get('content').value"></div>
+      <div>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>

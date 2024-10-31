@@ -1,0 +1,49 @@
+.streams-panel {
+  //aspect de "la boite"
+  // largeur 100% du "main-body"
+  //height: 30vh;
+  width: 100%;
+  border: 0.2em solid black;
+  box-sizing: border-box;
+  overflow-y: auto;
+  //overflow-x: auto;
+
+  // aspect du contenu
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.stream-thumbnail {
+  height: 100%;
+  min-width: 20vw;
+  max-width: 20vw;
+  margin: auto;
+  border: 0.1em solid grey;
+}
+
+.stream-thumbnail > a > img {
+  width: 100%;
+}
+
+.stream-displayName {
+  font-size: 0.8em;
+  position: absolute;
+  left: 5px;
+  font-weight: bolder;
+}
+
+.stream-title {
+  font-size: 0.9em;
+  position: absolute;
+  left: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+}
+
+.stream-profilePic {
+  width: 40px;
+  border-radius: 20px 20px;
+}

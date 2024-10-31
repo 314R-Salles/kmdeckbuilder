@@ -1,0 +1,20 @@
+Activer / désactiver une news
+<hr>
+
+@if (allNews.length) {
+  <div style="height: 100%; overflow: auto; width: 500px">
+    <table mat-table [dataSource]="allNews">
+      <ng-container matColumnDef="id">
+        <td mat-cell *matCellDef="let element"> {{ element.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="title">
+        <td mat-cell *matCellDef="let element"> {{ element.title }}</td>
+      </ng-container>
+
+      <tr (click)="disableNews(row.id)" mat-row *matRowDef="let row; columns: ['id', 'title'];"
+          [ngClass]="{'disabled-color': row.disabled, 'enabled-color': !row.disabled  }"></tr>
+    </table>
+  </div>
+} @else {
+  <div> Pas encore de news</div>
+}

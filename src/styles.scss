@@ -1,1 +1,59 @@
-/* You can add global styles to this file, and also import other style files */
+@import '../node_modules/quill/dist/quill.snow.css';
+
+:root {
+  --header-height: 60px;
+  --header-menu: 40px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0!important;
+  //font-family: Roboto, "Helvetica Neue", sans-serif;
+
+
+}
+/* width */
+::-webkit-scrollbar {
+  width: 10px!important;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #ba82ff!important;
+  border-radius: 10px!important;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #bba6e8!important;
+  border-radius: 10px!important;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #8952cc!important;
+}
+
+
+@font-face {
+  font-family: 'KM_font';
+  src: url('/assets/BebasNeue.otf') format('opentype'); ;
+}
+
+
+@font-face {
+  font-family: 'geo1';
+  src: url('./assets/Geomanist-Book.woff2') format('woff2'); ;
+}
+
+@font-face {
+  font-family: 'geo2';
+  src: url('/assets/Geomanist-Bold.woff2') format('woff2'); ;
+}
+
+
+
+

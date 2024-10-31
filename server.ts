@@ -3,14 +3,24 @@ import { CommonEngine } from '@angular/ssr';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
-import AppServerModule from './src/main.server';
+import bootstrap from './src/main.server';
+import * as fs from 'fs';
+import * as https from "https";
+import {environment} from './src/environments/environment';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
+  // let browserDistFolder;
+  //   if (environment.production) {
+  //   browserDistFolder = join(process.cwd(), '../browser');
+  // } else {
+  //   browserDistFolder = join(process.cwd(), 'dist/kmpick/browser');
+  // }
   const indexHtml = join(serverDistFolder, 'index.server.html');
+
 
   const commonEngine = new CommonEngine();
 
@@ -31,7 +41,7 @@ export function app(): express.Express {
 
     commonEngine
       .render({
-        bootstrap: AppServerModule,
+        bootstrap,
         documentFilePath: indexHtml,
         url: `${protocol}://${headers.host}${originalUrl}`,
         publicPath: browserDistFolder,
@@ -45,10 +55,18 @@ export function app(): express.Express {
 }
 
 function run(): void {
-  const port = process.env['PORT'] || 4000;
+  const port = process.env['PORT'] || 4200;
+
+  let server;
 
   // Start up the Node server
-  const server = app();
+  if (environment.production) {
+    const privateKey = fs.readFileSync('/etc/letsencrypt/live/psalles.ovh/privkey.pem');
+    const certificate = fs.readFileSync('/etc/letsencrypt/live/psalles.ovh/cert.pem');
+    server = https.createServer({key: privateKey, cert: certificate}, app());
+  } else {
+    server = app();
+  }
   server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });

@@ -1,0 +1,168 @@
+<form [formGroup]="form">
+
+
+  <div class="filters">
+    <div class="classe">
+      <div>Dieu</div>
+      <div>Neutre</div>
+    </div>
+    <div class="type">
+      <img (click)="typeChange('sort')" [ngClass]="{'selected-type' : form.get('isSpell')!.value}">
+      <img (click)="typeChange('crea')" [ngClass]="{'selected-type' : form.get('isMinion')!.value}">
+    </div>
+    <div>
+      <div>
+        @for (cost of [0, 1, 2, 3, 4, 5, 6, 7]; track cost; let idx = $index, e = $even) {
+          <img class="ap-cost" [ngClass]="{'selected-type' : form.get('apValue')!.value == cost}"
+               (click)="apSelect(cost)">
+        }</div>
+      <div style="display:flex;">
+        <div class="dropdown">
+          <div class="dropbtn">
+           <span class="appFont2"
+                 [ngClass]="form.get('rarity')!.value.color">
+              <span [ngClass]="form.get('rarity')!.value.bgColor"
+                    style="width:20px; height:20px; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+             {{ form.get('rarity')!.value.value }}</span></div>
+          <div class="dropdown-content">
+            @for (rarity of rarityList; track rarity; let idx = $index, e = $even) {
+              <span class="appFont2"
+                    [ngClass]="rarity.color"
+                    (click)="raritySelect(rarity)">
+              <span [ngClass]="rarity.bgColor"
+                    style="width:20px; height:20px; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+                {{ rarity.value }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="search-input" style="  margin-left: 50px;">
+          <input class="search-input appFont2"
+                 style="padding-left: 10px; width: 150px; "
+                 type="text" placeholder="Rechercher ..." formControlName="content">
+        </div>
+      </div>
+      <!--    https://www.w3schools.com/css/css_dropdowns.asp-->
+
+    </div>
+  </div>
+
+  {{ form.get('content')?.value }}
+  <div class="extra-filters">
+    Filtres optionnels PM / PV Whatever
+  </div>
+
+
+  <!--<div class="container">-->
+  <!--  <div class="row align-items-center">-->
+  <!--    <div class="col-1">-->
+  <!--      <mat-checkbox labelPosition=before (change)="resetPage();getFilteredCards()" [ngModel]="isSpell"-->
+  <!--                    [ngModelOptions]="{standalone: true}">Spell-->
+  <!--      </mat-checkbox>-->
+  <!--    </div>-->
+  <!--    <div class="col-1 selector-title"> OR</div>-->
+  <!--    <div class="col-1">-->
+  <!--      <mat-checkbox labelPosition=before (change)="resetPage();getFilteredCards()" [ngModel]="isMinion"-->
+  <!--                    [ngModelOptions]="{standalone: true}">Minion-->
+  <!--      </mat-checkbox>-->
+  <!--    </div>-->
+
+  <!--    <div class="col-1 ml-auto selector-title"> God :</div>-->
+  <!--    <div class="col-2">-->
+  <!--      <mat-form-field>-->
+  <!--        <mat-select [(value)]="god" (change)="resetPage();resetRarity();getFilteredCards();">-->
+  <!--          <mat-option *ngFor="let god of godList" [value]="god.value">-->
+  <!--            {{ god.viewValue }}-->
+  <!--          </mat-option>-->
+  <!--        </mat-select>-->
+  <!--      </mat-form-field>-->
+  <!--    </div>-->
+  <!--    <div class="col-1 selector-title"> Rarity :</div>-->
+  <!--    <div class="col-2">-->
+  <!--      <mat-form-field>-->
+  <!--        <mat-select [(value)]="rarity" (change)="resetPage();resetGod();getFilteredCards();">-->
+  <!--          <mat-option *ngFor="let rarity of rarityList" [value]="rarity.value">-->
+  <!--            {{ rarity.value }}-->
+  <!--          </mat-option>-->
+  <!--        </mat-select>-->
+  <!--      </mat-form-field>-->
+  <!--    </div>-->
+  <!--    <div class="col-1">-->
+  <!--      <mat-form-field>-->
+  <!--        <input matInput placeholder="Input" (keyup)="getFilteredCards()" [(ngModel)]="content">-->
+  <!--      </mat-form-field>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+
+  <!--  <div class="row align-items-center">-->
+  <!--    <div class="col selector-row">-->
+  <!--      <div class=" selector-title"> AP :</div>-->
+  <!--      <mat-button-toggle-group [ngModel]="apValue" (change)="getFilteredCards()">-->
+  <!--        <mat-button-toggle [value]="null">All</mat-button-toggle>-->
+  <!--        <mat-button-toggle *ngFor="let i of [0,1,2,3,4,5,6]" [value]="i">-->
+  <!--          {{ i }}-->
+  <!--        </mat-button-toggle>-->
+  <!--        <mat-button-toggle [value]="7">7+</mat-button-toggle>-->
+  <!--      </mat-button-toggle-group>-->
+  <!--    </div>-->
+  <!--    <div class="col selector-row">-->
+  <!--      <div class=" selector-title"> AT :</div>-->
+  <!--      <mat-button-toggle-group [(ngModel)]="atValue" (change)="getFilteredCards()">-->
+  <!--        <mat-button-toggle [value]="null">All</mat-button-toggle>-->
+  <!--        <mat-button-toggle *ngFor="let i of [0,1,2,3,4,5,6]" [value]="i">-->
+  <!--          {{ i }}-->
+  <!--        </mat-button-toggle>-->
+  <!--        <mat-button-toggle [value]="7">7+</mat-button-toggle>-->
+  <!--      </mat-button-toggle-group>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--  <div class="row align-items-center">-->
+  <!--    <div class="col selector-row">-->
+  <!--      <div class="selector-title"> HP :</div>-->
+  <!--      <mat-button-toggle-group [(ngModel)]="hpValue" (change)="getFilteredCards()">-->
+  <!--        <mat-button-toggle [value]="null">All</mat-button-toggle>-->
+  <!--        <mat-button-toggle *ngFor="let i of [1,2,3,4,5,6]" [value]="i">-->
+  <!--          {{ i }}-->
+  <!--        </mat-button-toggle>-->
+  <!--        <mat-button-toggle [value]="7">7+</mat-button-toggle>-->
+  <!--      </mat-button-toggle-group>-->
+  <!--    </div>-->
+  <!--    <div class="col selector-row">-->
+  <!--      <div class="selector-title"> MP :</div>-->
+  <!--      <mat-button-toggle-group [(ngModel)]="mpValue" (change)="getFilteredCards()">-->
+  <!--        <mat-button-toggle [value]="null">All</mat-button-toggle>-->
+  <!--        <mat-button-toggle *ngFor="let i of [0,1,2,3,4]" [value]="i">-->
+  <!--          {{ i }}-->
+  <!--        </mat-button-toggle>-->
+  <!--        <mat-button-toggle [value]="5">5+</mat-button-toggle>-->
+  <!--      </mat-button-toggle-group>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+  <!--  <div class="row justify-content-center">-->
+  <!--    <div-->
+  <!--      *ngFor="let card of displayedCards">-->
+  <!--      <img src="{{card.imageLink}}">-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+  <!--  <div class="footer">-->
+  <!--    <button mat-mini-fab (click)="pageDown()">-->
+  <!--      <mat-icon>keyboard_arrow_left</mat-icon>-->
+  <!--    </button>-->
+  <!--    <button mat-mini-fab (click)="pageUp()">-->
+  <!--      <mat-icon>keyboard_arrow_right</mat-icon>-->
+  <!--    </button>-->
+  <!--    <mat-form-field>-->
+  <!--      <mat-select [(value)]="pageContent" (change)="resetPage();getFilteredCards();">-->
+  <!--        <mat-option *ngFor="let number of pageContentList" [value]="number.value">-->
+  <!--          {{ number.viewValue }}-->
+  <!--        </mat-option>-->
+  <!--      </mat-select>-->
+  <!--    </mat-form-field>-->
+  <!--  </div>-->
+  <!--</div>-->
+
+
+</form>

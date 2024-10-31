@@ -1,0 +1,38 @@
+<div class="main-body">
+  <div style="height:15vh; border:2px solid black; margin-bottom: 4vh">
+    <div
+      style="position: relative; font-size: 2.5vw; font-weight:bolder;padding-left:1em;
+       width: 14vw; margin-top:-0.7vh; margin-left:10vw; background:white">
+      Toolbox
+    </div>
+  </div>
+  <div style="border:2px solid black; margin-bottom: 4vh">
+    <div
+      style="position: relative; font-size: 2.5vw; font-weight:bolder;padding-left:1em; width: 9vw; margin-top:-0.7vh; margin-left:10vw;
+      margin-bottom: 2vh ; background:white;">
+      News
+    </div>
+    <div style="display: flex; justify-content: center;align-items: center">
+      <button [disabled]="offset == 0" (click)="offset= offset + 1" style="width: 40px;height: 40px"><</button>
+      <div style="display: flex; overflow: hidden; width: 100%">
+        @for (panel of news; track panel.title; let first = $first; let idx = $index, e = $even) {
+
+          <div [ngStyle]="{'margin-left.%': first ? 10+offset*30 : 10}"
+               style="width:20%;display: flex; flex-direction: column; cursor: pointer"
+               [routerLink]="['/news/view', panel.id]">
+            <img style="margin-top:auto; background: red" [src]="panel.illustration">
+            <pre
+              style="height:50px;margin:0; font-weight: bold; color: rebeccapurple">{{ panel.title }} </pre>
+          </div>
+
+        } @empty {
+          <li>Coming soon..</li>
+        }
+      </div>
+      <button [disabled]="offset == -news.length + 3 || news.length <3" (click)="offset= offset - 1"
+              style="width: 40px;height: 40px">>
+      </button>
+    </div>
+  </div>
+  <app-stream-list></app-stream-list>
+</div>

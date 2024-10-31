@@ -1,0 +1,89 @@
+
+.card {
+  border: rgba(255, 255, 255, 0.62) solid 1px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  //display: flex;
+  //align-items: center
+}
+
+.card {
+  height: 40px;
+  width: 300px;
+  //-webkit-box-shadow: inset 0px 0px 0px 10px rgba(255, 255, 255, 0.62);
+  //-moz-box-shadow: inset 0px 0px 0px 10px rgba(255, 255, 255, 0.62);
+  box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.62);
+  display: flex;
+  align-items: center;
+
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 400;
+  -webkit-text-stroke: 0.7px #000000;
+}
+
+.card > img {
+  width: 50px;
+  height: 100%;
+  background: white;
+  margin-right: 10px;
+}
+
+.infinite {
+  background: linear-gradient(180deg, rgba(140, 154, 228, 1) 0%, rgba(162, 227, 236, 1) 100%);
+}
+
+.krosmique {
+  background: linear-gradient(180deg, rgba(132, 25, 184, 1) 10%, rgba(100, 60, 181, 1) 35%, rgba(83, 64, 180, 1) 65%, rgba(79, 108, 207, 1) 91%);
+}
+
+.neutre {
+  background: #613E39;
+}
+
+.iop {
+  background: #A3210E;
+}
+
+.ecaflip {
+  background: #6C1084;
+}
+
+.cra {
+   background: #424617;
+}
+
+.eniripsa {
+   background: #B54C3C;
+}
+
+.sacrieur {
+   background: #302821;
+}
+
+.sadida {
+   background: #6B7200;
+}
+
+.sram {
+   background: #39405A;
+}
+
+.xelor {
+   background: #263578;
+}
+
+.enutrof {
+   background: #9B7400;
+}
+
+.feca {
+   background: #523B39;
+}
+
+
+.appFont2 {
+  color: white !important;
+  font-family: 'geo2', 'arial', sans-serif !important;
+}
+
