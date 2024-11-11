@@ -21,6 +21,7 @@ import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FilterFormComponent} from "./decklists/filter-form/filter-form.component";
 import {DeckbuilderComponent} from './decklists/deckbuilder/deckbuilder.component';
 import {SelectedListComponent} from './decklists/selected-list/selected-list.component';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {SelectedListComponent} from './decklists/selected-list/selected-list.com
     SelectedListComponent,
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     AngularMaterialModule,

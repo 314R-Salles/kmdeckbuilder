@@ -1,9 +1,45 @@
-<div style="width: 100%;">
-  <p>deckbuilder works!</p>
+<div style="width: 100%; height: calc(100% - 80px)">
+  <hr>
+  <div style="display: flex; justify-content: space-between;">
+    <div style="width: 70%;">
+      <app-filter-form [god]="god" [form]="form"></app-filter-form>
+      <div style="background: #B8A27B; height: 100%"> Resultats
+        <br>
+        ici je loop sur "displayedCards"
+        <br>
 
-  <div style="display: flex; justify-content: space-between">
-    <app-filter-form style="width: 70%;"></app-filter-form>
-    <app-selected-list style="width: 20%;"></app-selected-list>
+<!--        <button (click)="selectCard({name:'toto commune ',id:7, rarity:0, god: 3})"> CARD commune</button>-->
+<!--        <button (click)="selectCard({name:'toto peu commune ',id:2, rarity:1, god: 3})"> CARD peu commune</button>-->
+<!--        <button (click)="selectCard({name:'toto rare ',id:60, rarity:2, god: 3})"> CARD rare</button>-->
+<!--        <button (click)="selectCard({name:'toto km dieu ',id:10, rarity:3, god: 3})"> CARD km</button>-->
+<!--        <button (click)="selectCard({name:'toto km neutre ',id:15, rarity:3, god: -1})"> CARD km</button>-->
+<!--        <button (click)="selectCard({name:'toto infinite ',id:1, rarity:4, god: -1})"> CARD infinite</button>-->
+<!--        <button (click)="selectCard({name:'toto',id:1, rarity:1, god: -1})"> CARD Neutre</button>-->
+
+        <div style="display: flex; flex-wrap: wrap">
+          @for (card of testCards; track card.id; let idx = $index) {
+          <img [src]="card.imageLink" [ngStyle]="{ 'width.vw' : true ? '14': '9'}"
+           (click)="selectCard(card)"
+           class="" [ngClass]="{'selected-type' : false,
+          'grey':  lockedSisterInfinites.includes(card.idInfinite)
+          || synthese && synthese[card.id]?.count == limitationNbrExemplaires[card.rarity]
+          || syntheseRarete && syntheseRarete[card.rarity] == limitationRarete[card.rarity]
+          }">
+          }</div>
+        <br>
+        <div>
+          @for (card of selectedCards; track card.id; let idx = $index) {
+          <span class="" [ngClass]="{'selected-type' : false}"> {{card | json}} </span>
+          }</div>
+
+        // avec limitations[rarity] ça permet de limiter le nombre d'exemplaire de chaque carte
+        <div *ngFor="let item of synthese | keyvalue">{{ item.key }}
+          :{{ item.value.count }} {{ item.value.rarity }} {{limitationNbrExemplaires[item.value.rarity]}} <br>
+          {{ item.value.count == limitationNbrExemplaires[item.value.rarity] ? "max atteint" : "" }}
+        </div>
+      </div>
+    </div>
+    <app-selected-list [synthese]="synthese" (removeCard)="removeCard($event)" style="width: 20%;"></app-selected-list>
   </div>
 
 </div>
