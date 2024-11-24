@@ -2,19 +2,26 @@
   <div class="filters">
     <div class="classe">
       <!--      sur un écran réduit, l'un sur l'autre comme un 8-->
-      <div [ngClass]="{'selected-type' : form.get('godCards').value}" (click)="factionChange('dieu')">Dieu
-        n°{{god}}</div>
-      <div [ngClass]="{'selected-type' : form.get('neutralCards').value}" (click)="factionChange('neutre')">Neutre</div>
+      <img [src]="'/assets/public/gods/GOD_'+godList[god]+'.png'"
+           [ngClass]="{'selected-type' : form.get('godCards').value}" (click)="factionChange('dieu')">
+      <img [src]="'/assets/public/gods/GOD_'+godList[7]+'.png'"
+           [ngClass]="{'selected-type' : form.get('neutralCards').value}" (click)="factionChange('neutre')">
     </div>
-    <div class="type">
-      <img (click)="typeChange('sort')" [ngClass]="{'selected-type' : form.get('isSpell')!.value}">
-      <img (click)="typeChange('crea')" [ngClass]="{'selected-type' : form.get('isMinion')!.value}">
+    <div class="types">
+      <img [src]="'/assets/public/spellIcon.png'" (click)="typeChange('sort')" class="type"
+           [matTooltip]="tooltipType['fr_spell_'+ (form.get('isSpell').value ? 'hide' : 'show')]"
+           [ngClass]="{'selected-type' : form.get('isSpell').value}">
+      <img [src]="'/assets/public/creatureIcon.png'" (click)="typeChange('crea')" class="type"
+           [matTooltip]="tooltipType['fr_minion_'+ (form.get('isMinion').value ? 'hide' : 'show')]"
+           [ngClass]="{'selected-type' : form.get('isMinion').value}">
     </div>
-    <div>
+    <div style="display: flex; flex-direction: column">
       <div>
-        @for (cost of [0, 1, 2, 3, 4, 5, 6, 7]; track cost; let idx = $index, e = $even) {
-        <img class="ap-cost" [ngClass]="{'selected-type' : form.get('apValue')!.value == cost}"
-               (click)="apSelect(cost)">
+        @for (cost of costs; track cost; let idx = $index, e = $even) {
+          <img [src]="'/assets/public/pa/'+cost.label+'.png'" class="ap-cost"
+               [ngClass]="{'selected-type' : form.get('apValue')!.value == cost.value,
+              'grey': form.get('apValue')!.value != cost.value}"
+               (click)="apSelect(cost.value)">
         }</div>
       <div style="display:flex;">
         <div class="dropdown">
@@ -23,15 +30,15 @@
                  [ngClass]="form.get('rarity')!.value.color">
               <span [ngClass]="form.get('rarity')!.value.bgColor"
                     style="width:20px; height:20px; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
-             {{ form.get('rarity')!.value.value }}</span></div>
+             {{ form.get('rarity')!.value.label }}</span></div>
           <div class="dropdown-content">
-            @for (rarity of rarityList; track rarity; let idx = $index, e = $even) {
-            <span class="appFont2"
-                  [ngClass]="rarity.color"
-                  (click)="raritySelect(rarity)">
+            @for (rarity of rarities['fr']; track rarity; let idx = $index, e = $even) {
+              <span class="appFont2"
+                    [ngClass]="rarity.color"
+                    (click)="raritySelect(rarity)">
             <span [ngClass]="rarity.bgColor"
                   style="width:20px; height:20px; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
-            {{ rarity.value }}</span>
+                {{ rarity.label }}</span>
             }
           </div>
         </div>
@@ -44,27 +51,15 @@
       <!--    https://www.w3schools.com/css/css_dropdowns.asp-->
     </div>
   </div>
-
-  <div *ngIf="true" class="extra-filters">
-    <!--    https://www.w3schools.com/howto/howto_js_collapsible.asp-->
-    <button [ngClass]="{'active': filterSectionActive}"
-            (click)="toggleFilterSection()" type="button" class="collapsible"> Filtres optionnels PM / PV Whatever
-    </button>
-    <div class="content" [ngStyle]="{ 'display' :filterSectionActive ? 'block': 'none'}">
-      <p> Au clic sur une carte, ajout dans selectedCards
-
-        Si selectedCards.filter(card => card.rarity === val Krosmique).length === Nbr krosmique max, alors les cartes
-        krosmiques à l'écran sont grisées (ngClass)
-        Mais pas disabled, et clic ouvre popup "Il ne peut y avoir que X Krosmique dans un deck"
-
-        Meme logique pour les 5 infinites. + Si une infinite selectionnée, ses autres niveaux meme traitement.
-
-        Meme logique pour les autres cartes if selectedCards.filter(card => card.name = ??).length === 3
-        Il ne peut y avoir que 3 exemplaires d'une même carte dans le deck.
-
-        Mais ça va etre bourin de faire les check sur chaque carte?</p>
-    </div>
-  </div>
-
+  https://www.w3schools.com/howto/howto_css_notification_button.asp
+<!--  <div *ngIf="true" class="extra-filters">-->
+<!--    &lt;!&ndash;    https://www.w3schools.com/howto/howto_js_collapsible.asp&ndash;&gt;-->
+<!--    <button [ngClass]="{'active': filterSectionActive}"-->
+<!--            (click)="toggleFilterSection()" type="button" class="collapsible"> Filtres optionnels PM / PV Whatever-->
+<!--    </button>-->
+<!--    <div class="content" [ngStyle]="{ 'display' :filterSectionActive ? 'block': 'none'}">-->
+<!--     blbl-->
+<!--    </div>-->
+<!--  </div>-->
 
 </form>

@@ -1,6 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Card} from "../card.model";
-import {ApiService} from "../../api/api.service";
+import {Component, Input} from '@angular/core';
 import {FormGroup} from "@angular/forms";
 
 @Component({
@@ -8,10 +6,10 @@ import {FormGroup} from "@angular/forms";
   templateUrl: './filter-form.component.html',
   styleUrls: ['./filter-form.component.scss']
 })
-export class FilterFormComponent implements OnInit {
+export class FilterFormComponent {
 
   @Input() form: FormGroup
-  @Input() god : number
+  @Input() god: number
 
   filterSectionActive = false
 
@@ -58,39 +56,37 @@ export class FilterFormComponent implements OnInit {
     }
   }
 
-  raritySelect(rarity: { key: any; value: any }) {
-    this.form.get('rarity')?.setValue(rarity);
+  raritySelect(rarity: any) {
+    this.form.get('rarity').setValue(rarity);
   }
 
-  godList = [
-    {value: -1, viewValue: 'All'},
-    {value: 0, viewValue: 'Neutral'},
-    {value: 1, viewValue: 'Iop'},
-    {value: 2, viewValue: 'Cra'},
-    {value: 3, viewValue: 'Eniripsa'},
-    {value: 4, viewValue: 'Ecaflip'},
-    {value: 5, viewValue: 'Enutrof'},
-    {value: 6, viewValue: 'Sram'},
-    {value: 7, viewValue: 'Xelor'},
-    {value: 8, viewValue: 'Sacrieur'},
-    {value: 9, viewValue: 'Feca'},
-    {value: 10, viewValue: 'Sadida'},
-  ];
-
-  rarityList = [
-    {key: -1, value: 'All', bgColor: 'bg-color-all', color: 'color-all'},
-    {key: 0, value: 'Common', bgColor: 'bg-color-common', color: 'color-common'},
-    {key: 1, value: 'Uncommon', bgColor: 'bg-color-uncommon', color: 'color-uncommon'},
-    {key: 2, value: 'Rare', bgColor: 'bg-color-rare', color: 'color-rare'},
-    {key: 3, value: 'Krosmique', bgColor: 'bg-color-krosmique', color: 'color-krosmique'},
-    {key: 4, value: 'Infinite', bgColor: 'bg-color-infinite', color: 'color-infinite'},
+  costs = [
+    {value: 0, label: '0'},
+    {value: 1, label: '1'},
+    {value: 2, label: '2'},
+    {value: 3, label: '3'},
+    {value: 4, label: '4'},
+    {value: 5, label: '5'},
+    {value: 6, label: '6'},
+    {value: 7, label: '7+'},
   ];
 
 
-  constructor(private apiService: ApiService) {
+  godList = {
+    1: 'Cra',
+    2: 'Ecaflip',
+    3: 'Eniripsa',
+    4: 'Enutrof',
+    5: 'Feca',
+    6: 'Iop',
+    7: 'None',
+    8: 'Sacrieur',
+    9: 'Sadida',
+    10: 'Sram',
+    11: 'Xelor'
   }
 
-  ngOnInit() {
+  constructor() {
   }
 
   get isSpell() {
@@ -120,6 +116,85 @@ export class FilterFormComponent implements OnInit {
 
   toggleFilterSection() {
     this.filterSectionActive = !this.filterSectionActive
+  }
+
+
+  /// zzz?
+  tooltipType = {
+    fr_minion_hide: 'Masquer les invocations',
+    fr_minion_show: 'Afficher les invocations',
+    fr_spell_hide: 'Masquer les sorts',
+    fr_spell_show: 'Afficher les sorts',
+    en_minion_hide: 'Hide Minions',
+    en_minion_show: 'Show Minions',
+    en_spell_hide: 'Hide spells',
+    en_spell_show: 'Show spells',
+    br_minion_hide: 'Ocultar invocações',
+    br_minion_show: 'Exibir invocações',
+    br_spell_hide: 'Ocultar feitiços',
+    br_spell_show: 'Exibir feitiços',
+    es_minion_hide: 'Ocultar las invocaciones',
+    es_minion_show: 'Mostrar las invocaciones',
+    es_spell_hide: 'Ocultar los hechizos',
+    es_spell_show: 'Mostrar los hechizos',
+    ru_minion_hide: 'Скрыть существ',
+    ru_minion_show: 'Показать существ',
+    ru_spell_hide: 'Скрыть заклинания',
+    ru_spell_show: 'Показать заклинания',
+  }
+
+  rarityList = [
+    {key: 0, value: 'Common', bgColor: 'bg-color-common', color: 'color-common'},
+    {key: 2, value: 'Rare', bgColor: 'bg-color-rare', color: 'color-rare'},
+    {key: 4, value: 'Infinite', bgColor: 'bg-color-infinite', color: 'color-infinite'},
+    {key: 3, value: 'Krosmique', bgColor: 'bg-color-krosmique', color: 'color-krosmique'},
+    {key: 1, value: 'Uncommon', bgColor: 'bg-color-uncommon', color: 'color-uncommon'},
+    {key: -1, value: 'All', bgColor: 'bg-color-all', color: 'color-all'},
+  ];
+
+
+  rarities = {
+    fr: [
+      {key: '-1' , label: 'Toutes les raretés', color: 'color-all', bgColor: 'bg-color-all'},
+      {key: '0' , label: 'Commune', color: 'color-common', bgColor: 'bg-color-common'},
+      {key: '1' , label: 'Peu Commune', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
+      {key: '2' , label: 'Rare', color: 'color-rare', bgColor: 'bg-color-rare'},
+      {key: '3' , label: 'Krosmique', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
+      {key: '4' , label: 'Infinite', color: 'color-infinite', bgColor: 'bg-color-infinite'},
+    ],
+    en: {
+      '0': {label: 'Common', color: 'color-common', bgColor: 'bg-color-common'},
+      '2': {label: 'Rare', color: 'color-rare', bgColor: 'bg-color-rare'},
+      '4': {label: 'Infinite', color: 'color-infinite', bgColor: 'bg-color-infinite'},
+      '3': {label: 'Krosmic', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
+      '1': {label: 'Uncommon', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
+      '-1': {label: 'All rarities', color: 'color-all', bgColor: 'bg-color-all'},
+    },
+    br: {
+      '0': {label: 'Comum', color: 'color-common', bgColor: 'bg-color-common'},
+      '2': {label: 'Rara', color: 'color-rare', bgColor: 'bg-color-rare'},
+      '4': {label: 'Infinita', color: 'color-infinite', bgColor: 'bg-color-infinite'},
+      '3': {label: 'Krósmica', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
+      '1': {label: 'Incomum', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
+      '-1': {label: 'Todas as raridades', color: 'color-all', bgColor: 'bg-color-all'},
+    },
+    es: {
+      '0': {label: 'Común', color: 'color-common', bgColor: 'bg-color-common'},
+      '2': {label: 'Rara', color: 'color-rare', bgColor: 'bg-color-rare'},
+      '4': {label: 'Infinita', color: 'color-infinite', bgColor: 'bg-color-infinite'},
+      '3': {label: 'Krósmica', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
+      '1': {label: 'Poco común', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
+      '-1': {label: 'Todos los tipos de carta', color: 'color-all', bgColor: 'bg-color-all'}
+    },
+    ru: {
+      '0': {label: 'Обычная', color: 'color-common', bgColor: 'bg-color-common'},
+      '2': {label: 'Редкая', color: 'color-rare', bgColor: 'bg-color-rare'},
+      '4': {label: 'Запредельная', color: 'color-infinite', bgColor: 'bg-color-infinite'},
+      '3': {label: 'Кросмическая', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
+      '1': {label: 'Необычная', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
+      '-1': {label: 'Любая редкость', color: 'color-all', bgColor: 'bg-color-all'},
+    }
+
   }
 
 }

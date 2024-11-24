@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from "../api/api.service";
+import {ApiService} from "../../api/api.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {DomSanitizer} from '@angular/platform-browser';
-import {AuthenticatedApiService} from "../api/authenticated-api.service";
+import {AuthenticatedApiService} from "../../api/authenticated-api.service";
 
 
 @Component({

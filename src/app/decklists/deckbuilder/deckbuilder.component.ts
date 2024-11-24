@@ -1,6 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {Card} from '../card.model';
+import {Card} from '../models/card.model';
+import {ApiService} from "../../api/api.service";
+import {debounceTime, distinctUntilChanged} from "rxjs";
+import {CardType} from "../models/enums";
+import {AuthenticatedApiService} from "../../api/authenticated-api.service";
+import {MatDialog} from "@angular/material/dialog";
+import {EmailVerifiedPopinComponent} from "../../popins/email-verified-popin/email-verified-popin.component";
+import {DeckCreatedPopinComponent} from "../../popins/deck-created-popin/deck-created-popin.component";
+
+const {CREA, SORT} = CardType;
 
 @Component({
   selector: 'app-deckbuilder',
@@ -8,117 +17,24 @@ import {Card} from '../card.model';
   styleUrl: './deckbuilder.component.scss'
 })
 export class DeckbuilderComponent implements OnInit {
+
+  constructor(private apiService: ApiService,
+              private authenticatedApiService: AuthenticatedApiService,
+              private dialog: MatDialog) {
+  }
+
+  max
   displayedCards: Card[] = [];
   selectedCards: Card[] = [];
-  synthese: { [key: string]: {count: number, rarity: number, god: any, name: string } }
-  syntheseRarete: { 0: number, 1: number, 2: number, 3: number, 4: number }
+  synthese: {
+    [key: string]: { count: number, rarity: number, godType: any, costAP: any, id: any, name: string, hightlight?: number }
+  }
+  syntheseRarete: { COMMUNE: 0, PEU_COMMUNE: 0, RARE: 0, KROSMIQUE: 0, INFINITE: 0 }
   god = 5; // le dieu est une donnée fixée, pas dans le formulaire (pour swap neutre / dieu faut garder l'info)
   language: number; // language est comme le dieu, fixé par le site, pas un choix du formulaire
   form: FormGroup;
 
-
-  testCards = [
-
-    {
-      id: 1,
-      god: 0,
-      name: 'julith jurgen',
-      atk: 1,
-      cost: 1,
-      health: 1,
-      mp: 1,
-      isSpell: false,
-      rarity: 4,
-      idInfinite: 999,
-      imageLink: '/assets/julith_jurgen_niveau_1.png'
-    },
-    {
-      id: 2,
-      god: 0,
-      name: 'julith jurgen',
-      atk: 2,
-      cost: 2,
-      health: 2,
-      mp: 2,
-      isSpell: false,
-      rarity: 4,
-      idInfinite: 999,
-      imageLink: '/assets/julith_jurgen_niveau_2.png'
-    },
-    {
-      id: 3,
-      god: 0,
-      name: 'julith jurgen',
-      atk: 3,
-      cost: 3,
-      health: 3,
-      mp: 3,
-      isSpell: false,
-      rarity: 4,
-      idInfinite: 999,
-      imageLink: '/assets/julith_jurgen_niveau_3.png'
-    },
-    {
-      id: 4,
-      god: 0,
-      name: 'gros bouf',
-      atk: 3,
-      cost: 3,
-      health: 3,
-      mp: 3,
-      isSpell: false,
-      rarity: 2,
-      imageLink: '/assets/bouftou_royal.png'
-    },
-    {
-      id: 5,
-      god: 3,
-      name: 'betty_boubz',
-      atk: 3,
-      cost: 3,
-      health: 3,
-      mp: 3,
-      isSpell: false,
-      rarity: 1,
-      imageLink: '/assets/betty_boubz.png'
-    },
-    {
-      id: 6,
-      god: 4,
-      name: 'archille',
-      atk: 3,
-      cost: 3,
-      health: 3,
-      mp: 3,
-      isSpell: false,
-      rarity: 2,
-      imageLink: '/assets/archille.png'
-    },
-    {
-      id: 7,
-      god: 5,
-      name: 'arbre_a_chachas',
-      atk: 3,
-      cost: 3,
-      health: 3,
-      mp: 3,
-      isSpell: false,
-      rarity: 2,
-      imageLink: '/assets/arbre_a_chachas.png'
-    },
-    {
-      id: 8,
-      god: 0,
-      name: 'pas julith  ',
-      atk: 1,
-      cost: 1,
-      health: 1,
-      mp: 1,
-      isSpell: false,
-      rarity: 4,
-      imageLink: '/assets/julith_jurgen_niveau_1.png'
-    },
-  ]
+  testCards = []
 
 
   ngOnInit(): void {
@@ -129,12 +45,12 @@ export class DeckbuilderComponent implements OnInit {
       isSpell: new FormControl(true),
       isMinion: new FormControl(true),
       apValue: new FormControl(null),
-      rarity: new FormControl({key: -1, value: 'All', bgColor: 'bg-color-all', color: 'color-all'}),
+      rarity: new FormControl({key: '-1', label: 'Toutes les raretés', color: 'color-all', bgColor: 'bg-color-all'},),
       content: new FormControl(''),
       language: new FormControl('FR'),
       // pagination
       pageNumber: new FormControl('0'),
-      pageSize: new FormControl('8'),
+      pageSize: new FormControl('21'),
       // Pour plus tard
       atValue: new FormControl(''),
       mpValue: new FormControl(''),
@@ -142,17 +58,22 @@ export class DeckbuilderComponent implements OnInit {
       extension: new FormControl(''),
     });
 
-    this.form.valueChanges.subscribe(_ => this.getFilteredCards())
+    this.form.valueChanges.pipe(
+      // quand on décoche sort et créa, ça recoche une valeur, mais ça fait 2 appels qui finissent pas dans l'ordre.
+      // debounce (ptet en prod faudra monter) gomme le double appel. (ou alors corriger la source du probleme)
+      debounceTime(50),
+      distinctUntilChanged()
+    ).subscribe(_ => this.getFilteredCards())
   }
 
   // Envisager de passer de 2 champs minion/spell à un champ TYPE qui vaut Minion/Spell directement
   getFilteredCards() {
-    let type: string;
+    let type: CardType;
     if (this.isMinion && this.isSpell) {
       type = null;
     } else {
-      if (this.isMinion) type = 'Minion';
-      if (this.isSpell) type = 'Spell';
+      if (this.isMinion) type = CardType.CREA;
+      if (this.isSpell) type = CardType.SORT;
     }
     // Pour gérer les options X+ on définit un Min Max
     // Exemple si selection 7+, alors min 7 et max null pour dire pas de max
@@ -171,28 +92,58 @@ export class DeckbuilderComponent implements OnInit {
     // c'est pas la responsabilité du front d'ajouter des % LIKE
     // const content = (this.content === '' || this.content === undefined) ? null : '%' + this.content + '%';
 
-    const form = {
+    let gods = []
+    if (this.godCards) {
+      gods.push('FECA')
+    }
+    if (this.neutralCards) {
+      gods.push('NEUTRE')
+    }
+
+
+    this.apiService.getCards({
       type: type,
       hpGreaterThan: hpMin,
       hpLessThan: hpMax,
       apGreaterThan: apMin,
       apLessThan: apMax,
-      mpGreaterThan: mpMin,
-      mpLessThan: mpMax,
-      atGreaterThan: atMin,
-      atLessThan: atMax,
-      god: this.godCards ? this.god : null, // si cartes dieux, passer dieu, sinon vide
-      neutral: this.neutralCards,
-      rarity: (this.rarity === -1) ? null : this.rarity,
-      extension: null,
-      language: 'FR',
-      content: this.content,
+      mpGreaterThan: null,
+      mpLessThan: null,
+      atGreaterThan: null,
+      atLessThan: null,
+      gods: gods,
+      rarity: this.rarity != -1 ? this.rarity : null,
+      language: null,
+      family: null,
+      content: this.content ? this.content : null,
       pageNumber: this.pageNumber,
       pageSize: this.pageSize
+
+    }).subscribe(cards => this.testCards = cards)
+
+  }
+
+
+  saveDeck() {
+    let form = {
+      cards: Object.values(this.synthese).map(card => {
+        return {count: card.count, costAP: card.costAP, rarity: card.rarity, id: card.id, hightlight: card.hightlight}
+      }),
+      name: "nom du deck 1",
+      god: this.god,
     }
 
-
-    // this.apiService.searchCards()
+    this.authenticatedApiService.saveDeck(form).subscribe(deckId => {
+      console.log(deckId)
+      const dialogRef = this.dialog.open(DeckCreatedPopinComponent, {
+        width: '400px',
+        height: '300px',
+      });
+      // @ts-ignore
+      // dialogRef.afterClosed().subscribe(_ =>
+      //   this.router.navigateByUrl(this.router.url.substring(0, this.router.url.indexOf("?")))
+      // )
+    })
   }
 
 
@@ -214,19 +165,106 @@ export class DeckbuilderComponent implements OnInit {
   ];
 
 
-  selectCard(card) {
-    this.selectedCards.push(card);
-    this.updateState();
+  // selectCardWrapper(card, event) {
+  //   if (event.target.classList.contains("shaking")) {
+  //     event.target.classList.remove("shaking");
+  //     event.target.addEventListener("animationend", () => {
+  //       this.selectCard(card, event);
+  //     }, false);
+  //   } else {
+  //     this.selectCard(card, event);
+  //   }
+  //
+  // }
+
+
+  param;
+
+
+  // handleEnd  c'est pas une "fonction"
+  // c'est une arrowFunction
+  // parce que sinon quand tu l'écris en fonction, le mot clé "this" dedans fait plus référence au reste du composant angular
+  // mais fait référence au contexte au moment où tu l'as appelé, cad l'image
+  // Bah connard si le this  en utilisant une function,c 'est l'image
+  // pourquoi j'ai besoin de stocker en "param"
+  // heu?
+
+  selectCard(card, event) {
+    this.param = event.target;
+    this.param.addEventListener("animationend", this.handleEnd)
+    // this.param.removeEventListener("animationend",  () => {
+    //   this.selectCard(card, event);
+    // }, false);
+    // this.param.removeEventListener("animationend", () => {}, false);
+    if (this.isDisabled(card)) {
+      this.param.classList.add('shaking')
+    } else {
+      this.selectedCards.push(card);
+      this.updateState();
+    }
   }
 
+  handleEnd = () => {
+    this.param.classList.remove("shaking");
+    this.param.removeEventListener("animationend", this.handleEnd)
+  }
+
+
+  isDisabled(card) {
+    return this.lockedSisterInfinites.includes(card.infiniteName)
+      || this.synthese && this.synthese[card.id]?.count == this.limitationNbrExemplaires[card.rarity]
+      || this.syntheseRarete && this.syntheseRarete[card.rarity] == this.limitationRarete[card.rarity]
+  }
+
+
   removeCard(cardId) {
-    this.selectedCards.splice(this.selectedCards.findIndex(card => card.id === cardId),1);
+    this.selectedCards.splice(this.selectedCards.findIndex(card => card.id === cardId), 1);
     this.updateState();
   }
 
 
   updateState() {
     this.regroupCards()
+    this.computeCostSynthesis()
+  }
+
+
+  // https://stackoverflow.com/questions/44243060/use-enum-as-restricted-key-type
+  // + const {CREA, SORT} = CardType;  Object destructuring pour écriture plus légère
+  syntheseCost: { [key: number]: { [key in CardType]: number } } = {
+    0: {[CREA]: 0, [SORT]: 0},
+    1: {[CREA]: 0, [SORT]: 0},
+    2: {[CREA]: 0, [SORT]: 0},
+    3: {[CREA]: 0, [SORT]: 0},
+    4: {[CREA]: 0, [SORT]: 0},
+    5: {[CREA]: 0, [SORT]: 0},
+    6: {[CREA]: 0, [SORT]: 0},
+    7: {[CREA]: 0, [SORT]: 0}
+  };
+
+  computeCostSynthesis() {
+    this.syntheseCost = {
+      0: {[CREA]: 0, [SORT]: 0},
+      1: {[CREA]: 0, [SORT]: 0},
+      2: {[CREA]: 0, [SORT]: 0},
+      3: {[CREA]: 0, [SORT]: 0},
+      4: {[CREA]: 0, [SORT]: 0},
+      5: {[CREA]: 0, [SORT]: 0},
+      6: {[CREA]: 0, [SORT]: 0},
+      7: {[CREA]: 0, [SORT]: 0}
+    };
+
+    this.selectedCards.reduce((synthese, card) => {
+      if (card.costAP >= 7) {
+        synthese[7][CardType[card.cardType]] = synthese[7][CardType[card.cardType]] + 1
+      } else {
+        synthese[card.costAP][CardType[card.cardType]] = synthese[card.costAP][CardType[card.cardType]] + 1
+      }
+      return synthese;
+    }, this.syntheseCost)
+
+    this.max = Math.max(...Object.values(this.syntheseCost).map(v => v[CREA] + v[SORT]));
+
   }
 
 
@@ -234,10 +272,10 @@ export class DeckbuilderComponent implements OnInit {
     // synthese est un objet vide dans lequel on va ajouter des clés (id de carte) et des valeurs (carte + count)
     this.synthese = {};
     this.lockedSisterInfinites = []
-    this.syntheseRarete = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
+    this.syntheseRarete = {COMMUNE: 0, PEU_COMMUNE: 0, RARE: 0, KROSMIQUE: 0, INFINITE: 0}
     return this.selectedCards.reduce((synthese, card) => {
-      if (card.idInfinite) {
-        this.lockedSisterInfinites.push(card.idInfinite)
+      if (card.infiniteName) {
+        this.lockedSisterInfinites.push(card.infiniteName)
       }
       this.syntheseRarete[card.rarity] = this.syntheseRarete[card.rarity] + 1
       synthese[card.id] = synthese[card.id] ? {...synthese[card.id], count: synthese[card.id].count + 1} : {
@@ -253,20 +291,20 @@ export class DeckbuilderComponent implements OnInit {
   // 3 pour tout le monde sauf les krosmiques / infinites à 1
 
   limitationNbrExemplaires = {
-    0: 3,
-    1: 3,
-    2: 3,
-    3: 1,
-    4: 1
+    COMMUNE: 3,
+    PEU_COMMUNE: 3,
+    RARE: 3,
+    KROSMIQUE: 1,
+    INFINITE: 1
   }
 
   // pour limiter les krosmiques à 7 et infintes à 5
   limitationRarete = {
-    0: -1,
-    1: -1,
-    2: -1,
-    3: 7,
-    4: 5
+    COMMUNE: -1,
+    PEU_COMMUNE: -1,
+    RARE: -1,
+    KROSMIQUE: 7,
+    INFINITE: 5
   }
 
   // pour bloquer les infinites du meme nom
@@ -319,4 +357,5 @@ export class DeckbuilderComponent implements OnInit {
   get pageSize() {
     return this.form.get('pageSize').value;
   }
+
 }

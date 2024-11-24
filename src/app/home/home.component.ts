@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ApiService} from "../api/api.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
-import {EmailVerifiedPopinComponent} from "../email-verified-popin/email-verified-popin.component";
+import {EmailVerifiedPopinComponent} from "../popins/email-verified-popin/email-verified-popin.component";
 
 @Component({
   selector: 'app-home',
@@ -29,7 +29,6 @@ export class HomeComponent implements OnInit {
           width: '400px',
           height: '300px',
         });
-        // @ts-ignore
         dialogRef.afterClosed().subscribe(_ =>
           this.router.navigateByUrl(this.router.url.substring(0, this.router.url.indexOf("?")))
         )

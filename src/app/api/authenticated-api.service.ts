@@ -41,6 +41,13 @@ export class AuthenticatedApiService {
   }
 
 
+  // return deck id
+  saveDeck(form): Observable<number> {
+    let headers = this.getAuthHeaders();
+    return this.http.post<number>(this.PRIVATE_BASE_API + '/deck', form, {headers})
+  }
+
+
   getAllNewsIds(): Observable<any[]> {
     let headers = this.getAuthHeaders();
     return this.http.get<any[]>(this.PRIVATE_BASE_API + `/news`, {headers});

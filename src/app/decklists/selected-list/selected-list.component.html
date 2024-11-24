@@ -1,24 +1,9 @@
-@for (card of updatedSynthese ; track card.key) {
-<div [ngClass]="['krosmique','infinite'].includes(card.rarity)? card.rarity : card.god" class="card appFont2"
-(click)="remove(card.id)"
->
-<img>{{card.name}}   x{{card.count}}
-</div>
+<app-synthesis [syntheseCost]="syntheseCost" [max]="max"></app-synthesis>
+
+@for (card of updatedSynthese; track card.id) {
+  <div [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType" class="card appFont2"
+       (click)="remove(card.id)"
+  >
+    <img [src]="'/assets/public/'+card.miniFilePath">{{ card.name }}   x{{ card.count }}
+  </div>
 }
-
-
-<!--<div class="card infinite appFont2">-->
-<!--  <img>Chuck Maurice-->
-<!--</div>-->
-<!--<div class="card krosmique appFont2">-->
-<!--  <img>Chuck Maurice-->
-<!--</div>-->
-<!--<div class="card neutre appFont2">-->
-<!--  <img>Chuck Maurice-->
-<!--</div>-->
-<!--@for (god of ['iop',  'ecaflip',  'cra',  'eniripsa',  'sacrieur',  'sadida',  'sram',  'xelor',  'enutrof',  'feca']; track god; let idx = $index, e = $even) {-->
-<!--  <div [ngClass]="god" class="card appFont2">-->
-<!--    <img>Chuck Maurice-->
-<!--  </div>-->
-
-<!--}-->

@@ -24,61 +24,62 @@
 
 .card > img {
   width: 50px;
-  height: 100%;
-  background: white;
+  height: 90%;
   margin-right: 10px;
+  margin-left: 1px;
+  border-radius: 3px;
 }
 
-.infinite {
+.INFINITE {
   background: linear-gradient(180deg, rgba(140, 154, 228, 1) 0%, rgba(162, 227, 236, 1) 100%);
 }
 
-.krosmique {
+.KROSMIQUE {
   background: linear-gradient(180deg, rgba(132, 25, 184, 1) 10%, rgba(100, 60, 181, 1) 35%, rgba(83, 64, 180, 1) 65%, rgba(79, 108, 207, 1) 91%);
 }
 
-.neutre {
-  background: #613E39;
+.NEUTRE {
+  background: #b7a17a;
 }
 
-.iop {
+.IOP {
   background: #A3210E;
 }
 
-.ecaflip {
+.ECAFLIP {
   background: #6C1084;
 }
 
-.cra {
+.CRA {
    background: #424617;
 }
 
-.eniripsa {
+.ENIRIPSA {
    background: #B54C3C;
 }
 
-.sacrieur {
+.SACRIEUR {
    background: #302821;
 }
 
-.sadida {
+.SADIDA {
    background: #6B7200;
 }
 
-.sram {
+.SRAM {
    background: #39405A;
 }
 
-.xelor {
+.XELOR {
    background: #263578;
 }
 
-.enutrof {
+.ENUTROF {
    background: #9B7400;
 }
 
-.feca {
-   background: #523B39;
+.FECA {
+   background: #523C39FF;
 }
 
 

@@ -1,0 +1,39 @@
+<div
+  style="width: 29px; height: 140px; margin: 0 2px; display: flex; flex-direction: column;  justify-content:  space-between;">
+  <div style="width: 25px;height: 105px;  display: flex; flex-direction: column-reverse ; background: #292826;
+box-sizing: border-box;  border:  solid 2px;  border-color: rgba(0,0,0, 0.15) rgba(0,0,0, 0.15) rgba(0,0,0, 0.15) rgba(0,0,0, 0.15);">
+    <div style=" font-family: 'geo2', 'arial', sans-serif !important;
+                    font-size: 19px;
+                color: rgba(255,255,255,0.8); text-align: center;
+                background: linear-gradient(0deg, rgba(54,241,244,1) 75%, rgba(8,188,198,1) 100%);
+
+                   /*border-color: rgba(255, 255, 255, 0.62) rgba(174 , 174 , 174 , 0.62) rgba(174 , 174 , 174 , 0.62) rgba(255, 255, 255, 0.62);*/
+
+                  box-sizing: border-box;
+                    -webkit-text-stroke: 0.7px #000000;
+                 border-radius: 3px;
+                   transition: all 1s ease;"
+         [ngStyle]="{border:  value[CREA] ? 'solid 2px' : 'unset',
+          'border-color': value[CREA] ? 'rgba(100, 100, 100, 0.20) rgba(174, 174, 174, 0.30) rgba(174, 174, 174, 0.30) rgba(255, 255, 255, 0.30)' : 'none',
+                   opacity: value[CREA] ? 1:0, 'height.%': computeMinionHeight(value)}">
+      {{ value[CREA] }}
+    </div>
+    <div style="
+                font-family: 'geo2', 'arial', sans-serif !important;
+                    font-size: 19px;
+                color: rgba(255,255,255,0.8); text-align: center;
+                background: linear-gradient(0deg, rgba(245,50,242,1) 50%, rgba(199,11,190,1) 100%);
+                   border:  solid 2px;
+                   /*border-color: rgba(255, 255, 255, 0.62) rgba(174 , 174 , 174 , 0.62) rgba(174 , 174 , 174 , 0.62) rgba(255, 255, 255, 0.62);*/
+                   border-color: rgba(100, 100, 100, 0.20) rgba(174, 174, 174, 0.30) rgba(174, 174, 174, 0.30) rgba(255, 255, 255, 0.30);
+                  box-sizing: border-box;
+                    -webkit-text-stroke: 0.7px #000000;
+                 border-radius: 3px;
+                   transition: all 1s ease;"
+         [ngStyle]="{opacity: value[SORT] ? 1:0, 'height.%': computeSpellHeight(value)}">
+      {{ value[SORT] }}
+    </div>
+  </div>
+  <img style="padding-bottom:5px; width: 25px;height: 25px;"
+       [src]="'/assets/public/pa/'+key+'.png'">
+</div>

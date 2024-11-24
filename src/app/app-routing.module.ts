@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {NewsEditorComponent} from "./news-editor/news-editor.component";
+import {NewsEditorComponent} from "./news/news-editor/news-editor.component";
 import {HomeComponent} from "./home/home.component";
-import {NewsViewComponent} from "./news-view/news-view.component";
-import {NewsManagementComponent} from "./news-management/news-management.component";
+import {NewsViewComponent} from "./news/news-view/news-view.component";
+import {NewsManagementComponent} from "./news/news-management/news-management.component";
 import {UserProfileComponent} from "./user-profile/user-profile.component";
 import {AdminGuard, AuthGuard} from "./auth.guards";
 import {DeckbuilderComponent} from "./decklists/deckbuilder/deckbuilder.component";

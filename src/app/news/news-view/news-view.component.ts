@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges} from '@angular/core';
-import {ApiService} from "../api/api.service";
-import {StoreService} from "../store.service";
+import {ApiService} from "../../api/api.service";
+import {StoreService} from "../../store.service";
 
 @Component({
   selector: 'app-news-view',

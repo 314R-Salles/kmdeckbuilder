@@ -3,7 +3,7 @@ import {BrowserModule, provideClientHydration} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {NewsEditorComponent} from "./news-editor/news-editor.component";
+import {NewsEditorComponent} from "./news/news-editor/news-editor.component";
 import {StreamListComponent} from "./stream-list/stream-list.component";
 import {HeaderComponent} from "./header/header.component";
 import {AngularMaterialModule} from "./shared/angular.material.module";
@@ -13,15 +13,18 @@ import {provideAnimationsAsync} from "@angular/platform-browser/animations/async
 import {QuillModule} from "ngx-quill";
 import {AppInitializerService} from "./app-initializer.service";
 import {HomeComponent} from './home/home.component';
-import {NewsViewComponent} from './news-view/news-view.component';
-import {NewsManagementComponent} from './news-management/news-management.component';
+import {NewsViewComponent} from './news/news-view/news-view.component';
+import {NewsManagementComponent} from './news/news-management/news-management.component';
 import {OAuthModule, provideOAuthClient} from "angular-oauth2-oidc";
-import {EmailVerifiedPopinComponent} from './email-verified-popin/email-verified-popin.component';
+import {EmailVerifiedPopinComponent} from './popins/email-verified-popin/email-verified-popin.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FilterFormComponent} from "./decklists/filter-form/filter-form.component";
 import {DeckbuilderComponent} from './decklists/deckbuilder/deckbuilder.component';
 import {SelectedListComponent} from './decklists/selected-list/selected-list.component';
-import {CommonModule} from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
+import { SynthesisGaugeComponent } from './decklists/synthesis-gauge/synthesis-gauge.component';
+import { SynthesisComponent } from './decklists/synthesis/synthesis.component';
+import {DeckCreatedPopinComponent} from "./popins/deck-created-popin/deck-created-popin.component";
 
 @NgModule({
   declarations: [
@@ -33,10 +36,13 @@ import {CommonModule} from '@angular/common';
     NewsViewComponent,
     NewsManagementComponent,
     EmailVerifiedPopinComponent,
+    DeckCreatedPopinComponent,
     UserProfileComponent,
     FilterFormComponent,
     DeckbuilderComponent,
     SelectedListComponent,
+    SynthesisGaugeComponent,
+    SynthesisComponent,
   ],
   imports: [
     CommonModule,
@@ -55,7 +61,8 @@ import {CommonModule} from '@angular/common';
     ),
     QuillModule.forRoot({
       suppressGlobalRegisterWarning: true
-    })
+    }),
+    NgOptimizedImage
   ],
   providers: [
     provideClientHydration(),
