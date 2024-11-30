@@ -3,7 +3,9 @@
   // largeur 100% du "main-body"
   //height: 30vh;
   width: 100%;
-  border: 0.2em solid black;
+  border-bottom: 0.2em solid white;
+  border-right: 0.2em solid white;
+  border-left: 0.2em solid white;
   box-sizing: border-box;
   overflow-y: auto;
   //overflow-x: auto;
@@ -14,36 +16,70 @@
 
 }
 
-.stream-thumbnail {
-  height: 100%;
-  min-width: 20vw;
-  max-width: 20vw;
-  margin: auto;
-  border: 0.1em solid grey;
+#fill {
+  flex-grow:2;
+  border-bottom: 0.2em solid white;
+ }
+
+ .fill:hover {
+ }
+
+.streams-tab {
+  display:flex;
+  overflow:hidden;
 }
 
+.streams-tab button:hover {
+  background-color: #ddd;
+}
+
+.streams-tab button {
+   background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    border-bottom: 0.2em solid white;
+ }
+
+.streams-tab button.active {
+border-bottom:none;
+border-top: 0.2em solid white;
+  border-right: 0.2em solid white;
+  border-left: 0.2em solid white;
+
+  }
+.stream-thumbnail {
+  height: 100%;
+  max-width: 20vw;
+  margin: 5px auto 15px auto;
+  padding:5px;
+}
+
+.stream-thumbnail:hover {
+  background-color:rgba(255, 255, 255, 0.3);
+  }
 .stream-thumbnail > a > img {
-  width: 100%;
 }
 
 .stream-displayName {
   font-size: 0.8em;
-  position: absolute;
-  left: 5px;
   font-weight: bolder;
+  color:white;
 }
 
 .stream-title {
   font-size: 0.9em;
-  position: absolute;
-  left: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 90%;
+  color:white;
 }
 
 .stream-profilePic {
   width: 40px;
+  height: 40px;
   border-radius: 20px 20px;
 }

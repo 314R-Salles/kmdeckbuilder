@@ -1,56 +1,75 @@
-<mat-tab-group>
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <div style="color: black">Twitch (live)</div>
-    </ng-template>
-    <div class="streams-panel" style="">
-      @for (stream of streams; track stream.username; let idx = $index, e = $even) {
+<div style="">
+  <div
+    style="font-weight:bolder; font-size: 2.5vw; padding-left:20px; padding-top: 20px; margin-bottom: 2vh; color:white;">
+    LIVE & VIDÉOS
+  </div>
 
-    <div class="stream-thumbnail">
-      <a href={{stream.url}} target="_blank" style="color:black"><img src={{stream.thumbnailUrl}}>
-        <mat-grid-list cols="4" rowHeight="20px" [matTooltipPosition]="'above'" matTooltip={{stream.title}}>
-          <mat-grid-tile [colspan]="1" [rowspan]="2"><img class="stream-profilePic" src={{stream.profileImage}}></mat-grid-tile>
-          <mat-grid-tile [colspan]="3" [rowspan]="1"> <div class="stream-title"> {{ stream.title }}</div></mat-grid-tile>
-          <mat-grid-tile [colspan]="3" [rowspan]="1"><div class="stream-displayName">{{ stream.displayName }}</div></mat-grid-tile>
-        </mat-grid-list>
+<div class="streams-tab">
+  <button class="streams-tab-link" id="default" (click)="openStream($event, 'TwitchLive')" style="color:white;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitch" viewBox="0 0 16 16">
+    <path d="M3.857 0 1 2.857v10.286h3.429V16l2.857-2.857H9.57L14.714 8V0zm9.714 7.429-2.285 2.285H9l-2 2v-2H4.429V1.143h9.142z"/>
+    <path d="M11.857 3.143h-1.143V6.57h1.143zm-3.143 0H7.571V6.57h1.143z"/>
+  </svg> (live)</button>
+  <button class="streams-tab-link" (click)="openStream($event, 'TwitchVod')" style="color:white;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitch" viewBox="0 0 16 16">
+    <path d="M3.857 0 1 2.857v10.286h3.429V16l2.857-2.857H9.57L14.714 8V0zm9.714 7.429-2.285 2.285H9l-2 2v-2H4.429V1.143h9.142z"/>
+    <path d="M11.857 3.143h-1.143V6.57h1.143zm-3.143 0H7.571V6.57h1.143z"/>
+  </svg> (vod)</button>
+  <button class="streams-tab-link" (click)="openStream($event, 'YoutubeVod')" style="color:white;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-youtube" viewBox="0 0 16 16">
+    <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"/>
+  </svg> (vod)</button>
+  <div id="fill"></div>
+</div>
+
+    <div class="streams-panel" id="TwitchLive" style="">
+      @for (stream of streams; track stream.username; let idx = $index, e = $even) {
+      <div class="stream-thumbnail" style="color:black; max-width:320px;"><a href={{stream.url}} target="_blank" title="{{stream.title}}" style="text-decoration:none;">
+        <div style="position:relative;">
+          <img src={{stream.thumbnailUrl}}>
+          <div style="position:absolute; font-weight: bold; font-color:white; padding:0px 0.4rem; color:white; background-color:red; top:10px; left:5px; border-radius:3px;">LIVE</div>
+          <div style="position:absolute; font-color:white; padding:0px 0.4rem; color:white; background-color:rgba(0, 0, 0, 0.8); bottom:10px; left:5px;">{{stream.viewerCount}} viewers</div>
+        </div>
+        <div class="stream-data" style="display:flex;">
+          <img class="stream-profilePic" src={{stream.profileImage}}>
+          <div class="stream-data-string" style="overflow:hidden; margin-left:5px;">
+            <div class="stream-displayName">{{ stream.displayName }}</div>
+            <div class="stream-title" style="margin-top:-5px;"> {{ stream.title }}</div>
+          </div>
+
+        </div>
       </a>
-    </div>
+      </div>
+
       }
       @empty {
       <li>Nobody's here for now</li>
       }
     </div>
 
-
-  </mat-tab>
-
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <div style="color: black">Twitch (Vod)</div>
-    </ng-template>
-    <div class="streams-panel" style="">
+    <div class="streams-panel" id="TwitchVod" style="display:flex;">
       @for (vod of vods; track vod.id; let idx = $index, e = $even) {
-      <div class="stream-thumbnail">
-        <a href={{vod.url}} target="_blank" style="color:black"><img src={{vod.thumbnailUrl}}>
-       <mat-grid-list cols="4" rowHeight="20px" [matTooltipPosition]="'above'" matTooltip={{vod.title}}>
-      <mat-grid-tile [colspan]="1" [rowspan]="2"><img class="stream-profilePic" src={{vod.profileImage}}></mat-grid-tile>
-      <mat-grid-tile [colspan]="3" [rowspan]="1"> <div class="stream-title"> {{ vod.title }}</div></mat-grid-tile>
-      <mat-grid-tile [colspan]="3" [rowspan]="1"><div class="stream-displayName">{{ vod.displayName }}</div></mat-grid-tile>
-    </mat-grid-list>
-    </a>
+      <div class="stream-thumbnail" style="color:black; max-width:320px;"><a href={{vod.url}} target="_blank" title="{{vod.title}}" style="text-decoration:none;">
+        <div style="position:relative;">
+            <img src={{vod.thumbnailUrl}}>
+            <div style="position:absolute; font-color:white; padding:0px 0.4rem; color:white; background-color:rgba(0, 0, 0, 0.8); bottom:10px; left:5px;">{{vod.viewCount}} views</div>
+          <div style="position:absolute; font-color:white; padding:0px 0.4rem; color:white; background-color:rgba(0, 0, 0, 0.8); top:10px; right:5px;">{{vod.duration}}</div>
+          <div style="position:absolute; font-color:white; padding:0px 0.4rem; color:white; background-color:rgba(0, 0, 0, 0.8); bottom:10px; right:5px;">{{vod.created_at}}</div>
+        </div>
+        <div class="stream-data" style="display:flex;">
+          <img class="stream-profilePic" src={{vod.profileImage}}>
+          <div class="stream-data-string" style="overflow:hidden; margin-left:5px;">
+            <div class="stream-displayName">{{ vod.displayName }}</div>
+            <div class="stream-title" style="margin-top:-5px;"> {{ vod.title }}</div>
+          </div>
+
+        </div>
+      </a>
       </div>
       }
       @empty {
       <li>No VOD? Something is probably broken somewhere</li>
       }
     </div>
-  </mat-tab>
 
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <div style="color: black">Youtube</div>
-    </ng-template>
-    <div class="streams-panel" style="">
+    <div class="streams-panel" id="YoutubeVod" style="">
       @for (video of videos; track video.url; let idx = $index, e = $even) {
       <div class="stream-thumbnail">
         <a href={{video.url}} target="_blank" style="color:black"><img src={{video.thumbnailUrl}}>
@@ -66,5 +85,4 @@
       <li>Probably forgot to turn this section on</li>
       }
     </div>
-  </mat-tab>
-</mat-tab-group>
+</div>
