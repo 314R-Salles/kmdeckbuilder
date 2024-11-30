@@ -22,7 +22,6 @@ export enum God {
   SACRIEUR,
   FECA,
   SADIDA
-
 }
 
 export enum Language {

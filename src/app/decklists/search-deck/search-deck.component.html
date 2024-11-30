@@ -1,0 +1,35 @@
+<p>Recherche de decks</p>
+
+<div id="sortDiv" >
+  @for (godIndex of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track godIndex) {
+    <img [src]="'/assets/public/gods/GOD_'+God[godIndex]+'.png'" (click)="toggleGod(godIndex)"
+         [ngClass]="{'isSelected' : gods.includes(godIndex)}">
+  }
+  <button (click)="resetFilters()"> clear filters</button>
+</div>
+
+<div class="listDeck">
+  @for (deck of decks; track deck.deckId) {
+    <div [routerLink]="['/decks/view', deck.deckId]" class="deck" [ngClass]="deck.god">
+      <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
+      <div class="deckData">
+        <div class="title">{{ deck.name }}</div>
+        <div class="author">{{ deck.owner }}</div>
+        <div style="display: flex; align-items: flex-end">
+          <div class="costPA">
+            <img class="deckImgPa" src="/assets/public/creatureIcon.png"/>
+            <div class="costPaText">{{ deck.costAP }}</div>
+          </div>
+          <div class="costDust">
+            <img class="deckImgDust" src="assets/public/reward_fragments.png"/>
+            <div class="costDustText">{{ deck.costDust }}</div>
+          </div>
+          <div class="costDust">
+            <img class="deckImgDust" src="assets/public/creatureIcon.png"/>
+            <div class="costDustText">{{ deck.costDust }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

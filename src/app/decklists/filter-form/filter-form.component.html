@@ -1,29 +1,57 @@
 <form [formGroup]="form">
-  <div class="filters">
-    <div class="classe">
-      <!--      sur un écran réduit, l'un sur l'autre comme un 8-->
-      <img [src]="'/assets/public/gods/GOD_'+godList[god]+'.png'"
+  <div id="container">
+    <div id="filter">
+      <img [src]="'/assets/public/gods/GOD_'+God[god]+'.png'" class="godFilter"
            [ngClass]="{'selected-type' : form.get('godCards').value}" (click)="factionChange('dieu')">
-      <img [src]="'/assets/public/gods/GOD_'+godList[7]+'.png'"
+      <img [src]="'/assets/public/gods/GOD_'+God[0]+'.png'" class="godFilter"
            [ngClass]="{'selected-type' : form.get('neutralCards').value}" (click)="factionChange('neutre')">
-    </div>
-    <div class="types">
-      <img [src]="'/assets/public/spellIcon.png'" (click)="typeChange('sort')" class="type"
-           [matTooltip]="tooltipType['fr_spell_'+ (form.get('isSpell').value ? 'hide' : 'show')]"
-           [ngClass]="{'selected-type' : form.get('isSpell').value}">
-      <img [src]="'/assets/public/creatureIcon.png'" (click)="typeChange('crea')" class="type"
-           [matTooltip]="tooltipType['fr_minion_'+ (form.get('isMinion').value ? 'hide' : 'show')]"
-           [ngClass]="{'selected-type' : form.get('isMinion').value}">
-    </div>
-    <div style="display: flex; flex-direction: column">
-      <div>
-        @for (cost of costs; track cost; let idx = $index, e = $even) {
-          <img [src]="'/assets/public/pa/'+cost.label+'.png'" class="ap-cost"
-               [ngClass]="{'selected-type' : form.get('apValue')!.value == cost.value,
+      <div id="typeCard">
+        <img [src]="'/assets/public/spellIcon.png'" (click)="typeChange('sort')" class="typeFilter"
+             [matTooltip]="tooltipType['fr_spell_'+ (form.get('isSpell').value ? 'hide' : 'show')]"
+             [ngClass]="{'selected-type' : form.get('isSpell').value}">
+        <img [src]="'/assets/public/creatureIcon.png'" (click)="typeChange('crea')" class="typeFilter"
+             [matTooltip]="tooltipType['fr_minion_'+ (form.get('isMinion').value ? 'hide' : 'show')]"
+             [ngClass]="{'selected-type' : form.get('isMinion').value}">
+      </div>
+      <div id="allFilters">
+        <div id="PAPM">
+          <div id="PA">
+            @for (cost of costs; track cost; let idx = $index, e = $even) {
+              <img [src]="'/assets/public/pa/'+cost.label+'.png'" class="filter-tile"
+                   [ngClass]="{'selected-type' : form.get('apValue')!.value == cost.value,
               'grey': form.get('apValue')!.value != cost.value}"
-               (click)="apSelect(cost.value)">
-        }</div>
-      <div style="display:flex;">
+                   (click)="setFilterValue('apValue', cost.value)">
+            }
+          </div>
+          <div id="PM">
+            @for (pm of pms; track pm; let idx = $index, e = $even) {
+              <img [src]="'/assets/public/pm/'+pm.label+'.png'" class="filter-tile"
+                   [ngClass]="{'selected-type' : form.get('mpValue')!.value == pm.value,
+              'grey': form.get('mpValue')!.value != pm.value}"
+                   (click)="setFilterValue('mpValue', pm.value)">
+            }
+          </div>
+        </div>
+        <div id="ATHP">
+          <div id="AT">
+            @for (at of atks; track at; let idx = $index, e = $even) {
+              <img [src]="'/assets/public/at/'+at.label+'.png'" class="filter-tile"
+                   [ngClass]="{'selected-type' : form.get('atValue')!.value == at.value,
+              'grey': form.get('atValue')!.value != at.value}"
+                   (click)="setFilterValue('atValue', at.value)">
+            }
+          </div>
+          <div id="HP">
+            @for (hp of hps; track hp; let idx = $index, e = $even) {
+              <img [src]="'/assets/public/life/'+hp.label+'.png'" class="filter-tile"
+                   [ngClass]="{'selected-type' : form.get('hpValue')!.value == hp.value,
+              'grey': form.get('hpValue')!.value != hp.value}"
+                   (click)="setFilterValue('hpValue', hp.value)">
+            }
+          </div>
+        </div>
+      </div>
+      <div id="champs">
         <div class="dropdown">
           <div class="dropbtn">
            <span class="appFont2"
@@ -42,24 +70,12 @@
             }
           </div>
         </div>
-        <div class="search-input" style="margin-left: 50px;">
-          <input class="search-input appFont2"
-                 style="padding-left: 10px; width: 150px; "
-                 type="text" placeholder="Rechercher ..." formControlName="content">
-        </div>
+
+        <input class="search-input appFont2"
+               style="padding-left: 10px; width: 150px; "
+               type="text" placeholder="Rechercher ..." formControlName="content">
+        <input type="text" id="name" name="name" required minlength="4" maxlength="8" size="50" placeholder="Famille"/>
       </div>
-      <!--    https://www.w3schools.com/css/css_dropdowns.asp-->
     </div>
   </div>
-  https://www.w3schools.com/howto/howto_css_notification_button.asp
-<!--  <div *ngIf="true" class="extra-filters">-->
-<!--    &lt;!&ndash;    https://www.w3schools.com/howto/howto_js_collapsible.asp&ndash;&gt;-->
-<!--    <button [ngClass]="{'active': filterSectionActive}"-->
-<!--            (click)="toggleFilterSection()" type="button" class="collapsible"> Filtres optionnels PM / PV Whatever-->
-<!--    </button>-->
-<!--    <div class="content" [ngStyle]="{ 'display' :filterSectionActive ? 'block': 'none'}">-->
-<!--     blbl-->
-<!--    </div>-->
-<!--  </div>-->
-
 </form>

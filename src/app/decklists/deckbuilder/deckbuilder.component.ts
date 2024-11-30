@@ -3,10 +3,9 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {Card} from '../models/card.model';
 import {ApiService} from "../../api/api.service";
 import {debounceTime, distinctUntilChanged} from "rxjs";
-import {CardType} from "../models/enums";
+import {CardType, God} from "../models/enums";
 import {AuthenticatedApiService} from "../../api/authenticated-api.service";
 import {MatDialog} from "@angular/material/dialog";
-import {EmailVerifiedPopinComponent} from "../../popins/email-verified-popin/email-verified-popin.component";
 import {DeckCreatedPopinComponent} from "../../popins/deck-created-popin/deck-created-popin.component";
 
 const {CREA, SORT} = CardType;
@@ -27,14 +26,21 @@ export class DeckbuilderComponent implements OnInit {
   displayedCards: Card[] = [];
   selectedCards: Card[] = [];
   synthese: {
-    [key: string]: { count: number, rarity: number, godType: any, costAP: any, id: any, name: string, hightlight?: number }
+    [key: string]: {
+      count: number,
+      rarity: number,
+      godType: any,
+      costAP: any,
+      id: any,
+      name: string,
+      hightlight?: number
+    }
   }
   syntheseRarete: { COMMUNE: 0, PEU_COMMUNE: 0, RARE: 0, KROSMIQUE: 0, INFINITE: 0 }
-  god = 5; // le dieu est une donnée fixée, pas dans le formulaire (pour swap neutre / dieu faut garder l'info)
+  god; // le dieu est une donnée fixée, pas dans le formulaire (pour swap neutre / dieu faut garder l'info)
   language: number; // language est comme le dieu, fixé par le site, pas un choix du formulaire
   form: FormGroup;
 
-  testCards = []
 
 
   ngOnInit(): void {
@@ -66,6 +72,13 @@ export class DeckbuilderComponent implements OnInit {
     ).subscribe(_ => this.getFilteredCards())
   }
 
+  selectGod(index) {
+    this.god = index;
+    this.selectedCards = []
+    this.updateState()
+    this.getFilteredCards()
+  }
+
   // Envisager de passer de 2 champs minion/spell à un champ TYPE qui vaut Minion/Spell directement
   getFilteredCards() {
     let type: CardType;
@@ -80,21 +93,19 @@ export class DeckbuilderComponent implements OnInit {
     const apMin = this.apValue;
     const apMax = this.apValue === 7 ? null : this.apValue;
 
-    const atMin = this.atValue;
-    const atMax = this.atValue === 7 ? null : this.atValue;
+    // si 1-, min = 0, max = 1
+    const atMin = this.atValue === 1 ? 0 : this.atValue;
+    const atMax = this.atValue === 6 ? null : this.atValue;
 
-    const hpMin = this.hpValue;
-    const hpMax = this.hpValue === 7 ? null : this.hpValue;
+    const hpMin = this.hpValue === 1 ? 0 : this.hpValue;
+    const hpMax = this.hpValue === 6 ? null : this.hpValue;
 
-    const mpMin = this.mpValue;
-    const mpMax = this.mpValue === 5 ? null : this.mpValue;
-
-    // c'est pas la responsabilité du front d'ajouter des % LIKE
-    // const content = (this.content === '' || this.content === undefined) ? null : '%' + this.content + '%';
+    const mpMin = this.mpValue === 1 ? 0 : this.mpValue;
+    const mpMax = this.mpValue === 4 ? null : this.mpValue;
 
     let gods = []
     if (this.godCards) {
-      gods.push('FECA')
+      gods.push(this.god)
     }
     if (this.neutralCards) {
       gods.push('NEUTRE')
@@ -107,10 +118,10 @@ export class DeckbuilderComponent implements OnInit {
       hpLessThan: hpMax,
       apGreaterThan: apMin,
       apLessThan: apMax,
-      mpGreaterThan: null,
-      mpLessThan: null,
-      atGreaterThan: null,
-      atLessThan: null,
+      mpGreaterThan: mpMin,
+      mpLessThan: mpMax,
+      atGreaterThan: atMin,
+      atLessThan: atMax,
       gods: gods,
       rarity: this.rarity != -1 ? this.rarity : null,
       language: null,
@@ -119,7 +130,7 @@ export class DeckbuilderComponent implements OnInit {
       pageNumber: this.pageNumber,
       pageSize: this.pageSize
 
-    }).subscribe(cards => this.testCards = cards)
+    }).subscribe(cards => this.displayedCards = cards)
 
   }
 
@@ -358,4 +369,15 @@ export class DeckbuilderComponent implements OnInit {
     return this.form.get('pageSize').value;
   }
 
+
+  currentTab = 0;
+  tabs = ['godType', 'deckbuilder', 'validation']
+
+
+  nextPrev(n) {
+    this.currentTab += n
+  }
+
+
+  protected readonly God = God;
 }
