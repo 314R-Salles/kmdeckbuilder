@@ -3,10 +3,9 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {Card} from '../models/card.model';
 import {ApiService} from "../../api/api.service";
 import {debounceTime, distinctUntilChanged} from "rxjs";
-import {CardType} from "../models/enums";
+import {CardType, God} from "../models/enums";
 import {AuthenticatedApiService} from "../../api/authenticated-api.service";
 import {MatDialog} from "@angular/material/dialog";
-import {EmailVerifiedPopinComponent} from "../../popins/email-verified-popin/email-verified-popin.component";
 import {DeckCreatedPopinComponent} from "../../popins/deck-created-popin/deck-created-popin.component";
 
 const {CREA, SORT} = CardType;
@@ -27,14 +26,21 @@ export class DeckbuilderComponent implements OnInit {
   displayedCards: Card[] = [];
   selectedCards: Card[] = [];
   synthese: {
-    [key: string]: { count: number, rarity: number, godType: any, costAP: any, id: any, name: string, hightlight?: number }
+    [key: string]: {
+      count: number,
+      rarity: number,
+      godType: any,
+      costAP: any,
+      id: any,
+      name: string,
+      hightlight?: number
+    }
   }
   syntheseRarete: { COMMUNE: 0, PEU_COMMUNE: 0, RARE: 0, KROSMIQUE: 0, INFINITE: 0 }
-  god = 5; // le dieu est une donnée fixée, pas dans le formulaire (pour swap neutre / dieu faut garder l'info)
+  god; // le dieu est une donnée fixée, pas dans le formulaire (pour swap neutre / dieu faut garder l'info)
   language: number; // language est comme le dieu, fixé par le site, pas un choix du formulaire
   form: FormGroup;
 
-  testCards = []
 
 
   ngOnInit(): void {
@@ -66,6 +72,13 @@ export class DeckbuilderComponent implements OnInit {
     ).subscribe(_ => this.getFilteredCards())
   }
 
+  selectGod(index) {
+    this.god = index;
+    this.selectedCards = []
+    this.updateState()
+    this.getFilteredCards()
+  }
+
   // Envisager de passer de 2 champs minion/spell à un champ TYPE qui vaut Minion/Spell directement
   getFilteredCards() {
     let type: CardType;
@@ -80,21 +93,19 @@ export class DeckbuilderComponent implements OnInit {
     const apMin = this.apValue;
     const apMax = this.apValue === 7 ? null : this.apValue;
 
-    const atMin = this.atValue;
-    const atMax = this.atValue === 7 ? null : this.atValue;
+    // si 1-, min = 0, max = 1
+    const atMin = this.atValue === 1 ? 0 : this.atValue;
+    const atMax = this.atValue === 6 ? null : this.atValue;
 
-    const hpMin = this.hpValue;
-    const hpMax = this.hpValue === 7 ? null : this.hpValue;
+    const hpMin = this.hpValue === 1 ? 0 : this.hpValue;
+    const hpMax = this.hpValue === 6 ? null : this.hpValue;
 
-    const mpMin = this.mpValue;
-    const mpMax = this.mpValue === 5 ? null : this.mpValue;
-
-    // c'est pas la responsabilité du front d'ajouter des % LIKE
-    // const content = (this.content === '' || this.content === undefined) ? null : '%' + this.content + '%';
+    const mpMin = this.mpValue === 1 ? 0 : this.mpValue;
+    const mpMax = this.mpValue === 4 ? null : this.mpValue;
 
     let gods = []
     if (this.godCards) {
-      gods.push('FECA')
+      gods.push(this.god)
     }
     if (this.neutralCards) {
       gods.push('NEUTRE')
@@ -107,10 +118,10 @@ export class DeckbuilderComponent implements OnInit {
       hpLessThan: hpMax,
       apGreaterThan: apMin,
       apLessThan: apMax,
-      mpGreaterThan: null,
-      mpLessThan: null,
-      atGreaterThan: null,
-      atLessThan: null,
+      mpGreaterThan: mpMin,
+      mpLessThan: mpMax,
+      atGreaterThan: atMin,
+      atLessThan: atMax,
       gods: gods,
       rarity: this.rarity != -1 ? this.rarity : null,
       language: null,
@@ -119,7 +130,7 @@ export class DeckbuilderComponent implements OnInit {
       pageNumber: this.pageNumber,
       pageSize: this.pageSize
 
-    }).subscribe(cards => this.testCards = cards)
+    }).subscribe(cards => this.displayedCards = cards)
 
   }
 
@@ -358,4 +369,85 @@ export class DeckbuilderComponent implements OnInit {
     return this.form.get('pageSize').value;
   }
 
+
+  currentTab = 0;
+  tabs = ['godType', 'deckbuilder', 'validation']
+
+
+  // this.showTab(currentTab); // Display the current tab
+
+  showTab(n) {
+    // This function will display the specified tab of the form ...
+    // let x = document.getElementsByClassName("tab");
+    // x[n].style.display = "block";
+    // // ... and fix the Previous/Next buttons:
+    // if (n == 0) {
+    //   document.getElementById("prevBtn").style.display = "none";
+    // } else {
+    //   document.getElementById("prevBtn").style.display = "inline";
+    // }
+    // if (n == (x.length - 1)) {
+    //   document.getElementById("nextBtn").innerHTML = "Submit";
+    // } else {
+    //   document.getElementById("nextBtn").innerHTML = "Next";
+    // }
+    // // ... and run a function that displays the correct step indicator:
+    // this.fixStepIndicator(n)
+  }
+
+  nextPrev(n) {
+    this.currentTab += n
+
+
+    // This function will figure out which tab to display
+    // var x = document.getElementsByClassName("tab");
+    // // Exit the function if any field in the current tab is invalid:
+    // if (n == 1 && !this.validateForm()) return false;
+    // // Hide the current tab:
+    // x[this.currentTab].style.display = "none";
+    // // Increase or decrease the current tab by 1:
+    // this.currentTab = this.currentTab + n;
+    // // if you have reached the end of the form... :
+    // if (this.currentTab >= x.length) {
+    //   //...the form gets submitted:
+    //   document.getElementById("regForm").submit();
+    //   return false;
+    // }
+    // // Otherwise, display the correct tab:
+    // this.showTab(this.currentTab);
+  }
+
+  validateForm() {
+    // This function deals with validation of the form fields
+    var x, y, i, valid = true;
+    x = document.getElementsByClassName("tab");
+    y = x[this.currentTab].getElementsByTagName("input");
+    // A loop that checks every input field in the current tab:
+    for (i = 0; i < y.length; i++) {
+      // If a field is empty...
+      if (y[i].value == "") {
+        // add an "invalid" class to the field:
+        y[i].className += " invalid";
+        // and set the current valid status to false:
+        valid = false;
+      }
+    }
+    // If the valid status is true, mark the step as finished and valid:
+    if (valid) {
+      document.getElementsByClassName("step")[this.currentTab].className += " finish";
+    }
+    return valid; // return the valid status
+  }
+
+  fixStepIndicator(n) {
+    // This function removes the "active" class of all steps...
+    var i, x = document.getElementsByClassName("step");
+    for (i = 0; i < x.length; i++) {
+      x[i].className = x[i].className.replace(" active", "");
+    }
+    //... and adds the "active" class to the current step:
+    x[n].className += " active";
+  }
+
+  protected readonly God = God;
 }

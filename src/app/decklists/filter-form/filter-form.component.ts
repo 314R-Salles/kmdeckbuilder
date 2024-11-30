@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {FormGroup} from "@angular/forms";
+import {God} from "../models/enums";
 
 @Component({
   selector: 'app-filter-form',
@@ -56,6 +57,15 @@ export class FilterFormComponent {
     }
   }
 
+
+  setFilterValue(filter:string, value: number) {
+    if (this.form.get(filter)?.value == value) {
+      this.form.get(filter)?.setValue(null);
+    } else {
+      this.form.get(filter)?.setValue(value);
+    }
+  }
+
   raritySelect(rarity: any) {
     this.form.get('rarity').setValue(rarity);
   }
@@ -70,21 +80,35 @@ export class FilterFormComponent {
     {value: 6, label: '6'},
     {value: 7, label: '7+'},
   ];
+  pms = [
+    {value: 1, label: '1-'},
+    {value: 2, label: '2'},
+    {value: 3, label: '3'},
+    {value: 4, label: '4+'},
+  ];
+
+  atks =  [
+    {value: 1, label: '1-'},
+    {value: 2, label: '2'},
+    {value: 3, label: '3'},
+    {value: 4, label: '4'},
+    {value: 5, label: '5'},
+    {value: 6, label: '6+'},
+  ];
 
 
-  godList = {
-    1: 'Cra',
-    2: 'Ecaflip',
-    3: 'Eniripsa',
-    4: 'Enutrof',
-    5: 'Feca',
-    6: 'Iop',
-    7: 'None',
-    8: 'Sacrieur',
-    9: 'Sadida',
-    10: 'Sram',
-    11: 'Xelor'
-  }
+  hps =  [
+    {value: 1, label: '1-'},
+    {value: 2, label: '2'},
+    {value: 3, label: '3'},
+    {value: 4, label: '4'},
+    {value: 5, label: '5'},
+    {value: 6, label: '6+'},
+  ];
+
+
+  God = God;
+
 
   constructor() {
   }

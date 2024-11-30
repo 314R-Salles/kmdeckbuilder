@@ -32,12 +32,12 @@ export class AuthenticatedApiService {
   linkAccount(token: string): Observable<boolean> {
     let headers = this.getAuthHeaders();
     headers = headers.append('twitch', token);
-    return this.http.get<boolean>(this.PRIVATE_BASE_API + '/twitch/linkAccount', {headers});
+    return this.http.get<boolean>(this.PRIVATE_BASE_API + '/user/twitch/linkAccount', {headers});
   }
 
   unlink(): Observable<boolean> {
     let headers = this.getAuthHeaders();
-    return this.http.get<boolean>(this.PRIVATE_BASE_API + '/twitch/remove', {headers});
+    return this.http.get<boolean>(this.PRIVATE_BASE_API + '/user/twitch/remove', {headers});
   }
 
 

@@ -49,24 +49,27 @@
 
 }
 
-.ap-cost {
+.filter-tile {
   width: 50px;
   height: 50px;
   background: #100B37;
   border: solid black 2px;
 }
 
-.ap-cost.selected-type {
+.filter-tile.selected-type {
   background: #088fb2;
   box-shadow: inset 0 0 10px 0px #cbfffc;
   -webkit-box-shadow: inset 0 0 10px 0px #cbfffc;
 }
 
-.ap-cost.grey {
+.filter-tile.grey {
   filter: grayscale(1);
   //filter: sepia(100%) hue-rotate(115deg) brightness(0.85);
   //filter: brightness(0.75);
 }
+
+
+
 
 .selected-type {
   //border: solid #aba758 2px !important;
@@ -117,7 +120,7 @@ mat-button-toggle-group:not(:last-child) {
 
 
 .dropbtn {
-  width: 100%;
+  //width: 100%;
   height: 40px;
   background: linear-gradient(90deg, rgba(1, 25, 117, 0.9) 10%, rgba(2, 18, 83, 0.9) 35%, rgba(1, 14, 69, 0.9) 65%, rgba(14, 26, 46, 0.9) 92%);
 
@@ -130,12 +133,12 @@ mat-button-toggle-group:not(:last-child) {
 .dropbtn span {
   display: flex;
   align-items: center;
-  width: 150px;
+  //width: 150px;
   height: 40px;
 }
 
 .dropdown {
-  width: 150px;
+  //width: 150px;
   position: relative;
   display: inline-block;
 }
@@ -191,7 +194,7 @@ mat-button-toggle-group:not(:last-child) {
 }
 
 .color-krosmique {
-  color: #D46EEA;
+  color: #d46eea;
 }
 
 .color-infinite {
@@ -252,3 +255,165 @@ mat-button-toggle-group:not(:last-child) {
   overflow: hidden;
   background-color: #f1f1f1;
 }
+
+
+//// CSS NONO
+
+
+#container {
+  width: 80vw;
+}
+
+#sortDiv img {
+  width: 50px;
+  padding: 2px;
+}
+
+.isSelected {
+  background-color: green;
+}
+
+#sortDiv {
+  border: 1px solid;
+  padding: 5px;
+}
+
+
+.deck {
+  margin: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.deckData {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
+}
+
+.deckImgGod {
+  width: 120px;
+  padding: 20px;
+}
+
+.deckImgPa {
+  width: 50px;
+}
+
+.deckImgHeart {
+  width: 80px;
+}
+
+.title {
+  font-size: 50px;
+}
+
+.author {
+  font-size: 30px;
+}
+
+.costPaText {
+  position: absolute;
+  top: 7px;
+  left: 2px;
+  font-size: 30px;
+  color: white;
+  text-shadow: 2px 0 #3495eb, -2px 0 #3495eb, 0 2px #3495eb, 0 -2px #3495eb, 1px 1px #3495eb, -1px -1px #3495eb, 1px -1px #3495eb, -1px 1px #3495eb;
+}
+
+.costPA {
+  position: relative;
+}
+
+.like {
+  position: relative;
+}
+
+.likeText {
+  position: absolute;
+  top: 20px;
+  left: 25px;
+  font-size: 30px;
+  color: white;
+  text-shadow: 2px 0 #eba534, -2px 0 #eba534, 0 2px #eba534, 0 -2px #eba534, 1px 1px #eba534, -1px -1px #eba534, 1px -1px #eba534, -1px 1px #eba534;
+}
+
+
+#filter {
+  display: flex;
+}
+
+#filter img {
+  height: 50px;
+}
+
+#filter .godFilter {
+  height: 100px;
+}
+
+.godFilter.selected-type {
+  background: #088fb2;
+  box-shadow: inset 0 0 10px 0px #00fff0;
+  -webkit-box-shadow: inset 0 0 10px 0px #00fff0;
+}
+
+.typeFilter.selected-type {
+  background: #088fb2;
+  box-shadow: inset 0 0 10px 0px #00fff0;
+  -webkit-box-shadow: inset 0 0 10px 0px #00fff0;
+}
+
+
+
+
+#champs select, #champs input {
+  height: 33px;
+}
+
+#typeCard, #champs, #allFilters {
+  display: flex;
+  flex-direction: column;
+}
+
+#PAPM, #ATHP {
+  display: flex;
+  margin: 1px;
+}
+
+#PA {
+  border: solid 1px blue;
+}
+
+#HP {
+  border: solid 1px red;
+}
+
+#AT {
+  border: solid 1px orange;
+}
+
+#PM {
+  border: solid 1px green;
+}
+
+#rareteEtBoutons, #osef {
+  display: flex;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

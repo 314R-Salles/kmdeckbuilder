@@ -25,6 +25,8 @@ import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { SynthesisGaugeComponent } from './decklists/synthesis-gauge/synthesis-gauge.component';
 import { SynthesisComponent } from './decklists/synthesis/synthesis.component';
 import {DeckCreatedPopinComponent} from "./popins/deck-created-popin/deck-created-popin.component";
+import { SearchDeckComponent } from './decklists/search-deck/search-deck.component';
+import { ViewDeckComponent } from './decklists/view-deck/view-deck.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import {DeckCreatedPopinComponent} from "./popins/deck-created-popin/deck-create
     SelectedListComponent,
     SynthesisGaugeComponent,
     SynthesisComponent,
+    SearchDeckComponent,
+    ViewDeckComponent,
   ],
   imports: [
     CommonModule,
