@@ -1,5 +1,9 @@
-<p>view-deck works!</p>
+<div style="color: white">
 
+<img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+data.god+'.png'"/>
+
+<div>{{ data.name }}</div>
+<div>{{ data.owner }}</div>
 
 @if (synthese) {
 
@@ -7,3 +11,4 @@
                      (removeCard)="0"
                      style="width: 20%;"></app-selected-list>
 }
+</div>
