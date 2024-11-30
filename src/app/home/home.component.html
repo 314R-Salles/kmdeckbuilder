@@ -1,4 +1,5 @@
 <div class="main-body">
+  <!--
   <div style="height:15vh; border:2px solid black; margin-bottom: 4vh">
     <div
       style="position: relative; font-size: 2.5vw; font-weight:bolder;padding-left:1em;
@@ -6,32 +7,32 @@
       Toolbox
     </div>
   </div>
-  <div style="border:2px solid black; margin-bottom: 4vh">
+  -->
+  <div style="margin-bottom: 4vh;">
     <div
-      style="position: relative; font-size: 2.5vw; font-weight:bolder;padding-left:1em; width: 9vw; margin-top:-0.7vh; margin-left:10vw;
-      margin-bottom: 2vh ; background:white;">
-      News
+      style="font-weight:bolder; font-size: 2.5vw; padding-left:20px; padding-top: 20px; margin-bottom: 2vh; color:white; display:inline;">
+      ACTUALITÉS
     </div>
+    <!--<div style="display:inline; color:yellow;">TOUT AFFICHER</div>-->
+
     <div style="display: flex; justify-content: center;align-items: center">
-      <button [disabled]="offset == 0" (click)="offset= offset + 1" style="width: 40px;height: 40px"><</button>
       <div style="display: flex; overflow: hidden; width: 100%">
         @for (panel of news; track panel.title; let first = $first; let idx = $index, e = $even) {
+          <div [ngStyle]="{'background-image':'url(' + panel.illustration + ')'}"
+               style="width:15vw; height:8.4vw; display: flex; flex-direction: column; cursor: pointer; position: relative; background-size:cover; box-shadow:inset 0 0 0 5px rgba(255,255,255,.2); filter:brightness(0.9); margin:10px;"
+               [routerLink]="['/news/view', panel.id]" class="newsThumbnail">
 
-          <div [ngStyle]="{'margin-left.%': first ? 10+offset*30 : 10}"
-               style="width:20%;display: flex; flex-direction: column; cursor: pointer"
-               [routerLink]="['/news/view', panel.id]">
-            <img style="margin-top:auto; background: red" [src]="panel.illustration">
+            <div style="position:absolute; width:calc(100% - 10px); bottom:5px; left:5px; height:40px; background:linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);">
+            <pre style=" color:yellow; margin:0 5px 0 5px;">NEWS</pre> <!-- TODO replace by {{ panel.tag }} when added in back -->
             <pre
-              style="height:50px;margin:0; font-weight: bold; color: rebeccapurple">{{ panel.title }} </pre>
+              style="margin:-10px 5px 0 5px; font-weight: bold; color: white; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ panel.title }} </pre>
+            </div>
           </div>
 
         } @empty {
           <li>Coming soon..</li>
         }
       </div>
-      <button [disabled]="offset == -news.length + 3 || news.length <3" (click)="offset= offset - 1"
-              style="width: 40px;height: 40px">>
-      </button>
     </div>
   </div>
   <app-stream-list></app-stream-list>
