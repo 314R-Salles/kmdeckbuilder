@@ -65,8 +65,13 @@
   padding: 2px;
 }
 
+.imgContainer img:hover {
+  cursor:pointer;
+  -webkit-box-shadow: inset 1px 0px 20px 0px white;
+  }
+
 .imgContainer img {
-  width: 150px;
+  width: 75px;
   padding: 2px;
   border: solid 1px #ffffff7a;
   border-radius: 5px;
@@ -74,18 +79,25 @@
 
 .isSelected {
   //background-color: green;
-  -webkit-box-shadow: inset 1px 0px 20px 0px #4fcce1;
+  -webkit-box-shadow: inset 1px 0px 20px 0px #4fcce1!important;
 }
+
+.imgDeckBuilder {
+  margin:auto;
+ }
 
 #sortDiv {
-  width: 500px;
+  width:430px;
   display: flex;
   flex-wrap: wrap;
-  border: 1px solid;
   padding: 5px;
-  background: #162347c7;
 }
 
+
+.godType {
+  width:max-content;
+  margin:auto;
+ }
 
 /* Style the input fields */
 input {
@@ -115,7 +127,7 @@ input.invalid {
   border: none;
   border-radius: 50%;
   display: inline-block;
-  opacity: 0.5;
+  opacity: 1;
 }
 
 /* Mark the active step: */

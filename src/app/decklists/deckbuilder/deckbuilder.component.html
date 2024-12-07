@@ -1,6 +1,25 @@
 <form id="regForm" action="">
 
-  <div class="godType" [ngStyle]="{'display': currentTab ===0 ? 'block' : 'none'}"> Choix du dieu:
+  <!-- Circles which indicates the steps of the form: -->
+  <div style="text-align:center;margin-top:40px;">
+    <div *ngIf="currentTab ===0" style="color:white;">Choix du dieu</div>
+    <div *ngIf="currentTab ===1" style="color:white;">Création du deck</div>
+    <div *ngIf="currentTab ===2" style="color:white;">Détails</div>
+    <span [ngStyle]="{'background': currentTab ===0 ? 'white' : 'grey'}" class="step"></span>
+    <span [ngStyle]="{'background': currentTab ===1 ? 'white' : 'grey'}" class="step"></span>
+    <span [ngStyle]="{'background': currentTab ===2 ? 'white' : 'grey'}" class="step"></span>
+  </div>
+
+  <div style="overflow:auto;">
+    <div style="width:max-content; margin:auto;">
+      <button *ngIf="currentTab > 0" type="button" id="prevBtn" (click)="nextPrev(-1)">Previous</button>
+      <button [disabled]="currentTab == 0 && !god || currentTab == 1 && selectedCards.length != 45" *ngIf="currentTab < 2" type="button" id="nextBtn" (click)="nextPrev(1)">Next</button>
+      <button *ngIf="currentTab == 2" (click)="saveDeck()"> CREATE</button>
+    </div>
+  </div>
+
+  <hr>
+  <div class="godType" [ngStyle]="{'display': currentTab ===0 ? 'block' : 'none'}">
     <div id="sortDiv">
       @for (godIndex of [1, 4, 2, 3, 8, 10, 6, 7, 5, 9]; track godIndex) {
         <div class="imgContainer prevent-select">
@@ -10,22 +29,22 @@
       }
     </div>
 
-    Cloner ou modifier un de vos anciens deck : Liste des 6 derniers deck du joueur pour le dieu selectionné
+    <!-- Cloner ou modifier un de vos anciens deck : Liste des 6 derniers deck du joueur pour le dieu selectionné -->
   </div>
 
 
   <div class="deckbuilder" [ngStyle]="{'display': currentTab === 1 ? 'block' : 'none'}"
        style="width: 100%; height: calc(100% - 80px)">
-    <hr>
+
     <div style="display: flex; justify-content: space-between;">
       <div style="width: 70%;">
         <app-filter-form [god]="god" [form]="form"></app-filter-form>
-        <div style="background: #B8A27B; height: 100%">
+        <div style="background: #B8A27B; width:69vw;">
           <div style="display: flex; flex-wrap: wrap">
             @for (card of displayedCards; track card.id; let idx = $index) {
-              <img [src]="'/assets/public/'+card.cardFilePath" [ngStyle]="{ 'width.vw' : false ? '14': '9'}"
+              <img [src]="'/assets/public/'+card.cardFilePath" [ngStyle]="{ 'width.vw' : false ? '14': '9.8'}"
                    (click)="selectCard(card, $event)"
-                   class="" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
+                   class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
             }</div>
 
         </div>
@@ -43,20 +62,8 @@
 
   </div>
 
-  <div style="overflow:auto;">
-    <div style="float:right;">
-      <button *ngIf="currentTab > 0" type="button" id="prevBtn" (click)="nextPrev(-1)">Previous</button>
-      <button *ngIf="currentTab < 2" type="button" id="nextBtn" (click)="nextPrev(1)">Next</button>
-      <button *ngIf="currentTab == 2" (click)="saveDeck()"> CREATE</button>
-    </div>
-  </div>
 
-  <!-- Circles which indicates the steps of the form: -->
-  <div style="text-align:center;margin-top:40px;">
-    <span [ngStyle]="{'background': currentTab ===0 ? 'red' : 'grey'}" class="step"></span>
-    <span [ngStyle]="{'background': currentTab ===1 ? 'red' : 'grey'}" class="step"></span>
-    <span [ngStyle]="{'background': currentTab ===2 ? 'red' : 'grey'}" class="step"></span>
-  </div>
+
 
 </form>
 

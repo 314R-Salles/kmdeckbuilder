@@ -15,66 +15,66 @@
       </div>
       <div id="allFilters">
         <div id="PAPM">
-          <div id="PA">
+          <div id="PA" style="display:flex; height:max-content;">
             @for (cost of costs; track cost; let idx = $index, e = $even) {
-              <img [src]="'/assets/public/pa/'+cost.label+'.png'" class="filter-tile"
+              <div><img [src]="'/assets/public/pa/'+cost.label+'.png'" class="filter-tile"
                    [ngClass]="{'selected-type' : form.get('apValue')!.value == cost.value,
               'grey': form.get('apValue')!.value != cost.value}"
-                   (click)="setFilterValue('apValue', cost.value)">
+                   (click)="setFilterValue('apValue', cost.value)"></div>
             }
           </div>
-          <div id="PM">
+          <div id="PM" style="display:flex; height:max-content;">
             @for (pm of pms; track pm; let idx = $index, e = $even) {
-              <img [src]="'/assets/public/pm/'+pm.label+'.png'" class="filter-tile"
+            <div><img [src]="'/assets/public/pm/'+pm.label+'.png'" class="filter-tile"
                    [ngClass]="{'selected-type' : form.get('mpValue')!.value == pm.value,
               'grey': form.get('mpValue')!.value != pm.value}"
-                   (click)="setFilterValue('mpValue', pm.value)">
+                   (click)="setFilterValue('mpValue', pm.value)"></div>
             }
           </div>
         </div>
         <div id="ATHP">
-          <div id="AT">
+          <div id="AT" style="display:flex; height:max-content;">
             @for (at of atks; track at; let idx = $index, e = $even) {
-              <img [src]="'/assets/public/at/'+at.label+'.png'" class="filter-tile"
+              <div><img [src]="'/assets/public/at/'+at.label+'.png'" class="filter-tile"
                    [ngClass]="{'selected-type' : form.get('atValue')!.value == at.value,
               'grey': form.get('atValue')!.value != at.value}"
-                   (click)="setFilterValue('atValue', at.value)">
+                   (click)="setFilterValue('atValue', at.value)"></div>
             }
           </div>
-          <div id="HP">
+          <div id="HP" style="display:flex; height:max-content;">
             @for (hp of hps; track hp; let idx = $index, e = $even) {
-              <img [src]="'/assets/public/life/'+hp.label+'.png'" class="filter-tile"
+              <div><img [src]="'/assets/public/life/'+hp.label+'.png'" class="filter-tile"
                    [ngClass]="{'selected-type' : form.get('hpValue')!.value == hp.value,
               'grey': form.get('hpValue')!.value != hp.value}"
-                   (click)="setFilterValue('hpValue', hp.value)">
+                   (click)="setFilterValue('hpValue', hp.value)"></div>
             }
           </div>
         </div>
       </div>
       <div id="champs">
-        <div class="dropdown">
-          <div class="dropbtn">
+        <div class="dropdown" (mouseleave)="dropdownOff()">
+          <div class="dropbtn" (click)="dropdown()">
            <span class="appFont2"
                  [ngClass]="form.get('rarity')!.value.color">
               <span [ngClass]="form.get('rarity')!.value.bgColor"
-                    style="width:20px; height:20px; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+                    style="width:1vw; height:1vw; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
              {{ form.get('rarity')!.value.label }}</span></div>
-          <div class="dropdown-content">
+          <div id="p2" class="dropdown-content">
             @for (rarity of rarities['fr']; track rarity; let idx = $index, e = $even) {
               <span class="appFont2"
                     [ngClass]="rarity.color"
                     (click)="raritySelect(rarity)">
             <span [ngClass]="rarity.bgColor"
-                  style="width:20px; height:20px; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+                  style="width:1vw; height:1vw; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
                 {{ rarity.label }}</span>
             }
           </div>
         </div>
 
         <input class="search-input appFont2"
-               style="padding-left: 10px; width: 150px; "
-               type="text" placeholder="Rechercher ..." formControlName="content">
-        <input type="text" id="name" name="name" required minlength="4" maxlength="8" size="50" placeholder="Famille"/>
+               style="padding-left: 1vw; width: 17vw; "
+               type="text" placeholder="Nom, effet ..." formControlName="content">
+        <input class="search-input appFont2" style="padding-left: 1vw; width: 17vw; " type="text" id="name" name="name" required minlength="4" maxlength="8" size="50" placeholder="Famille ..."/>
       </div>
     </div>
   </div>

@@ -68,7 +68,18 @@ export class FilterFormComponent {
 
   raritySelect(rarity: any) {
     this.form.get('rarity').setValue(rarity);
+    document.getElementById("p2").style.display = "none";
   }
+
+  dropdown() {
+    document.getElementById("p2").style.display = "block";
+
+  }
+
+  dropdownOff() {
+    document.getElementById("p2").style.display = "none";
+    }
+
 
   costs = [
     {value: 0, label: '0'},

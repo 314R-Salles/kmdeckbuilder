@@ -34,7 +34,6 @@
 
 .type {
   background: #100B37;
-  border: solid black 2px;
   width: 50px;
   height: 50px;
 }
@@ -50,10 +49,9 @@
 }
 
 .filter-tile {
-  width: 50px;
-  height: 50px;
-  background: #100B37;
-  border: solid black 2px;
+  width: 3vw;
+  height: 3vw;
+  // background: #100B37;
 }
 
 .filter-tile.selected-type {
@@ -108,8 +106,7 @@ mat-button-toggle-group:not(:last-child) {
 .search-input {
   background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgba(6, 22, 92, 0.9) 65%, rgba(2, 4, 7, 0.9) 92%);
   color: white;
-  width: 160px;
-  height: 40px;
+  width: 18vw;
   font-size: 16px;
 
 
@@ -121,9 +118,9 @@ mat-button-toggle-group:not(:last-child) {
 
 .dropbtn {
   //width: 100%;
-  height: 40px;
-  background: linear-gradient(90deg, rgba(1, 25, 117, 0.9) 10%, rgba(2, 18, 83, 0.9) 35%, rgba(1, 14, 69, 0.9) 65%, rgba(14, 26, 46, 0.9) 92%);
-
+  height: 2vw;
+  background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgba(6, 22, 92, 0.9) 65%, rgba(2, 4, 7, 0.9) 92%);
+  width:18vw;
   color: white;
   font-size: 16px;
   border: none;
@@ -134,13 +131,14 @@ mat-button-toggle-group:not(:last-child) {
   display: flex;
   align-items: center;
   //width: 150px;
-  height: 40px;
+  height: 2vw;
 }
 
 .dropdown {
   //width: 150px;
   position: relative;
   display: inline-block;
+  width:18vw;
 }
 
 .dropdown-content {
@@ -150,7 +148,7 @@ mat-button-toggle-group:not(:last-child) {
   //background: linear-gradient(90deg, rgba(1,25,117,0.9) 10%, rgba(2,18,83,0.9) 35%, rgba(1,14,69,0.9) 65%, rgba(14, 26, 46, 0.9) 92%);
   background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgba(6, 22, 92, 0.9) 65%, rgba(2, 4, 7, 0.9) 92%);
 
-  width: 150px;
+  width: 18vw;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
@@ -158,8 +156,6 @@ mat-button-toggle-group:not(:last-child) {
 .dropdown-content span {
   display: flex;
   align-items: center;
-  width: 150px;
-  height: 40px;
   border: solid #423FAC 1px;
   box-sizing: border-box;
 }
@@ -169,8 +165,12 @@ mat-button-toggle-group:not(:last-child) {
 }
 
 .dropdown:hover .dropdown-content {
-  display: block;
+  // display: block;
 }
+
+.show {
+  display:block;
+  }
 
 .dropdown:hover .dropbtn {
   width: 100%;
@@ -228,6 +228,7 @@ mat-button-toggle-group:not(:last-child) {
 
 .appFont2 {
   font-family: 'geo2', 'arial', sans-serif !important;
+  font-size:1vw;
 }
 
 
@@ -344,12 +345,21 @@ mat-button-toggle-group:not(:last-child) {
 }
 
 #filter img {
-  height: 50px;
+  // height: 50px;
 }
 
 #filter .godFilter {
-  height: 100px;
+  height: 6vw;
+  width:6vw;
 }
+
+#typeCard img {
+  height:3vw;
+  width:3vw;
+ }
+
+ #typeCard {
+   height:6vw;}
 
 .godFilter.selected-type {
   background: #088fb2;
@@ -367,32 +377,42 @@ mat-button-toggle-group:not(:last-child) {
 
 
 #champs select, #champs input {
-  height: 33px;
+  height: 2vw;
 }
 
 #typeCard, #champs, #allFilters {
   display: flex;
   flex-direction: column;
 }
+#allFilters {
+  height:6vw;}
 
 #PAPM, #ATHP {
   display: flex;
-  margin: 1px;
 }
 
-#PA {
+#PA div, #HP div, #AT div, #PM div {
+  height:3vw;
+  width:3vw;
+  }
+
+#PA div {
+  box-sizing: border-box;
   border: solid 1px blue;
 }
 
-#HP {
+#HP div  {
+  box-sizing: border-box;
   border: solid 1px red;
 }
 
-#AT {
+#AT div  {
+  box-sizing: border-box;
   border: solid 1px orange;
 }
 
-#PM {
+#PM div  {
+  box-sizing: border-box;
   border: solid 1px green;
 }
 
