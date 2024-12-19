@@ -27,6 +27,8 @@ import { SynthesisComponent } from './decklists/synthesis/synthesis.component';
 import {DeckCreatedPopinComponent} from "./popins/deck-created-popin/deck-created-popin.component";
 import { SearchDeckComponent } from './decklists/search-deck/search-deck.component';
 import { ViewDeckComponent } from './decklists/view-deck/view-deck.component';
+import { RaritySynthesisComponent } from './decklists/rarity-synthesis/rarity-synthesis.component';
+import { ViewListComponent } from './decklists/view-list/view-list.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { ViewDeckComponent } from './decklists/view-deck/view-deck.component';
     SynthesisComponent,
     SearchDeckComponent,
     ViewDeckComponent,
+    RaritySynthesisComponent,
+    ViewListComponent,
   ],
   imports: [
     CommonModule,

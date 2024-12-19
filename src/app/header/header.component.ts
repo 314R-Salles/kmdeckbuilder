@@ -15,7 +15,6 @@ export class HeaderComponent implements OnInit {
   constructor(private authService: AuthService,
               private authenticatedApiService: AuthenticatedApiService,
               private storeService: StoreService) {
-    this.initUser();
   }
 
   ngOnInit() {
@@ -28,13 +27,5 @@ export class HeaderComponent implements OnInit {
   login() {
     this.authService.login();
   }
-
-
-  initUser() {
-    this.authenticatedApiService.getCurrentUser().subscribe(user => {
-      this.storeService.setUser(user);
-    })
-  }
-
 
 }

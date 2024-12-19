@@ -3,12 +3,11 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {Card} from '../models/card.model';
 import {ApiService} from "../../api/api.service";
 import {debounceTime, distinctUntilChanged} from "rxjs";
-import {CardType, God} from "../models/enums";
+import {CardType, CREA, God, SORT} from "../models/enums";
 import {AuthenticatedApiService} from "../../api/authenticated-api.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeckCreatedPopinComponent} from "../../popins/deck-created-popin/deck-created-popin.component";
 
-const {CREA, SORT} = CardType;
 
 @Component({
   selector: 'app-deckbuilder',

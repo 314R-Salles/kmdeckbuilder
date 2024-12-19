@@ -1,14 +1,18 @@
-<div style="color: white">
-
-<img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+data.god+'.png'"/>
-
-<div>{{ data.name }}</div>
-<div>{{ data.owner }}</div>
-
-@if (synthese) {
-
-  <app-selected-list [synthese]="synthese" [syntheseCost]="syntheseCost" [max]="max"
-                     (removeCard)="0"
-                     style="width: 20%;"></app-selected-list>
-}
+<!--englobé par ngIf data pour pas afficher des morceaux si les données sont pas encore chargées-->
+<div style="color: white;display: flex;flex-direction:column;align-items: center;
+ margin: 0 auto; width :75%; min-width: 800px" *ngIf="data">
+  <!--  entete-->
+  <div style="border: #FFAE00 solid 2px; display: flex; width: 100%">
+    <div style="font-weight: bolder ">{{ data.name }}</div>
+    <div style="margin-left: 20px;">{{ data.owner }}</div>
+  </div>
+  <!--    premiere section-->
+  <div style="display: flex;align-items: flex-end; width: 100%">
+    <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+data.god+'.png'"/>
+    <app-synthesis [syntheseCost]="syntheseCost" [max]="max"></app-synthesis>
+    <app-rarity-synthesis [raritySynthesis]="syntheseRarete"></app-rarity-synthesis>
+  </div>
+  <div style="width: 100%">
+    <app-view-list [cards]="data.cards"></app-view-list>
+  </div>
 </div>

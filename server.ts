@@ -3,24 +3,17 @@ import { CommonEngine } from '@angular/ssr';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
-import bootstrap from './src/main.server';
 import * as fs from 'fs';
 import * as https from "https";
 import {environment} from './src/environments/environment';
+import {AppServerModule} from "./src/app/app.module.server";
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
-  // let browserDistFolder;
-  //   if (environment.production) {
-  //   browserDistFolder = join(process.cwd(), '../browser');
-  // } else {
-  //   browserDistFolder = join(process.cwd(), 'dist/kmpick/browser');
-  // }
   const indexHtml = join(serverDistFolder, 'index.server.html');
-
 
   const commonEngine = new CommonEngine();
 
@@ -41,7 +34,7 @@ export function app(): express.Express {
 
     commonEngine
       .render({
-        bootstrap,
+        bootstrap: AppServerModule,
         documentFilePath: indexHtml,
         url: `${protocol}://${headers.host}${originalUrl}`,
         publicPath: browserDistFolder,

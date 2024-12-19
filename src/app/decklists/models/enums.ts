@@ -5,10 +5,14 @@ export enum CardRarity {
   KROSMIQUE,
   INFINITE
 }
+export const {COMMUNE, PEU_COMMUNE, RARE, KROSMIQUE, INFINITE} = CardRarity;
+
+
 
 export enum CardType {
   CREA, SORT
 }
+export const {CREA, SORT} = CardType;
 
 export enum God {
   NEUTRE,

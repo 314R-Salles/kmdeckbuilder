@@ -1,7 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {CardType} from "../models/enums";
+import {CardType, CREA, SORT} from "../models/enums";
 
-const {CREA, SORT} = CardType
 
 @Component({
   selector: 'app-synthesis-gauge',

@@ -1,4 +1,4 @@
-<form id="regForm" action="">
+<form id="regForm">
 
   <!-- Circles which indicates the steps of the form: -->
   <div style="text-align:center;margin-top:40px;">
@@ -19,7 +19,7 @@
   </div>
 
   <hr>
-  <div class="godType" [ngStyle]="{'display': currentTab ===0 ? 'block' : 'none'}">
+  <div class="godType" *ngIf="currentTab === 0">
     <div id="sortDiv">
       @for (godIndex of [1, 4, 2, 3, 8, 10, 6, 7, 5, 9]; track godIndex) {
         <div class="imgContainer prevent-select">
@@ -33,10 +33,10 @@
   </div>
 
 
-  <div class="deckbuilder" [ngStyle]="{'display': currentTab === 1 ? 'block' : 'none'}"
-       style="width: 100%; height: calc(100% - 80px)">
+  <div class="deckbuilder" *ngIf="currentTab === 1"
+       style="width: 100%; height: calc(100% - 45px)">
 
-    <div style="display: flex; justify-content: space-between;">
+    <div style="display: flex; justify-content: space-around">
       <div style="width: 70%;">
         <app-filter-form [god]="god" [form]="form"></app-filter-form>
         <div style="background: #B8A27B; width:69vw;">
@@ -56,7 +56,7 @@
   </div>
 
 
-  <div class="validation" [ngStyle]="{'display': currentTab ===2 ? 'block' : 'none'}">Confirmation :
+  <div class="validation" *ngIf="currentTab === 2">Confirmation :
 
     Input nom / bouton pour terminer / prévisu "à quoi ça ressemble en recherche" avec les hightlight
 

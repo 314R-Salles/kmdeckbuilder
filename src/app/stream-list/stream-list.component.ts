@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {ApiService} from "../api/api.service";
 import {Stream} from "../models/stream";
 import {Vod} from "../models/vod";
 import {YtVideo} from "../models/ytVideo";
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-stream-list',
@@ -15,16 +16,19 @@ export class StreamListComponent implements OnInit {
   vods: Vod[];
   videos: YtVideo[];
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService,
+              @Inject(PLATFORM_ID) private platformId: any) {
   }
 
   ngOnInit(): void {
-    this.apiService.getStreams().subscribe(streams => {
-      this.streams = this.updateStreamUrls(streams)
-      this.apiService.getVods().subscribe(vods => this.vods = this.updateVodUrls(vods))
-    })
-    document.getElementById("default").click();
-    // this.apiService.getLastVideos().subscribe(videos => this.videos = videos)
+    if (isPlatformBrowser(this.platformId)) {
+      this.apiService.getStreams().subscribe(streams => {
+        this.streams = this.updateStreamUrls(streams)
+        this.apiService.getVods().subscribe(vods => this.vods = this.updateVodUrls(vods))
+      })
+      document.getElementById("default").click();
+      // this.apiService.getLastVideos().subscribe(videos => this.videos = videos)
+    }
   }
 
   // Pas besoin de replace pour les images de profil / de deconnexion.
@@ -47,7 +51,7 @@ export class StreamListComponent implements OnInit {
     return vods.map(vod => {
         return {
           ...vod,
-          created_at:this.makeDate(vod.created_at),
+          created_at: this.makeDate(vod.created_at),
           thumbnailUrl:
             vod.thumbnailUrl
               .replace('%{width}', '320')
@@ -59,33 +63,38 @@ export class StreamListComponent implements OnInit {
 
   openStream(evt, streamName): void {
     // Declare all variables
-      var i, tabcontent, tablinks;
+    var i, tabcontent, tablinks;
 
-      // Get all elements with class="tabcontent" and hide them
-      tabcontent = document.getElementsByClassName("streams-panel");
-      for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-      }
-
-      // Get all elements with class="tablinks" and remove the class "active"
-      tablinks = document.getElementsByClassName("streams-tab-link");
-      for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-      }
-
-      // Show the current tab, and add an "active" class to the button that opened the tab
-      document.getElementById(streamName).style.display = "flex";
-      evt.currentTarget.className += " active";
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("streams-panel");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
     }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("streams-tab-link");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(streamName).style.display = "flex";
+    evt.currentTarget.className += " active";
+  }
 
   makeDate(date): string {
-      var now = new Date();
-      var posted = new Date(date);
+    var now = new Date();
+    var posted = new Date(date);
 
-      var distance = now.getTime() - posted.getTime();
-      if (distance < 60*60*1000) { return Math.round(distance/(60*1000)) + " minutes ago"}
-      else if (distance < 24*60*60*1000) { return Math.round(distance/(60*60*1000)) + " hours ago"}
-      else if (distance < 30*24*60*60*1000) { return Math.round(distance/(24*60*60*1000)) + " days ago"}
-      else { return Math.round(distance/(30*24*60*60*1000)) + " months ago"}
+    var distance = now.getTime() - posted.getTime();
+    if (distance < 60 * 60 * 1000) {
+      return Math.round(distance / (60 * 1000)) + " minutes ago"
+    } else if (distance < 24 * 60 * 60 * 1000) {
+      return Math.round(distance / (60 * 60 * 1000)) + " hours ago"
+    } else if (distance < 30 * 24 * 60 * 60 * 1000) {
+      return Math.round(distance / (24 * 60 * 60 * 1000)) + " days ago"
+    } else {
+      return Math.round(distance / (30 * 24 * 60 * 60 * 1000)) + " months ago"
     }
+  }
 }

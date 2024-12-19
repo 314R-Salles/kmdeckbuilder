@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ApiService} from "../../api/api.service";
-import {CardType} from "../models/enums";
+import {CardRarity, CardType, COMMUNE, CREA, INFINITE, KROSMIQUE, PEU_COMMUNE, RARE, SORT} from "../models/enums";
 
-const {CREA, SORT} = CardType;
 
 @Component({
   selector: 'app-view-deck',
@@ -32,10 +31,10 @@ export class ViewDeckComponent implements OnInit {
 
   updateState() {
     this.synthese = {};
-    this.syntheseRarete = {COMMUNE: 0, PEU_COMMUNE: 0, RARE: 0, KROSMIQUE: 0, INFINITE: 0}
+    this.syntheseRarete = {[COMMUNE]: 0, [PEU_COMMUNE]: 0, [RARE]: 0, [KROSMIQUE]: 0, [INFINITE]: 0}
     this.data.cards.reduce((synthese, card) => {
       synthese[card.id] = {...card};
-      this.syntheseRarete[card.rarity] = this.syntheseRarete[card.rarity] + card.count
+      this.syntheseRarete[CardRarity[card.rarity]] = this.syntheseRarete[CardRarity[card.rarity]] + card.count
       return synthese;
     }, this.synthese)
     this.syntheseCost = {
@@ -59,8 +58,6 @@ export class ViewDeckComponent implements OnInit {
     }, this.syntheseCost)
 
     this.max = Math.max(...Object.values(this.syntheseCost).map(v => v[CREA] + v[SORT]));
-
-
   }
 
 }
