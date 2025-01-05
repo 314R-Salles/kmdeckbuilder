@@ -14,7 +14,13 @@ export class FilterFormComponent {
 
   filterSectionActive = false
 
+  // Changer des fitlres en entete doit remettre la pagination à 0
+  resetPage() {
+    this.form.get('pageNumber').setValue(0);
+  }
+
   factionChange(type: string) {
+    this.resetPage()
     switch (type) {
       case 'dieu':
         this.form.get('godCards').setValue(!this.form.get('godCards').value);
@@ -32,6 +38,7 @@ export class FilterFormComponent {
   }
 
   typeChange(type: string) {
+    this.resetPage()
     switch (type) {
       case 'sort':
         this.form.get('isSpell').setValue(!this.form.get('isSpell').value);
@@ -49,16 +56,8 @@ export class FilterFormComponent {
 
   }
 
-  apSelect(ap: number) {
-    if (this.form.get('apValue')?.value == ap) {
-      this.form.get('apValue')?.setValue(null);
-    } else {
-      this.form.get('apValue')?.setValue(ap);
-    }
-  }
-
-
-  setFilterValue(filter:string, value: number) {
+  setFilterValue(filter: string, value: number) {
+    this.resetPage()
     if (this.form.get(filter)?.value == value) {
       this.form.get(filter)?.setValue(null);
     } else {
@@ -67,19 +66,18 @@ export class FilterFormComponent {
   }
 
   raritySelect(rarity: any) {
+    this.resetPage()
     this.form.get('rarity').setValue(rarity);
     document.getElementById("p2").style.display = "none";
   }
 
   dropdown() {
     document.getElementById("p2").style.display = "block";
-
   }
 
   dropdownOff() {
     document.getElementById("p2").style.display = "none";
-    }
-
+  }
 
   costs = [
     {value: 0, label: '0'},
@@ -98,7 +96,7 @@ export class FilterFormComponent {
     {value: 4, label: '4+'},
   ];
 
-  atks =  [
+  atks = [
     {value: 1, label: '1-'},
     {value: 2, label: '2'},
     {value: 3, label: '3'},
@@ -108,7 +106,7 @@ export class FilterFormComponent {
   ];
 
 
-  hps =  [
+  hps = [
     {value: 1, label: '1-'},
     {value: 2, label: '2'},
     {value: 3, label: '3'},
@@ -116,7 +114,6 @@ export class FilterFormComponent {
     {value: 5, label: '5'},
     {value: 6, label: '6+'},
   ];
-
 
   God = God;
 
@@ -135,24 +132,6 @@ export class FilterFormComponent {
   get apValue() {
     return this.form.get('apValue').value;
   }
-
-  // resetGod() {
-  //   if (this.rarity === 4) {
-  //     this.god = -1;
-  //   }
-  // }
-  //
-  // resetRarity() {
-  //   if (this.rarity === 4) {
-  //     this.rarity = -1;
-  //   }
-  // }
-
-
-  toggleFilterSection() {
-    this.filterSectionActive = !this.filterSectionActive
-  }
-
 
   /// zzz?
   tooltipType = {
@@ -190,12 +169,12 @@ export class FilterFormComponent {
 
   rarities = {
     fr: [
-      {key: '-1' , label: 'Toutes les raretés', color: 'color-all', bgColor: 'bg-color-all'},
-      {key: '0' , label: 'Commune', color: 'color-common', bgColor: 'bg-color-common'},
-      {key: '1' , label: 'Peu Commune', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
-      {key: '2' , label: 'Rare', color: 'color-rare', bgColor: 'bg-color-rare'},
-      {key: '3' , label: 'Krosmique', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
-      {key: '4' , label: 'Infinite', color: 'color-infinite', bgColor: 'bg-color-infinite'},
+      {key: '-1', label: 'Toutes les raretés', color: 'color-all', bgColor: 'bg-color-all'},
+      {key: '0', label: 'Commune', color: 'color-common', bgColor: 'bg-color-common'},
+      {key: '1', label: 'Peu Commune', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
+      {key: '2', label: 'Rare', color: 'color-rare', bgColor: 'bg-color-rare'},
+      {key: '3', label: 'Krosmique', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
+      {key: '4', label: 'Infinite', color: 'color-infinite', bgColor: 'bg-color-infinite'},
     ],
     en: {
       '0': {label: 'Common', color: 'color-common', bgColor: 'bg-color-common'},

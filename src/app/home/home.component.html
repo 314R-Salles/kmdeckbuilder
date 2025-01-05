@@ -1,4 +1,4 @@
-<div class="main-body">
+<!--<div class="main-body">-->
   <!--
   <div style="height:15vh; border:2px solid black; margin-bottom: 4vh">
     <div
@@ -8,14 +8,27 @@
     </div>
   </div>
   -->
+
+<div style="display: flex; width: 100%; color: white;
+  justify-content: space-evenly">
+  <div style="
+  margin-top: 3vh;
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+">
   <div style="margin-bottom: 4vh;">
     <div
-      style="font-weight:bolder; font-size: 2.5vw; padding-left:20px; padding-top: 20px; margin-bottom: 2vh; color:white; display:inline;">
-      ACTUALITÉS
+      style="font-weight:bolder; font-size: 30px; padding: 20px; margin-bottom: 2vh; display:inline;">
+      Actualités
     </div>
-    <!--<div style="display:inline; color:yellow;">TOUT AFFICHER</div>-->
 
-    <div style="display: flex; justify-content: center;align-items: center">
+<!--    <div-->
+<!--      style="font-weight:bolder; font-size: 2.5vw; padding-left:20px; padding-top: 20px; margin-bottom: 2vh; color:white; display:inline;">-->
+<!--      ACTUALITÉS-->
+<!--    </div>-->
+    <!--<div style="display:inline; color:yellow;">TOUT AFFICHER</div>-->
+    <div style="display: flex; justify-content: center;align-items: center; border: #FFAE00 solid 2px; box-sizing: border-box; padding: 20px;">
       <div style="display: flex; overflow: hidden; width: 100%">
         @for (panel of news; track panel.title; let first = $first; let idx = $index, e = $even) {
           <div [ngStyle]="{'background-image':'url(' + panel.illustration + ')'}"
@@ -36,4 +49,5 @@
     </div>
   </div>
   <app-stream-list></app-stream-list>
+</div>
 </div>

@@ -50,9 +50,9 @@ export class ViewDeckComponent implements OnInit {
 
     this.data.cards.reduce((synthese, card) => {
       if (card.costAP >= 7) {
-        synthese[7][CardType[card.cardType]] = synthese[7][CardType[card.cardType]] + 1
+        synthese[7][CardType[card.cardType]] = synthese[7][CardType[card.cardType]] + card.count
       } else {
-        synthese[card.costAP][CardType[card.cardType]] = synthese[card.costAP][CardType[card.cardType]] + 1
+        synthese[card.costAP][CardType[card.cardType]] = synthese[card.costAP][CardType[card.cardType]] + card.count
       }
       return synthese;
     }, this.syntheseCost)

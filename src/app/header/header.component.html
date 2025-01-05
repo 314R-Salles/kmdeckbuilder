@@ -2,7 +2,9 @@
   <span class="logo-button" routerLink="home">KM TOOLS</span>
   <div style="  position: fixed; left: 250px; display: flex; justify-content: flex-start">
     <span class="home-button" routerLink="home" routerLinkActive="active">Home</span>
+    @if (user?.username) {
     <span class="deckbuilder-button" routerLink="decks/create" routerLinkActive="active">Deckbuilder</span>
+    }
     <span class="library-button" routerLink="decks/browse" routerLinkActive="active">Parcourir</span>
 
     <span *ngIf="isAdmin" class="dropdown-button"
@@ -19,7 +21,7 @@
     </mat-menu>
   </div>
 
-  <div style="position: fixed; right: 20px; ">
+  <div style="position: fixed; right: 20px;">
     @if (!user) {
       <div (click)="login()">LOGIN</div>
     } @else if (user.username) {

@@ -21,8 +21,19 @@ export class DeckbuilderComponent implements OnInit {
               private dialog: MatDialog) {
   }
 
+
+  protected readonly God = God;
+
   max
   displayedCards: Card[] = [];
+  searchResults: {
+    empty: boolean,
+    first: boolean
+    last: boolean,
+    totalElements: number,
+    totalPages: number
+  }
+
   selectedCards: Card[] = [];
   synthese: {
     [key: string]: {
@@ -39,7 +50,6 @@ export class DeckbuilderComponent implements OnInit {
   god; // le dieu est une donnée fixée, pas dans le formulaire (pour swap neutre / dieu faut garder l'info)
   language: number; // language est comme le dieu, fixé par le site, pas un choix du formulaire
   form: FormGroup;
-
 
 
   ngOnInit(): void {
@@ -111,6 +121,7 @@ export class DeckbuilderComponent implements OnInit {
     }
 
 
+    this.displayedCards = []
     this.apiService.getCards({
       type: type,
       hpGreaterThan: hpMin,
@@ -129,8 +140,16 @@ export class DeckbuilderComponent implements OnInit {
       pageNumber: this.pageNumber,
       pageSize: this.pageSize
 
-    }).subscribe(cards => this.displayedCards = cards)
-
+    }).subscribe(searchResults => {
+      this.displayedCards = searchResults.content
+      this.searchResults = {
+        empty: searchResults.empty,
+        first: searchResults.first,
+        last: searchResults.last,
+        totalElements: searchResults.totalElements,
+        totalPages: searchResults.totalPages
+      }
+    })
   }
 
 
@@ -156,16 +175,14 @@ export class DeckbuilderComponent implements OnInit {
     })
   }
 
-
-  pageUp() { // ce if doit etre dans le html pour disable le champ.
-    if (this.displayedCards.length > this.pageSize * (this.pageNumber + 1))
-      this.form.get('pageNumber').setValue(this.pageNumber + 1);
-    // this.getFilteredCards(); // devrait se rafraichir via le subscribe valueChange
+  pageUp() {
+    if (!this.searchResults.last)
+      this.form.get('pageNumber').setValue(+this.pageNumber + 1);
   }
 
   pageDown() {
-    if (this.pageNumber > 0) {
-      this.form.get('pageNumber').setValue(this.pageNumber - 1);
+    if (!this.searchResults.first) {
+      this.form.get('pageNumber').setValue(+this.pageNumber - 1);
     }
   }
 
@@ -370,13 +387,9 @@ export class DeckbuilderComponent implements OnInit {
 
 
   currentTab = 0;
-  tabs = ['godType', 'deckbuilder', 'validation']
-
 
   nextPrev(n) {
     this.currentTab += n
   }
 
-
-  protected readonly God = God;
 }

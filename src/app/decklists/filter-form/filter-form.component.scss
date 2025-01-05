@@ -77,17 +77,6 @@
 
 }
 
-
-mat-button-toggle-group {
-  background-color: #4CAF50;
-  color: white;
-  cursor: pointer;
-}
-
-mat-button-toggle-group:not(:last-child) {
-  border-right: none; /* Prevent double borders */
-}
-
 .selector-row {
   display: flex;
   align-items: center;

@@ -30,56 +30,10 @@
   border-radius: 3px;
 }
 
-.cardColumn{
-  width: 20%;
+.container {
+  display: flex;
+  justify-content: space-around
 }
-
-
-@media (max-width: 1250px) {
-
-  .cardColumn{
-    width: 40%;
-  }
-
-
-  //.card {
-  //  border: rgba(255, 255, 255, 0.62) solid 1px;
-  //  border-radius: 5px;
-  //  box-sizing: border-box;
-  //  //display: flex;
-  //  //align-items: center
-  //}
-  //
-  //.card {
-  //  height: 40px;
-  //  width: 300px;
-  //  //-webkit-box-shadow: inset 0px 0px 0px 10px rgba(255, 255, 255, 0.62);
-  //  //-moz-box-shadow: inset 0px 0px 0px 10px rgba(255, 255, 255, 0.62);
-  //  box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.62);
-  //  display: flex;
-  //  align-items: center;
-  //
-  //  color: white;
-  //  font-size: 1.6rem;
-  //  font-weight: 400;
-  //  -webkit-text-stroke: 0.7px #000000;
-  //}
-  //
-  //.card > img {
-  //  width: 50px;
-  //  height: 90%;
-  //  margin-right: 10px;
-  //  margin-left: 1px;
-  //  border-radius: 3px;
-  //}
-
-
-}
-
-
-
-
-
 
 .INFINITE {
   background: linear-gradient(180deg, rgba(140, 154, 228, 1) 0%, rgba(162, 227, 236, 1) 100%);

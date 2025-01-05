@@ -10,6 +10,13 @@ import {God} from "../models/enums";
 export class SearchDeckComponent implements OnInit {
 
   gods = []
+  searchResults: {
+    empty: boolean,
+    first: boolean
+    last: boolean,
+    totalElements: number,
+    totalPages: number
+  }
   decks = []
   God = God
 
@@ -36,7 +43,16 @@ export class SearchDeckComponent implements OnInit {
   }
 
   search() {
-    this.apiService.getDecks({gods: this.gods.length ? this.gods : null}).subscribe(r => this.decks = r)
+    this.apiService.getDecks({gods: this.gods.length ? this.gods : null}).subscribe(searchResults => {
+      this.decks = searchResults.content
+      this.searchResults = {
+        empty: searchResults.empty,
+        first: searchResults.first,
+        last: searchResults.last,
+        totalElements: searchResults.totalElements,
+        totalPages: searchResults.totalPages
+      }
+    })
   }
 
 }

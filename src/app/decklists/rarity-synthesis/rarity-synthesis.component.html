@@ -2,9 +2,9 @@
   @for (rarity of rarities['fr']; track rarity; ) {
     <span class="appFont2" [ngClass]="rarity.color"
           style="display: flex;align-items: center; justify-content: space-between">
-       <span style="display: flex">
+       <span style="display: flex; align-items: baseline">
          <span [ngClass]="rarity.bgColor"
-               style="display: block; width:1vw; height:1vw; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+               style="display: block; width:14px; height:14px; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
     <span>{{ rarity.label }}</span>
        </span>
     <span>{{ raritySynthesis[rarity.key] }}</span>

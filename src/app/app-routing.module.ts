@@ -18,7 +18,9 @@ const routes: Routes = [
   {path: 'news/view/:id', component: NewsViewComponent},
   {path: 'news/create', component: NewsEditorComponent, canActivate: [AdminGuard]},
   {path: 'news/edit', component: NewsManagementComponent, canActivate: [AdminGuard]},
-  {path: 'decks/create', component: DeckbuilderComponent},
+    // AuthGuard foireux parce que "pas co" au moment de check
+  // donc refresh sur deck/create => redirige sur /home
+  {path: 'decks/create', component: DeckbuilderComponent, canActivate: [AuthGuard]},
   {path: 'decks/browse', component: SearchDeckComponent},
   {path: 'decks/view/:id', component: ViewDeckComponent},
 ];

@@ -139,3 +139,19 @@ input.invalid {
 .step.finish {
   background-color: #04AA6D;
 }
+
+.formAndCards {
+  width: 100%;
+}
+
+@media (max-width: 1399px) {
+  //.formAndCards {
+  //  display: none;
+  //}
+}
+
+@media (min-width: 1400px) {
+  .formAndCards {
+    width: 70%;
+  }
+}

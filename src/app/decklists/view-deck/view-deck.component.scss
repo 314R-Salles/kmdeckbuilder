@@ -2,3 +2,59 @@
   width: 120px;
   padding: 20px;
 }
+
+.viewDeckContainer{
+  margin: 0 auto;
+  width :75%;
+}
+
+.columnContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+
+@media (max-width: 1700px) {
+  .viewDeckContainer {
+    margin: 0 auto;
+    width :100%;
+  }
+}
+
+.container{
+  width: 100%;
+  display: flex;
+}
+
+.shortScreenContainer {
+  flex-direction: column;
+}
+.largeScreenContainer {
+  flex-direction: row;
+}
+
+@media (max-width: 1399px) {
+  .largeScreenContainer {
+    display: none;
+  }
+  .viewDeckContainer {
+    min-width: unset
+  }
+}
+
+@media (min-width: 1400px) {
+  .shortScreenContainer {
+    display: none;
+  }
+
+  .viewDeckContainer {
+    min-width: 1400px
+  }
+}
+
+
+@media only screen and (min-width: 1824px) {
+  .cardColumn {
+    width: 25%;
+  }
+}

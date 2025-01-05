@@ -1,18 +1,46 @@
 <!--englobé par ngIf data pour pas afficher des morceaux si les données sont pas encore chargées-->
-<div style="color: white;display: flex;flex-direction:column;align-items: center;
- margin: 0 auto; width :75%; min-width: 800px" *ngIf="data">
+<div class="viewDeckContainer" style="border: #FFAE00 solid 2px;box-sizing: border-box;
+     color: white;display: flex;flex-direction:column;align-items: center;"
+     *ngIf="data">
   <!--  entete-->
-  <div style="border: #FFAE00 solid 2px; display: flex; width: 100%">
+  <div style="border: #FFAE00 solid 2px;box-sizing: border-box; display: flex; width: 100%">
     <div style="font-weight: bolder ">{{ data.name }}</div>
     <div style="margin-left: 20px;">{{ data.owner }}</div>
   </div>
-  <!--    premiere section-->
-  <div style="display: flex;align-items: flex-end; width: 100%">
-    <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+data.god+'.png'"/>
-    <app-synthesis [syntheseCost]="syntheseCost" [max]="max"></app-synthesis>
-    <app-rarity-synthesis [raritySynthesis]="syntheseRarete"></app-rarity-synthesis>
+
+  <div class="container shortScreenContainer">
+    <div *ngTemplateOutlet="STATS"></div>
+    <div *ngTemplateOutlet="CARDS"></div>
+    <div *ngTemplateOutlet="DESC"></div>
   </div>
-  <div style="width: 100%">
-    <app-view-list [cards]="data.cards"></app-view-list>
+
+  <div class="container largeScreenContainer">
+    <div class="columnContainer">
+      <div *ngTemplateOutlet="STATS"></div>
+      <div *ngTemplateOutlet="DESC"></div>
+    </div>
+    <div *ngTemplateOutlet="CARDS"></div>
   </div>
+
+
+  <ng-template #STATS>
+    <div style="border: #FFAE00 solid 2px; box-sizing: border-box; display: flex; width: 100%;
+     height: 200px; padding: 10px; align-items: center">
+      <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+data.god+'.png'"/>
+      <app-synthesis [syntheseCost]="syntheseCost" [max]="max"></app-synthesis>
+      <app-rarity-synthesis [raritySynthesis]="syntheseRarete"></app-rarity-synthesis>
+    </div>
+  </ng-template>
+  <ng-template #DESC>
+    <div style="border: #FFAE00 solid 2px;box-sizing: border-box; display: flex; width: 100%; align-items: center">
+      TODO
+    </div>
+  </ng-template>
+
+  <ng-template #CARDS>
+    <div style="border: #FFAE00 solid 2px;box-sizing: border-box; display: flex; width: 100%; align-items: center">
+      <app-view-list style="width: 100%"
+                     [cards]="data.cards"></app-view-list>
+    </div>
+  </ng-template>
 </div>
