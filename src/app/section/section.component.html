@@ -1,0 +1,19 @@
+<div style="display: flex; width: 100%; color: white;  justify-content: space-evenly;"  [ngClass]="{forcedSize: forceSize}">
+  <div style="margin-top: 10px; display: flex;  flex-direction: column;" class="section"
+       [ngClass]="{forcedSize: forceSize}">
+    <div style="font-weight:bolder; font-size: 30px; padding: 20px; display:inline;" *ngIf="title">
+      {{ title }} <span style="font-size: 22px">{{ titleSuffix }}</span>
+    </div>
+
+    <div [ngClass]="{forcedSize: forceSize}"
+      style="border: #FFAE00 solid 2px; border-radius: 10px; box-sizing: border-box; padding: 20px; background: #000816">
+      @if (requiresLogin && !isLoggedIn) {
+        Cette fonctionnalité est réservée aux utilisateurs connectés.
+        <div style="background: #3e9ef6;" (click)="login()">Se connecter</div>
+      } @else {
+        <ng-content/>
+      }
+    </div>
+  </div>
+</div>
+

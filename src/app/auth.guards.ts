@@ -3,6 +3,8 @@ import {StoreService} from "./store.service";
 import {map} from "rxjs";
 import {Router} from "@angular/router";
 
+// AuthGuard foireux parce que "pas connecté" au moment de check
+// donc refresh sur /deck/create => redirige sur /home
 export const AuthGuard = () => {
   const store = inject(StoreService);
   const router = inject(Router);

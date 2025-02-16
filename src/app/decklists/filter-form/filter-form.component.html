@@ -1,81 +1,48 @@
 <form [formGroup]="form">
-  <div id="container">
-    <div id="filter">
-      <img [src]="'/assets/public/gods/GOD_'+God[god]+'.png'" class="godFilter"
-           [ngClass]="{'selected-type' : form.get('godCards').value}" (click)="factionChange('dieu')">
-      <img [src]="'/assets/public/gods/GOD_'+God[0]+'.png'" class="godFilter"
-           [ngClass]="{'selected-type' : form.get('neutralCards').value}" (click)="factionChange('neutre')">
-      <div id="typeCard">
-        <img [src]="'/assets/public/spellIcon.png'" (click)="typeChange('sort')" class="typeFilter"
-             [matTooltip]="tooltipType['fr_spell_'+ (form.get('isSpell').value ? 'hide' : 'show')]"
-             [ngClass]="{'selected-type' : form.get('isSpell').value}">
-        <img [src]="'/assets/public/creatureIcon.png'" (click)="typeChange('crea')" class="typeFilter"
-             [matTooltip]="tooltipType['fr_minion_'+ (form.get('isMinion').value ? 'hide' : 'show')]"
-             [ngClass]="{'selected-type' : form.get('isMinion').value}">
-      </div>
-      <div id="allFilters">
-        <div id="PAPM">
-          <div id="PA" style="display:flex; height:max-content;">
-            @for (cost of costs; track cost; let idx = $index, e = $even) {
-              <div><img [src]="'/assets/public/pa/'+cost.label+'.png'" class="filter-tile"
-                   [ngClass]="{'selected-type' : form.get('apValue')!.value == cost.value,
-              'grey': form.get('apValue')!.value != cost.value}"
-                   (click)="setFilterValue('apValue', cost.value)"></div>
-            }
-          </div>
-          <div id="PM" style="display:flex; height:max-content;">
-            @for (pm of pms; track pm; let idx = $index, e = $even) {
-            <div><img [src]="'/assets/public/pm/'+pm.label+'.png'" class="filter-tile"
-                   [ngClass]="{'selected-type' : form.get('mpValue')!.value == pm.value,
-              'grey': form.get('mpValue')!.value != pm.value}"
-                   (click)="setFilterValue('mpValue', pm.value)"></div>
-            }
-          </div>
-        </div>
-        <div id="ATHP">
-          <div id="AT" style="display:flex; height:max-content;">
-            @for (at of atks; track at; let idx = $index, e = $even) {
-              <div><img [src]="'/assets/public/at/'+at.label+'.png'" class="filter-tile"
-                   [ngClass]="{'selected-type' : form.get('atValue')!.value == at.value,
-              'grey': form.get('atValue')!.value != at.value}"
-                   (click)="setFilterValue('atValue', at.value)"></div>
-            }
-          </div>
-          <div id="HP" style="display:flex; height:max-content;">
-            @for (hp of hps; track hp; let idx = $index, e = $even) {
-              <div><img [src]="'/assets/public/life/'+hp.label+'.png'" class="filter-tile"
-                   [ngClass]="{'selected-type' : form.get('hpValue')!.value == hp.value,
-              'grey': form.get('hpValue')!.value != hp.value}"
-                   (click)="setFilterValue('hpValue', hp.value)"></div>
-            }
-          </div>
-        </div>
-      </div>
-      <div id="champs">
-        <div class="dropdown" (mouseleave)="dropdownOff()">
-          <div class="dropbtn" (click)="dropdown()">
-           <span class="appFont2"
-                 [ngClass]="form.get('rarity')!.value.color">
-              <span [ngClass]="form.get('rarity')!.value.bgColor"
+  <div class="container">
+    <div class="tile" [ngClass]="{'selected-type' : form.get('godCards').value}" (click)="factionChange('dieu')">
+      <img [ngClass]="{'grey': !form.get('godCards').value}" [src]="'/assets/public/gods/GOD_'+God[god]+'.png'">
+    </div>
+    <div class="tile" [ngClass]="{'selected-type' : form.get('neutralCards').value} " (click)="factionChange('neutre')">
+      <img [ngClass]="{'grey': !form.get('neutralCards').value}" [src]="'/assets/public/gods/GOD_'+God[0]+'.png'">
+    </div>
+    <div (click)="typeChange('sort')" class="tile"
+         [matTooltip]="tooltipType['fr_spell_'+ (form.get('isSpell').value ? 'hide' : 'show')]"
+         [ngClass]="{'selected-type' : form.get('isSpell').value}">
+      <img [src]="'/assets/public/spellIcon.png'" class="type">
+    </div>
+    <div (click)="typeChange('crea')" class="tile"
+         [matTooltip]="tooltipType['fr_minion_'+ (form.get('isMinion').value ? 'hide' : 'show')]"
+         [ngClass]="{'selected-type' : form.get('isMinion').value}">
+      <img [src]="'/assets/public/creatureIcon.png'" class="type">
+    </div>
+    <!--    <div style="display:flex;">-->
+    @for (cost of costs; track cost; let idx = $index, e = $even) {
+      <div class="tile hideShortScreen" [ngClass]="{'selected-type' : form.get('apValue').value == cost.value}"
+           (click)="setFilterValue('apValue', cost.value)">
+        <img [src]="'/assets/public/pa/'+cost.label+'.png'"
+             [ngClass]="{'grey': form.get('apValue').value != cost.value}"></div>
+    }
+    <div class="dropdown" (mouseleave)="dropdownOff()">
+      <div class="dropbtn appFont2" (click)="dropdown()" [ngClass]="form.get('rarity').value.color">
+<!--           <span class="appFont2" >-->
+              <span [ngClass]="form.get('rarity').value.bgColor"
                     style="width:1vw; height:1vw; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
-             {{ form.get('rarity')!.value.label }}</span></div>
-          <div id="p2" class="dropdown-content">
-            @for (rarity of rarities['fr']; track rarity; let idx = $index, e = $even) {
-              <span class="appFont2"
-                    [ngClass]="rarity.color"
-                    (click)="raritySelect(rarity)">
+             {{ form.get('rarity').value.label }}
+<!--        </span>-->
+      </div>
+      <div id="p2" class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
+        @for (rarity of rarities['fr']; track rarity; let idx = $index, e = $even) {
+          <span class="appFont2"
+                [ngClass]="rarity.color"
+                (click)="raritySelect(rarity)">
             <span [ngClass]="rarity.bgColor"
                   style="width:1vw; height:1vw; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
-                {{ rarity.label }}</span>
-            }
-          </div>
-        </div>
-
-        <input class="search-input appFont2"
-               style="padding-left: 1vw; width: 17vw; "
-               type="text" placeholder="Nom, effet ..." formControlName="content">
-        <input class="search-input appFont2" style="padding-left: 1vw; width: 17vw; " type="text" id="name" name="name" required minlength="4" maxlength="8" size="50" placeholder="Famille ..."/>
+            {{ rarity.label }}</span>
+        }
       </div>
     </div>
+    <input class="search-input appFont2" style="padding-left: 1vw; width: 17vw;" type="text"
+           placeholder="Nom, effet ..." formControlName="content">
   </div>
 </form>

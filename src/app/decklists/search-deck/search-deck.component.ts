@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from "../../api/api.service";
 import {God} from "../models/enums";
+import {FormControl, FormGroup} from "@angular/forms";
+import {debounceTime, distinctUntilChanged} from "rxjs";
 
 @Component({
   selector: 'app-search-deck',
@@ -20,11 +22,37 @@ export class SearchDeckComponent implements OnInit {
   decks = []
   God = God
 
+  searchForm
+  actionPointsCompareSup = true
+  dustCompareSup = true
+
   constructor(private apiService: ApiService) {
   }
 
   ngOnInit() {
-    this.search()
+
+    this.searchForm = new FormGroup({
+      content: new FormControl(''),
+      actionPointsCost: new FormControl(''),
+      dustCost: new FormControl('')
+    })
+    this.search();
+
+
+    this.searchForm.valueChanges.pipe(
+      debounceTime(50),
+      distinctUntilChanged()
+    ).subscribe(_ => this.search())
+  }
+
+  toggleActionPointsCompare() {
+    this.actionPointsCompareSup = !this.actionPointsCompareSup;
+    this.search();
+  }
+
+  toggleDustCompare() {
+    this.dustCompareSup = !this.dustCompareSup;
+    this.search();
   }
 
   toggleGod(god) {
@@ -39,11 +67,22 @@ export class SearchDeckComponent implements OnInit {
 
   resetFilters() {
     this.gods = []
+    this.dustCompareSup = true;
+    this.actionPointsCompareSup = true;
+    this.searchForm.reset()
     this.search()
   }
 
   search() {
-    this.apiService.getDecks({gods: this.gods.length ? this.gods : null}).subscribe(searchResults => {
+    const request = {
+      gods: this.gods.length ? this.gods : null,
+      actionPointCost: this.searchForm.get('actionPointsCost').value,
+      actionCostGeq: this.actionPointsCompareSup,
+      dustGeq: this.dustCompareSup,
+      dustCost: this.searchForm.get('dustCost').value,
+      content: this.searchForm.get('content').value,
+    };
+    this.apiService.getDecks(request).subscribe(searchResults => {
       this.decks = searchResults.content
       this.searchResults = {
         empty: searchResults.empty,

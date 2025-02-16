@@ -29,6 +29,7 @@ import { SearchDeckComponent } from './decklists/search-deck/search-deck.compone
 import { ViewDeckComponent } from './decklists/view-deck/view-deck.component';
 import { RaritySynthesisComponent } from './decklists/rarity-synthesis/rarity-synthesis.component';
 import { ViewListComponent } from './decklists/view-list/view-list.component';
+import { SectionComponent } from './section/section.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { ViewListComponent } from './decklists/view-list/view-list.component';
     ViewDeckComponent,
     RaritySynthesisComponent,
     ViewListComponent,
+    SectionComponent,
   ],
   imports: [
     CommonModule,

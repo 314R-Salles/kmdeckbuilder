@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Card} from '../models/card.model';
 import {ApiService} from "../../api/api.service";
 import {debounceTime, distinctUntilChanged} from "rxjs";
@@ -7,6 +7,7 @@ import {CardType, CREA, God, SORT} from "../models/enums";
 import {AuthenticatedApiService} from "../../api/authenticated-api.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeckCreatedPopinComponent} from "../../popins/deck-created-popin/deck-created-popin.component";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -18,9 +19,9 @@ export class DeckbuilderComponent implements OnInit {
 
   constructor(private apiService: ApiService,
               private authenticatedApiService: AuthenticatedApiService,
+              private router: Router,
               private dialog: MatDialog) {
   }
-
 
   protected readonly God = God;
 
@@ -49,10 +50,17 @@ export class DeckbuilderComponent implements OnInit {
   syntheseRarete: { COMMUNE: 0, PEU_COMMUNE: 0, RARE: 0, KROSMIQUE: 0, INFINITE: 0 }
   god; // le dieu est une donnée fixée, pas dans le formulaire (pour swap neutre / dieu faut garder l'info)
   language: number; // language est comme le dieu, fixé par le site, pas un choix du formulaire
+  deckForm: FormGroup;
   form: FormGroup;
+  currentTab = 0;
 
 
   ngOnInit(): void {
+    this.deckForm = new FormGroup({
+      name: new FormControl('', [Validators.required])
+    })
+
+
     this.form = new FormGroup({
       // en place à l'écran
       godCards: new FormControl(true),
@@ -158,15 +166,24 @@ export class DeckbuilderComponent implements OnInit {
       cards: Object.values(this.synthese).map(card => {
         return {count: card.count, costAP: card.costAP, rarity: card.rarity, id: card.id, hightlight: card.hightlight}
       }),
-      name: "nom du deck 1",
+      name: this.deckForm.get('name').value,
       god: this.god,
     }
 
     this.authenticatedApiService.saveDeck(form).subscribe(deckId => {
-      console.log(deckId)
       const dialogRef = this.dialog.open(DeckCreatedPopinComponent, {
         width: '400px',
         height: '300px',
+        data: { deckId }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if(result) {
+            this.router.navigate(['/decks/view', deckId])
+        } else {
+          this.router.navigate(['/home'])
+        }
+
       });
       // @ts-ignore
       // dialogRef.afterClosed().subscribe(_ =>
@@ -253,6 +270,22 @@ export class DeckbuilderComponent implements OnInit {
   updateState() {
     this.regroupCards()
     this.computeCostSynthesis()
+  }
+
+  smallScreenChange(){
+    this.form.get('godCards').setValue(true)
+    this.form.get('neutralCards').setValue(true)
+    this.form.get('isSpell').setValue(true)
+    this.form.get('isMinion').setValue(true)
+    this.form.get('apValue').setValue(null)
+    this.form.get('rarity').setValue({key: '-1', label: 'Toutes les raretés', color: 'color-all', bgColor: 'bg-color-all'})
+    this.form.get('pageNumber').setValue(0)
+    this.form.get('pageSize').setValue(10)
+    this.form.get('atValue').setValue('')
+    this.form.get('mpValue').setValue('')
+    this.form.get('hpValue').setValue('')
+
+      // content: new FormControl(''),
   }
 
 
@@ -385,11 +418,25 @@ export class DeckbuilderComponent implements OnInit {
     return this.form.get('pageSize').value;
   }
 
-
-  currentTab = 0;
-
   nextPrev(n) {
     this.currentTab += n
   }
+
+
+  sidenavOpened = false
+  openNav() {
+    this.sidenavOpened = true
+    // document.getElementById("mySidenav").style.width = "250px";
+  }
+
+  closeNav() {
+    this.sidenavOpened = false
+    // document.getElementById("mySidenav").style.width = "0";
+  }
+
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event) {
+  // }
+
 
 }

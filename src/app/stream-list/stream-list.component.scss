@@ -3,9 +3,9 @@
   // largeur 100% du "main-body"
   //height: 30vh;
   width: 100%;
-  border-bottom: 0.2em solid white;
-  border-right: 0.2em solid white;
-  border-left: 0.2em solid white;
+  border-bottom: 0.2em solid #FFAE00;
+  border-right: 0.2em solid #FFAE00;
+  border-left: 0.2em solid #FFAE00;
   box-sizing: border-box;
   overflow-y: auto;
   //overflow-x: auto;
@@ -18,7 +18,7 @@
 
 #fill {
   flex-grow:2;
-  border-bottom: 0.2em solid white;
+  border-bottom: 0.2em solid #FFAE00;
  }
 
  .fill:hover {
@@ -41,14 +41,14 @@
     cursor: pointer;
     padding: 14px 16px;
     transition: 0.3s;
-    border-bottom: 0.2em solid white;
+    border-bottom: 0.2em solid #FFAE00;
  }
 
 .streams-tab button.active {
 border-bottom:none;
-border-top: 0.2em solid white;
-  border-right: 0.2em solid white;
-  border-left: 0.2em solid white;
+border-top: 0.2em solid #FFAE00;
+  border-right: 0.2em solid #FFAE00;
+  border-left: 0.2em solid #FFAE00;
 
   }
 .stream-thumbnail {

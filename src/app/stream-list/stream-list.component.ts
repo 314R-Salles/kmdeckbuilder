@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {ApiService} from "../api/api.service";
 import {Stream} from "../models/stream";
 import {Vod} from "../models/vod";
@@ -10,7 +10,7 @@ import {isPlatformBrowser} from "@angular/common";
   templateUrl: './stream-list.component.html',
   styleUrl: './stream-list.component.scss'
 })
-export class StreamListComponent implements OnInit {
+export class StreamListComponent implements AfterViewInit {
 
   streams: Stream[];
   vods: Vod[];
@@ -20,18 +20,17 @@ export class StreamListComponent implements OnInit {
               @Inject(PLATFORM_ID) private platformId: any) {
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
+      document.getElementById("default").click(); // on demande d'activer le 1er onglet en amont de charger les données
       this.apiService.getStreams().subscribe(streams => {
         this.streams = this.updateStreamUrls(streams)
         this.apiService.getVods().subscribe(vods => this.vods = this.updateVodUrls(vods))
       })
-      document.getElementById("default").click();
       // this.apiService.getLastVideos().subscribe(videos => this.videos = videos)
     }
   }
 
-  // Pas besoin de replace pour les images de profil / de deconnexion.
   updateStreamUrls(streams: Stream[]): Stream[] {
     return streams.map(stream => {
         return {
@@ -46,7 +45,6 @@ export class StreamListComponent implements OnInit {
     );
   }
 
-  // Pas besoin de replace pour les images de profil / de deconnexion.
   updateVodUrls(vods: Vod[]): Vod[] {
     return vods.map(vod => {
         return {

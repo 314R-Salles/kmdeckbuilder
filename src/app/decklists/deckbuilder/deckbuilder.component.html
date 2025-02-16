@@ -1,77 +1,128 @@
-<form id="regForm">
+<km-section [title]="currentTab ===1 ? null :'Création du deck'"
+            [titleSuffix]="currentTab ===0 ? ' --- Choix du dieu' : ' --- Compléments'"
+            [forceSize]="currentTab ===1"
+            [requiresLogin]="true">
+  <div id="regForm" style="height: 100%">
 
-  <!-- Circles which indicates the steps of the form: -->
-  <div style="text-align:center;margin-top:10px;">
-
-    <div *ngIf="currentTab ===0" style="color:white;">Choix du dieu</div>
-    <div *ngIf="currentTab ===1" style="color:white;">Création du deck</div>
-    <div *ngIf="currentTab ===2" style="color:white;">Détails</div>
-    <div style="display: flex; justify-content: center">
-      <button *ngIf="currentTab > 0" type="button" id="prevBtn" (click)="nextPrev(-1)">Previous</button>
-      <span [ngStyle]="{'background': currentTab ===0 ? 'white' : 'grey'}" class="step"></span>
-      <span [ngStyle]="{'background': currentTab ===1 ? 'white' : 'grey'}" class="step"></span>
-      <span [ngStyle]="{'background': currentTab ===2 ? 'white' : 'grey'}" class="step"></span>
-      <button [disabled]="currentTab == 0 && !god || currentTab == 1 && selectedCards.length != 3"
-              *ngIf="currentTab < 2" type="button" id="nextBtn" (click)="nextPrev(1)">Next
-      </button>
-    </div>
-  </div>
-
-  <div style="overflow:auto;">
-    <div style="width:max-content; margin:auto;">
-      <button *ngIf="currentTab == 2" (click)="saveDeck()"> CREATE</button>
-    </div>
-  </div>
-
-  <hr>
-  <div class="godType" *ngIf="currentTab === 0">
-    <div id="sortDiv">
-      @for (godIndex of [1, 4, 2, 3, 8, 10, 6, 7, 5, 9]; track godIndex) {
-        <div class="imgContainer prevent-select">
-          <img [src]="'/assets/public/gods/GOD_'+God[godIndex]+'.png'" (click)="selectGod(godIndex)"
-               [ngClass]="{'isSelected' : god === godIndex}" class="prevent-select">
-        </div>
-      }
-    </div>
-
-    <!-- Cloner ou modifier un de vos anciens deck : Liste des 6 derniers deck du joueur pour le dieu selectionné -->
-  </div>
-
-
-  <div class="deckbuilder" *ngIf="currentTab === 1"
-       style="width: 100%; height: calc(100% - 45px)">
-
-    <div style="display: flex; justify-content: space-around; flex-wrap: wrap">
-      <div class="formAndCards">
-        <app-filter-form [god]="god" [form]="form"></app-filter-form>
-        <div style="background: #B8A27B; display: flex">
-          <button (click)="pageDown()"> down</button>
-          <div style="display: flex; flex-wrap: wrap">
-
-            @for (card of displayedCards; track card.id; let idx = $index) {
-              <img [src]="'/assets/public/'+card.cardFilePath" [ngStyle]="{ 'width.%' : '14'}"
-                   (click)="selectCard(card, $event)"
-                   class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
-            }
+    <!-- Circles which indicates the steps of the form: -->
+    <!--    <div style="text-align:center;margin-top:10px;">-->
+    <!--      <div *ngIf="currentTab ===0" style="color:white;">Choix du dieu</div>-->
+    <!--      <div *ngIf="currentTab ===1" style="color:white;">Création du deck</div>-->
+    <!--      <div *ngIf="currentTab ===2" style="color:white;">Détails</div>-->
+    <!--      <div style="display: flex; justify-content: center">-->
+    <!--        <button *ngIf="currentTab > 0" type="button" id="prevBtn" (click)="nextPrev(-1)">Previous</button>-->
+    <!--        <span [ngStyle]="{'background': currentTab ===0 ? 'white' : 'grey'}" class="step"></span>-->
+    <!--        <span [ngStyle]="{'background': currentTab ===1 ? 'white' : 'grey'}" class="step"></span>-->
+    <!--        <span [ngStyle]="{'background': currentTab ===2 ? 'white' : 'grey'}" class="step"></span>-->
+    <!--        <button [disabled]="currentTab == 0 && !god || currentTab == 1 && selectedCards.length != 11"-->
+    <!--                *ngIf="currentTab < 2" type="button" id="nextBtn" (click)="nextPrev(1)">Next-->
+    <!--        </button>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--    <hr>-->
+    <button *ngIf="currentTab > 0" type="button" id="prevBtn" (click)="nextPrev(-1)">Previous</button>
+    <button [disabled]="currentTab == 0 && !god || currentTab == 1 && selectedCards.length != 11"
+            *ngIf="currentTab < 2" type="button" id="nextBtn" (click)="nextPrev(1)">Next
+    </button>
+    <div class="godType" *ngIf="currentTab === 0">
+      <div id="sortDiv">
+        @for (godIndex of [1, 4, 2, 3, 8, 10, 6, 7, 5, 9]; track godIndex) {
+          <div class="imgContainer prevent-select">
+            <img [src]="'/assets/public/gods/GOD_'+God[godIndex]+'.png'" (click)="selectGod(godIndex)"
+                 [ngClass]="{'isSelected' : god === godIndex}" class="prevent-select">
           </div>
-          <button (click)="pageUp()"> up</button>
+        }
+      </div>
 
+      <!-- Cloner ou modifier un de vos anciens deck : Liste des 6 derniers deck du joueur pour le dieu selectionné -->
+    </div>
+
+
+    <div class="deckbuilder" *ngIf="currentTab === 1" style="width: 100%; height: calc(100% - 45px)">
+
+      <div class="container shortScreenContainer ">
+        <div *ngTemplateOutlet="SHORT_MAIN"></div>
+        <button style=" width: 80px; height: 40px;
+        background: #3d1470; color: white;
+        position: absolute;right: 5px; bottom: 20px;">
+          <span [ngStyle]="{'color': 45 === selectedCards.length ? 'white': 'red'}">{{ selectedCards.length }} </span> /
+          45
+        </button>
+      </div>
+
+
+      <div class="container largeScreenContainer">
+        <!--           style="display: flex; justify-content: space-around; flex-wrap: wrap; height: 100%">-->
+        <div *ngTemplateOutlet="MAIN"></div>
+        <div *ngTemplateOutlet="SYNTHESIS"></div>
+      </div>
+
+
+    </div>
+    <div *ngIf="currentTab === 2">
+      <div class="validation">
+        <form [formGroup]="deckForm">
+          <div style="width: 300px; display: flex; flex-wrap: wrap; padding: 5px;">
+            <label>
+              Nom du deck :
+              <input formControlName="name">
+            </label>
+          </div>
+
+          <div style="overflow:auto;">
+            <div style="width:max-content; margin:auto;">
+              <button [disabled]="deckForm.invalid" (click)="saveDeck()">Créer le deck</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</km-section>
+
+
+<ng-template #MAIN>
+  <div class="formAndCards">
+    <app-filter-form [god]="god" [form]="form"></app-filter-form>
+    <div style="display: flex; height: calc(100% - 100px)">
+      <button class="buttonChangePage" (click)="pageDown()"> <</button>
+      <div style="width: 100%;">
+
+        <div class="cards">
+          @for (card of displayedCards; track card.id; let idx = $index) {
+            <img [src]="'/assets/public/'+card.cardFilePath"
+                 (click)="selectCard(card, $event)"
+                 class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
+          }
         </div>
       </div>
-      <app-selected-list [synthese]="synthese" [syntheseCost]="syntheseCost" [max]="max"
-                         (removeCard)="removeCard($event)"
-                         style="width: 20%;"></app-selected-list>
+      <button class="buttonChangePage" (click)="pageUp()"> ></button>
     </div>
   </div>
+</ng-template>
 
+<ng-template #SHORT_MAIN>
+  <div class="formAndCards">
+    <app-filter-form [god]="god" [form]="form"></app-filter-form>
+    <div style="display: flex; height: calc(100% - 100px)">
+      <button class="buttonChangePage" (click)="pageDown()"> <</button>
+      <div style="display: flex; flex-wrap: wrap; width: 100%; justify-content: center">
 
-  <div class="validation" *ngIf="currentTab === 2">Confirmation :
-
-    Input nom / bouton pour terminer / prévisu "à quoi ça ressemble en recherche" avec les hightlight
-
+        @for (card of displayedCards; track card.id; let idx = $index) {
+          <img [src]="'/assets/public/'+card.cardFilePath"
+               [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content'}"
+               (click)="selectCard(card, $event)"
+               class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
+        }
+      </div>
+      <button class="buttonChangePage" (click)="pageUp()"> ></button>
+    </div>
   </div>
+</ng-template>
 
 
-</form>
-
-
+<ng-template #SYNTHESIS>
+  <app-selected-list [synthese]="synthese" [syntheseCost]="syntheseCost" [max]="max"
+                     (removeCard)="removeCard($event)"
+                     style="width: 20%;"></app-selected-list>
+</ng-template>

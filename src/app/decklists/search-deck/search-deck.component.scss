@@ -2,18 +2,50 @@
   width: 80vw;
 }
 
-#sortDiv img {
+.isSelected {
+  -webkit-box-shadow: inset 1px 0px 20px 0px #4fcce1 !important;
+}
+
+
+.filterWrapper {
+  display: flex;
+  padding: 0 20px
+}
+
+.filterGodWrapper {
+  width: 430px;
+  display: flex;
+  flex-wrap: wrap;
+  padding-right: 50px;
+}
+
+.filterGodWrapper img {
   width: 50px;
   padding: 2px;
 }
 
-.isSelected {
-  background-color: green;
+.imgContainer {
+  padding: 2px;
 }
 
-#sortDiv {
-  border: 1px solid;
-  padding: 5px;
+.imgContainer img:hover {
+  cursor: pointer;
+  -webkit-box-shadow: inset 1px 0px 20px 0px white;
+}
+
+.imgContainer img {
+  width: 75px;
+  padding: 2px;
+  border: solid 1px #ffffff7a;
+  border-radius: 5px;
+}
+
+.search-input {
+  background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgba(6, 22, 92, 0.9) 65%, rgba(2, 4, 7, 0.9) 92%);
+  color: white;
+  font-size: 16px;
+  padding: 0;
+  border: 0;
 }
 
 
@@ -57,43 +89,43 @@
   border: 5px solid #523C39FF;
 }
 
-.IOP:hover{
+.IOP:hover {
   background: rgba(163, 33, 14, 0.2);
 }
 
-.ECAFLIP:hover{
+.ECAFLIP:hover {
   background: rgba(108, 16, 132, 0.2);
 }
 
-.CRA:hover{
+.CRA:hover {
   background: rgba(66, 70, 23, 0.2);
 }
 
-.ENIRIPSA:hover{
+.ENIRIPSA:hover {
   background: rgba(181, 76, 60, 0.2);
 }
 
-.SACRIEUR:hover{
+.SACRIEUR:hover {
   background: rgba(48, 40, 33, 0.2);
 }
 
-.SADIDA:hover{
+.SADIDA:hover {
   background: rgba(107, 114, 0, 0.2);
 }
 
-.SRAM:hover{
+.SRAM:hover {
   background: rgba(57, 64, 90, 0.2);
 }
 
-.XELOR:hover{
+.XELOR:hover {
   background: rgba(38, 53, 120, 0.2);
 }
 
-.ENUTROF:hover{
+.ENUTROF:hover {
   background: rgba(155, 116, 0, 0.2);
 }
 
-.FECA:hover{
+.FECA:hover {
   background: rgba(82, 60, 57, 0.2);
 }
 
@@ -110,6 +142,7 @@
   margin: 5px 0;
   display: flex;
   align-items: center;
+  border-radius: 30px;
 }
 
 .deckData {
@@ -145,16 +178,16 @@
 
 .costPaText {
   position: absolute;
-  top: 7px;
-  left: 2px;
-  font-size: 30px;
+  bottom: 0;
+  left: 25px;
+  font-size: 20px;
   color: white;
   text-shadow: 2px 0 #3495eb, -2px 0 #3495eb, 0 2px #3495eb, 0 -2px #3495eb, 1px 1px #3495eb, -1px -1px #3495eb, 1px -1px #3495eb, -1px 1px #3495eb;
 }
 
 .costPA {
   position: relative;
-  width: 50px;
+  width: 60px;
 }
 
 .costDust {

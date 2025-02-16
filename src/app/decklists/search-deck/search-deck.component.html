@@ -1,51 +1,62 @@
-<div style="display: flex; width: 100%; color: white;
-  justify-content: space-evenly">
-  <div style="
-  margin-top: 3vh;
-  width: 75%;
-  display: flex;
-  flex-direction: column;
-">
-    <div
-      style="font-weight:bolder; font-size: 30px; padding: 20px; margin-bottom: 2vh; display:inline;">
-      Recherche de Decks
-    </div>
-
-    <div style="border: #FFAE00 solid 2px; box-sizing: border-box;    padding: 20px;">
-
-<div id="sortDiv" >
-  @for (godIndex of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track godIndex) {
-    <img [src]="'/assets/public/gods/GOD_'+God[godIndex]+'.png'" (click)="toggleGod(godIndex)"
-         [ngClass]="{'isSelected' : gods.includes(godIndex)}">
-  }
-  <button (click)="resetFilters()"> clear filters</button>
-</div>
-
-<div class="listDeck">
-  @for (deck of decks; track deck.deckId) {
-    <div [routerLink]="['/decks/view', deck.deckId]" class="deck" [ngClass]="deck.god">
-      <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-      <div class="deckData">
-        <div class="title">{{ deck.name }}</div>
-        <div class="author">{{ deck.owner }}</div>
-        <div style="display: flex; align-items: flex-end">
-          <div class="costPA">
-            <img class="deckImgPa" src="/assets/public/creatureIcon.png"/>
-            <div class="costPaText">{{ deck.costAP }}</div>
+<km-section [title]="'Recherche de Decks'">
+  <form [formGroup]="searchForm" (ngSubmit)="search()">
+    <div class="filterWrapper">
+      <div class="filterGodWrapper">
+        @for (godIndex of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track godIndex) {
+          <div class="imgContainer prevent-select">
+            <img [src]="'/assets/public/gods/GOD_'+God[godIndex]+'.png'" (click)="toggleGod(godIndex)"
+                 [ngClass]="{'isSelected' : gods.includes(godIndex)}" class="prevent-select">
           </div>
-          <div class="costDust">
-            <img class="deckImgDust" src="assets/public/reward_fragments.png"/>
-            <div class="costDustText">{{ deck.costDust }}</div>
-          </div>
-          <div class="costDust">
-            <img class="deckImgDust" src="assets/public/creatureIcon.png"/>
-            <div class="costDustText">{{ deck.costDust }}</div>
-          </div>
+        }
+      </div>
+      <div style="display: flex; flex-direction: column; width: 500px;  padding-right: 50px;">
+
+        <div style="height: 40px; width: 300px; padding-top: 10px; display: flex">
+          <span style="width: 100px; align-self: center">PA</span>
+          <button  style="width: 50px;" (click)="toggleActionPointsCompare()">
+            <span *ngIf="actionPointsCompareSup"> > </span>
+            <span *ngIf="!actionPointsCompareSup"> < </span>
+          </button>
+          <input formControlName="actionPointsCost"></div>
+
+        <div style="height: 40px; width: 300px;padding-top: 10px; display: flex">
+          <span style="width: 100px; align-self: center">Poussière</span>
+          <button  style="width: 50px;" (click)="toggleDustCompare()">
+            <span *ngIf="dustCompareSup"> > </span>
+            <span *ngIf="!dustCompareSup"> < </span>
+          </button>
+          <input formControlName="dustCost" class="search-input"></div>
+
+        <div style="height: 40px;">
+          <input class="search-input appFont2"
+                 formControlName="content"
+                 style="padding-left: 1vw; width: 300px;height: 100% "
+                 type="text" placeholder="Nom, Auteur, Tag...">
         </div>
       </div>
+      <button style="width: 60px; height: 60px; align-self: end" (click)="resetFilters()">Reset</button>
     </div>
-  }
-</div>
-</div>
-</div>
-</div>
+
+    <div class="listDeck">
+      @for (deck of decks; track deck.deckId) {
+        <div [routerLink]="['/decks/view', deck.deckId]" class="deck" [ngClass]="deck.god">
+          <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
+          <div class="deckData">
+            <div class="title">{{ deck.name }}</div>
+            <div class="author">{{ deck.owner }}</div>
+            <div style="display: flex; align-items: flex-end">
+              <div class="costPA">
+                <img class="deckImgPa" src="/assets/public/creatureIcon.png"/>
+                <div class="costPaText">{{ deck.costAP }}</div>
+              </div>
+              <div class="costDust">
+                <img class="deckImgDust" src="assets/public/reward_fragments.png"/>
+                <div class="costDustText">{{ deck.costDust }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </form>
+</km-section>

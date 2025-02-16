@@ -1,12 +1,9 @@
 <!--englobé par ngIf data pour pas afficher des morceaux si les données sont pas encore chargées-->
-<div class="viewDeckContainer" style="border: #FFAE00 solid 2px;box-sizing: border-box;
-     color: white;display: flex;flex-direction:column;align-items: center;"
-     *ngIf="data">
+<!--<div class="viewDeckContainer" style="border: #FFAE00 solid 2px;box-sizing: border-box;-->
+<!--     color: white;display: flex;flex-direction:column;align-items: center;"-->
+<!--     *ngIf="data">-->
   <!--  entete-->
-  <div style="border: #FFAE00 solid 2px;box-sizing: border-box; display: flex; width: 100%">
-    <div style="font-weight: bolder ">{{ data.name }}</div>
-    <div style="margin-left: 20px;">{{ data.owner }}</div>
-  </div>
+  <km-section [title]=" data.name" [titleSuffix]="'par ' + data.owner">
 
   <div class="container shortScreenContainer">
     <div *ngTemplateOutlet="STATS"></div>
@@ -21,7 +18,6 @@
     </div>
     <div *ngTemplateOutlet="CARDS"></div>
   </div>
-
 
   <ng-template #STATS>
     <div style="border: #FFAE00 solid 2px; box-sizing: border-box; display: flex; width: 100%;
@@ -43,4 +39,5 @@
                      [cards]="data.cards"></app-view-list>
     </div>
   </ng-template>
-</div>
+  </km-section>
+<!--</div>-->
