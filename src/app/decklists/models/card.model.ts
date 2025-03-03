@@ -30,6 +30,7 @@ export class Card {
   // family2 ;// osef
   godType: God; // enum
   infiniteName : string;
+  infiniteLevel : number;
   // life;
   miniFilePath: string;
   // movementPoint

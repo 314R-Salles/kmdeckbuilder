@@ -1,0 +1,29 @@
+<div class="dropdown" (click)="filterGods()">
+  <input class="dropbtn appFont2"
+         (keyup)="filterGods()"
+         [(ngModel)]="godSearch"
+         [ngModelOptions]="{standalone: true}"
+         style="padding-left: 20px; width: 280px;height: 100% "
+         type="text" placeholder="Dieux">
+  <div id="p2" class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
+    @for (god of displayedGods; track god.id; ) {
+      <div class="user appFont2" (click)="selectGod(god)" style="position:relative;">
+        <img [src]="'/assets/public/gods/GOD_'+god.name+'.png'" class="entry-bubble prevent-select">
+        <div style="position:absolute; left:55px; width:235px;">
+          <div
+            style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;"> {{ god.name }}
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<!--<div class="filterGodWrapper">-->
+<!--  @for (godIndex of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track godIndex) {-->
+<!--    <div class="imgContainer prevent-select">-->
+<!--      <img [src]="'/assets/public/gods/GOD_'+God[godIndex]+'.png'" (click)="toggleGod(godIndex)"-->
+<!--           [ngClass]="{'isSelected' : gods.includes(godIndex)}" class="prevent-select">-->
+<!--    </div>-->
+<!--  }-->
+<!--</div>-->

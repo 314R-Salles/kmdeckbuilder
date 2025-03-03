@@ -30,6 +30,9 @@ import { ViewDeckComponent } from './decklists/view-deck/view-deck.component';
 import { RaritySynthesisComponent } from './decklists/rarity-synthesis/rarity-synthesis.component';
 import { ViewListComponent } from './decklists/view-list/view-list.component';
 import { SectionComponent } from './section/section.component';
+import { CardDropdownComponent } from './decklists/search/card-dropdown/card-dropdown.component';
+import { OwnerDropdownComponent } from './decklists/search/owner-dropdown/owner-dropdown.component';
+import { GodDropdownComponent } from './decklists/search/god-dropdown/god-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +56,9 @@ import { SectionComponent } from './section/section.component';
     RaritySynthesisComponent,
     ViewListComponent,
     SectionComponent,
+    CardDropdownComponent,
+    OwnerDropdownComponent,
+    GodDropdownComponent,
   ],
   imports: [
     CommonModule,

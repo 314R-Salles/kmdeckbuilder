@@ -1,41 +1,71 @@
 <km-section [title]="'Recherche de Decks'">
   <form [formGroup]="searchForm" (ngSubmit)="search()">
-    <div class="filterWrapper">
-      <div class="filterGodWrapper">
-        @for (godIndex of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track godIndex) {
-          <div class="imgContainer prevent-select">
-            <img [src]="'/assets/public/gods/GOD_'+God[godIndex]+'.png'" (click)="toggleGod(godIndex)"
-                 [ngClass]="{'isSelected' : gods.includes(godIndex)}" class="prevent-select">
+    <div class="filterWrapper" style="flex-direction:column; position: relative">
+      <button style="position: absolute; right: 0; width: 60px; height: 60px;" (click)="resetFilters()">Reset</button>
+
+      <div style=" display: flex; flex-direction: row">
+        <app-god-dropdown [selectedGods]="selectedGods" (onSelectGod)="selectGod($event)"></app-god-dropdown>
+        <div style="padding: 0 10px"></div>
+        <div style="display: flex; flex-wrap: wrap; width: 500px">
+          @for (god of selectedGods; track god.id) {
+            <img (click)="removeGod(god)" style="width: 50px" [src]="'/assets/public/gods/GOD_'+god.name+'.png'"
+                 class="entry-bubble prevent-select">
+          }</div>
+      </div>
+
+      <div style=" display: flex; flex-direction: row">
+        <app-card-dropdown [selectedGods]="selectedGods" [selectedCards]="selectedCards"
+                           (onSelectCard)="selectCard($event)"></app-card-dropdown>
+        <div style="padding: 0 10px"></div>
+        <div style="display: flex; flex-wrap: wrap;">
+          @for (card of selectedCards; track card.id) {
+            <div class="card appFont2"
+                 [matTooltip]="card.name + (card.infiniteLevel ? ' ' + card.infiniteLevel : '')"
+                 [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
+                 (click)="removeCard(card)" style="position:relative; overflow: hidden">
+              <img [src]="'/assets/public/'+card.miniFilePath">
+            </div>
+          }</div>
+      </div>
+      <div style="display: flex; flex-direction: row">
+        <app-owner-dropdown [selectedUsers]="selectedUsers" (onSelectUser)="selectUser($event)"></app-owner-dropdown>
+        <div style="padding: 0 10px"></div>
+        @for (user of selectedUsers; track user.username) {
+          <div class="appFont2" (click)="removeUser(user)"
+               style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;">
+            {{ user.username }} - {{ user.count }}
           </div>
-        }
-      </div>
-      <div style="display: flex; flex-direction: column; width: 500px;  padding-right: 50px;">
-
-        <div style="height: 40px; width: 300px; padding-top: 10px; display: flex">
-          <span style="width: 100px; align-self: center">PA</span>
-          <button  style="width: 50px;" (click)="toggleActionPointsCompare()">
-            <span *ngIf="actionPointsCompareSup"> > </span>
-            <span *ngIf="!actionPointsCompareSup"> < </span>
-          </button>
-          <input formControlName="actionPointsCost"></div>
-
-        <div style="height: 40px; width: 300px;padding-top: 10px; display: flex">
-          <span style="width: 100px; align-self: center">Poussière</span>
-          <button  style="width: 50px;" (click)="toggleDustCompare()">
-            <span *ngIf="dustCompareSup"> > </span>
-            <span *ngIf="!dustCompareSup"> < </span>
-          </button>
-          <input formControlName="dustCost" class="search-input"></div>
-
-        <div style="height: 40px;">
-          <input class="search-input appFont2"
-                 formControlName="content"
-                 style="padding-left: 1vw; width: 300px;height: 100% "
-                 type="text" placeholder="Nom, Auteur, Tag...">
-        </div>
-      </div>
-      <button style="width: 60px; height: 60px; align-self: end" (click)="resetFilters()">Reset</button>
+        }</div>
     </div>
+
+    <div class="singleLineFilters">
+
+      <div style="height: 40px;">
+        <input class="search-input appFont2"
+               formControlName="content"
+               style="padding-left: 1vw; width: 300px;height: 100% "
+               type="text" placeholder="Nom...">
+      </div>
+
+      <div style="height: 40px; width: 300px; padding-top: 10px; display: flex">
+        <span style="width: 100px; align-self: center">PA</span>
+        <button style="width: 50px;" (click)="toggleActionPointsCompare()">
+          <span *ngIf="actionPointsCompareSup"> ≥ </span>
+          <span *ngIf="!actionPointsCompareSup"> ≤ </span>
+        </button>
+        <input formControlName="actionPointsCost"></div>
+
+      <div style="height: 40px; width: 300px;padding-top: 10px; display: flex">
+        <span style="width: 100px; align-self: center">Poussière</span>
+        <button style="width: 50px;" (click)="toggleDustCompare()">
+          <span *ngIf="dustCompareSup"> ≥ </span>
+          <span *ngIf="!dustCompareSup"> ≤ </span>
+        </button>
+        <input formControlName="dustCost" class="search-input"></div>
+    </div>
+
+<!--    prévoir une séparation plus clean-->
+<hr>
 
     <div class="listDeck">
       @for (deck of decks; track deck.deckId) {
