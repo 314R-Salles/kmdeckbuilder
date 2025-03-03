@@ -14,6 +14,14 @@
   animation: shake 0.25s;
 }
 
+.bg-color-krosmique {
+  background: #D46EEA !important;
+}
+
+.bg-color-infinite {
+  background: #FFFFEE !important;
+}
+
 @keyframes shake {
   0% {
     transform: translate(1px, 1px) rotate(0deg);
@@ -135,7 +143,7 @@ input.invalid {
 }
 
 .formAndCards {
-  width: 100%;
+  // width: 100%;
 }
 
 @media (max-width: 1399px) {
@@ -146,7 +154,7 @@ input.invalid {
 
 @media (min-width: 1400px) {
   .formAndCards {
-    width: 70%;
+    // width: 70%;
   }
 }
 
@@ -155,7 +163,7 @@ input.invalid {
   flex-wrap: wrap;
   width: 100%;
   height: fit-content;
-  max-width: 1200px;
+  max-width: 1120px;
 }
 
 .cards img {
@@ -165,11 +173,11 @@ input.invalid {
 
 .buttonChangePage {
   width: 65px;
-  height: 100%;
+  height: 75px;
   min-width: 65px;
 
   color: white;
-  font-size: 70px;
+  font-size: 50px;
   font-weight: bolder;
   background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgb(30, 54, 158, 90%) 65%, rgb(60, 39, 185, 90%) 95%);
 
@@ -200,14 +208,14 @@ input.invalid {
 
 @media (max-width: 1399px) {
   .largeScreenContainer {
-    display: none;
+    // display: none;
   }
   //.viewDeckContainer {
   //  min-width: unset
   //}
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1543px) {
   .shortScreenContainer {
     display: none;
   }

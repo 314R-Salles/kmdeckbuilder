@@ -47,7 +47,7 @@ export class DeckbuilderComponent implements OnInit {
       hightlight?: number
     }
   }
-  syntheseRarete: { COMMUNE: 0, PEU_COMMUNE: 0, RARE: 0, KROSMIQUE: 0, INFINITE: 0 }
+  syntheseRarete = { COMMUNE: 0, PEU_COMMUNE: 0, RARE: 0, KROSMIQUE: 0, INFINITE: 0 }
   god; // le dieu est une donnée fixée, pas dans le formulaire (pour swap neutre / dieu faut garder l'info)
   language: number; // language est comme le dieu, fixé par le site, pas un choix du formulaire
   deckForm: FormGroup;
@@ -72,8 +72,8 @@ export class DeckbuilderComponent implements OnInit {
       content: new FormControl(''),
       language: new FormControl('FR'),
       // pagination
-      pageNumber: new FormControl('0'),
-      pageSize: new FormControl('21'),
+      pageNumber: new FormControl(0),
+      pageSize: new FormControl(21),
       // Pour plus tard
       atValue: new FormControl(''),
       mpValue: new FormControl(''),
@@ -85,8 +85,8 @@ export class DeckbuilderComponent implements OnInit {
       // quand on décoche sort et créa, ça recoche une valeur, mais ça fait 2 appels qui finissent pas dans l'ordre.
       // debounce (ptet en prod faudra monter) gomme le double appel. (ou alors corriger la source du probleme)
       debounceTime(50),
-      distinctUntilChanged()
-    ).subscribe(_ => this.getFilteredCards())
+      distinctUntilChanged(),
+    ).subscribe(_ => this.getFilteredCards());
   }
 
   selectGod(index) {
@@ -193,8 +193,9 @@ export class DeckbuilderComponent implements OnInit {
   }
 
   pageUp() {
-    if (!this.searchResults.last)
+    if (!this.searchResults.last) {
       this.form.get('pageNumber').setValue(+this.pageNumber + 1);
+    }
   }
 
   pageDown() {

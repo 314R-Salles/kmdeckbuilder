@@ -16,33 +16,79 @@
          [ngClass]="{'selected-type' : form.get('isMinion').value}">
       <img [src]="'/assets/public/creatureIcon.png'" class="type">
     </div>
-    <!--    <div style="display:flex;">-->
-    @for (cost of costs; track cost; let idx = $index, e = $even) {
-      <div class="tile hideShortScreen" [ngClass]="{'selected-type' : form.get('apValue').value == cost.value}"
-           (click)="setFilterValue('apValue', cost.value)">
-        <img [src]="'/assets/public/pa/'+cost.label+'.png'"
-             [ngClass]="{'grey': form.get('apValue').value != cost.value}"></div>
-    }
     <div class="dropdown" (mouseleave)="dropdownOff()">
-      <div class="dropbtn appFont2" (click)="dropdown()" [ngClass]="form.get('rarity').value.color">
-<!--           <span class="appFont2" >-->
-              <span [ngClass]="form.get('rarity').value.bgColor"
-                    style="width:1vw; height:1vw; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
-             {{ form.get('rarity').value.label }}
-<!--        </span>-->
+      <div class="dropbtn appFont2" (click)="dropdownRarity()" [ngClass]="form.get('rarity').value.color">
+        <!--           <span class="appFont2" >-->
+        <span *ngIf="form.get('rarity').value.color != 'color-all'" [ngClass]="form.get('rarity').value.bgColor"
+              style="width:50px; height:50px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+        <div *ngIf="form.get('rarity').value.color === 'color-all'">
+             <span class="bg-color-infinite"
+                   style="width:50px; height:50px; clip-path: polygon(50% 0, 75% 25%, 50% 50%, 25% 25%); position:absolute; top:5px; left:5px;"></span>
+          <span class="bg-color-krosmique"
+                style="width:50px; height:50px; clip-path: polygon(50% 50%, 75% 75%, 50% 100%, 25% 75%); position:absolute; top:5px; left:5px;"></span>
+          <span class="bg-color-rare"
+                style="width:50px; height:50px; clip-path: polygon(25% 25%, 50% 50%, 25% 75%, 0 50%); position:absolute; top:5px; left:5px;"></span>
+          <span class="bg-color-uncommon"
+                style="width:50px; height:50px; clip-path: polygon(75% 25%, 100% 50%, 75% 75%, 50% 50%); position:absolute; top:5px; left:5px;"></span>
+        </div>
       </div>
-      <div id="p2" class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
+
+      <div id="p2" class="dropdown-content" [ngStyle]="{'display' : displayDropdownRarity ? 'block' : 'none'}">
         @for (rarity of rarities['fr']; track rarity; let idx = $index, e = $even) {
-          <span class="appFont2"
-                [ngClass]="rarity.color"
-                (click)="raritySelect(rarity)">
-            <span [ngClass]="rarity.bgColor"
-                  style="width:1vw; height:1vw; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
-            {{ rarity.label }}</span>
+        <span class="appFont2"
+              [ngClass]="rarity.color"
+              (click)="raritySelect(rarity)">
+
+            <div *ngIf="rarity.color === 'color-all'">
+             <span class="bg-color-infinite"
+                   style="width:50px; height:50px; clip-path: polygon(50% 0, 75% 25%, 50% 50%, 25% 25%); position:absolute; top:5px; left:5px;"></span>
+        <span class="bg-color-krosmique"
+              style="width:50px; height:50px; clip-path: polygon(50% 50%, 75% 75%, 50% 100%, 25% 75%); position:absolute; top:5px; left:5px;"></span>
+        <span class="bg-color-rare"
+              style="width:50px; height:50px; clip-path: polygon(25% 25%, 50% 50%, 25% 75%, 0 50%); position:absolute; top:5px; left:5px;"></span>
+        <span class="bg-color-uncommon"
+              style="width:50px; height:50px; clip-path: polygon(75% 25%, 100% 50%, 75% 75%, 50% 50%); position:absolute; top:5px; left:5px;"></span>
+          </div>
+            <span *ngIf="rarity.color != 'color-all'" [ngClass]="rarity.bgColor"
+                  style="width:50px; height:50px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+            </span>
         }
       </div>
     </div>
-    <input class="search-input appFont2" style="padding-left: 1vw; width: 17vw;" type="text"
+
+    <!-- when 'large screen', same as game -->
+    <div class="largeScreenContainer" style="display:flex;">
+      <!--    <div style="display:flex;">-->
+      @for (cost of costs; track cost; let idx = $index, e = $even) {
+      <div class="tile" [ngClass]="{'selected-type' : form.get('apValue').value == cost.value}"
+           (click)="setFilterValue('apValue', cost.value)">
+        <img [src]="'/assets/public/pa/'+cost.label+'.png'"
+             [ngClass]="{'grey': form.get('apValue').value != cost.value}"></div>
+      }
+    </div>
+
+    <!-- when 'small' screen, pa becomes a dropdown -->
+    <div class="shortScreenContainer">
+      <div class="dropdown" (mouseleave)="dropdownOff()">
+        <div class="dropbtn appFont2" (click)="dropdownPA()" [ngClass]="form.get('rarity').value.color">
+          <span style="width:50px; height:50px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+        </div>
+        <div class="dropdown-content" [ngStyle]="{'display' : displayDropdownPA ? 'block' : 'none'}">
+          @for (cost of costs; track cost; let idx = $index, e = $even) {
+          <div class="tile" [ngClass]="{'selected-type' : form.get('apValue').value == cost.value}"
+               (click)="setFilterValue('apValue', cost.value)">
+            <img [src]="'/assets/public/pa/'+cost.label+'.png'"
+                 [ngClass]="{'grey': form.get('apValue').value != cost.value}"></div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <input class="search-input appFont2" style="padding-left: 1vw; width: 100%;" type="text"
            placeholder="Nom, effet ..." formControlName="content">
+
+
   </div>
+
+
 </form>

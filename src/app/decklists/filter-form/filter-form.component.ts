@@ -11,8 +11,9 @@ export class FilterFormComponent {
 
   @Input() form: FormGroup
   @Input() god: number
-  displayDropdown = false
 
+  displayDropdownRarity = false
+  displayDropdownPA = false
   // Changer des fitlres en entete doit remettre la pagination à 0
   resetPage() {
     this.form.get('pageNumber').setValue(0);
@@ -67,15 +68,21 @@ export class FilterFormComponent {
   raritySelect(rarity: any) {
     this.resetPage()
     this.form.get('rarity').setValue(rarity);
-    this.displayDropdown = false;
+    this.displayDropdownRarity = false;
+    this.displayDropdownPA = false;
   }
 
-  dropdown() {
-    this.displayDropdown = true;
+  dropdownRarity() {
+    this.displayDropdownRarity = !this.displayDropdownRarity;
+  }
+
+  dropdownPA() {
+    this.displayDropdownPA = !this.displayDropdownPA;
   }
 
   dropdownOff() {
-    this.displayDropdown = false;
+    this.displayDropdownRarity = false;
+    this.displayDropdownPA = false;
   }
 
   costs = [
