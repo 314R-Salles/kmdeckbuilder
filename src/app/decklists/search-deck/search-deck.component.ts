@@ -11,7 +11,6 @@ import {debounceTime, distinctUntilChanged} from "rxjs";
 })
 export class SearchDeckComponent implements OnInit {
 
-  gods = []
   searchResults: {
     empty: boolean,
     first: boolean
@@ -20,17 +19,19 @@ export class SearchDeckComponent implements OnInit {
     totalPages: number
   }
   decks = []
-  God = God
 
   searchForm
   actionPointsCompareSup = true
   dustCompareSup = true
 
+  selectedCards = []
+  selectedUsers = []
+  selectedGods = []
+
   constructor(private apiService: ApiService) {
   }
 
   ngOnInit() {
-
     this.searchForm = new FormGroup({
       content: new FormControl(''),
       actionPointsCost: new FormControl(''),
@@ -55,27 +56,21 @@ export class SearchDeckComponent implements OnInit {
     this.search();
   }
 
-  toggleGod(god) {
-    let index = this.gods.indexOf(god)
-    if (index != -1) {
-      this.gods.splice(index, 1)
-    } else {
-      this.gods.push(god);
-    }
-    this.search()
-  }
-
   resetFilters() {
-    this.gods = []
+    this.selectedGods = []
     this.dustCompareSup = true;
     this.actionPointsCompareSup = true;
+    this.selectedCards = [];
+    this.selectedUsers = [];
     this.searchForm.reset()
     this.search()
   }
 
   search() {
     const request = {
-      gods: this.gods.length ? this.gods : null,
+      gods: this.selectedGods.length ? this.selectedGods.map(g => g.id) : null,
+      cards: this.selectedCards.length ? this.selectedCards.map(c => c.id) : null,
+      users: this.selectedUsers.length ? this.selectedUsers.map(u => u.username) : null,
       actionPointCost: this.searchForm.get('actionPointsCost').value,
       actionCostGeq: this.actionPointsCompareSup,
       dustGeq: this.dustCompareSup,
@@ -92,6 +87,47 @@ export class SearchDeckComponent implements OnInit {
         totalPages: searchResults.totalPages
       }
     })
+  }
+
+
+  selectCard(card) {
+    // conversion en id nécessaire pour le includes, les "cards" sont différents objets à chaque ouverture de la liste déroulante
+    // en fait le check est plus nécessaire puisque les options déjà selectionnées sont plus cliquable à nouveau
+    if (!this.selectedCards.map(c => c.id).includes(card.id)) {
+      this.selectedCards.push(card)
+      this.search()
+    }
+  }
+
+  removeCard(card) {
+    const index = this.selectedCards.findIndex(c => c.id === card.id)
+    this.selectedCards.splice(index, 1)
+    this.search()
+  }
+
+  selectUser(user) {
+    // en fait le check est plus nécessaire puisque les options déjà selectionnées sont plus cliquable à nouveau
+    if (!this.selectedUsers.map(u => u.username).includes(user.username)) {
+      this.selectedUsers.push(user)
+      this.search()
+    }
+  }
+
+  removeUser(user) {
+    const index = this.selectedUsers.findIndex(u => u.username === user.username)
+    this.selectedUsers.splice(index, 1)
+    this.search()
+  }
+
+  selectGod(god) {
+    this.selectedGods.push(god)
+    this.search()
+  }
+
+  removeGod(god) {
+    const index = this.selectedGods.findIndex(u => u.id === god.id)
+    this.selectedGods.splice(index, 1)
+    this.search()
   }
 
 }

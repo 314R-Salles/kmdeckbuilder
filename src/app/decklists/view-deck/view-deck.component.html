@@ -1,9 +1,4 @@
-<!--englobé par ngIf data pour pas afficher des morceaux si les données sont pas encore chargées-->
-<!--<div class="viewDeckContainer" style="border: #FFAE00 solid 2px;box-sizing: border-box;-->
-<!--     color: white;display: flex;flex-direction:column;align-items: center;"-->
-<!--     *ngIf="data">-->
-  <!--  entete-->
-  <km-section [title]=" data.name" [titleSuffix]="'par ' + data.owner">
+  <km-section *ngIf="data" [backtrackPath]="'/decks/browse'" [title]=" data.name" [titleSuffix]="'par ' + data.owner">
 
   <div class="container shortScreenContainer">
     <div *ngTemplateOutlet="STATS"></div>
@@ -40,4 +35,3 @@
     </div>
   </ng-template>
   </km-section>
-<!--</div>-->

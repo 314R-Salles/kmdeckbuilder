@@ -1,0 +1,23 @@
+<div class="dropdown" (click)="filterUsers()">
+  <input class="dropbtn appFont2"
+         (keyup)="filterUsers()"
+         [(ngModel)]="userSearch"
+         [ngModelOptions]="{standalone: true}"
+         style="padding-left: 20px; width: 280px;height: 100% "
+         type="text" placeholder="Auteurs">
+  <div id="p2" class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
+    @for (user of displayedUsers; track user.username) {
+      <div class="user appFont2" (click)="selectUser(user)" style="position:relative;">
+        <span class="entry-bubble">
+          {{ user.count }}
+        </span>
+        <div style="position:absolute; left:55px; width:235px;">
+          <div
+            style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;"> {{ user.username }}
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+

@@ -9,7 +9,7 @@
 
 .filterWrapper {
   display: flex;
-  padding: 0 20px
+  //padding: 0 20px
 }
 
 .filterGodWrapper {
@@ -48,6 +48,11 @@
   border: 0;
 }
 
+
+.singleLineFilters {
+  display: flex;
+  flex-direction: row;
+}
 
 .IOP {
   border: 5px solid #A3210E;
@@ -137,7 +142,7 @@
 }
 
 .deck {
-  width: 49%;
+  width: 100%;
   min-width: 500px;
   margin: 5px 0;
   display: flex;
@@ -216,4 +221,84 @@
   font-size: 30px;
   color: white;
   text-shadow: 2px 0 #eba534, -2px 0 #eba534, 0 2px #eba534, 0 -2px #eba534, 1px 1px #eba534, -1px -1px #eba534, 1px -1px #eba534, -1px 1px #eba534;
+}
+
+.card {
+  height: 40px;
+  //width: 300px;
+  border: rgba(255, 255, 255, 0.62) solid 1px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  //-webkit-box-shadow: inset 0px 0px 0px 10px rgba(255, 255, 255, 0.62);
+  //-moz-box-shadow: inset 0px 0px 0px 10px rgba(255, 255, 255, 0.62);
+  box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.62);
+  display: flex;
+  align-items: center;
+
+  color: white;
+  font-size: 16px;
+  font-weight: 400;
+  -webkit-text-stroke: 0.7px #000000;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around
+}
+
+.INFINITE-card {
+  background: linear-gradient(180deg, rgba(140, 154, 228, 1) 0%, rgba(162, 227, 236, 1) 100%);
+}
+
+.KROSMIQUE-card {
+  background: linear-gradient(180deg, rgba(132, 25, 184, 1) 10%, rgba(100, 60, 181, 1) 35%, rgba(83, 64, 180, 1) 65%, rgba(79, 108, 207, 1) 91%);
+}
+
+.NEUTRE-card {
+  background: #b7a17a;
+}
+
+.IOP-card {
+  background: #A3210E;
+}
+
+.ECAFLIP-card {
+  background: #6C1084;
+}
+
+.CRA-card {
+  background: #424617;
+}
+
+.ENIRIPSA-card {
+  background: #B54C3C;
+}
+
+.SACRIEUR-card {
+  background: #302821;
+}
+
+.SADIDA-card {
+  background: #6B7200;
+}
+
+.SRAM-card {
+  background: #39405A;
+}
+
+.XELOR-card {
+  background: #263578;
+}
+
+.ENUTROF-card {
+  background: #9B7400;
+}
+
+.FECA-card {
+  background: #523C39FF;
+}
+
+.appFont2 {
+  color: white !important;
+  font-family: 'geo2', 'arial', sans-serif !important;
 }
