@@ -3,7 +3,7 @@
          (keyup)="filterUsers()"
          [(ngModel)]="userSearch"
          [ngModelOptions]="{standalone: true}"
-         style="padding-left: 20px; width: 280px;height: 100% "
+         style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 5px;"
          type="text" placeholder="Auteurs">
   <div id="p2" class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
     @for (user of displayedUsers; track user.username) {

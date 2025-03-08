@@ -1,10 +1,11 @@
 <div class="dropdown">
   <input class="dropbtn appFont2"
+         (click)="openDropdown()"
          (keyup)="searchCards()"
          [(ngModel)]="cardName"
          [ngModelOptions]="{standalone: true}"
-         style="padding-left: 20px; width: 280px;height: 100% "
-         type="text" placeholder="Contient ...">
+         style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 5px;"
+         type="text" [placeholder]="fromInput? 'Sélectionner' : 'Contient ...'">
   <div id="p2" class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
     @for (card of searchedCards; track card.id) {
 
