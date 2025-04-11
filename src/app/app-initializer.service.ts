@@ -28,8 +28,12 @@ export class AppInitializerService {
         this.authenticatedApiService.linkAccount(token).subscribe(user => this.storeService.setUser(user))
       }
 
+      // sert plus à rien ça
       this.apiService.getLatestNewsIds(3).subscribe(news =>
         this.storeService.setNews(news)
+      )
+      this.apiService.getCardIllustrations().subscribe(cardList =>
+        this.storeService.setCardIllustrations(cardList)
       )
       // this.authService.initConf();
       this.oauthService.configure({

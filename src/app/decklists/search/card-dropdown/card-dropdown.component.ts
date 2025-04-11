@@ -1,5 +1,6 @@
 import {Component, EventEmitter, HostListener, Input, OnChanges, Output} from '@angular/core';
 import {ApiService} from "../../../api/api.service";
+import {StoreService} from "../../../store.service";
 
 @Component({
   selector: 'app-card-dropdown',
@@ -17,23 +18,31 @@ export class CardDropdownComponent implements OnChanges {
   fromInput = false
   // necessaire si plusieurs fois le meme composant dans la meme page
   @Input() id: number
+  CARD_ILLUSTRATIONS
 
+  constructor(private apiService: ApiService ,
+              private storeService: StoreService) {
+  this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
 
-  constructor(private apiService: ApiService) {
-  }
+}
 
-  cardName =''
+  cardName
   searchedCards = []
   displayDropdown = false
 
   ngOnChanges(): void {
     this.fromInput = !!this.cardOptions.length
+    if (this.fromInput) {
+      this.searchedCards = this.cardOptions.filter(result => !this.selectedCards.map(c => c.id).includes(result.id));
+      this.searchedCards = this.searchedCards.filter(result => !this.cardName || result.name.toLowerCase().includes(this.cardName.toLowerCase()));
+    }
   }
 
   openDropdown() {
     if (this.fromInput) {
       this.displayDropdown = true;
       this.searchedCards = this.cardOptions.filter(result => !this.selectedCards.map(c => c.id).includes(result.id));
+      this.searchedCards = this.searchedCards.filter(result => !this.cardName || result.name.toLowerCase().includes(this.cardName.toLowerCase()));
     }
   }
 
@@ -41,11 +50,12 @@ export class CardDropdownComponent implements OnChanges {
     this.displayDropdown = false;
     this.searchedCards = [];
     // 2 à cause de Az
-    if (this.cardName && this.cardName.length >= 2) {
-      if (!this.fromInput) {
+    if (!this.fromInput) {
+      if (this.cardName && this.cardName.length >= 2) {
         this.apiService.getCardsByName({
           gods: this.selectedGods.length ? [...this.selectedGods.map(g => g.id), 0] : [],
           name: this.cardName,
+          language: 'FR',
           pageNumber: 0,
           pageSize: 100
         }).subscribe(searchResults => {
@@ -54,11 +64,11 @@ export class CardDropdownComponent implements OnChanges {
           this.searchedCards = searchResults.content.filter(result => !this.selectedCards.map(c => c.id).includes(result.id));
           // this.searchedCards = searchResults
         })
-      } else {
-        this.displayDropdown = true;
-        this.searchedCards = this.cardOptions.filter(result => !this.selectedCards.map(c => c.id).includes(result.id));
-        this.searchedCards = this.searchedCards.filter(result => result.name.toLowerCase().includes(this.cardName.toLowerCase()));
       }
+    } else {
+      this.displayDropdown = true;
+      this.searchedCards = this.cardOptions.filter(result => !this.selectedCards.map(c => c.id).includes(result.id));
+      this.searchedCards = this.searchedCards.filter(result => !this.cardName || result.name.toLowerCase().includes(this.cardName.toLowerCase()));
     }
   }
 
@@ -66,8 +76,9 @@ export class CardDropdownComponent implements OnChanges {
     if (!this.fromInput) {
       this.searchedCards = this.searchedCards.filter(result => card.id !== result.id);
     } else {
-      this.searchedCards = this.cardOptions.filter(result => !this.selectedCards.map(c => c.id).includes(result.id));
-      this.searchedCards = this.searchedCards.filter(result => result.name.toLowerCase().includes(this.cardName.toLowerCase()));
+      // géré par le onchanges
+      // this.searchedCards = this.cardOptions.filter(result => !this.selectedCards.map(c => c.id).includes(result.id));
+      // this.searchedCards = this.searchedCards.filter(result => !this.cardName || result.name.toLowerCase().includes(this.cardName.toLowerCase()));
     }
     this.onSelectCard.emit(card);
   }

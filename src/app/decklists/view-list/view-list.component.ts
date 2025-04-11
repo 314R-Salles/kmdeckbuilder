@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges} from '@angular/core';
 import {CardType, CREA, SORT} from "../models/enums";
+import {StoreService} from "../../store.service";
 
 @Component({
   selector: 'app-view-list',
@@ -10,6 +11,10 @@ export class ViewListComponent implements OnChanges {
 
   @Input() cards;
   synthese
+  CARD_ILLUSTRATIONS
+  constructor(              private storeService: StoreService) {
+    this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
+  }
 
   ngOnChanges(): void {
     this.synthese = {NEUTRE: [], GOD_CREA: [], GOD_SPELL: [], KROSFI: []}

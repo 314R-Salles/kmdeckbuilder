@@ -55,6 +55,10 @@ export class ApiService {
     return this.http.post<any>(this.BASE_API + `/cards/byName`, form);
   }
 
+  getCardIllustrations(): Observable<any> {
+    return this.http.get<any>(this.BASE_API + `/cards/illustrations`);
+  }
+
   getDecks(form: any): Observable<any> {
     return this.http.post<any>(this.BASE_API + `/decks`, form);
   }

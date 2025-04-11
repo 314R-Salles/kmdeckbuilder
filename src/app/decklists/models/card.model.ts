@@ -36,4 +36,5 @@ export class Card {
   // movementPoint
   // name
   rarity: CardRarity;
+  highlight: number;
 }

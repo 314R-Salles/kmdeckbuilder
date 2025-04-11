@@ -9,6 +9,7 @@ import {AdminGuard} from "./auth.guards";
 import {DeckbuilderComponent} from "./decklists/deckbuilder/deckbuilder.component";
 import {SearchDeckComponent} from "./decklists/search-deck/search-deck.component";
 import {ViewDeckComponent} from "./decklists/view-deck/view-deck.component";
+import {TagManagementComponent} from "./admin/tag-management/tag-management.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path: 'news/view/:id', component: NewsViewComponent},
   {path: 'news/create', component: NewsEditorComponent, canActivate: [AdminGuard]},
   {path: 'news/edit', component: NewsManagementComponent, canActivate: [AdminGuard]},
+  {path: 'tags/edit', component: TagManagementComponent, canActivate: [AdminGuard]},
   {path: 'decks/create', component: DeckbuilderComponent},
   {path: 'decks/browse', component: SearchDeckComponent},
   {path: 'decks/view/:id', component: ViewDeckComponent},

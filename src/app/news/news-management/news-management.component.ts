@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from "../../api/api.service";
 import {AuthenticatedApiService} from "../../api/authenticated-api.service";
 
 @Component({

@@ -7,6 +7,7 @@ import {Observable, ReplaySubject} from "rxjs";
 export class StoreService {
 
   news: any[]
+  cardIllustrations: any[]
   private userSubject = new ReplaySubject(1);
 
   user = this.userSubject.asObservable();
@@ -40,5 +41,18 @@ export class StoreService {
 
   getNews() {
     return this.news
+  }
+
+  setCardIllustrations(cardIllustrations: any[]) {
+    this.cardIllustrations = cardIllustrations
+  }
+
+  getCardIllustrationsAsMap() {
+    let result = (this.cardIllustrations || []).reduce(function (map, obj) {
+      map[obj.id] = obj.cardName;
+      return map;
+    }, {});
+    result[-1] = '../cardback_basic.png'
+    return result
   }
 }

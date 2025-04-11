@@ -3,6 +3,7 @@ import {ApiService} from "../../api/api.service";
 import {God} from "../models/enums";
 import {FormControl, FormGroup} from "@angular/forms";
 import {debounceTime, distinctUntilChanged} from "rxjs";
+import {StoreService} from "../../store.service";
 
 @Component({
   selector: 'app-search-deck',
@@ -19,7 +20,7 @@ export class SearchDeckComponent implements OnInit {
     totalPages: number
   }
   decks = []
-
+  CARD_ILLUSTRATIONS
   searchForm
   actionPointsCompareSup = true
   dustCompareSup = true
@@ -28,10 +29,13 @@ export class SearchDeckComponent implements OnInit {
   selectedUsers = []
   selectedGods = []
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService,
+              private storeService: StoreService) {
   }
 
   ngOnInit() {
+
+    this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
     this.searchForm = new FormGroup({
       content: new FormControl(''),
       actionPointsCost: new FormControl(''),
@@ -94,7 +98,7 @@ export class SearchDeckComponent implements OnInit {
     // conversion en id nécessaire pour le includes, les "cards" sont différents objets à chaque ouverture de la liste déroulante
     // en fait le check est plus nécessaire puisque les options déjà selectionnées sont plus cliquable à nouveau
     if (!this.selectedCards.map(c => c.id).includes(card.id)) {
-      this.selectedCards.push(card)
+      this.selectedCards = [...this.selectedCards, card]
       this.search()
     }
   }

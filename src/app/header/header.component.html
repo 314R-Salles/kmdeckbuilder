@@ -11,6 +11,7 @@
           routerLinkActive="active" [matMenuTriggerFor]="admin">Admin</span>
     <mat-menu #admin="matMenu">
       <button mat-menu-item [matMenuTriggerFor]="menu1">News</button>
+      <button mat-menu-item routerLink="tags/edit">Tags</button>
       <button mat-menu-item>Videos (TODO)</button>
       <button mat-menu-item>Users (TODO)</button>
     </mat-menu>

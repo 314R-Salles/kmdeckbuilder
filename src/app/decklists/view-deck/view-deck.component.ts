@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ApiService} from "../../api/api.service";
 import {CardRarity, CardType, COMMUNE, CREA, INFINITE, KROSMIQUE, PEU_COMMUNE, RARE, SORT} from "../models/enums";
+import {DomSanitizer} from "@angular/platform-browser";
 
 
 @Component({
@@ -18,12 +19,12 @@ export class ViewDeckComponent implements OnInit {
   // l'input id est fourni par la route
   @Input() id: number
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private domSanitize: DomSanitizer) {
   }
 
   ngOnInit() {
     this.apiService.getDeck(this.id, "FR").subscribe(r => {
-      this.data = r;
+      this.data = {...r, description: this.domSanitize.bypassSecurityTrustHtml(r.description)};
       this.updateState()
     })
   }

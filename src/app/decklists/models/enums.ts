@@ -47,3 +47,8 @@ export const GOD_ARRAY = [
 export enum Language {
   FR, EN, ES, BR, RU
 }
+
+
+export const DEFAULT_CARD = {
+  id: -1, name: 'empty'
+}

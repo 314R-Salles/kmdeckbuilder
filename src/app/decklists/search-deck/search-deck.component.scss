@@ -45,8 +45,53 @@
   color: white;
   font-size: 16px;
   padding: 0;
-  border: 0;
+
+  width: 300px;
+  height: 50px;
+  position: relative;
+  display: inline-block;
+
+  border: solid 1px #ffffff7a;
+  border-radius: 5px;
+  box-sizing: border-box;
+
 }
+
+
+.dropdown:focus {
+  z-index: 5;
+}
+
+.dropbtn {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgb(30, 54, 158, 90%) 65%, rgb(60, 39, 185, 90%) 95%);
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  width: 300px;
+  height: 50px;
+  position: relative;
+  display: inline-block;
+
+  border: solid 1px #ffffff7a;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+
+.dropdown:hover {
+  cursor: pointer;
+  -webkit-box-shadow: inset 1px 0px 20px 0px white;
+}
+
+
+
+
 
 
 .singleLineFilters {
@@ -142,12 +187,18 @@
 }
 
 .deck {
-  width: 49%;
-  min-width: 500px;
+  width: 100%;
+  //min-width: 500px;
   margin: 5px 0;
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  justify-content: flex-start;
+  //align-items: center;
   border-radius: 30px;
+  overflow: hidden;
+  height: 160px;
+
+  position: relative;
 }
 
 .deckData {
@@ -175,11 +226,28 @@
 
 .title {
   font-size: 35px;
+  height: 27.5%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .author {
   font-size: 20px;
+  height: 25%;
 }
+
+.tags {
+  font-size: 35px;
+  height: 17.5%;
+}
+
+.creationDate {
+  font-size: 20px;
+  height: 17.5%;
+}
+
+
 
 .costPaText {
   position: absolute;
