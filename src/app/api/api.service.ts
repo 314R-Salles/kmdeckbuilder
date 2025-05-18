@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Stream} from "../models/stream";
 import {Vod} from "../models/vod";
 import {YtVideo} from "../models/ytVideo";
+import {OAuthService} from "angular-oauth2-oidc";
 
 
 @Injectable({
@@ -14,7 +15,7 @@ export class ApiService {
 
   BASE_API = environment.JAVA_API + '/public';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private oauth: OAuthService) {
   }
   // user
   getUser(username: string): Observable<any> {
@@ -69,6 +70,10 @@ export class ApiService {
 
   getDeck(id, language): Observable<any> {
     return this.http.get<any>(this.BASE_API + `/decks/${id}/language/${language}`);
+  }
+
+  getTagsByLanguage(language): Observable<any> {
+    return this.http.get<any>(this.BASE_API + `/tags/language/${language}`);
   }
 
 

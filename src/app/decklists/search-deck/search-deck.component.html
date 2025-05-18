@@ -2,6 +2,11 @@
   <form [formGroup]="searchForm" (ngSubmit)="search()">
     <div class="filterWrapper" style="flex-direction:column; position: relative">
       <button style="position: absolute; right: 0; width: 60px; height: 60px;" (click)="resetFilters()">Reset</button>
+      <button *ngIf="isLoggedIn" style="position: absolute; right: 0; top: 80px;width: 60px; height: 60px;"
+              (click)="toggleFavoriteFilter()">
+        <mat-icon [ngStyle]="{color: favoritesOnly ? 'red': 'white'}">favorite
+        </mat-icon>
+      </button>
 
       <div style=" display: flex; flex-direction: row">
         <app-god-dropdown [selectedGods]="selectedGods" (onSelectGod)="selectGod($event)"></app-god-dropdown>
@@ -10,6 +15,19 @@
           @for (god of selectedGods; track god.id) {
             <img (click)="removeGod(god)" style="width: 50px" [src]="'/assets/public/gods/GOD_'+god.name+'.png'"
                  class="entry-bubble prevent-select">
+          }</div>
+      </div>
+      <div style=" display: flex; flex-direction: row">
+        <app-tag-dropdown [withCount]="true" [selectedTags]="selectedTags"
+                          (onSelectTag)="selectTag($event)"></app-tag-dropdown>
+        <div style="padding: 0 10px"></div>
+        <div style="display: flex; flex-wrap: wrap; width: 500px">
+          @for (tag of selectedTags; track tag.title) {
+            <div class="card appFont2" (click)="removeTag(tag)"
+                 style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
+ height: 40px; font-size: 16px;  font-weight: 400;">
+              <span style="padding: 0 5px"> {{ tag.title }} - {{ tag.count }}</span>
+            </div>
           }</div>
       </div>
 
@@ -49,20 +67,6 @@
                type="text" placeholder="Nom ...">
       </div>
 
-      <!--      <div class="dropdown" style="width: 140px!important;" >-->
-      <!--        <div class="dropbtn" style="height: 100%">-->
-      <!--          <span style="width: 100px; align-self: center">PA</span>-->
-      <!--          <button style="width: 50px;" (click)="toggleActionPointsCompare()">-->
-      <!--            <span *ngIf="actionPointsCompareSup"> ≥ </span>-->
-      <!--            <span *ngIf="!actionPointsCompareSup"> ≤ </span>-->
-      <!--          </button>-->
-      <!--          &lt;!&ndash;        <input formControlName="actionPointsCost"></div>&ndash;&gt;-->
-      <!--          <input class="appFont2"-->
-      <!--                 style="padding-left: 20px; width: 298px; height: 100%; background: initial; box-sizing: border-box; border-radius: 5px;"-->
-      <!--                 formControlName="actionPointsCost"-->
-      <!--                 type="text" placeholder="Nom ...">-->
-      <!--        </div>-->
-      <!--      </div>-->
       <div style="height: 40px;  padding-top: 10px; display: flex; margin-right: 30px">
         <span style="width: 40px; align-self: center">PA</span>
         <button style="width: 40px;" (click)="toggleActionPointsCompare()">
@@ -82,14 +86,6 @@
         <!--        max 11100-->
         <input style="width: 50px;" formControlName="dustCost">
       </div>
-
-      <!--      <div style="height: 40px; width: 300px;padding-top: 10px; display: flex">-->
-      <!--        <span style="width: 100px; align-self: center">Poussière</span>-->
-      <!--        <button style="width: 50px;" (click)="toggleDustCompare()">-->
-      <!--          <span *ngIf="dustCompareSup"> ≥ </span>-->
-      <!--          <span *ngIf="!dustCompareSup"> ≤ </span>-->
-      <!--        </button>-->
-      <!--        <input formControlName="dustCost" class="search-input"></div>-->
     </div>
 
     <!--    prévoir une séparation plus clean-->
@@ -98,11 +94,14 @@
     <div class="listDeck">
       @for (deck of decks; track deck.deckId) {
         <div [routerLink]="['/decks/view', deck.deckId]" class="deck" [ngClass]="deck.god">
-          <div style="display: flex; flex-direction: colu mn; width: 130px">
+          <div style="display: flex; flex-direction: column; width: 130px">
             <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-            <div style="display: flex; justify-content: space-evenly">
-              <mat-icon (click)="0;$event.preventDefault()">star</mat-icon>
-              <mat-icon (click)="0;$event.preventDefault()">favorite</mat-icon>
+            <div [ngStyle]="{cursor: isLoggedIn ? 'pointer': 'default'}"
+                 style="display: flex; justify-content: center"
+                 (click)="toggleFavorite(deck);$event.stopPropagation();$event.preventDefault()">
+              <mat-icon [ngStyle]="{color: deck.liked ? 'red': 'white'}">favorite
+              </mat-icon>
+              {{ deck.favoriteCount }}
             </div>
           </div>
           <div style="display: flex; flex-direction: column; justify-content: center; width: calc(85% - 400px)">

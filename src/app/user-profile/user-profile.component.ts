@@ -4,6 +4,7 @@ import {ApiService} from "../api/api.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthenticatedApiService} from "../api/authenticated-api.service";
 import {environment} from "../../environments/environment";
+import {filter, map, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-user-profile',
@@ -15,6 +16,7 @@ export class UserProfileComponent {
   url = environment.TWITCH_AUTH_URL
 
   user: any;
+  favorites = [];
 
   form: FormGroup;
 
@@ -22,13 +24,17 @@ export class UserProfileComponent {
   @Input() set username(value: string) {
     if (!value) {
       // si pas de /username alors user connecté.
-      this.storeService.getUser().subscribe(user => {
-        this.user = user;
-        this.form = new FormGroup({
-          username: new FormControl(user.username, Validators.required),
-          iconId: new FormControl(user.iconId)
-        });
-      });
+      this.storeService.getUser().pipe(
+        filter(user => user),
+        switchMap(user => {
+          this.user = user;
+          this.form = new FormGroup({
+            username: new FormControl(user.username, Validators.required),
+            iconId: new FormControl(user.iconId)
+          });
+          return this.authenticatedApiService.getRecentFavorites()
+        })
+      ).subscribe(favs => this.favorites = favs.content);
     } else {
       this.apiService.getUser(value).subscribe(user => this.user = user)
     }

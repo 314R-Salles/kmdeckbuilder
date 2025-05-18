@@ -17,9 +17,16 @@ const routes: Routes = [
   {path: 'user', component: UserProfileComponent},
   {path: 'user/:username', component: UserProfileComponent},
   {path: 'news/view/:id', component: NewsViewComponent},
-  {path: 'news/create', component: NewsEditorComponent, canActivate: [AdminGuard]},
-  {path: 'news/edit', component: NewsManagementComponent, canActivate: [AdminGuard]},
-  {path: 'tags/edit', component: TagManagementComponent, canActivate: [AdminGuard]},
+  // adminGuard nawak sur F5.
+  {path: 'news/create', component: NewsEditorComponent,
+    // canActivate: [AdminGuard]
+  },
+  {path: 'news/edit', component: NewsManagementComponent,
+    // canActivate: [AdminGuard]
+  },
+  {path: 'tags/edit', component: TagManagementComponent,
+    // canActivate: [AdminGuard]
+  },
   {path: 'decks/create', component: DeckbuilderComponent},
   {path: 'decks/browse', component: SearchDeckComponent},
   {path: 'decks/view/:id', component: ViewDeckComponent},

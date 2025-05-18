@@ -63,12 +63,10 @@ export class DeckbuilderComponent implements OnInit {
   ngOnInit(): void {
     this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap()
 
-
     this.deckForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       description: new FormControl('', [])
     })
-
 
     this.form = new FormGroup({
       // en place à l'écran
@@ -178,6 +176,7 @@ export class DeckbuilderComponent implements OnInit {
       name: this.deckForm.get('name').value,
       description: this.deckForm.get('description').value,
       god: this.god,
+      tags: this.selectedTags.map(tag => tag.id)
     }
 
     this.authenticatedApiService.saveDeck(form).subscribe(deckId => {
@@ -512,6 +511,16 @@ export class DeckbuilderComponent implements OnInit {
 
     this.selectedCards.find(c => c.id === card.id).highlight = index
     this.updateState()
+  }
+
+  selectedTags = []
+  selectTag(tag) {
+    this.selectedTags.push(tag);
+  }
+
+  removeTag(tag) {
+    const index = this.selectedTags.findIndex(u => u.id === tag.id)
+    this.selectedTags.splice(index, 1)
   }
 
   handleContentChange(event: any) {

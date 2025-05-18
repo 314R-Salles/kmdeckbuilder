@@ -8,10 +8,6 @@ import {OAuthService} from "angular-oauth2-oidc";
   providedIn: 'root'
 })
 
-// Mais en fait, la bonne pratique ça serait de pas avoir api et authApi services inclus dans le meme composant
-// si j'ai besoin du auth, c'est que je suis sur une page admin/auth
-
-// bon la bonne pratique ça serait surtout de split tout en services dédiés
 export class AuthenticatedApiService {
 
   PRIVATE_BASE_API = environment.JAVA_API + '/authenticated';
@@ -35,65 +31,37 @@ export class AuthenticatedApiService {
     return this.http.get<boolean>(this.PRIVATE_BASE_API + '/user/twitch/linkAccount', {headers});
   }
 
-  unlink(): Observable<boolean> {
+  unlink(): Observable<any> {
     let headers = this.getAuthHeaders();
-    return this.http.get<boolean>(this.PRIVATE_BASE_API + '/user/twitch/remove', {headers});
+    return this.http.get<any>(this.PRIVATE_BASE_API + '/user/twitch/remove', {headers});
   }
-
 
   // return deck id
-  saveDeck(form): Observable<number> {
+  saveDeck(form): Observable<any> {
     let headers = this.getAuthHeaders();
-    return this.http.post<number>(this.PRIVATE_BASE_API + '/deck', form, {headers})
+    return this.http.post(this.PRIVATE_BASE_API + '/deck', form, {headers, responseType: "text"})
+  }
+
+  addToFavorites(deckId): Observable<number> {
+    let headers = this.getAuthHeaders();
+    return this.http.get<number>(this.PRIVATE_BASE_API + '/user/favorite/add/' + deckId, {headers})
+  }
+
+  removeFromFavorites(deckId): Observable<number> {
+    let headers = this.getAuthHeaders();
+    return this.http.get<number>(this.PRIVATE_BASE_API + '/user/favorite/remove/' + deckId, {headers})
+  }
+
+  getDecks(form: any): Observable<any> {
+    let headers = this.getAuthHeaders();
+    return this.http.post<any>(this.PRIVATE_BASE_API + `/decks`, form,  {headers});
   }
 
 
-  getAllNewsIds(): Observable<any[]> {
+  getRecentFavorites(): Observable<any> {
     let headers = this.getAuthHeaders();
-    return this.http.get<any[]>(this.PRIVATE_BASE_API + `/news`, {headers});
+    return this.http.post<any>(this.PRIVATE_BASE_API + `/decks/recentFavorites`, null,  {headers});
   }
-
-  deleteNews(id: number) {
-    let headers = this.getAuthHeaders();
-    return this.http.delete(this.PRIVATE_BASE_API + `/news/${id}`, {headers});
-  }
-
-  update(content: string, id: number) {
-    let headers = this.getAuthHeaders();
-    return this.http.put(this.PRIVATE_BASE_API + `/news/${id}`, content, {headers});
-  }
-
-  saveNews(content: any) {
-    let headers = this.getAuthHeaders();
-    return this.http.post(this.PRIVATE_BASE_API + '/news', content, {headers});
-  }
-
-
-  disableNews(id: number): Observable<boolean> {
-    let headers = this.getAuthHeaders();
-    return this.http.post<boolean>(this.PRIVATE_BASE_API + `/news/disable/${id}`, null, {headers});
-  }
-
-
-  saveIllustration(b64: string, title: string): Observable<number> {
-    let headers = this.getAuthHeaders();
-    return this.http.post<number>(this.PRIVATE_BASE_API + `/illustrations`, {b64, title}, {headers});
-  }
-
-  // Theoriquement pas besoin de protéger, mais autant etre carré
-  getIllustrationsTitles(): Observable<any[]> {
-    let headers = this.getAuthHeaders();
-    return this.http.get<any[]>(this.PRIVATE_BASE_API + '/illustrations', {headers})
-  }
-
-  getIllustration(id: any): Observable<string> {
-    let headers = this.getAuthHeaders();
-    return this.http.get<string>(this.PRIVATE_BASE_API + `/illustrations/${id}`, {
-      headers,
-      responseType: 'text' as 'json'
-    });
-  }
-
 
   private getAuthHeaders() {
     let headers = new HttpHeaders();

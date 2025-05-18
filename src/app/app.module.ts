@@ -35,6 +35,7 @@ import { OwnerDropdownComponent } from './decklists/search/owner-dropdown/owner-
 import { GodDropdownComponent } from './decklists/search/god-dropdown/god-dropdown.component';
 import { HighlightDisplayComponent } from './decklists/search/highlight-display/highlight-display.component';
 import { TagManagementComponent } from './admin/tag-management/tag-management.component';
+import { TagDropdownComponent } from './decklists/search/tag-dropdown/tag-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { TagManagementComponent } from './admin/tag-management/tag-management.co
     GodDropdownComponent,
     HighlightDisplayComponent,
     TagManagementComponent,
+    TagDropdownComponent,
   ],
   imports: [
     CommonModule,

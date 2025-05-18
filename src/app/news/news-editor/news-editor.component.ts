@@ -3,6 +3,7 @@ import {ApiService} from "../../api/api.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {DomSanitizer} from '@angular/platform-browser';
 import {AuthenticatedApiService} from "../../api/authenticated-api.service";
+import {AdminApiService} from "../../api/admin-api.service";
 
 
 @Component({
@@ -19,7 +20,7 @@ export class NewsEditorComponent implements OnInit {
   savedIllustrationId: number;
 
   constructor(private sanitizer: DomSanitizer,
-              private authenticatedApiService: AuthenticatedApiService) {
+              private adminApiService: AdminApiService) {
   }
 
   ngOnInit() {
@@ -43,7 +44,7 @@ export class NewsEditorComponent implements OnInit {
   }
 
   save() {
-    this.authenticatedApiService.saveNews({
+    this.adminApiService.saveNews({
       title: this.newsForm.get('title').value,
       content: this.newsForm.get('content').value,
       illustrationId: this.newsForm.get('illustrationId').value,
@@ -51,11 +52,11 @@ export class NewsEditorComponent implements OnInit {
   }
 
   getIllustrationsList() {
-    this.authenticatedApiService.getIllustrationsTitles().subscribe(titles => this.titles = titles)
+    this.adminApiService.getIllustrationsTitles().subscribe(titles => this.titles = titles)
   }
 
   setIllustration(id: any) {
-    this.authenticatedApiService.getIllustration(id).subscribe(illustration => {
+    this.adminApiService.getIllustration(id).subscribe(illustration => {
       this.displayedIllustration = this.sanitizer.bypassSecurityTrustResourceUrl(illustration);
       this.newsForm.patchValue({illustrationId: id});
       this.newsForm.markAsTouched('illustrationId');
@@ -72,7 +73,7 @@ export class NewsEditorComponent implements OnInit {
     debugger
     reader.readAsDataURL(this.illustrationForm.get('content').value);
     reader.onloadend = () => {
-      this.authenticatedApiService.saveIllustration(reader.result as string, this.illustrationForm.get('title').value).subscribe(
+      this.adminApiService.saveIllustration(reader.result as string, this.illustrationForm.get('title').value).subscribe(
         id => {
           this.savedIllustrationId = id;
           this.getIllustrationsList();

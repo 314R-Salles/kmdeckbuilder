@@ -23,10 +23,6 @@ export class OwnerDropdownComponent {
     })
   }
 
-  openDropdown() {
-    this.displayDropdown = true;
-  }
-
   filterUsers() {
     this.displayDropdown = true;
     this.displayedUsers = this.allUsers.filter(result => !this.selectedUsers.map(c => c.username).includes(result.username));
@@ -34,7 +30,7 @@ export class OwnerDropdownComponent {
   }
 
   selectUser(user) {
-    this.displayedUsers = this.displayedUsers.filter(u => u.username !== user.username);
+    // this.displayedUsers = this.displayedUsers.filter(u => u.username !== user.username);
     this.onSelectUser.emit(user);
   }
 

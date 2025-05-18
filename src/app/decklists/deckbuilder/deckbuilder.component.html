@@ -90,8 +90,6 @@
                                        [selectedCards]="illustrations"
                                        (onSelectCard)="setCardAtIndex($event, selectedIndex)"></app-card-dropdown>
                   </div>
-
-
                 </div>
 
                 <div style="position: absolute; top: 10px; left: 400px" *ngIf="illustrationsNumber=== 1">
@@ -106,6 +104,23 @@
 
               </div>
             </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; width: fit-content; padding: 5px;">
+            <label style="font-size: 20px"> Tags : </label>
+            <div style="background: #c6f8ff">
+              <app-tag-dropdown [selectedTags]="selectedTags"
+                                (onSelectTag)="selectTag($event)">
+              </app-tag-dropdown>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; width: 500px">
+              @for (tag of selectedTags; track tag.title) {
+                <div class="card appFont2" (click)="removeTag(tag)"
+                     style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
+ height: 40px; font-size: 16px;  font-weight: 400;">
+                  <span style="padding: 0 5px"> {{ tag.title }} </span>
+                </div>
+              }</div>
           </div>
 
           <div style="display: flex; flex-direction: column; width: fit-content; padding: 5px;">
