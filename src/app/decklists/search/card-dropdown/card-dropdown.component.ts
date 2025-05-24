@@ -31,7 +31,7 @@ export class CardDropdownComponent implements OnChanges {
   displayDropdown = false
 
   ngOnChanges(): void {
-    this.fromInput = !!this.cardOptions.length
+    this.fromInput = !!this.cardOptions?.length
     if (this.fromInput) {
       this.searchedCards = this.cardOptions.filter(result => !this.selectedCards.map(c => c.id).includes(result.id));
       this.searchedCards = this.searchedCards.filter(result => !this.cardName || result.name.toLowerCase().includes(this.cardName.toLowerCase()));

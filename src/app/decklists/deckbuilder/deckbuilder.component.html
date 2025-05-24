@@ -1,4 +1,4 @@
-<km-section [title]="currentTab ===1 ? null :'Création du deck'"
+<km-section [title]="currentTab ===1 ? null : isUpdate ? 'Mise à jour du deck' : 'Création du deck'"
             [titleSuffix]="currentTab ===0 ? ' --- Choix du dieu' : ' --- Compléments'"
             [forceSize]="currentTab ===1"
             [requiresLogin]="true">
@@ -21,7 +21,9 @@
     <!--    </div>-->
     <!--    <hr>-->
     <!-- || currentTab == 1     && selectedCards.length != 45"-->
-    <button *ngIf="currentTab > 0" type="button" id="prevBtn" (click)="nextPrev(-1)">Previous</button>
+    <button *ngIf="currentTab == 2 || currentTab == 1 && !isUpdate" type="button" id="prevBtn" (click)="nextPrev(-1)">
+      Previous
+    </button>
     <button [disabled]="currentTab == 0 && !god "
             *ngIf="currentTab < 2" type="button" id="nextBtn" (click)="nextPrev(1)">Next
     </button>
@@ -60,7 +62,9 @@
 
 
     </div>
-    <div *ngIf="currentTab === 2">
+    <!--    <div *ngIf="currentTab === 2">-->
+<!--    permet d'avoir l'editeur quill généré et donc le setter à l'init, à voir si ça pose souci-->
+    <div [hidden]="currentTab !== 2">
       <div class="validation">
         <form [formGroup]="deckForm">
           <div style="display: flex; flex-direction: column; padding: 5px;">
@@ -129,6 +133,7 @@
             <div style="background: #c6f8ff">
               <quill-editor
                 class="content-editor"
+                #editor
                 [modules]="quillConfiguration"
                 [styles]="{height: '200px', 'min-width': '500px', background:'white', color: 'black'}"
                 (onContentChanged)=handleContentChange($event)></quill-editor>
@@ -138,7 +143,7 @@
 
           <div style="display: flex; justify-content: flex-end">
             <button [disabled]="deckForm.invalid || countDefaultCards() !== (3-illustrationsNumber)"
-                    (click)="saveDeck()">Créer le deck
+                    (click)="saveDeck()"> {{isUpdate ? 'Enregistrer': 'Créer le deck'}}
             </button>
           </div>
         </form>

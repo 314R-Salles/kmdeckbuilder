@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Card} from '../models/card.model';
 import {ApiService} from "../../api/api.service";
@@ -9,6 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {DeckCreatedPopinComponent} from "../../popins/deck-created-popin/deck-created-popin.component";
 import {Router} from "@angular/router";
 import {StoreService} from "../../store.service";
+import {QuillEditorComponent} from "ngx-quill";
 
 
 @Component({
@@ -16,7 +17,7 @@ import {StoreService} from "../../store.service";
   templateUrl: './deckbuilder.component.html',
   styleUrl: './deckbuilder.component.scss'
 })
-export class DeckbuilderComponent implements OnInit {
+export class DeckbuilderComponent implements OnInit, OnChanges {
 
   constructor(private apiService: ApiService,
               private authenticatedApiService: AuthenticatedApiService,
@@ -25,6 +26,48 @@ export class DeckbuilderComponent implements OnInit {
               private dialog: MatDialog) {
   }
 
+
+  @ViewChild('editor') description: QuillEditorComponent;
+
+  // l'input id est fourni par la route en cas d'edit
+  @Input() id: string
+  @Input() version: number
+
+  // il faut reconstituer le state
+  ngOnChanges() {
+    if (this.id) {
+      this.apiService.getDeck(this.id, this.version, "FR").subscribe(r => {
+        this.isUpdate = true
+        this.god = God[r.god]
+        this.currentTab = 1
+
+        // faut ajouter chaque carte en autant d'exemplaires que son 'count'
+        r.cards.forEach(card => {
+          for (let i = 0; i < card.count; i++) {
+            this.selectedCards.push(card)
+          }
+        })
+
+        r.highlights.forEach(h => {
+          this.selectedCards.find(c => c.id === h.cardId).highlight = h.highlightOrder
+          this.illustrations[h.highlightOrder] = this.selectedCards.find(c => c.id === h.cardId);
+
+        })
+
+        this.description.content = r.description
+
+        this.illustrationsNumber = r.highlights.length
+
+        this.deckForm.get('name').setValue(r.name)
+        this.deckForm.get('description').setValue(r.description);
+
+        this.updateState()
+        this.getFilteredCards()
+      })
+    }
+  }
+
+  isUpdate = false
   protected readonly God = God;
   CARD_ILLUSTRATIONS
   max
@@ -170,6 +213,7 @@ export class DeckbuilderComponent implements OnInit {
 
   saveDeck() {
     let form = {
+      deckId: this.id,
       cards: Object.values(this.synthese).map(card => {
         return {count: card.count, costAP: card.costAP, rarity: card.rarity, id: card.id, highlight: card.highlight}
       }),
@@ -179,16 +223,16 @@ export class DeckbuilderComponent implements OnInit {
       tags: this.selectedTags.map(tag => tag.id)
     }
 
-    this.authenticatedApiService.saveDeck(form).subscribe(deckId => {
+    this.authenticatedApiService.saveDeck(form).subscribe(response => {
       const dialogRef = this.dialog.open(DeckCreatedPopinComponent, {
         width: '400px',
         height: '300px',
-        data: {deckId}
+        data: {deckId: response.deckId, isUpdate: this.isUpdate}
       });
 
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          this.router.navigate(['/decks/view', deckId])
+          this.router.navigate(['/decks/view', response.deckId, response.version])
         } else {
           this.router.navigate(['/home'])
         }
@@ -514,6 +558,7 @@ export class DeckbuilderComponent implements OnInit {
   }
 
   selectedTags = []
+
   selectTag(tag) {
     this.selectedTags.push(tag);
   }

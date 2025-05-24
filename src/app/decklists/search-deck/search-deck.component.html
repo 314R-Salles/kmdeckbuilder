@@ -93,7 +93,7 @@
 
     <div class="listDeck">
       @for (deck of decks; track deck.deckId) {
-        <div [routerLink]="['/decks/view', deck.deckId]" class="deck" [ngClass]="deck.god">
+        <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
           <div style="display: flex; flex-direction: column; width: 130px">
             <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
             <div [ngStyle]="{cursor: isLoggedIn ? 'pointer': 'default'}"

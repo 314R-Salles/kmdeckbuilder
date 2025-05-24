@@ -18,18 +18,22 @@ const routes: Routes = [
   {path: 'user/:username', component: UserProfileComponent},
   {path: 'news/view/:id', component: NewsViewComponent},
   // adminGuard nawak sur F5.
-  {path: 'news/create', component: NewsEditorComponent,
+  {
+    path: 'news/create', component: NewsEditorComponent,
     // canActivate: [AdminGuard]
   },
-  {path: 'news/edit', component: NewsManagementComponent,
+  {
+    path: 'news/edit', component: NewsManagementComponent,
     // canActivate: [AdminGuard]
   },
-  {path: 'tags/edit', component: TagManagementComponent,
+  {
+    path: 'tags/edit', component: TagManagementComponent,
     // canActivate: [AdminGuard]
   },
   {path: 'decks/create', component: DeckbuilderComponent},
   {path: 'decks/browse', component: SearchDeckComponent},
-  {path: 'decks/view/:id', component: ViewDeckComponent},
+  {path: 'decks/view/:id/:version', component: ViewDeckComponent},
+  {path: 'decks/edit/:id/:version', component: DeckbuilderComponent},
 ];
 
 

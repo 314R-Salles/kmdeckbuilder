@@ -17,13 +17,14 @@ export class ViewDeckComponent implements OnInit {
   max
 
   // l'input id est fourni par la route
-  @Input() id: number
+  @Input() id: string
+  @Input() version: number
 
   constructor(private apiService: ApiService, private domSanitize: DomSanitizer) {
   }
 
   ngOnInit() {
-    this.apiService.getDeck(this.id, "FR").subscribe(r => {
+    this.apiService.getDeck(this.id, this.version, "FR").subscribe(r => {
       this.data = {...r, description: this.domSanitize.bypassSecurityTrustHtml(r.description)};
       this.updateState()
     })

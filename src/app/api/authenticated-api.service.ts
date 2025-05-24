@@ -36,10 +36,11 @@ export class AuthenticatedApiService {
     return this.http.get<any>(this.PRIVATE_BASE_API + '/user/twitch/remove', {headers});
   }
 
-  // return deck id
+  // return deck id and version
   saveDeck(form): Observable<any> {
     let headers = this.getAuthHeaders();
-    return this.http.post(this.PRIVATE_BASE_API + '/deck', form, {headers, responseType: "text"})
+    // return this.http.post(this.PRIVATE_BASE_API + '/deck', form, {headers, responseType: "text"})
+    return this.http.post(this.PRIVATE_BASE_API + '/deck', form, {headers})
   }
 
   addToFavorites(deckId): Observable<number> {
@@ -54,13 +55,13 @@ export class AuthenticatedApiService {
 
   getDecks(form: any): Observable<any> {
     let headers = this.getAuthHeaders();
-    return this.http.post<any>(this.PRIVATE_BASE_API + `/decks`, form,  {headers});
+    return this.http.post<any>(this.PRIVATE_BASE_API + `/decks`, form, {headers});
   }
 
 
   getRecentFavorites(): Observable<any> {
     let headers = this.getAuthHeaders();
-    return this.http.post<any>(this.PRIVATE_BASE_API + `/decks/recentFavorites`, null,  {headers});
+    return this.http.post<any>(this.PRIVATE_BASE_API + `/decks/recentFavorites`, null, {headers});
   }
 
   private getAuthHeaders() {

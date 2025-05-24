@@ -13,7 +13,6 @@ export class SelectedListComponent {
   @Input() max
   @Input() syntheseCost
 
-  // l'input est fourni par la route
   @Input() set synthese(value: { [key: string]: { count: number, rarity: any, godType: any, name: string } }) {
     if (value) {
       this.updatedSynthese = Object.values(value)
