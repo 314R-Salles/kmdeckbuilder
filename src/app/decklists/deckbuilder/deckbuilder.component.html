@@ -22,10 +22,10 @@
     <!--    <hr>-->
     <!-- || currentTab == 1     && selectedCards.length != 45"-->
     <button *ngIf="currentTab == 2 || currentTab == 1 && !isUpdate" type="button" id="prevBtn" (click)="nextPrev(-1)">
-      Previous
+      Précédent
     </button>
     <button [disabled]="currentTab == 0 && !god "
-            *ngIf="currentTab < 2" type="button" id="nextBtn" (click)="nextPrev(1)">Next
+            *ngIf="currentTab < 2" type="button" id="nextBtn" (click)="nextPrev(1)">Suivant
     </button>
     <div class="godType" *ngIf="currentTab === 0">
       <div id="sortDiv">
@@ -63,7 +63,7 @@
 
     </div>
     <!--    <div *ngIf="currentTab === 2">-->
-<!--    permet d'avoir l'editeur quill généré et donc le setter à l'init, à voir si ça pose souci-->
+    <!--    permet d'avoir l'editeur quill généré et donc le setter à l'init, à voir si ça pose souci-->
     <div [hidden]="currentTab !== 2">
       <div class="validation">
         <form [formGroup]="deckForm">
@@ -131,19 +131,17 @@
             <label style="font-size: 20px"> Description : </label>
             <!--            la div qui englobe permet de donner un style au background (toolbar + input) et le style de l'editor force pour l'input -->
             <div style="background: #c6f8ff">
-              <quill-editor
-                class="content-editor"
-                #editor
-                [modules]="quillConfiguration"
-                [styles]="{height: '200px', 'min-width': '500px', background:'white', color: 'black'}"
-                (onContentChanged)=handleContentChange($event)></quill-editor>
+              <quill-editor class="content-editor"
+                            formControlName="description"
+                            [modules]="quillConfiguration"
+                            [styles]="{height: '200px', 'min-width': '500px', background:'white', color: 'black'}"
+              ></quill-editor>
             </div>
           </div>
 
-
           <div style="display: flex; justify-content: flex-end">
             <button [disabled]="deckForm.invalid || countDefaultCards() !== (3-illustrationsNumber)"
-                    (click)="saveDeck()"> {{isUpdate ? 'Enregistrer': 'Créer le deck'}}
+                    (click)="saveDeck()"> {{ isUpdate ? 'Enregistrer' : 'Créer le deck' }}
             </button>
           </div>
         </form>

@@ -1,7 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {ApiService} from "../../api/api.service";
 import {CardRarity, CardType, COMMUNE, CREA, INFINITE, KROSMIQUE, PEU_COMMUNE, RARE, SORT} from "../models/enums";
 import {DomSanitizer} from "@angular/platform-browser";
+import {StoreService} from "../../store.service";
+import {switchMap} from "rxjs";
 
 
 @Component({
@@ -9,25 +11,38 @@ import {DomSanitizer} from "@angular/platform-browser";
   templateUrl: './view-deck.component.html',
   styleUrl: './view-deck.component.scss'
 })
-export class ViewDeckComponent implements OnInit {
-  data;
+export class ViewDeckComponent implements OnChanges {
+  data: any;
   synthese
   syntheseRarete
   syntheseCost
   max
 
+  displayDropdown = false
+
+
+  canEdit = false
+  canClone = false
+
   // l'input id est fourni par la route
   @Input() id: string
   @Input() version: number
 
-  constructor(private apiService: ApiService, private domSanitize: DomSanitizer) {
+  constructor(private apiService: ApiService, private domSanitize: DomSanitizer, private storeService: StoreService) {
   }
 
-  ngOnInit() {
-    this.apiService.getDeck(this.id, this.version, "FR").subscribe(r => {
-      this.data = {...r, description: this.domSanitize.bypassSecurityTrustHtml(r.description)};
-      this.updateState()
+  ngOnChanges() {
+    this.apiService.getDeck(this.id, this.version, "FR").pipe(
+      switchMap(r => {
+        this.data = {...r, description: this.domSanitize.bypassSecurityTrustHtml(r.description)};
+        this.updateState();
+
+        return this.storeService.getUser()
+      })).subscribe(user => {
+        this.canEdit = user?.username === this.data.owner
+        this.canClone = this.canEdit || user
     })
+
   }
 
 

@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Stream} from "../models/stream";
 import {Vod} from "../models/vod";
 import {YtVideo} from "../models/ytVideo";
-import {OAuthService} from "angular-oauth2-oidc";
 
 
 @Injectable({
@@ -15,7 +14,7 @@ export class ApiService {
 
   BASE_API = environment.JAVA_API + '/public';
 
-  constructor(private http: HttpClient, private oauth: OAuthService) {
+  constructor(private http: HttpClient) {
   }
 
   // user

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Card} from '../models/card.model';
 import {ApiService} from "../../api/api.service";
@@ -7,9 +7,8 @@ import {CardType, CREA, DEFAULT_CARD, God, SORT} from "../models/enums";
 import {AuthenticatedApiService} from "../../api/authenticated-api.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeckCreatedPopinComponent} from "../../popins/deck-created-popin/deck-created-popin.component";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {StoreService} from "../../store.service";
-import {QuillEditorComponent} from "ngx-quill";
 
 
 @Component({
@@ -17,57 +16,28 @@ import {QuillEditorComponent} from "ngx-quill";
   templateUrl: './deckbuilder.component.html',
   styleUrl: './deckbuilder.component.scss'
 })
-export class DeckbuilderComponent implements OnInit, OnChanges {
+export class DeckbuilderComponent implements OnInit, AfterViewInit {
 
   constructor(private apiService: ApiService,
               private authenticatedApiService: AuthenticatedApiService,
               private router: Router,
               private storeService: StoreService,
+              private route: ActivatedRoute,
               private dialog: MatDialog) {
   }
 
-
-  @ViewChild('editor') description: QuillEditorComponent;
 
   // l'input id est fourni par la route en cas d'edit
   @Input() id: string
   @Input() version: number
 
-  // il faut reconstituer le state
-  ngOnChanges() {
-    if (this.id) {
-      this.apiService.getDeck(this.id, this.version, "FR").subscribe(r => {
-        this.isUpdate = true
-        this.god = God[r.god]
-        this.currentTab = 1
-
-        // faut ajouter chaque carte en autant d'exemplaires que son 'count'
-        r.cards.forEach(card => {
-          for (let i = 0; i < card.count; i++) {
-            this.selectedCards.push(card)
-          }
-        })
-
-        r.highlights.forEach(h => {
-          this.selectedCards.find(c => c.id === h.cardId).highlight = h.highlightOrder
-          this.illustrations[h.highlightOrder] = this.selectedCards.find(c => c.id === h.cardId);
-
-        })
-
-        this.description.content = r.description
-
-        this.illustrationsNumber = r.highlights.length
-
-        this.deckForm.get('name').setValue(r.name)
-        this.deckForm.get('description').setValue(r.description);
-
-        this.updateState()
-        this.getFilteredCards()
-      })
-    }
+  ngAfterViewInit() {
+    this.initFromParams()
   }
 
+
   isUpdate = false
+  isClone = false
   protected readonly God = God;
   CARD_ILLUSTRATIONS
   max
@@ -104,6 +74,7 @@ export class DeckbuilderComponent implements OnInit, OnChanges {
 
 
   ngOnInit(): void {
+
     this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap()
 
     this.deckForm = new FormGroup({
@@ -243,6 +214,72 @@ export class DeckbuilderComponent implements OnInit, OnChanges {
       //   this.router.navigateByUrl(this.router.url.substring(0, this.router.url.indexOf("?")))
       // )
     })
+  }
+
+
+
+  initFromParams() {
+    this.route.queryParamMap.subscribe(params => {
+      if (params.get("from")) {
+        this.apiService.getDeck(params.get("from"), params.get("v"), "FR").subscribe(r => {
+
+          this.isClone = true
+          this.god = God[r.god]
+          this.currentTab = 1
+
+          // faut ajouter chaque carte en autant d'exemplaires que son 'count'
+          r.cards.forEach(card => {
+            for (let i = 0; i < card.count; i++) {
+              this.selectedCards.push(card)
+            }
+          })
+
+          r.highlights.forEach(h => {
+            this.selectedCards.find(c => c.id === h.cardId).highlight = h.highlightOrder
+            this.illustrations[h.highlightOrder] = this.selectedCards.find(c => c.id === h.cardId);
+
+          })
+
+          this.illustrationsNumber = r.highlights.length
+
+          this.deckForm.get('name').setValue(r.name)
+          this.deckForm.get('description').setValue(r.description);
+
+          this.updateState()
+          this.getFilteredCards()
+        })
+      }
+    })
+
+
+    if (this.id) {
+      this.apiService.getDeck(this.id, this.version, "FR").subscribe(r => {
+        this.isUpdate = true
+        this.god = God[r.god]
+        this.currentTab = 1
+
+        // faut ajouter chaque carte en autant d'exemplaires que son 'count'
+        r.cards.forEach(card => {
+          for (let i = 0; i < card.count; i++) {
+            this.selectedCards.push(card)
+          }
+        })
+
+        r.highlights.forEach(h => {
+          this.selectedCards.find(c => c.id === h.cardId).highlight = h.highlightOrder
+          this.illustrations[h.highlightOrder] = this.selectedCards.find(c => c.id === h.cardId);
+
+        })
+
+        this.illustrationsNumber = r.highlights.length
+
+        this.deckForm.get('name').setValue(r.name)
+        this.deckForm.get('description').setValue(r.description);
+
+        this.updateState()
+        this.getFilteredCards()
+      })
+    }
   }
 
   pageUp() {
@@ -566,12 +603,6 @@ export class DeckbuilderComponent implements OnInit, OnChanges {
   removeTag(tag) {
     const index = this.selectedTags.findIndex(u => u.id === tag.id)
     this.selectedTags.splice(index, 1)
-  }
-
-  handleContentChange(event: any) {
-    let description = event.html
-    this.deckForm.patchValue({description});
-    this.deckForm.get('description').markAsTouched();
   }
 
   quillConfiguration = {

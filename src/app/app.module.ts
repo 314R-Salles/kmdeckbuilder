@@ -15,27 +15,28 @@ import {AppInitializerService} from "./app-initializer.service";
 import {HomeComponent} from './home/home.component';
 import {NewsViewComponent} from './news/news-view/news-view.component';
 import {NewsManagementComponent} from './news/news-management/news-management.component';
-import {OAuthModule, provideOAuthClient} from "angular-oauth2-oidc";
+import {OAuthModule, OAuthStorage, provideOAuthClient} from "angular-oauth2-oidc";
 import {EmailVerifiedPopinComponent} from './popins/email-verified-popin/email-verified-popin.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FilterFormComponent} from "./decklists/filter-form/filter-form.component";
 import {DeckbuilderComponent} from './decklists/deckbuilder/deckbuilder.component';
 import {SelectedListComponent} from './decklists/selected-list/selected-list.component';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
-import { SynthesisGaugeComponent } from './decklists/synthesis-gauge/synthesis-gauge.component';
-import { SynthesisComponent } from './decklists/synthesis/synthesis.component';
+import {SynthesisGaugeComponent} from './decklists/synthesis-gauge/synthesis-gauge.component';
+import {SynthesisComponent} from './decklists/synthesis/synthesis.component';
 import {DeckCreatedPopinComponent} from "./popins/deck-created-popin/deck-created-popin.component";
-import { SearchDeckComponent } from './decklists/search-deck/search-deck.component';
-import { ViewDeckComponent } from './decklists/view-deck/view-deck.component';
-import { RaritySynthesisComponent } from './decklists/rarity-synthesis/rarity-synthesis.component';
-import { ViewListComponent } from './decklists/view-list/view-list.component';
-import { SectionComponent } from './section/section.component';
-import { CardDropdownComponent } from './decklists/search/card-dropdown/card-dropdown.component';
-import { OwnerDropdownComponent } from './decklists/search/owner-dropdown/owner-dropdown.component';
-import { GodDropdownComponent } from './decklists/search/god-dropdown/god-dropdown.component';
-import { HighlightDisplayComponent } from './decklists/search/highlight-display/highlight-display.component';
-import { TagManagementComponent } from './admin/tag-management/tag-management.component';
-import { TagDropdownComponent } from './decklists/search/tag-dropdown/tag-dropdown.component';
+import {SearchDeckComponent} from './decklists/search-deck/search-deck.component';
+import {ViewDeckComponent} from './decklists/view-deck/view-deck.component';
+import {RaritySynthesisComponent} from './decklists/rarity-synthesis/rarity-synthesis.component';
+import {ViewListComponent} from './decklists/view-list/view-list.component';
+import {SectionComponent} from './section/section.component';
+import {CardDropdownComponent} from './decklists/search/card-dropdown/card-dropdown.component';
+import {OwnerDropdownComponent} from './decklists/search/owner-dropdown/owner-dropdown.component';
+import {GodDropdownComponent} from './decklists/search/god-dropdown/god-dropdown.component';
+import {HighlightDisplayComponent} from './decklists/search/highlight-display/highlight-display.component';
+import {TagManagementComponent} from './admin/tag-management/tag-management.component';
+import {TagDropdownComponent} from './decklists/search/tag-dropdown/tag-dropdown.component';
+import {VersionDropdownComponent} from "./decklists/version-dropdown/version-dropdown.component";
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { TagDropdownComponent } from './decklists/search/tag-dropdown/tag-dropdo
     HighlightDisplayComponent,
     TagManagementComponent,
     TagDropdownComponent,
+    VersionDropdownComponent,
   ],
   imports: [
     CommonModule,
@@ -90,6 +92,7 @@ import { TagDropdownComponent } from './decklists/search/tag-dropdown/tag-dropdo
     provideClientHydration(),
     provideHttpClient(), //???
     provideOAuthClient(), //???
+    {provide: OAuthStorage, useFactory: storageFactory},
 // {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true},
     {
       provide: APP_INITIALIZER,
@@ -103,6 +106,11 @@ import { TagDropdownComponent } from './decklists/search/tag-dropdown/tag-dropdo
 })
 export class AppModule {
 }
+
+function storageFactory(): OAuthStorage {
+  return localStorage;
+}
+
 
 export function initApp(appLoaderService: AppInitializerService) {
   return () => appLoaderService.initApp();
