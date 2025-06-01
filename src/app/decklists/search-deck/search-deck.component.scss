@@ -139,44 +139,46 @@
   border: 5px solid #523C39FF;
 }
 
+$transparency: 0.5;
+
 .IOP:hover {
-  background: rgba(163, 33, 14, 0.2);
+  background: rgba(163, 33, 14, $transparency);
 }
 
 .ECAFLIP:hover {
-  background: rgba(108, 16, 132, 0.2);
+  background: rgba(108, 16, 132, $transparency);
 }
 
 .CRA:hover {
-  background: rgba(66, 70, 23, 0.2);
+  background: rgba(66, 70, 23, $transparency);
 }
 
 .ENIRIPSA:hover {
-  background: rgba(181, 76, 60, 0.2);
+  background: rgba(181, 76, 60, $transparency);
 }
 
 .SACRIEUR:hover {
-  background: rgba(48, 40, 33, 0.2);
+  background: rgba(48, 40, 33, $transparency);
 }
 
 .SADIDA:hover {
-  background: rgba(107, 114, 0, 0.2);
+  background: rgba(107, 114, 0, $transparency);
 }
 
 .SRAM:hover {
-  background: rgba(57, 64, 90, 0.2);
+  background: rgba(57, 64, 90, $transparency);
 }
 
 .XELOR:hover {
-  background: rgba(38, 53, 120, 0.2);
+  background: rgba(38, 53, 120, $transparency);
 }
 
 .ENUTROF:hover {
-  background: rgba(155, 116, 0, 0.2);
+  background: rgba(155, 116, 0, $transparency);
 }
 
 .FECA:hover {
-  background: rgba(82, 60, 57, 0.2);
+  background: rgba(82, 60, 57, $transparency);
 }
 
 .listDeck {

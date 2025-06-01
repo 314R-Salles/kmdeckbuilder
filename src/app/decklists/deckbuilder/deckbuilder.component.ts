@@ -26,19 +26,14 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
               private dialog: MatDialog) {
   }
 
-
   // l'input id est fourni par la route en cas d'edit
   @Input() id: string
   @Input() version: number
 
-  ngAfterViewInit() {
-    this.initFromParams()
-  }
-
-
   isUpdate = false
   isClone = false
-  protected readonly God = God;
+
+  God = God;
   CARD_ILLUSTRATIONS
   max
   displayedCards: Card[] = [];
@@ -73,8 +68,26 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
   currentTab = 0;
 
 
-  ngOnInit(): void {
+  // pour bloquer les infinites du meme nom
+  lockedSisterInfinites = []
 
+
+  illustrationsNumber = 3
+  selectedIndex = 0
+  illustrations = [
+    DEFAULT_CARD,
+    DEFAULT_CARD,
+    DEFAULT_CARD,
+  ];
+
+  selectedTags = []
+
+
+  ngAfterViewInit() {
+    this.initFromParams()
+  }
+
+  ngOnInit(): void {
     this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap()
 
     this.deckForm = new FormGroup({
@@ -83,7 +96,6 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
     })
 
     this.form = new FormGroup({
-      // en place à l'écran
       godCards: new FormControl(true),
       neutralCards: new FormControl(true),
       isSpell: new FormControl(true),
@@ -196,8 +208,9 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
 
     this.authenticatedApiService.saveDeck(form).subscribe(response => {
       const dialogRef = this.dialog.open(DeckCreatedPopinComponent, {
-        width: '400px',
-        height: '300px',
+        // width: '400px',
+        // height: '250px',
+        panelClass: 'endModalCss',
         data: {deckId: response.deckId, isUpdate: this.isUpdate}
       });
 
@@ -209,78 +222,54 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
         }
 
       });
-      // @ts-ignore
-      // dialogRef.afterClosed().subscribe(_ =>
-      //   this.router.navigateByUrl(this.router.url.substring(0, this.router.url.indexOf("?")))
-      // )
     })
   }
-
 
 
   initFromParams() {
     this.route.queryParamMap.subscribe(params => {
       if (params.get("from")) {
-        this.apiService.getDeck(params.get("from"), params.get("v"), "FR").subscribe(r => {
-
-          this.isClone = true
-          this.god = God[r.god]
-          this.currentTab = 1
-
-          // faut ajouter chaque carte en autant d'exemplaires que son 'count'
-          r.cards.forEach(card => {
-            for (let i = 0; i < card.count; i++) {
-              this.selectedCards.push(card)
-            }
-          })
-
-          r.highlights.forEach(h => {
-            this.selectedCards.find(c => c.id === h.cardId).highlight = h.highlightOrder
-            this.illustrations[h.highlightOrder] = this.selectedCards.find(c => c.id === h.cardId);
-
-          })
-
-          this.illustrationsNumber = r.highlights.length
-
-          this.deckForm.get('name').setValue(r.name)
-          this.deckForm.get('description').setValue(r.description);
-
-          this.updateState()
-          this.getFilteredCards()
+        this.apiService.getDeck(params.get("from"), params.get("v"), "FR").subscribe(deck => {
+          this.isClone = true // dans la réponse du deck => évite une erreur console
+          this.initStateFromService(deck)
         })
       }
     })
 
-
     if (this.id) {
-      this.apiService.getDeck(this.id, this.version, "FR").subscribe(r => {
+      this.apiService.getDeck(this.id, this.version, "FR").subscribe(deck => {
         this.isUpdate = true
-        this.god = God[r.god]
-        this.currentTab = 1
-
-        // faut ajouter chaque carte en autant d'exemplaires que son 'count'
-        r.cards.forEach(card => {
-          for (let i = 0; i < card.count; i++) {
-            this.selectedCards.push(card)
-          }
-        })
-
-        r.highlights.forEach(h => {
-          this.selectedCards.find(c => c.id === h.cardId).highlight = h.highlightOrder
-          this.illustrations[h.highlightOrder] = this.selectedCards.find(c => c.id === h.cardId);
-
-        })
-
-        this.illustrationsNumber = r.highlights.length
-
-        this.deckForm.get('name').setValue(r.name)
-        this.deckForm.get('description').setValue(r.description);
-
-        this.updateState()
-        this.getFilteredCards()
+        this.initStateFromService(deck)
       })
     }
   }
+
+  initStateFromService(deck) {
+    this.god = God[deck.god]
+    this.currentTab = 1
+
+    // faut ajouter chaque carte en autant d'exemplaires que son 'count'
+    deck.cards.forEach(card => {
+      for (let i = 0; i < card.count; i++) {
+        this.selectedCards.push(card)
+      }
+    })
+
+    deck.highlights.forEach(h => {
+      this.selectedCards.find(c => c.id === h.cardId).highlight = h.highlightOrder
+      this.illustrations[h.highlightOrder] = this.selectedCards.find(c => c.id === h.cardId);
+
+    })
+
+    this.illustrationsNumber = deck.highlights.length
+
+    this.deckForm.get('name').setValue(deck.name)
+    this.deckForm.get('description').setValue(deck.description);
+
+    this.updateState()
+    this.getFilteredCards()
+  }
+
 
   pageUp() {
     if (!this.searchResults.last)
@@ -353,6 +342,9 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
 
   removeCard(cardId) {
     this.selectedCards.splice(this.selectedCards.findIndex(card => card.id === cardId), 1);
+
+    // il faut prévoir que la carte retirée ne peut plus servir pour le highlight
+
     this.updateState();
   }
 
@@ -455,8 +447,85 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
   }
 
 
-  // pour limiter le nombre d'exemplaire max d'une carte.
-  // 3 pour tout le monde sauf les krosmiques / infinites à 1
+  // Méthodes pour la dernière section
+
+  countDefaultCards(): number {
+    return this.illustrations.filter(x => x === DEFAULT_CARD).length
+  }
+
+  illustDown() {
+    if (this.illustrationsNumber > 0) {
+      this.illustrations[this.illustrationsNumber - 1] = DEFAULT_CARD
+      this.illustrationsNumber--
+    }
+    if (this.selectedIndex >= this.illustrationsNumber) {
+      this.selectedIndex = this.illustrationsNumber - 1;
+    }
+
+  }
+
+  illustUp() {
+    if (this.illustrationsNumber < 3) {
+      this.illustrationsNumber++
+    }
+    if (this.selectedIndex === -1) {
+      this.selectedIndex = 0;
+    }
+  }
+
+  selectIndex(index) {
+    this.selectedIndex = index;
+  }
+
+  setCardAtIndex(card, index) {
+    this.illustrations[index] = card;
+    this.illustrations = [...this.illustrations]; // on affecte un nouveau tableau à la variable pour que le onChanges de cardDropdown se déclenche
+
+    // on reset la carte précédente
+    this.selectedCards.find(c => c.highlight === index) ? this.selectedCards.find(c => c.highlight === index).highlight = null : ''
+
+    this.selectedCards.find(c => c.id === card.id).highlight = index
+    this.updateState()
+  }
+
+  selectTag(tag) {
+    this.selectedTags.push(tag);
+  }
+
+  removeTag(tag) {
+    const index = this.selectedTags.findIndex(u => u.id === tag.id)
+    this.selectedTags.splice(index, 1)
+  }
+
+
+  nextPrev(n) {
+    this.currentTab += n
+  }
+
+
+  sidenavOpened = false
+
+  openNav() {
+    this.sidenavOpened = true
+    // document.getElementById("mySidenav").style.width = "250px";
+  }
+
+  closeNav() {
+    this.sidenavOpened = false
+    // document.getElementById("mySidenav").style.width = "0";
+  }
+
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event) {
+  // }
+
+
+  ////////////////////////////////////////
+  /**            CONSTANTS              */
+    ////////////////////////////////////////
+
+    // pour limiter le nombre d'exemplaires max d'une carte.
+    // 3 pour tout le monde sauf les krosmiques / infinites à 1
 
   limitationNbrExemplaires = {
     COMMUNE: 3,
@@ -466,7 +535,7 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
     INFINITE: 1
   }
 
-  // pour limiter les krosmiques à 7 et infintes à 5
+  // pour limiter les krosmiques à 7 et infinites à 5
   limitationRarete = {
     COMMUNE: -1,
     PEU_COMMUNE: -1,
@@ -475,8 +544,27 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
     INFINITE: 5
   }
 
-  // pour bloquer les infinites du meme nom
-  lockedSisterInfinites = []
+  quillConfiguration = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+      // [{list: 'ordered'}, {list: 'bullet'}],
+      [{
+        header: [1, 2, 3,
+          // 4, 5, 6,
+          false]
+      }],
+      [{color: []}, {background: []}],
+      // ['link'],
+      ['clean'],
+    ],
+  }
+
+
+  ////////////////////////////////////////
+  /**            GETTERS                */
+  ////////////////////////////////////////
+
 
   get isSpell() {
     return this.form.get('isSpell').value;
@@ -524,100 +612,5 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
 
   get pageSize() {
     return this.form.get('pageSize').value;
-  }
-
-  nextPrev(n) {
-    this.currentTab += n
-  }
-
-
-  sidenavOpened = false
-
-  openNav() {
-    this.sidenavOpened = true
-    // document.getElementById("mySidenav").style.width = "250px";
-  }
-
-  closeNav() {
-    this.sidenavOpened = false
-    // document.getElementById("mySidenav").style.width = "0";
-  }
-
-  // @HostListener('window:resize', ['$event'])
-  // onResize(event) {
-  // }
-
-  illustrationsNumber = 3
-  selectedIndex = 0
-  illustrations = [
-    DEFAULT_CARD,
-    DEFAULT_CARD,
-    DEFAULT_CARD,
-  ];
-
-  countDefaultCards(): number {
-    return this.illustrations.filter(x => x === DEFAULT_CARD).length
-  }
-
-  illustDown() {
-    if (this.illustrationsNumber > 0) {
-      this.illustrations[this.illustrationsNumber - 1] = DEFAULT_CARD
-      this.illustrationsNumber--
-    }
-    if (this.selectedIndex >= this.illustrationsNumber) {
-      this.selectedIndex = this.illustrationsNumber - 1;
-    }
-
-  }
-
-  illustUp() {
-    if (this.illustrationsNumber < 3) {
-      this.illustrationsNumber++
-    }
-    if (this.selectedIndex === -1) {
-      this.selectedIndex = 0;
-    }
-  }
-
-  selectIndex(index) {
-    this.selectedIndex = index;
-  }
-
-  setCardAtIndex(card, index) {
-    this.illustrations[index] = card;
-    this.illustrations = [...this.illustrations]; // on affecte un nouveau tableau à la variable pour que le onChanges de cardDropdown se déclenche
-
-    // on reset la carte précédente
-    this.selectedCards.find(c => c.highlight === index) ? this.selectedCards.find(c => c.highlight === index).highlight = null : ''
-
-    this.selectedCards.find(c => c.id === card.id).highlight = index
-    this.updateState()
-  }
-
-  selectedTags = []
-
-  selectTag(tag) {
-    this.selectedTags.push(tag);
-  }
-
-  removeTag(tag) {
-    const index = this.selectedTags.findIndex(u => u.id === tag.id)
-    this.selectedTags.splice(index, 1)
-  }
-
-  quillConfiguration = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote', 'code-block'],
-      // [{list: 'ordered'}, {list: 'bullet'}],
-      [{
-        header: [1, 2, 3,
-          // 4, 5, 6,
-          false]
-      }],
-      [{color: []}, {background: []}],
-      // ['link'],
-      ['clean'],
-    ],
   }
 }
