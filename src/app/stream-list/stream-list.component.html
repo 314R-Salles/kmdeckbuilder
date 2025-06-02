@@ -31,7 +31,8 @@
       <div id="fill"></div>
     </div>
 
-    <div class="streams-panel" id="TwitchLive" style="">
+    <div>
+<!--    <div class="streams-panel" id="TwitchLive" style="">-->
       @for (stream of streams; track stream.username; let idx = $index, e = $even) {
         <div class="stream-thumbnail" style="color:black; max-width:320px;"><a href={{stream.url}} target="_blank"
                                                                                title="{{stream.title}}"
@@ -63,7 +64,8 @@
       }
     </div>
 
-    <div class="streams-panel" id="TwitchVod" style="display:flex;">
+    <div>
+<!--    <div class="streams-panel" id="TwitchVod" style="display:flex;">-->
       @for (vod of vods; track vod.id; let idx = $index, e = $even) {
         <div class="stream-thumbnail" style="color:black; max-width:320px;"><a href={{vod.url}} target="_blank"
                                                                                title="{{vod.title}}"
@@ -96,7 +98,8 @@
       }
     </div>
 
-    <div class="streams-panel" id="YoutubeVod" style="">
+<!--    <div class="streams-panel" id="YoutubeVod" style="">-->
+    <div>
       @for (video of videos; track video.url; let idx = $index, e = $even) {
         <div class="stream-thumbnail">
           <a href={{video.url}} target="_blank" style="color:black"><img src={{video.thumbnailUrl}}>

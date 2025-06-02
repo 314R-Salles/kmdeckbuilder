@@ -33,6 +33,7 @@ import { SectionComponent } from './section/section.component';
 import { CardDropdownComponent } from './decklists/search/card-dropdown/card-dropdown.component';
 import { OwnerDropdownComponent } from './decklists/search/owner-dropdown/owner-dropdown.component';
 import { GodDropdownComponent } from './decklists/search/god-dropdown/god-dropdown.component';
+import { MediaComponent } from './media/media.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { GodDropdownComponent } from './decklists/search/god-dropdown/god-dropdo
     CardDropdownComponent,
     OwnerDropdownComponent,
     GodDropdownComponent,
+    MediaComponent,
   ],
   imports: [
     CommonModule,
