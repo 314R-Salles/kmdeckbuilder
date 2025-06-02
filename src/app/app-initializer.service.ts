@@ -1,11 +1,10 @@
-import {afterNextRender, Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {ApiService} from "./api/api.service";
 import {StoreService} from "./store.service";
-import {from, tap} from "rxjs";
+import {from, switchMap, tap} from "rxjs";
 import {AuthenticatedApiService} from "./api/authenticated-api.service";
 import {OAuthService} from "angular-oauth2-oidc";
 import {isPlatformBrowser} from "@angular/common";
-import {AuthService} from "./auth.service";
 import {environment} from "../environments/environment";
 
 @Injectable({
@@ -17,7 +16,6 @@ export class AppInitializerService {
               private storeService: StoreService,
               private authenticatedApiService: AuthenticatedApiService,
               private oauthService: OAuthService,
-              private authService: AuthService,
               @Inject(PLATFORM_ID) private platformId: any) {
   }
 
@@ -28,36 +26,42 @@ export class AppInitializerService {
         this.authenticatedApiService.linkAccount(token).subscribe(user => this.storeService.setUser(user))
       }
 
+      // sert plus à rien ça
       this.apiService.getLatestNewsIds(3).subscribe(news =>
         this.storeService.setNews(news)
       )
-      // this.authService.initConf();
-      this.oauthService.configure({
-        // URL of identity provider. https://<YOUR_DOMAIN>.auth0.com
-        issuer: 'https://dev-ia8kmebkqhrnkdv1.eu.auth0.com/',
-        redirectUri: environment.REDIRECT_URI, // doit etre environment host : krosma.ga
-        clientId: 'ZqIWm3UfEuSjX0RaliUtVyaEzQ7iBc09',
-        responseType: 'code',
-        scope: 'openid profile admin',
-        showDebugInformation: true,
-        silentRefreshRedirectUri: window.location.origin,
-        useSilentRefresh: true,
-        customQueryParams: {
-          /**
-           * replace with your API-Audience
-           * This is very important to retrieve a valid access_token for our API
-           * */
-          audience: environment.AUDIENCE,
-        },
 
-      });
-      return from(this.oauthService.loadDiscoveryDocumentAndTryLogin()).pipe(
+      return this.apiService.getCardIllustrations().pipe(
+        switchMap(cardList => {
+          this.storeService.setCardIllustrations(cardList)
+          this.oauthService.configure({
+            // URL of identity provider. https://<YOUR_DOMAIN>.auth0.com
+            issuer: 'https://dev-ia8kmebkqhrnkdv1.eu.auth0.com/',
+            redirectUri: environment.REDIRECT_URI, // doit etre environment host : krosma.ga
+            clientId: 'ZqIWm3UfEuSjX0RaliUtVyaEzQ7iBc09',
+            responseType: 'code',
+            scope: 'openid profile admin',
+            showDebugInformation: true,
+            silentRefreshRedirectUri: window.location.origin,
+            useSilentRefresh: true,
+            customQueryParams: {
+              /**
+               * replace with your API-Audience
+               * This is very important to retrieve a valid access_token for our API
+               * */
+              audience: environment.AUDIENCE,
+            },
+
+          });
+          return from(this.oauthService.loadDiscoveryDocumentAndTryLogin())
+        }),
         tap(_ => this.oauthService.setupAutomaticSilentRefresh()),
         tap(_ => {
           this.authenticatedApiService.getCurrentUser().subscribe(user => {
-          this.storeService.setUser(user);
-        })})
-      );
+            this.storeService.setUser(user);
+          })
+        })
+      )
     } else {
       return true
     }

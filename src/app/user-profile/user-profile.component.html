@@ -1,5 +1,6 @@
 <km-section [title]="'Profil'" [requiresLogin]="true">
 
+  <!--  il faut le if user sinon c'est évalué, meme avec le requiresLogin du km-section-->
   @if (user) {
     @if (!username) {
       !!! Vous devez définir un nom d'utilisateur avant de pouvoir pleinement utiliser le site
@@ -35,6 +36,25 @@
     }
 
     <br>
-    Derniere connexion le : {{ user.lastLogin |date : 'mediumDate' }}
+
+    <hr>
+    Vos derniers favoris :
+    <br>
+
+    <div class="listDeck">
+      @for (deck of favorites; track deck.deckId) {
+        <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
+          <div style="display: flex; flex-direction: column; width: 90px">
+            <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
+          </div>
+          <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
+            <div class="title">{{ deck.name }}</div>
+            <div class="author">{{ deck.owner }}</div>
+            <div class="tags">{{ deck.tags }}</div>
+          </div>
+        </div>
+      }
+    </div>
+    <!--    Derniere connexion le : {{ user.lastLogin |date : 'mediumDate' }}-->
   }
 </km-section>

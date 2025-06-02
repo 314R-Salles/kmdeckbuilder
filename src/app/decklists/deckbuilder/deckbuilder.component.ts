@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Card} from '../models/card.model';
 import {ApiService} from "../../api/api.service";
 import {debounceTime, distinctUntilChanged} from "rxjs";
-import {CardType, CREA, God, SORT} from "../models/enums";
+import {CardType, CREA, DEFAULT_CARD, God, SORT} from "../models/enums";
 import {AuthenticatedApiService} from "../../api/authenticated-api.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeckCreatedPopinComponent} from "../../popins/deck-created-popin/deck-created-popin.component";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {StoreService} from "../../store.service";
 
 
 @Component({
@@ -15,16 +16,25 @@ import {Router} from "@angular/router";
   templateUrl: './deckbuilder.component.html',
   styleUrl: './deckbuilder.component.scss'
 })
-export class DeckbuilderComponent implements OnInit {
+export class DeckbuilderComponent implements OnInit, AfterViewInit {
 
   constructor(private apiService: ApiService,
               private authenticatedApiService: AuthenticatedApiService,
               private router: Router,
+              private storeService: StoreService,
+              private route: ActivatedRoute,
               private dialog: MatDialog) {
   }
 
-  protected readonly God = God;
+  // l'input id est fourni par la route en cas d'edit
+  @Input() id: string
+  @Input() version: number
 
+  isUpdate = false
+  isClone = false
+
+  God = God;
+  CARD_ILLUSTRATIONS
   max
   displayedCards: Card[] = [];
   searchResults: {
@@ -36,15 +46,18 @@ export class DeckbuilderComponent implements OnInit {
   }
 
   selectedCards: Card[] = [];
+  synthesisAsList
   synthese: {
     [key: string]: {
       count: number,
       rarity: number,
       godType: any,
       costAP: any,
+      cardFilePath: any,
+      miniFilePath: any,
       id: any,
       name: string,
-      hightlight?: number
+      highlight?: number
     }
   }
   syntheseRarete = { COMMUNE: 0, PEU_COMMUNE: 0, RARE: 0, KROSMIQUE: 0, INFINITE: 0 }
@@ -55,14 +68,34 @@ export class DeckbuilderComponent implements OnInit {
   currentTab = 0;
 
 
+  // pour bloquer les infinites du meme nom
+  lockedSisterInfinites = []
+
+
+  illustrationsNumber = 3
+  selectedIndex = 0
+  illustrations = [
+    DEFAULT_CARD,
+    DEFAULT_CARD,
+    DEFAULT_CARD,
+  ];
+
+  selectedTags = []
+
+
+  ngAfterViewInit() {
+    this.initFromParams()
+  }
+
   ngOnInit(): void {
+    this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap()
+
     this.deckForm = new FormGroup({
-      name: new FormControl('', [Validators.required])
+      name: new FormControl('', [Validators.required]),
+      description: new FormControl('', [])
     })
 
-
     this.form = new FormGroup({
-      // en place à l'écran
       godCards: new FormControl(true),
       neutralCards: new FormControl(true),
       isSpell: new FormControl(true),
@@ -142,7 +175,7 @@ export class DeckbuilderComponent implements OnInit {
       atLessThan: atMax,
       gods: gods,
       rarity: this.rarity != -1 ? this.rarity : null,
-      language: null,
+      language: "FR",
       family: null,
       content: this.content ? this.content : null,
       pageNumber: this.pageNumber,
@@ -163,34 +196,80 @@ export class DeckbuilderComponent implements OnInit {
 
   saveDeck() {
     let form = {
+      deckId: this.id,
       cards: Object.values(this.synthese).map(card => {
-        return {count: card.count, costAP: card.costAP, rarity: card.rarity, id: card.id, hightlight: card.hightlight}
+        return {count: card.count, costAP: card.costAP, rarity: card.rarity, id: card.id, highlight: card.highlight}
       }),
       name: this.deckForm.get('name').value,
+      description: this.deckForm.get('description').value,
       god: this.god,
+      tags: this.selectedTags.map(tag => tag.id)
     }
 
-    this.authenticatedApiService.saveDeck(form).subscribe(deckId => {
+    this.authenticatedApiService.saveDeck(form).subscribe(response => {
       const dialogRef = this.dialog.open(DeckCreatedPopinComponent, {
-        width: '400px',
-        height: '300px',
-        data: { deckId }
+        // width: '400px',
+        // height: '250px',
+        panelClass: 'endModalCss',
+        data: {deckId: response.deckId, isUpdate: this.isUpdate}
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        if(result) {
-            this.router.navigate(['/decks/view', deckId])
+        if (result) {
+          this.router.navigate(['/decks/view', response.deckId, response.version])
         } else {
           this.router.navigate(['/home'])
         }
 
       });
-      // @ts-ignore
-      // dialogRef.afterClosed().subscribe(_ =>
-      //   this.router.navigateByUrl(this.router.url.substring(0, this.router.url.indexOf("?")))
-      // )
     })
   }
+
+
+  initFromParams() {
+    this.route.queryParamMap.subscribe(params => {
+      if (params.get("from")) {
+        this.apiService.getDeck(params.get("from"), params.get("v"), "FR").subscribe(deck => {
+          this.isClone = true // dans la réponse du deck => évite une erreur console
+          this.initStateFromService(deck)
+        })
+      }
+    })
+
+    if (this.id) {
+      this.apiService.getDeck(this.id, this.version, "FR").subscribe(deck => {
+        this.isUpdate = true
+        this.initStateFromService(deck)
+      })
+    }
+  }
+
+  initStateFromService(deck) {
+    this.god = God[deck.god]
+    this.currentTab = 1
+
+    // faut ajouter chaque carte en autant d'exemplaires que son 'count'
+    deck.cards.forEach(card => {
+      for (let i = 0; i < card.count; i++) {
+        this.selectedCards.push(card)
+      }
+    })
+
+    deck.highlights.forEach(h => {
+      this.selectedCards.find(c => c.id === h.cardId).highlight = h.highlightOrder
+      this.illustrations[h.highlightOrder] = this.selectedCards.find(c => c.id === h.cardId);
+
+    })
+
+    this.illustrationsNumber = deck.highlights.length
+
+    this.deckForm.get('name').setValue(deck.name)
+    this.deckForm.get('description').setValue(deck.description);
+
+    this.updateState()
+    this.getFilteredCards()
+  }
+
 
   pageUp() {
     if (!this.searchResults.last) {
@@ -264,6 +343,9 @@ export class DeckbuilderComponent implements OnInit {
 
   removeCard(cardId) {
     this.selectedCards.splice(this.selectedCards.findIndex(card => card.id === cardId), 1);
+
+    // il faut prévoir que la carte retirée ne peut plus servir pour le highlight
+
     this.updateState();
   }
 
@@ -273,20 +355,25 @@ export class DeckbuilderComponent implements OnInit {
     this.computeCostSynthesis()
   }
 
-  smallScreenChange(){
+  smallScreenChange() {
     this.form.get('godCards').setValue(true)
     this.form.get('neutralCards').setValue(true)
     this.form.get('isSpell').setValue(true)
     this.form.get('isMinion').setValue(true)
     this.form.get('apValue').setValue(null)
-    this.form.get('rarity').setValue({key: '-1', label: 'Toutes les raretés', color: 'color-all', bgColor: 'bg-color-all'})
+    this.form.get('rarity').setValue({
+      key: '-1',
+      label: 'Toutes les raretés',
+      color: 'color-all',
+      bgColor: 'bg-color-all'
+    })
     this.form.get('pageNumber').setValue(0)
     this.form.get('pageSize').setValue(10)
     this.form.get('atValue').setValue('')
     this.form.get('mpValue').setValue('')
     this.form.get('hpValue').setValue('')
 
-      // content: new FormControl(''),
+    // content: new FormControl(''),
   }
 
 
@@ -334,7 +421,7 @@ export class DeckbuilderComponent implements OnInit {
     this.synthese = {};
     this.lockedSisterInfinites = []
     this.syntheseRarete = {COMMUNE: 0, PEU_COMMUNE: 0, RARE: 0, KROSMIQUE: 0, INFINITE: 0}
-    return this.selectedCards.reduce((synthese, card) => {
+    this.selectedCards.reduce((synthese, card) => {
       if (card.infiniteName) {
         this.lockedSisterInfinites.push(card.infiniteName)
       }
@@ -345,11 +432,101 @@ export class DeckbuilderComponent implements OnInit {
       };
       return synthese;
     }, this.synthese)
+
+    this.synthesisAsList = Object.values(this.synthese).map(card => {
+      return {
+        name: card.name,
+        id: card.id,
+        rarity: card.rarity,
+        godType: card.godType,
+        miniFilePath: card.miniFilePath,
+        cardFilePath: card.cardFilePath,
+        highlight: card.highlight
+      }
+    })
+
   }
 
 
-  // pour limiter le nombre d'exemplaire max d'une carte.
-  // 3 pour tout le monde sauf les krosmiques / infinites à 1
+  // Méthodes pour la dernière section
+
+  countDefaultCards(): number {
+    return this.illustrations.filter(x => x === DEFAULT_CARD).length
+  }
+
+  illustDown() {
+    if (this.illustrationsNumber > 0) {
+      this.illustrations[this.illustrationsNumber - 1] = DEFAULT_CARD
+      this.illustrationsNumber--
+    }
+    if (this.selectedIndex >= this.illustrationsNumber) {
+      this.selectedIndex = this.illustrationsNumber - 1;
+    }
+
+  }
+
+  illustUp() {
+    if (this.illustrationsNumber < 3) {
+      this.illustrationsNumber++
+    }
+    if (this.selectedIndex === -1) {
+      this.selectedIndex = 0;
+    }
+  }
+
+  selectIndex(index) {
+    this.selectedIndex = index;
+  }
+
+  setCardAtIndex(card, index) {
+    this.illustrations[index] = card;
+    this.illustrations = [...this.illustrations]; // on affecte un nouveau tableau à la variable pour que le onChanges de cardDropdown se déclenche
+
+    // on reset la carte précédente
+    this.selectedCards.find(c => c.highlight === index) ? this.selectedCards.find(c => c.highlight === index).highlight = null : ''
+
+    this.selectedCards.find(c => c.id === card.id).highlight = index
+    this.updateState()
+  }
+
+  selectTag(tag) {
+    this.selectedTags.push(tag);
+  }
+
+  removeTag(tag) {
+    const index = this.selectedTags.findIndex(u => u.id === tag.id)
+    this.selectedTags.splice(index, 1)
+  }
+
+
+  nextPrev(n) {
+    this.currentTab += n
+  }
+
+
+  sidenavOpened = false
+
+  openNav() {
+    this.sidenavOpened = true
+    // document.getElementById("mySidenav").style.width = "250px";
+  }
+
+  closeNav() {
+    this.sidenavOpened = false
+    // document.getElementById("mySidenav").style.width = "0";
+  }
+
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event) {
+  // }
+
+
+  ////////////////////////////////////////
+  /**            CONSTANTS              */
+    ////////////////////////////////////////
+
+    // pour limiter le nombre d'exemplaires max d'une carte.
+    // 3 pour tout le monde sauf les krosmiques / infinites à 1
 
   limitationNbrExemplaires = {
     COMMUNE: 3,
@@ -359,7 +536,7 @@ export class DeckbuilderComponent implements OnInit {
     INFINITE: 1
   }
 
-  // pour limiter les krosmiques à 7 et infintes à 5
+  // pour limiter les krosmiques à 7 et infinites à 5
   limitationRarete = {
     COMMUNE: -1,
     PEU_COMMUNE: -1,
@@ -368,8 +545,27 @@ export class DeckbuilderComponent implements OnInit {
     INFINITE: 5
   }
 
-  // pour bloquer les infinites du meme nom
-  lockedSisterInfinites = []
+  quillConfiguration = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+      // [{list: 'ordered'}, {list: 'bullet'}],
+      [{
+        header: [1, 2, 3,
+          // 4, 5, 6,
+          false]
+      }],
+      [{color: []}, {background: []}],
+      // ['link'],
+      ['clean'],
+    ],
+  }
+
+
+  ////////////////////////////////////////
+  /**            GETTERS                */
+  ////////////////////////////////////////
+
 
   get isSpell() {
     return this.form.get('isSpell').value;
@@ -418,26 +614,4 @@ export class DeckbuilderComponent implements OnInit {
   get pageSize() {
     return this.form.get('pageSize').value;
   }
-
-  nextPrev(n) {
-    this.currentTab += n
-  }
-
-
-  sidenavOpened = false
-  openNav() {
-    this.sidenavOpened = true
-    // document.getElementById("mySidenav").style.width = "250px";
-  }
-
-  closeNav() {
-    this.sidenavOpened = false
-    // document.getElementById("mySidenav").style.width = "0";
-  }
-
-  // @HostListener('window:resize', ['$event'])
-  // onResize(event) {
-  // }
-
-
 }

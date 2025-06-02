@@ -16,6 +16,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) {
   }
+
   // user
   getUser(username: string): Observable<any> {
     return this.http.get<any>(this.BASE_API + `/user/${username}`);
@@ -55,6 +56,10 @@ export class ApiService {
     return this.http.post<any>(this.BASE_API + `/cards/byName`, form);
   }
 
+  getCardIllustrations(): Observable<any> {
+    return this.http.get<any>(this.BASE_API + `/cards/illustrations`);
+  }
+
   getDecks(form: any): Observable<any> {
     return this.http.post<any>(this.BASE_API + `/decks`, form);
   }
@@ -63,8 +68,12 @@ export class ApiService {
     return this.http.get<any>(this.BASE_API + `/decks/owners`);
   }
 
-  getDeck(id, language): Observable<any> {
-    return this.http.get<any>(this.BASE_API + `/decks/${id}/language/${language}`);
+  getDeck(id, version, language): Observable<any> {
+    return this.http.get<any>(this.BASE_API + `/decks/${id}/language/${language}/version/${version}`);
+  }
+
+  getTagsByLanguage(language): Observable<any> {
+    return this.http.get<any>(this.BASE_API + `/tags/language/${language}`);
   }
 
 

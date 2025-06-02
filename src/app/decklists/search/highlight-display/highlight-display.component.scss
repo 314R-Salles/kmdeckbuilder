@@ -1,0 +1,13 @@
+
+.fadeout {
+  padding: 0 8px; // besoin de "grossir" l'element sinon le mask coupe l'image
+  mask-image: linear-gradient(
+      to bottom,
+      rgb(0, 0, 0) 57%,
+      rgba(0, 0, 0, 0) 81%)
+}
+
+img {
+  width: 140px;
+  height: fit-content;
+}

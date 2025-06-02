@@ -10,13 +10,14 @@
         <span class="library-button" routerLink="/decks/browse" routerLinkActive="active">Decks</span>
         <span class="library-button" routerLink="/media" routerLinkActive="active">Media</span>
 
-        <span *ngIf="isAdmin" class="dropdown-button"
-              routerLinkActive="active" [matMenuTriggerFor]="admin">Admin</span>
-        <mat-menu #admin="matMenu">
-          <button mat-menu-item [matMenuTriggerFor]="menu1">News</button>
-          <button mat-menu-item>Videos (TODO)</button>
-          <button mat-menu-item>Users (TODO)</button>
-        </mat-menu>
+    <span *ngIf="isAdmin" class="dropdown-button"
+          routerLinkActive="active" [matMenuTriggerFor]="admin">Admin</span>
+    <mat-menu #admin="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="menu1">News</button>
+      <button mat-menu-item routerLink="tags/edit">Tags</button>
+      <button mat-menu-item>Videos (TODO)</button>
+      <button mat-menu-item>Users (TODO)</button>
+    </mat-menu>
 
         <mat-menu #menu1="matMenu">
           <button mat-menu-item routerLink="news/create">Create</button>
@@ -40,6 +41,7 @@
       </svg></a></div>
     </div>
   </div>
+
 </div>
 
 

@@ -8,7 +8,7 @@ import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 })
 export class DeckCreatedPopinComponent {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {deckId: string}) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {deckId: string, isUpdate: boolean}) { }
 
 
 }

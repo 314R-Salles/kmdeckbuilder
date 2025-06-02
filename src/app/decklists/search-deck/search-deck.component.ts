@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from "../../api/api.service";
-import {God} from "../models/enums";
 import {FormControl, FormGroup} from "@angular/forms";
 import {debounceTime, distinctUntilChanged} from "rxjs";
+import {StoreService} from "../../store.service";
+import {AuthenticatedApiService} from "../../api/authenticated-api.service";
 
 @Component({
   selector: 'app-search-deck',
@@ -10,6 +11,8 @@ import {debounceTime, distinctUntilChanged} from "rxjs";
   styleUrl: './search-deck.component.scss'
 })
 export class SearchDeckComponent implements OnInit {
+
+  isLoggedIn
 
   searchResults: {
     empty: boolean,
@@ -19,25 +22,37 @@ export class SearchDeckComponent implements OnInit {
     totalPages: number
   }
   decks = []
-
+  CARD_ILLUSTRATIONS
   searchForm
   actionPointsCompareSup = true
   dustCompareSup = true
+  favoritesOnly = false
 
   selectedCards = []
   selectedUsers = []
   selectedGods = []
+  selectedTags = []
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService,
+              private authenticatedApiService: AuthenticatedApiService,
+              private storeService: StoreService) {
   }
 
   ngOnInit() {
+
     this.searchForm = new FormGroup({
       content: new FormControl(''),
       actionPointsCost: new FormControl(''),
       dustCost: new FormControl('')
     })
-    this.search();
+    // this.search();
+
+    this.storeService.getUser().subscribe(e => {
+      this.isLoggedIn = e?.lastLogin
+      this.search();
+    })
+
+    this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
 
 
     this.searchForm.valueChanges.pipe(
@@ -60,7 +75,9 @@ export class SearchDeckComponent implements OnInit {
     this.selectedGods = []
     this.dustCompareSup = true;
     this.actionPointsCompareSup = true;
+    this.favoritesOnly = false;
     this.selectedCards = [];
+    this.selectedTags = []
     this.selectedUsers = [];
     this.searchForm.reset()
     this.search()
@@ -70,14 +87,25 @@ export class SearchDeckComponent implements OnInit {
     const request = {
       gods: this.selectedGods.length ? this.selectedGods.map(g => g.id) : null,
       cards: this.selectedCards.length ? this.selectedCards.map(c => c.id) : null,
+      tags: this.selectedTags.length ? this.selectedTags.map(c => c.id) : null,
       users: this.selectedUsers.length ? this.selectedUsers.map(u => u.username) : null,
       actionPointCost: this.searchForm.get('actionPointsCost').value,
       actionCostGeq: this.actionPointsCompareSup,
       dustGeq: this.dustCompareSup,
       dustCost: this.searchForm.get('dustCost').value,
       content: this.searchForm.get('content').value,
+      favoritesOnly: this.favoritesOnly,
     };
-    this.apiService.getDecks(request).subscribe(searchResults => {
+
+    // c'est pas initialisé
+    let searchRequest;
+    if (this.isLoggedIn) {
+      searchRequest = this.authenticatedApiService.getDecks(request)
+    } else {
+      searchRequest = this.apiService.getDecks(request)
+    }
+
+    searchRequest.subscribe(searchResults => {
       this.decks = searchResults.content
       this.searchResults = {
         empty: searchResults.empty,
@@ -94,7 +122,7 @@ export class SearchDeckComponent implements OnInit {
     // conversion en id nécessaire pour le includes, les "cards" sont différents objets à chaque ouverture de la liste déroulante
     // en fait le check est plus nécessaire puisque les options déjà selectionnées sont plus cliquable à nouveau
     if (!this.selectedCards.map(c => c.id).includes(card.id)) {
-      this.selectedCards.push(card)
+      this.selectedCards = [...this.selectedCards, card]
       this.search()
     }
   }
@@ -128,6 +156,41 @@ export class SearchDeckComponent implements OnInit {
     const index = this.selectedGods.findIndex(u => u.id === god.id)
     this.selectedGods.splice(index, 1)
     this.search()
+  }
+
+  selectTag(tag) {
+    this.selectedTags.push(tag)
+    this.search()
+  }
+
+  removeTag(tag) {
+    const index = this.selectedTags.findIndex(u => u.id === tag.id)
+    this.selectedTags.splice(index, 1)
+    this.search()
+  }
+
+  toggleFavoriteFilter() {
+    this.favoritesOnly = !this.favoritesOnly;
+    this.search()
+  }
+
+  // update à la main  du liked/count pour pas faire un refresh complet de la recherche
+  toggleFavorite(deck) {
+    if (this.isLoggedIn) {
+      if (!deck.liked) {
+        this.authenticatedApiService.addToFavorites(deck.deckId).subscribe(r => {
+          deck.favoriteCount += 1
+          deck.liked = true
+          // this.decks.find(deck => deck.deckId === deck.deckId).favoriteCount += 1
+          // this.decks.find(deck => deck.deckId === deck.deckId).liked = true
+        })
+      } else {
+        this.authenticatedApiService.removeFromFavorites(deck.deckId).subscribe(r => {
+          deck.favoriteCount -= 1
+          deck.liked = false
+        })
+      }
+    }
   }
 
 }

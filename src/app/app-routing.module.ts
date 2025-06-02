@@ -10,6 +10,7 @@ import {DeckbuilderComponent} from "./decklists/deckbuilder/deckbuilder.componen
 import {SearchDeckComponent} from "./decklists/search-deck/search-deck.component";
 import {ViewDeckComponent} from "./decklists/view-deck/view-deck.component";
 import {MediaComponent} from "./media/media.component";
+import {TagManagementComponent} from "./admin/tag-management/tag-management.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -17,12 +18,24 @@ const routes: Routes = [
   {path: 'user', component: UserProfileComponent},
   {path: 'user/:username', component: UserProfileComponent},
   {path: 'news/view/:id', component: NewsViewComponent},
-  {path: 'news/create', component: NewsEditorComponent, canActivate: [AdminGuard]},
-  {path: 'news/edit', component: NewsManagementComponent, canActivate: [AdminGuard]},
+  // adminGuard nawak sur F5.
+  {
+    path: 'news/create', component: NewsEditorComponent,
+    // canActivate: [AdminGuard]
+  },
+  {
+    path: 'news/edit', component: NewsManagementComponent,
+    // canActivate: [AdminGuard]
+  },
+  {
+    path: 'tags/edit', component: TagManagementComponent,
+    // canActivate: [AdminGuard]
+  },
   {path: 'decks/create', component: DeckbuilderComponent},
   {path: 'decks/browse', component: SearchDeckComponent},
-  {path: 'decks/view/:id', component: ViewDeckComponent},
   {path: 'media', component: MediaComponent},
+  {path: 'decks/view/:id/:version', component: ViewDeckComponent},
+  {path: 'decks/edit/:id/:version', component: DeckbuilderComponent},
 ];
 
 

@@ -8,8 +8,6 @@ import {GOD_ARRAY} from '../../models/enums';
 })
 export class GodDropdownComponent {
 
-  // God = God;
-
   allGods = GOD_ARRAY.filter(g=> g.name != 'NEUTRE')
   displayedGods = GOD_ARRAY.filter(g=> g.name != 'NEUTRE')
   @Input() selectedGods = []
@@ -21,10 +19,6 @@ export class GodDropdownComponent {
   constructor() {
   }
 
-  openDropdown() {
-    this.displayDropdown = true;
-  }
-
   filterGods() {
     this.displayDropdown = true;
     this.displayedGods = this.allGods.filter(result => !this.selectedGods.map(c => c.name).includes(result.name));
@@ -32,7 +26,7 @@ export class GodDropdownComponent {
   }
 
   selectGod(god) {
-    this.displayedGods = this.displayedGods.filter(g => g.name !== god.name);
+    // this.displayedGods = this.displayedGods.filter(g => g.name !== god.name);
     this.onSelectGod.emit(god);
   }
 

@@ -1,0 +1,36 @@
+<div style="height: 200px; width: 380px; position:relative;"  class="fadeout">
+  <div style="position: absolute;" *ngIf="illustrationsNumber=== 1">
+    <div *ngTemplateOutlet="ONE_ILLUST"></div>
+  </div>
+  <div style="position: absolute;" *ngIf="illustrationsNumber=== 2">
+    <div *ngTemplateOutlet="TWO_ILLUST"></div>
+  </div>
+  <div style="position: absolute;" *ngIf="illustrationsNumber=== 3">
+    <div *ngTemplateOutlet="THREE_ILLUST"></div>
+  </div>
+</div>
+
+<ng-template #ONE_ILLUST>
+  <div>
+    <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[illustrations[0].cardId]"
+         style="position: absolute;margin-left: 100px;">
+  </div>
+</ng-template>
+<ng-template #TWO_ILLUST>
+  <div>
+    <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[illustrations[0].cardId]"
+         style="position: absolute; margin-left: 45px; rotate: -8deg">
+    <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[illustrations[1].cardId]"
+         style="position: absolute;margin-left: 160px; rotate: 8deg">
+  </div>
+</ng-template>
+<ng-template #THREE_ILLUST>
+  <div>
+    <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[illustrations[0].cardId]"
+         style="position: absolute; rotate: -15deg; top: 8px">
+    <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[illustrations[1].cardId]"
+         style="position: absolute; left: 100px; z-index: 5">
+    <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[illustrations[2].cardId]"
+         style="position: absolute;left: 200px; rotate: 15deg; top: 8px">
+  </div>
+</ng-template>

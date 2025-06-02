@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {StoreService} from "../../store.service";
 
 @Component({
   selector: 'app-selected-list',
@@ -12,8 +13,6 @@ export class SelectedListComponent {
   @Input() max
   @Input() syntheseCost
 
-
-  // l'input est fourni par la route
   @Input() set synthese(value: { [key: string]: { count: number, rarity: any, godType: any, name: string } }) {
     if (value) {
       this.updatedSynthese = Object.values(value)
@@ -31,6 +30,11 @@ export class SelectedListComponent {
   }
 
   @Output() removeCard = new EventEmitter<string>();
+
+  CARD_ILLUSTRATIONS
+  constructor(private storeService: StoreService) {
+    this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
+  }
 
   remove(key: string) {
     this.removeCard.emit(key)
