@@ -37,7 +37,6 @@ import {HighlightDisplayComponent} from './decklists/search/highlight-display/hi
 import {TagManagementComponent} from './admin/tag-management/tag-management.component';
 import {TagDropdownComponent} from './decklists/search/tag-dropdown/tag-dropdown.component';
 import {VersionDropdownComponent} from "./decklists/version-dropdown/version-dropdown.component";
-import {MediaComponent} from './media/media.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +63,6 @@ import {MediaComponent} from './media/media.component';
     CardDropdownComponent,
     OwnerDropdownComponent,
     GodDropdownComponent,
-    MediaComponent,
     HighlightDisplayComponent,
     TagManagementComponent,
     TagDropdownComponent,

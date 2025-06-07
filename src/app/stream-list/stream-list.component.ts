@@ -1,7 +1,6 @@
-import {AfterViewInit, Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {AfterViewInit, Component, Inject, Input, PLATFORM_ID} from '@angular/core';
 import {ApiService} from "../api/api.service";
-import {Stream} from "../models/stream";
-import {Vod} from "../models/vod";
+import {PLACEHOLDER, TwitchModel} from "../models/twitch.model";
 import {YtVideo} from "../models/ytVideo";
 import {isPlatformBrowser} from "@angular/common";
 
@@ -12,8 +11,12 @@ import {isPlatformBrowser} from "@angular/common";
 })
 export class StreamListComponent implements AfterViewInit {
 
-  streams: Stream[];
-  vods: Vod[];
+
+  @Input() frontPage = false
+  notEnoughLiveStream = false
+
+  streams: TwitchModel[];
+  vods: TwitchModel[];
   videos: YtVideo[];
 
   constructor(private apiService: ApiService,
@@ -22,20 +25,45 @@ export class StreamListComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      document.getElementById("default").click(); // on demande d'activer le 1er onglet en amont de charger les données
       this.apiService.getStreams().subscribe(streams => {
         this.streams = this.updateStreamUrls(streams)
-        this.apiService.getVods().subscribe(vods => this.vods = this.updateVodUrls(vods))
+
+        if (this.streams.length == 0) {
+          this.streams.push(PLACEHOLDER)
+        }
+
+
+        if (this.streams.length < 4 && this.frontPage) {
+          this.notEnoughLiveStream = true
+          this.apiService.getVods().subscribe(vods => {
+            vods = vods.sort((a, b) => {
+              if (a.created_at < b.created_at) {
+                return 1;
+              }
+              if (a.created_at > b.created_at) {
+                return -1;
+              }
+              return 0
+            });
+            vods = vods.splice(0, 4 - this.streams.length)
+            vods = this.updateVodUrls(vods)
+            this.streams.push(...vods)
+          })
+        }
       })
-      // this.apiService.getLastVideos().subscribe(videos => this.videos = videos)
+      if (!this.frontPage) {
+        this.apiService.getVods().subscribe(vods => this.vods = this.updateVodUrls(vods))
+        this.apiService.getLastVideos().subscribe(videos => this.videos = videos)
+      }
     }
   }
 
-  updateStreamUrls(streams: Stream[]): Stream[] {
+  updateStreamUrls(streams: TwitchModel[]): TwitchModel[] {
     return streams.map(stream => {
         return {
           ...stream,
           url: 'https://www.twitch.tv/' + stream.username,
+          live: true,
           thumbnailUrl:
             stream.thumbnailUrl
               .replace('{width}', '320')
@@ -45,10 +73,11 @@ export class StreamListComponent implements AfterViewInit {
     );
   }
 
-  updateVodUrls(vods: Vod[]): Vod[] {
+  updateVodUrls(vods: TwitchModel[]): TwitchModel[] {
     return vods.map(vod => {
         return {
           ...vod,
+          live: false,
           created_at: this.makeDate(vod.created_at),
           thumbnailUrl:
             vod.thumbnailUrl
@@ -57,27 +86,6 @@ export class StreamListComponent implements AfterViewInit {
         }
       }
     );
-  }
-
-  openStream(evt, streamName): void {
-    // Declare all variables
-    var i, tabcontent, tablinks;
-
-    // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("streams-panel");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("streams-tab-link");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-    // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(streamName).style.display = "flex";
-    evt.currentTarget.className += " active";
   }
 
   makeDate(date): string {

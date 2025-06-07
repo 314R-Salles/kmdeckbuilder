@@ -258,8 +258,9 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
     deck.highlights.forEach(h => {
       this.selectedCards.find(c => c.id === h.cardId).highlight = h.highlightOrder
       this.illustrations[h.highlightOrder] = this.selectedCards.find(c => c.id === h.cardId);
-
     })
+
+    this.selectedTags = deck.tags
 
     this.illustrationsNumber = deck.highlights.length
 
