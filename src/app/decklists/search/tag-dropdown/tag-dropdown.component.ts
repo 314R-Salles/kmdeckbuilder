@@ -9,8 +9,8 @@ import {ApiService} from "../../../api/api.service";
 })
 export class TagDropdownComponent {
 
-  allTags : { title: string, count: number }[] = []
-  displayedTags : { title: string, count: number }[] = []
+  allTags: { title: string, count: number }[] = []
+  displayedTags: { title: string, count: number }[] = []
   @Input() selectedTags = []
   @Input() withCount = false
   @Output() onSelectTag = new EventEmitter<any>();
@@ -25,8 +25,12 @@ export class TagDropdownComponent {
     })
   }
 
+  dropdownClick() {
+    this.displayDropdown = !this.displayDropdown
+    this.filterTags()
+  }
+
   filterTags() {
-    this.displayDropdown = true;
     this.displayedTags = this.allTags.filter(result => !this.selectedTags.map(c => c.title).includes(result.title));
     this.displayedTags = this.displayedTags.filter(tag => !this.tagSearch || tag.title.toLowerCase().indexOf(this.tagSearch.toLowerCase()) != -1);
   }

@@ -1,11 +1,11 @@
-<div class="dropdown" (click)="filterTags()">
+<div class="dropdown" (click)="dropdownClick()">
   <input class="dropbtn appFont2"
          (keyup)="filterTags()"
          [(ngModel)]="tagSearch"
          [ngModelOptions]="{standalone: true}"
          style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 5px;"
          type="text" placeholder="Tags">
-  <div id="p2" class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
+  <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
     @for (tag of displayedTags; track tag.title) {
       <div class="tag appFont2" (click)="selectTag(tag)" style="position:relative;">
         <span class="entry-bubble" *ngIf="withCount">

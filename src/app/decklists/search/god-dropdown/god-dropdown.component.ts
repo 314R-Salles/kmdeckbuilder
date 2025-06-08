@@ -19,8 +19,12 @@ export class GodDropdownComponent {
   constructor() {
   }
 
+  dropdownClick() {
+    this.displayDropdown = !this.displayDropdown
+    this.filterGods()
+  }
+
   filterGods() {
-    this.displayDropdown = true;
     this.displayedGods = this.allGods.filter(result => !this.selectedGods.map(c => c.name).includes(result.name));
     this.displayedGods = this.displayedGods.filter(god => !this.godSearch || god.name.toLowerCase().indexOf(this.godSearch.toLowerCase()) != -1);
   }

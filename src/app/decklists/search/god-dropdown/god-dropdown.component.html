@@ -1,11 +1,11 @@
-<div class="dropdown" (click)="filterGods()">
+<div class="dropdown" (click)="dropdownClick()">
   <input class="dropbtn appFont2"
          (keyup)="filterGods()"
          [(ngModel)]="godSearch"
          [ngModelOptions]="{standalone: true}"
          style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 5px;"
          type="text" placeholder="Dieux">
-  <div id="p2" class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
+  <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
     @for (god of displayedGods; track god.id; ) {
       <div class="user appFont2" (click)="selectGod(god)" style="position:relative;">
         <img [src]="'/assets/public/gods/GOD_'+god.name+'.png'" class="entry-bubble prevent-select">

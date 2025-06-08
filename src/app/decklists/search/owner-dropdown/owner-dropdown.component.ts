@@ -23,8 +23,13 @@ export class OwnerDropdownComponent {
     })
   }
 
+  dropdownClick() {
+    this.displayDropdown = !this.displayDropdown
+    this.filterUsers()
+  }
+
+
   filterUsers() {
-    this.displayDropdown = true;
     this.displayedUsers = this.allUsers.filter(result => !this.selectedUsers.map(c => c.username).includes(result.username));
     this.displayedUsers = this.displayedUsers.filter(user => !this.userSearch || user.username.toLowerCase().indexOf(this.userSearch.toLowerCase()) != -1);
   }
