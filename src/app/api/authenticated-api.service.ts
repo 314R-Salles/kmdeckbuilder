@@ -59,9 +59,9 @@ export class AuthenticatedApiService {
   }
 
 
-  getRecentFavorites(): Observable<any> {
+  getRecentFavorites(language: string): Observable<any> {
     let headers = this.getAuthHeaders();
-    return this.http.post<any>(this.PRIVATE_BASE_API + `/decks/recentFavorites`, null, {headers});
+    return this.http.post<any>(this.PRIVATE_BASE_API + `/decks/recentFavorites/${language}`, null, {headers});
   }
 
   private getAuthHeaders() {
