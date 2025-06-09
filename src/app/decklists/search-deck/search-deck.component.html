@@ -47,7 +47,7 @@
           }</div>
       </div>
       <div style="display: flex; flex-direction: column; padding: 0 5px;">
-        <app-owner-dropdown [selectedUsers]="selectedUsers" (onSelectUser)="selectUser($event)"></app-owner-dropdown>
+        <app-owner-dropdown [selectedUsers]="selectedUsers" [allUsers]="allUsers" (onSelectUser)="selectUser($event)"></app-owner-dropdown>
         <div style="padding: 0 10px"></div>
         <div style="display: flex; flex-wrap: wrap; align-content: center; width:300px; margin-top:10px;">
           @for (user of selectedUsers; track user.username) {
@@ -125,7 +125,7 @@
           </div>
           <div style="display: flex; flex-direction: column; justify-content: center; width: calc(85% - 400px)">
             <div class="title">{{ deck.name }}</div>
-            <div class="author" (click)="fixUser(deck);$event.stopPropagation();$event.preventDefault()">par {{ deck.owner }}</div>
+            <div class="author" (click)="addUserFilterFromResult(deck.owner, $event);">{{ deck.owner }}</div>
             <div class="creationDate">{{ deck.creationDate | date:'longDate' }}</div>
             <div class="tags">
               <div style="display:flex; flex-direction:column; justify-content:center;">

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {ApiService} from "../../../api/api.service";
 
 @Component({
@@ -6,9 +6,9 @@ import {ApiService} from "../../../api/api.service";
   templateUrl: './owner-dropdown.component.html',
   styleUrl: './owner-dropdown.component.scss'
 })
-export class OwnerDropdownComponent {
+export class OwnerDropdownComponent implements OnChanges{
 
-  allUsers: { username: string, count: number }[] = []
+  @Input()  allUsers: { username: string, count: number }[] = []
   displayedUsers: { username: string, count: number }[] = []
   @Input() selectedUsers = []
   @Output() onSelectUser = new EventEmitter<any>();
@@ -16,11 +16,11 @@ export class OwnerDropdownComponent {
 
   displayDropdown = false
 
-  constructor(private apiService: ApiService) {
-    this.apiService.getDeckOwners().subscribe(owners => {
-      this.allUsers = owners;
-      this.displayedUsers = owners
-    })
+  constructor() {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.displayedUsers = this.allUsers
   }
 
   dropdownClick() {

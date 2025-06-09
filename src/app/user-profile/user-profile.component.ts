@@ -32,7 +32,7 @@ export class UserProfileComponent {
             username: new FormControl(user.username, Validators.required),
             iconId: new FormControl(user.iconId)
           });
-          return this.authenticatedApiService.getRecentFavorites()
+          return this.authenticatedApiService.getRecentFavorites("FR")
         })
       ).subscribe(favs => this.favorites = favs.content);
     } else {

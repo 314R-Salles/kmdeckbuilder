@@ -33,12 +33,18 @@ export class SearchDeckComponent implements OnInit {
   selectedGods = []
   selectedTags = []
 
+  allUsers = []
+
   constructor(private apiService: ApiService,
               private authenticatedApiService: AuthenticatedApiService,
               private storeService: StoreService) {
   }
 
   ngOnInit() {
+
+    this.apiService.getDeckOwners().subscribe(owners => {
+      this.allUsers = owners;
+    })
 
     this.searchForm = new FormGroup({
       content: new FormControl(''),
@@ -95,6 +101,7 @@ export class SearchDeckComponent implements OnInit {
       dustCost: this.searchForm.get('dustCost').value,
       content: this.searchForm.get('content').value,
       favoritesOnly: this.favoritesOnly,
+      language: "FR",
     };
 
     // c'est pas initialisé
@@ -134,12 +141,18 @@ export class SearchDeckComponent implements OnInit {
   }
 
   selectUser(user) {
-    // en fait le check est plus nécessaire puisque les options déjà selectionnées sont plus cliquable à nouveau
     if (!this.selectedUsers.map(u => u.username).includes(user.username)) {
       this.selectedUsers.push(user)
       this.search()
     }
   }
+
+  addUserFilterFromResult(username:string, event) {
+    this.selectUser(this.allUsers.find(user => user.username === username))
+    event.stopPropagation();
+    event.preventDefault()
+  }
+
 
   removeUser(user) {
     const index = this.selectedUsers.findIndex(u => u.username === user.username)
