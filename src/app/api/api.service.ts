@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Stream} from "../models/stream";
-import {Vod} from "../models/vod";
+import {TwitchModel} from "../models/twitch.model";
 import {YtVideo} from "../models/ytVideo";
 
 
@@ -23,12 +22,12 @@ export class ApiService {
   }
 
   // videos
-  getStreams(): Observable<Stream[]> {
-    return this.http.get<Stream[]>(this.BASE_API + '/twitch/streams');
+  getStreams(): Observable<TwitchModel[]> {
+    return this.http.get<TwitchModel[]>(this.BASE_API + '/twitch/streams');
   }
 
-  getVods(): Observable<Vod[]> {
-    return this.http.get<Vod[]>(this.BASE_API + '/twitch/vods');
+  getVods(): Observable<TwitchModel[]> {
+    return this.http.get<TwitchModel[]>(this.BASE_API + '/twitch/vods');
   }
 
   getLastVideos(): Observable<YtVideo[]> {

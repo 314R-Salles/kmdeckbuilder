@@ -1,13 +1,14 @@
-<div style="display: flex; width: 100%; color: white;  justify-content: space-evenly;"  > <!--[ngClass]="{forcedSize: forceSize}"-->
-  <div style="margin-top: 10px; display: flex;  flex-direction: column; width:auto;" class="section"
-       > <!--[ngClass]="{forcedSize: forceSize}"-->
+<div style="display: flex; width: 100%; color: white;  justify-content: space-evenly;"
+     [ngClass]="{forcedSize: forceSize}">
+  <div style="margin-top: 10px; display: flex;  flex-direction: column;" class="section"
+       [ngClass]="{forcedSize: forceSize}">
     <div style="font-weight:bolder; font-size: 30px; padding: 20px; display:inline; position: relative" *ngIf="title">
       {{ title }} <span style="font-size: 22px">{{ titleSuffix }}</span>
-      <span  [routerLink]="backtrackPath" style="position: absolute; right: 20px" *ngIf="backtrackPath"> <- </span>
+      <span [routerLink]="backtrackPath" style="position: absolute; right: 20px" *ngIf="backtrackPath"> <- </span>
     </div>
-    <div style="position:relative;" *ngIf="isLibrary">
-      <span routerLink="/decks/create" style="position:absolute; right:0px; top:-45px; padding:5px; border:2px solid #FFD700; cursor:pointer; border-radius:4px; color:#FFD700;">Créer un deck</span>
-    </div>
+
+    <ng-content select="section-header"></ng-content>
+
     <!-- [ngClass]="{forcedSize: forceSize}" -->
     <div
       style="border: #FFAE00 solid 2px; border-radius: 10px; box-sizing: border-box; padding: 20px; background: #262241">

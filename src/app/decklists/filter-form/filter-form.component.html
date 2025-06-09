@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div id="p2" class="dropdown-content" [ngStyle]="{'display' : displayDropdownRarity ? 'block' : 'none'}">
+      <div class="dropdown-content" [ngStyle]="{'display' : displayDropdownRarity ? 'block' : 'none'}">
         @for (rarity of rarities['fr']; track rarity; let idx = $index, e = $even) {
         <span class="appFont2"
               [ngClass]="rarity.color"

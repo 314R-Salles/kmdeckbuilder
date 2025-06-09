@@ -1,6 +1,10 @@
 
 <form [formGroup]="searchForm" (ngSubmit)="search()">
-<km-section [title]="'Recherche de Decks'" [isLibrary]="'yes'">
+<km-section [title]="'Recherche de Decks'">
+  <div section-header style="position:relative;">
+    <span routerLink="/decks/create" style="position:absolute; right:0px; top:-70px; padding:5px; border:2px solid #FFD700; cursor:pointer; border-radius:4px; color:#FFD700;">Créer un deck</span>
+  </div>
+
     <div class="filterWrapper" style="flex-direction:row; position: relative">
 
 

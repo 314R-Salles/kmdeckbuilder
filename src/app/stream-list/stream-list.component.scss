@@ -2,13 +2,6 @@
   //aspect de "la boite"
   // largeur 100% du "main-body"
   //height: 30vh;
-  width: 100%;
-  border-bottom: 0.2em solid #FFAE00;
-  border-right: 0.2em solid #FFAE00;
-  border-left: 0.2em solid #FFAE00;
-  box-sizing: border-box;
-  overflow-y: auto;
-  //overflow-x: auto;
 
   // aspect du contenu
   display: flex;
@@ -52,10 +45,10 @@ border-top: 0.2em solid #FFAE00;
 
   }
 .stream-thumbnail {
+  width: 320px;
   height: 100%;
-  max-width: 20vw;
-  margin: 5px auto 15px auto;
-  padding:5px;
+  margin: 10px 10px 15px 10px;
+  //padding:5px;
 }
 
 .stream-thumbnail:hover {

@@ -7,7 +7,7 @@ import {Observable, ReplaySubject} from "rxjs";
 export class StoreService {
 
   news: any[]
-  cardIllustrations: any[]
+  cardIllustrations = []
   private userSubject = new ReplaySubject(1);
 
   user = this.userSubject.asObservable();
@@ -48,7 +48,7 @@ export class StoreService {
   }
 
   getCardIllustrationsAsMap() {
-    let result = (this.cardIllustrations || []).reduce(function (map, obj) {
+    let result = this.cardIllustrations.reduce(function (map, obj) {
       map[obj.id] = obj.cardName;
       return map;
     }, {});

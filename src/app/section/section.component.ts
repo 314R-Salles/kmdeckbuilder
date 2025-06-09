@@ -14,7 +14,6 @@ export class SectionComponent implements OnInit {
   @Input() forceSize;
 
   @Input() backtrackPath;
-  @Input() isLibrary;
 
   @Input() requiresLogin;
   isLoggedIn;
