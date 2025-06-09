@@ -5,7 +5,8 @@
 .dropbtn {
   display: flex;
   align-items: center;
-  background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgb(30, 54, 158, 90%) 65%, rgb(60, 39, 185, 90%) 95%);
+  background: #313282;
+  // background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgb(30, 54, 158, 90%) 65%, rgb(60, 39, 185, 90%) 95%);
   color: white;
   font-size: 16px;
   border: none;
@@ -18,25 +19,32 @@
   position: relative;
   display: inline-block;
 
-  border: solid 1px #ffffff7a;
-  border-radius: 5px;
+  border: solid 1px gold; //#ffffff7a;
+  border-radius: 2px;
   box-sizing: border-box;
 }
 
 
 .dropdown:hover {
   cursor: pointer;
-  -webkit-box-shadow: inset 1px 0px 20px 0px white;
+  // -webkit-box-shadow: inset 1px 0px 1px 0px white;
 }
+
+.godMiniaFiltered {
+  width: 50px;
+  cursor:pointer;
+ }
 
 .dropdown-content {
   width: 100% !important;
   display: none;
   position: absolute;
-  background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgb(30, 54, 158, 90%) 65%, rgb(60, 39, 185, 90%) 95%);
-
+  background : #313282;
+  // background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgb(30, 54, 158, 90%) 65%, rgb(60, 39, 185, 90%) 95%);
+  border: solid 1px gold;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  margin-top:5px;
 }
 
 .entry-bubble {
@@ -62,15 +70,13 @@
 
 
 .user {
-  border: rgba(255, 255, 255, 0.62) solid 1px;
-  border-radius: 5px;
+  // border: rgba(255, 255, 255, 0.62) solid 1px;
+  // border-radius: 5px;
+  // box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.62);
   box-sizing: border-box;
-}
-
-.user {
   height: 40px;
   width: 300px;
-  box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.62);
+
   display: flex;
   align-items: center;
 
@@ -79,6 +85,7 @@
   font-weight: 400;
   -webkit-text-stroke: 0.7px #000000;
 }
+
 
 .appFont2 {
   color: white !important;

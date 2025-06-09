@@ -27,7 +27,7 @@ export class StreamListComponent implements AfterViewInit {
         this.streams = this.updateStreamUrls(streams)
         this.apiService.getVods().subscribe(vods => this.vods = this.updateVodUrls(vods))
       })
-      // this.apiService.getLastVideos().subscribe(videos => this.videos = videos)
+      this.apiService.getLastVideos().subscribe(videos => this.videos = videos)
     }
   }
 

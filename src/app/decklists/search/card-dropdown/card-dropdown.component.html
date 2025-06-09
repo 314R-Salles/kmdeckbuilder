@@ -4,7 +4,7 @@
          (keyup)="searchCards()"
          [(ngModel)]="cardName"
          [ngModelOptions]="{standalone: true}"
-         style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 5px;"
+         style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 2px;"
          type="text" [placeholder]="fromInput? 'Sélectionner' : 'Contient ...'">
   <div id="p2" class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
     @for (card of searchedCards; track card.id) {

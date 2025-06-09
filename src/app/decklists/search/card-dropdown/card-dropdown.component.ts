@@ -39,11 +39,13 @@ export class CardDropdownComponent implements OnChanges {
   }
 
   openDropdown() {
-    if (this.fromInput) {
+    if (this.fromInput && !this.displayDropdown) {
       this.displayDropdown = true;
       this.searchedCards = this.cardOptions.filter(result => !this.selectedCards.map(c => c.id).includes(result.id));
       this.searchedCards = this.searchedCards.filter(result => !this.cardName || result.name.toLowerCase().includes(this.cardName.toLowerCase()));
     }
+  else {
+    this.displayDropdown = false;}
   }
 
   searchCards() {

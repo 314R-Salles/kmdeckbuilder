@@ -2,27 +2,23 @@
 <form [formGroup]="searchForm" (ngSubmit)="search()">
 <km-section [title]="'Recherche de Decks'" [isLibrary]="'yes'">
     <div class="filterWrapper" style="flex-direction:row; position: relative">
-      <button style="position: absolute; right: 0; width: 60px; height: 60px;" (click)="resetFilters()">Reset</button>
-      <button *ngIf="isLoggedIn" style="position: absolute; right: 0; top: 80px;width: 60px; height: 60px;"
-              (click)="toggleFavoriteFilter()">
-        <mat-icon [ngStyle]="{color: favoritesOnly ? 'red': 'white'}">favorite
-        </mat-icon>
-      </button>
 
-      <div style=" display: flex; flex-direction: row">
+
+      <div style="display: flex; flex-direction: column; padding: 0 5px;">
         <app-god-dropdown [selectedGods]="selectedGods" (onSelectGod)="selectGod($event)"></app-god-dropdown>
         <div style="padding: 0 10px"></div>
-        <div style="display: flex; flex-wrap: wrap; width: 500px">
+        <div style="display: flex; flex-wrap: wrap; width: 300px; margin-top:10px;">
           @for (god of selectedGods; track god.id) {
-            <img (click)="removeGod(god)" style="width: 50px" [src]="'/assets/public/gods/GOD_'+god.name+'.png'"
-                 class="entry-bubble prevent-select">
+            <img (click)="removeGod(god)" [src]="'/assets/public/gods/GOD_'+god.name+'.png'"
+                 class="godMiniaFiltered prevent-select">
           }</div>
       </div>
-      <div style=" display: flex; flex-direction: row">
+
+      <div style=" display: flex; flex-direction: column; padding: 0 5px;">
         <app-tag-dropdown [withCount]="true" [selectedTags]="selectedTags"
                           (onSelectTag)="selectTag($event)"></app-tag-dropdown>
         <div style="padding: 0 10px"></div>
-        <div style="display: flex; flex-wrap: wrap; width: 500px">
+        <div style="display: flex; flex-wrap: wrap; width: 300px; margin-top:10px;">
           @for (tag of selectedTags; track tag.title) {
             <div class="card appFont2" (click)="removeTag(tag)"
                  style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
@@ -32,11 +28,11 @@
           }</div>
       </div>
 
-      <div style=" display: flex; flex-direction: row">
+      <div style=" display: flex; flex-direction: column; padding: 0 5px;">
         <app-card-dropdown [selectedGods]="selectedGods" [selectedCards]="selectedCards"
                            (onSelectCard)="selectCard($event)"></app-card-dropdown>
         <div style="padding: 0 10px"></div>
-        <div style="display: flex; flex-wrap: wrap; align-content: center">
+        <div style="display: flex; flex-wrap: wrap; align-content: center; width:300px; margin-top:10px;">
           @for (card of selectedCards; track card.id) {
             <div class="card appFont2"
                  [matTooltip]="card.name + (card.infiniteLevel ? ' ' + card.infiniteLevel : '')"
@@ -46,10 +42,10 @@
             </div>
           }</div>
       </div>
-      <div style="display: flex; flex-direction: row">
+      <div style="display: flex; flex-direction: column; padding: 0 5px;">
         <app-owner-dropdown [selectedUsers]="selectedUsers" (onSelectUser)="selectUser($event)"></app-owner-dropdown>
         <div style="padding: 0 10px"></div>
-        <div style="display: flex; flex-wrap: wrap; align-content: center">
+        <div style="display: flex; flex-wrap: wrap; align-content: center; width:300px; margin-top:10px;">
           @for (user of selectedUsers; track user.username) {
             <div class="card appFont2" (click)="removeUser(user)"
                  style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
@@ -58,15 +54,28 @@
             </div>
           }</div>
       </div>
-    </div>
 
-    <div class="singleLineFilters">
-      <div class="dropdown" style="margin-right: 30px">
-        <input class="dropbtn appFont2"
-               style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 5px;"
-               formControlName="content"
-               type="text" placeholder="Nom ...">
+      <div style="display:flex; flex-direction:column; padding: 0 5px;">
+        <button *ngIf="isLoggedIn" style="width: 50px; height: 50px;"
+                (click)="toggleFavoriteFilter()">
+          <mat-icon [ngStyle]="{color: favoritesOnly ? 'red': 'white'}">favorite
+          </mat-icon>
+        </button>
+      <button style="width: 50px; height: 50px; margin-top:10px;" (click)="resetFilters()">Reset</button>
+
       </div>
+    </div>
+  <!--
+  For now I really don't think those filters name filter are useful : both tags/cards filter allow for a much better filter.
+  And this way we can get a much cleaner UI. Will see if some of those are asked for.
+      <div class="singleLineFilters">
+
+        <div class="dropdown" style="margin-right: 30px">
+          <input class="dropbtn appFont2"
+                 style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 5px;"
+                 formControlName="content"
+                 type="text" placeholder="Nom ...">
+        </div>
 
       <div style="height: 40px;  padding-top: 10px; display: flex; margin-right: 30px">
         <span style="width: 40px; align-self: center">PA</span>
@@ -74,31 +83,36 @@
           <span *ngIf="actionPointsCompareSup"> ≥ </span>
           <span *ngIf="!actionPointsCompareSup"> ≤ </span>
         </button>
-        <!--        max 387-->
+        max 387
         <input style="width: 50px;" formControlName="actionPointsCost">
       </div>
 
+      Not a useful filter.
       <div style="height: 40px;  padding-top: 10px; display: flex; margin-right: 30px">
         <span style="width: 90px; align-self: center">Poussière</span>
         <button style="width: 40px;" (click)="toggleDustCompare()">
           <span *ngIf="dustCompareSup"> ≥ </span>
           <span *ngIf="!dustCompareSup"> ≤ </span>
         </button>
-        <!--        max 11100-->
+
         <input style="width: 50px;" formControlName="dustCost">
       </div>
+
     </div>
 
+  -->
 <!--    prévoir une séparation plus clean-->
 </km-section>
     <km-section>
     <div class="listDeck">
+      <div *ngIf="!decks.length">TEST C'EST VIDE MEC</div>
       @for (deck of decks; track deck.deckId) {
-        <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
-          <div style="display: flex; flex-direction: column; width: 130px">
+        <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god" style="display:flex; flex-direction:row;">
+
+          <div style="display: flex; flex-direction: column; width: 130px; justify-content:space-around;">
             <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
             <div [ngStyle]="{cursor: isLoggedIn ? 'pointer': 'default'}"
-                 style="display: flex; justify-content: center"
+                 style="display: flex; justify-content: center; flex-direction:row;"
                  (click)="toggleFavorite(deck);$event.stopPropagation();$event.preventDefault()">
               <mat-icon [ngStyle]="{color: deck.liked ? 'red': 'white'}">favorite
               </mat-icon>
@@ -107,9 +121,14 @@
           </div>
           <div style="display: flex; flex-direction: column; justify-content: center; width: calc(85% - 400px)">
             <div class="title">{{ deck.name }}</div>
-            <div class="author">{{ deck.owner }}</div>
-            <div class="tags">{{ deck.tags }}</div>
+            <div class="author" (click)="fixUser(deck);$event.stopPropagation();$event.preventDefault()">par {{ deck.owner }}</div>
             <div class="creationDate">{{ deck.creationDate | date:'longDate' }}</div>
+            <div class="tags">
+              <div style="display:flex; flex-direction:column; justify-content:center;">
+                <div><img [src]="'/assets/public/picto-PA.png'" style="width:20px; height:20px;" class="type"> {{ deck.costAP }}</div>
+              </div>
+              {{ deck.tags }}
+            </div>
           </div>
           <div style="position:absolute; right: 0">
             <app-highlight-display [illustrations]="deck.highlights"></app-highlight-display>

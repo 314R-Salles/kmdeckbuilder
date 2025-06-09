@@ -41,7 +41,7 @@
 }
 
 .search-input {
-  background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgba(6, 22, 92, 0.9) 65%, rgba(2, 4, 7, 0.9) 92%);
+  // background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgba(6, 22, 92, 0.9) 65%, rgba(2, 4, 7, 0.9) 92%);
   color: white;
   font-size: 16px;
   padding: 0;
@@ -65,7 +65,8 @@
 .dropbtn {
   display: flex;
   align-items: center;
-  background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgb(30, 54, 158, 90%) 65%, rgb(60, 39, 185, 90%) 95%);
+  background: red;
+  // background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgb(30, 54, 158, 90%) 65%, rgb(60, 39, 185, 90%) 95%);
   color: white;
   font-size: 16px;
   border: none;
@@ -100,43 +101,43 @@
 }
 
 .IOP {
-  border: 5px solid #A3210E;
+  border: 3px solid #A3210E;
 }
 
 .ECAFLIP {
-  border: 5px solid #6C1084;
+  border: 3px solid #6C1084;
 }
 
 .CRA {
-  border: 5px solid #424617;
+  border: 3px solid #424617;
 }
 
 .ENIRIPSA {
-  border: 5px solid #B54C3C;
+  border: 3px solid #B54C3C;
 }
 
 .SACRIEUR {
-  border: 5px solid #302821;
+  border: 3px solid #302821;
 }
 
 .SADIDA {
-  border: 5px solid #6B7200;
+  border: 3px solid #6B7200;
 }
 
 .SRAM {
-  border: 5px solid #39405A;
+  border: 3px solid #39405A;
 }
 
 .XELOR {
-  border: 5px solid #263578;
+  border: 3px solid #263578;
 }
 
 .ENUTROF {
-  border: 5px solid #9B7400;
+  border: 3px solid #9B7400;
 }
 
 .FECA {
-  border: 5px solid #523C39FF;
+  border: 3px solid #523C39FF;
 }
 
 $transparency: 0.5;
@@ -196,7 +197,7 @@ $transparency: 0.5;
   flex-direction: row;
   justify-content: flex-start;
   //align-items: center;
-  border-radius: 30px;
+  border-radius: 5px;
   overflow: hidden;
   height: 160px;
 
@@ -228,7 +229,7 @@ $transparency: 0.5;
 
 .title {
   font-size: 35px;
-  height: 27.5%;
+  // height: 27.5%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -236,7 +237,7 @@ $transparency: 0.5;
 
 .author {
   font-size: 20px;
-  height: 25%;
+  // height: 25%;
 }
 
 .tags {
@@ -245,8 +246,8 @@ $transparency: 0.5;
 }
 
 .creationDate {
-  font-size: 20px;
-  height: 17.5%;
+  font-size: 12px;
+  // height: 17.5%;
 }
 
 
@@ -311,6 +312,11 @@ $transparency: 0.5;
   -webkit-text-stroke: 0.7px #000000;
 }
 
+.card:hover {
+  filter: grayscale(100%);
+  cursor: pointer;
+  }
+
 .container {
   display: flex;
   justify-content: space-around
@@ -371,4 +377,13 @@ $transparency: 0.5;
 .appFont2 {
   color: white !important;
   font-family: 'geo2', 'arial', sans-serif !important;
+}
+
+.godMiniaFiltered {
+  width:50px;
+  cursor:pointer;
+}
+
+.godMiniaFiltered:hover {
+  filter: grayscale(100%);
 }

@@ -77,7 +77,7 @@ export class SearchDeckComponent implements OnInit {
     this.actionPointsCompareSup = true;
     this.favoritesOnly = false;
     this.selectedCards = [];
-    this.selectedTags = []
+    this.selectedTags = [];
     this.selectedUsers = [];
     this.searchForm.reset()
     this.search()
@@ -145,6 +145,15 @@ export class SearchDeckComponent implements OnInit {
     const index = this.selectedUsers.findIndex(u => u.username === user.username)
     this.selectedUsers.splice(index, 1)
     this.search()
+  }
+
+  fixUser(user) {
+    // click on user in deck > show only his decks by resetting the user filters and fixing only this one
+    // may be replaced later by a link to the user page, if necessary
+    console.log(user);
+    this.selectedUsers = [];
+    this.selectedUsers.push(user);
+    this.search();
   }
 
   selectGod(god) {

@@ -3,13 +3,13 @@
          (keyup)="filterGods()"
          [(ngModel)]="godSearch"
          [ngModelOptions]="{standalone: true}"
-         style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 5px;"
+         style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 2px;"
          type="text" placeholder="Dieux">
   <div id="p2" class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
     @for (god of displayedGods; track god.id; ) {
       <div class="user appFont2" (click)="selectGod(god)" style="position:relative;">
         <img [src]="'/assets/public/gods/GOD_'+god.name+'.png'" class="entry-bubble prevent-select">
-        <div style="position:absolute; left:55px; width:235px;">
+        <div style="position:absolute; left:50px; width:235px;">
           <div
             style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;"> {{ god.name }}
           </div>
