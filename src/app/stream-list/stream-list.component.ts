@@ -53,7 +53,7 @@ export class StreamListComponent implements AfterViewInit {
       })
       if (!this.frontPage) {
         this.apiService.getVods().subscribe(vods => this.vods = this.updateVodUrls(vods))
-        this.apiService.getLastVideos().subscribe(videos => this.videos = videos)
+        this.apiService.getLastVideos().subscribe(videos => this.videos = videos.splice(0,11))
       }
     }
   }
@@ -64,6 +64,7 @@ export class StreamListComponent implements AfterViewInit {
           ...stream,
           url: 'https://www.twitch.tv/' + stream.username,
           live: true,
+          startedAt: this.makeDate(stream.startedAt),
           thumbnailUrl:
             stream.thumbnailUrl
               .replace('{width}', '320')
@@ -93,14 +94,20 @@ export class StreamListComponent implements AfterViewInit {
     var posted = new Date(date);
 
     var distance = now.getTime() - posted.getTime();
-    if (distance < 60 * 60 * 1000) {
-      return Math.round(distance / (60 * 1000)) + " minutes ago"
+    if (distance < 2 * 60 * 1000) {
+      return "" + Math.round(distance / (60 * 1000)) + " minute"
+    } else if (distance < 60 * 60 * 1000) {
+      return "" + Math.round(distance / (60 * 1000)) + " minutes"
+    } else if (distance < 2 * 60 * 60 * 1000) {
+        return "" + Math.round(distance / (60 * 60 * 1000)) + " heure"
     } else if (distance < 24 * 60 * 60 * 1000) {
-      return Math.round(distance / (60 * 60 * 1000)) + " hours ago"
+      return "" + Math.round(distance / (60 * 60 * 1000)) + " heures"
+    } else if (distance < 2 * 24 * 60 * 60 * 1000) {
+        return "" + Math.round(distance / (24 * 60 * 60 * 1000)) + " jour"
     } else if (distance < 30 * 24 * 60 * 60 * 1000) {
-      return Math.round(distance / (24 * 60 * 60 * 1000)) + " days ago"
+      return "" + Math.round(distance / (24 * 60 * 60 * 1000)) + " jours"
     } else {
-      return Math.round(distance / (30 * 24 * 60 * 60 * 1000)) + " months ago"
+      return "" + Math.round(distance / (30 * 24 * 60 * 60 * 1000)) + " mois"
     }
   }
 }

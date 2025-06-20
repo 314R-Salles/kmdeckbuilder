@@ -11,7 +11,7 @@
   flex-flow: row;
   align-items: center;
   justify-content: space-between;
-  height: 35px;
+  height:45px;
   background: #313282;
   color: white;
 }
@@ -53,6 +53,9 @@
   text-align: center;
   width: 100px;
   cursor:pointer;
+  align-content:center;
+  margin-right:2px;
+  margin-left:2px;
 }
 
 .library-button:hover {

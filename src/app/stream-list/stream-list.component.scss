@@ -49,16 +49,21 @@ border-top: 0.2em solid #FFAE00;
   height: 100%;
   margin: 10px 10px 15px 10px;
   //padding:5px;
+  transition: all 0.35s;
 }
 
 .stream-thumbnail:hover {
+  transform: scale(1.05);
+ }
+
+.stream-thumbnail:hover > a > img {
   background-color:rgba(255, 255, 255, 0.3);
   }
 .stream-thumbnail > a > img {
 }
 
 .stream-displayName {
-  font-size: 0.8em;
+  font-size: 1.1em;
   font-weight: bolder;
   color:white;
 }

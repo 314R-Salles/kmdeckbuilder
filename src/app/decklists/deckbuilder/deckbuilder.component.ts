@@ -60,6 +60,7 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
       highlight?: number
     }
   }
+  currentApCost = 0;
   syntheseRarete = { COMMUNE: 0, PEU_COMMUNE: 0, RARE: 0, KROSMIQUE: 0, INFINITE: 0 }
   god; // le dieu est une donnée fixée, pas dans le formulaire (pour swap neutre / dieu faut garder l'info)
   language: number; // language est comme le dieu, fixé par le site, pas un choix du formulaire
@@ -67,10 +68,8 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
   form: FormGroup;
   currentTab = 0;
 
-
   // pour bloquer les infinites du meme nom
   lockedSisterInfinites = []
-
 
   illustrationsNumber = 3
   selectedIndex = 0
@@ -344,7 +343,6 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
 
   removeCard(cardId) {
     this.selectedCards.splice(this.selectedCards.findIndex(card => card.id === cardId), 1);
-
     // il faut prévoir que la carte retirée ne peut plus servir pour le highlight
 
     this.updateState();
@@ -392,6 +390,8 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
   };
 
   computeCostSynthesis() {
+
+    this.currentApCost = 0;
     this.syntheseCost = {
       0: {[CREA]: 0, [SORT]: 0},
       1: {[CREA]: 0, [SORT]: 0},
@@ -409,6 +409,7 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
       } else {
         synthese[card.costAP][CardType[card.cardType]] = synthese[card.costAP][CardType[card.cardType]] + 1
       }
+      this.currentApCost += card.costAP;
       return synthese;
     }, this.syntheseCost)
 

@@ -9,8 +9,8 @@ import {ApiService} from "../../../api/api.service";
 })
 export class TagDropdownComponent {
 
-  allTags: { title: string, count: number }[] = []
-  displayedTags: { title: string, count: number }[] = []
+  allTags: { title: string, count: number, iconId: string }[] = []
+  displayedTags: { title: string, count: number, iconId: string }[] = []
   @Input() selectedTags = []
   @Input() withCount = false
   @Output() onSelectTag = new EventEmitter<any>();

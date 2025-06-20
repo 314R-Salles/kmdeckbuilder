@@ -2,7 +2,7 @@
             [titleSuffix]="currentTab ===0 ? ' --- Choix du dieu' : ' --- Compléments'"
             [forceSize]="currentTab ===1"
             [requiresLogin]="true">
-  <div id="regForm" style="height: 100%">
+  <div id="regForm" style="height: 100%; display:flex; flex-direction:column; align-items:center;">
 
     <!-- Circles which indicates the steps of the form: -->
     <!--    <div style="text-align:center;margin-top:10px;">-->
@@ -21,12 +21,17 @@
     <!--    </div>-->
     <!--    <hr>-->
     <!-- || currentTab == 1     && selectedCards.length != 45"-->
+    <div style="display:flex;">
     <button *ngIf="currentTab == 2 || currentTab == 1 && !isUpdate" type="button" id="prevBtn" (click)="nextPrev(-1)">
       Précédent
     </button>
-    <button [disabled]="currentTab == 0 && !god "
+    <button [disabled]="currentTab == 0 && !god || currentTab == 1 && selectedCards.length != 45"
             *ngIf="currentTab < 2" type="button" id="nextBtn" (click)="nextPrev(1)">Suivant
     </button>
+      <button *ngIf="currentTab == 2" [disabled]="deckForm.invalid || countDefaultCards() !== (3-illustrationsNumber)"
+              (click)="saveDeck()"> {{ isUpdate ? 'Enregistrer' : 'Créer le deck' }}
+      </button>
+    </div>
     <div class="godType" *ngIf="currentTab === 0">
       <div id="sortDiv">
         @for (godIndex of [1, 4, 2, 3, 8, 10, 6, 7, 5, 9]; track godIndex) {
@@ -111,8 +116,8 @@
           </div>
 
           <div style="display: flex; flex-direction: column; width: fit-content; padding: 5px;">
-            <label style="font-size: 20px"> Tags : </label>
-            <div style="background: #c6f8ff">
+            <label style="font-size: 20px"> Tags (optionnel) : </label>
+            <div style="">
               <app-tag-dropdown [selectedTags]="selectedTags"
                                 (onSelectTag)="selectTag($event)">
               </app-tag-dropdown>
@@ -128,7 +133,7 @@
           </div>
 
           <div style="display: flex; flex-direction: column; width: fit-content; padding: 5px;">
-            <label style="font-size: 20px"> Description : </label>
+            <label style="font-size: 20px"> Description (optionnel) : </label>
             <!--            la div qui englobe permet de donner un style au background (toolbar + input) et le style de l'editor force pour l'input -->
             <div style="background: #c6f8ff">
               <quill-editor class="content-editor"
@@ -137,12 +142,6 @@
                             [styles]="{height: '200px', 'min-width': '500px', background:'white', color: 'black'}"
               ></quill-editor>
             </div>
-          </div>
-
-          <div style="display: flex; justify-content: flex-end">
-            <button [disabled]="deckForm.invalid || countDefaultCards() !== (3-illustrationsNumber)"
-                    (click)="saveDeck()"> {{ isUpdate ? 'Enregistrer' : 'Créer le deck' }}
-            </button>
           </div>
         </form>
       </div>
@@ -245,6 +244,9 @@
 <ng-template #SYNTHESIS>
   <div>
     <div style="display:flex; flex-direction:row; justify-content:space-between;">
+      <div>
+        <img [src]="'/assets/public/picto-PA.png'" style="width:15px; height:15px;"> {{ currentApCost }}
+      </div>
       <div>
   <span class="bg-color-krosmique"
         style="width:15px; height:15px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); display:inline-block;"></span>

@@ -212,7 +212,7 @@ $transparency: 0.5;
 
 .deckImgGod {
   width: 100px;
-  padding: 15px;
+  padding-left: 15px;
 }
 
 .deckImgPa {
@@ -227,6 +227,14 @@ $transparency: 0.5;
   width: 80px;
 }
 
+.iconFavorite {
+  transition: all 0.35s;
+ }
+
+ .iconFavorite:hover {
+   transform: scale(1.3);
+  }
+
 .title {
   font-size: 35px;
   // height: 27.5%;
@@ -238,11 +246,16 @@ $transparency: 0.5;
 .author {
   font-size: 20px;
   // height: 25%;
+  align-self: flex-start;
+}
+
+.authorName:hover {
+    text-decoration:underline;
 }
 
 .tags {
   font-size: 35px;
-  height: 17.5%;
+  // height: 17.5%;
 }
 
 .creationDate {

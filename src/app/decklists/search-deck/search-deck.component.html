@@ -6,8 +6,7 @@
   </div>
 
     <div class="filterWrapper" style="flex-direction:row; position: relative">
-
-
+      <!-- God filter -->
       <div style="display: flex; flex-direction: column; padding: 0 5px;">
         <app-god-dropdown [selectedGods]="selectedGods" (onSelectGod)="selectGod($event)"></app-god-dropdown>
         <div style="padding: 0 10px"></div>
@@ -18,6 +17,7 @@
           }</div>
       </div>
 
+      <!-- Tag filter -->
       <div style=" display: flex; flex-direction: column; padding: 0 5px;">
         <app-tag-dropdown [withCount]="true" [selectedTags]="selectedTags"
                           (onSelectTag)="selectTag($event)"></app-tag-dropdown>
@@ -27,11 +27,13 @@
             <div class="card appFont2" (click)="removeTag(tag)"
                  style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
  height: 40px; font-size: 16px;  font-weight: 400;">
-              <span style="padding: 0 5px"> {{ tag.title }} - {{ tag.count }}</span>
+              <img *ngIf="tag.iconId" style="width:30px;" class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+              <span style="padding: 0 5px"> {{ tag.title }} ({{ tag.count }})</span>
             </div>
           }</div>
       </div>
 
+      <!-- Card filter -->
       <div style=" display: flex; flex-direction: column; padding: 0 5px;">
         <app-card-dropdown [selectedGods]="selectedGods" [selectedCards]="selectedCards"
                            (onSelectCard)="selectCard($event)"></app-card-dropdown>
@@ -46,6 +48,8 @@
             </div>
           }</div>
       </div>
+
+      <!-- Author filter -->
       <div style="display: flex; flex-direction: column; padding: 0 5px;">
         <app-owner-dropdown [selectedUsers]="selectedUsers" [allUsers]="allUsers" (onSelectUser)="selectUser($event)"></app-owner-dropdown>
         <div style="padding: 0 10px"></div>
@@ -60,12 +64,12 @@
       </div>
 
       <div style="display:flex; flex-direction:column; padding: 0 5px;">
-        <button *ngIf="isLoggedIn" style="width: 50px; height: 50px;"
+        <button *ngIf="isLoggedIn" style="width: 50px; height: 50px; cursor:pointer;"
                 (click)="toggleFavoriteFilter()">
           <mat-icon [ngStyle]="{color: favoritesOnly ? 'red': 'white'}">favorite
           </mat-icon>
         </button>
-      <button style="width: 50px; height: 50px; margin-top:10px;" (click)="resetFilters()">Reset</button>
+      <button style="width: 50px; height: 50px; margin-top:10px; cursor:pointer;" (click)="resetFilters()">Reset</button>
 
       </div>
     </div>
@@ -105,33 +109,40 @@
     </div>
 
   -->
-<!--    prévoir une séparation plus clean-->
 </km-section>
     <km-section>
     <div class="listDeck">
-      <div *ngIf="!decks.length">TEST C'EST VIDE MEC</div>
+      <div *ngIf="!decks.length" style="display:flex; align-content:center; flex-direction:column; align-items:center; width:100%;">
+        <img style="width:250px;" src="/assets/public/nothing_placeholder.png">
+        Aucun deck ne correspond à ces filtres.
+      </div>
       @for (deck of decks; track deck.deckId) {
-        <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god" style="display:flex; flex-direction:row;">
+        <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god" style="display:flex; flex-direction:row; cursor:pointer;">
 
           <div style="display: flex; flex-direction: column; width: 130px; justify-content:space-around;">
             <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
             <div [ngStyle]="{cursor: isLoggedIn ? 'pointer': 'default'}"
                  style="display: flex; justify-content: center; flex-direction:row;"
                  (click)="toggleFavorite(deck);$event.stopPropagation();$event.preventDefault()">
-              <mat-icon [ngStyle]="{color: deck.liked ? 'red': 'white'}">favorite
+              <mat-icon class="iconFavorite" style="" [ngStyle]="{color: deck.liked ? 'red': 'white'}">favorite
               </mat-icon>
               {{ deck.favoriteCount }}
             </div>
           </div>
           <div style="display: flex; flex-direction: column; justify-content: center; width: calc(85% - 400px)">
             <div class="title">{{ deck.name }}</div>
-            <div class="author" (click)="addUserFilterFromResult(deck.owner, $event);">{{ deck.owner }}</div>
+            <div class="author" >par <span class="authorName" (click)="addUserFilterFromResult(deck.owner, $event);">{{ deck.owner }}</span></div>
             <div class="creationDate">{{ deck.creationDate | date:'longDate' }}</div>
-            <div class="tags">
-              <div style="display:flex; flex-direction:column; justify-content:center;">
-                <div><img [src]="'/assets/public/picto-PA.png'" style="width:20px; height:20px;" class="type"> {{ deck.costAP }}</div>
-              </div>
-              {{ deck.tags }}
+            <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
+                <div style="position:relative;"><img [src]="'/assets/public/picto-PA.png'" style="width:35px; height:35px;" class="type"> <div style="font-family: 'geo2', 'arial', sans-serif !important; position:absolute; font-size:0.5em; transform: translate(-50%, -50%); left:50%; top:50%; -webkit-text-stroke: 0.7px #000000;">{{ deck.costAP }}</div></div>
+                <div style="display:flex; flex-direction:row; height:28px;">
+              @for (tag of deck.tags; track tag.id) {
+                <div style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
+                  <img style="width:20px; height:20px; margin-right:5px;" *ngIf="tag.iconId" class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+                  <span style="font-size:20px;">{{ tag.title }}</span>
+                </div>
+                }
+                </div>
             </div>
           </div>
           <div style="position:absolute; right: 0">
