@@ -6,10 +6,8 @@
   -webkit-box-shadow: inset 1px 0px 20px 0px #4fcce1 !important;
 }
 
-
 .filterWrapper {
   display: flex;
-  //padding: 0 20px
 }
 
 .filterGodWrapper {
@@ -54,7 +52,6 @@
   border: solid 1px #ffffff7a;
   border-radius: 5px;
   box-sizing: border-box;
-
 }
 
 
@@ -89,10 +86,6 @@
   cursor: pointer;
   -webkit-box-shadow: inset 1px 0px 20px 0px white;
 }
-
-
-
-
 
 
 .singleLineFilters {
@@ -184,14 +177,13 @@ $transparency: 0.5;
 
 .listDeck {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: flex-start // dans le cas decks impairs, pour bien l'afficher (donc si besoin de centrer, faire autrement)
 }
 
 .deck {
   width: 100%;
-  //min-width: 500px;
   margin: 5px 0;
   display: flex;
   flex-direction: row;
@@ -263,8 +255,6 @@ $transparency: 0.5;
   // height: 17.5%;
 }
 
-
-
 .costPaText {
   position: absolute;
   bottom: 0;
@@ -293,7 +283,6 @@ $transparency: 0.5;
   text-shadow: 2px 0 #3495eb, -2px 0 #3495eb, 0 2px #3495eb, 0 -2px #3495eb, 1px 1px #3495eb, -1px -1px #3495eb, 1px -1px #3495eb, -1px 1px #3495eb;
 }
 
-
 .like {
   position: relative;
 }
@@ -309,7 +298,6 @@ $transparency: 0.5;
 
 .card {
   height: 40px;
-  //width: 300px;
   border: rgba(255, 255, 255, 0.62) solid 1px;
   border-radius: 5px;
   box-sizing: border-box;

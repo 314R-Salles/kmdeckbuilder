@@ -29,10 +29,8 @@
       <div  style="border:1px solid white; margin-left:5px; margin-right:5px; padding:2px; cursor:pointer; display:flex; justify-content:center; background-color:#070f2f;">
         @if (!user) {
           <div (click)="login()">Se connecter</div>
-        } @else if (user.username) {
-          <span [routerLink]="['/user']">{{ user.username }}</span>
         } @else {
-          <span [routerLink]="['/user']">!!!!</span>
+          <span [routerLink]="['/user', user.username ]">{{ user.username }}</span>
         }
       </div>
       <div style="border:1px solid white; margin-left:5px; margin-right:5px; padding:2px; cursor:pointer; width:24px; display:flex; justify-content:center; background-color:#070f2f;">🇫🇷</div>

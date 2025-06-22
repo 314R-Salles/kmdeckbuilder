@@ -14,7 +14,11 @@ export class SearchDeckComponent implements OnInit {
 
   isLoggedIn
 
+  currentPage = 0;
+  pageSize = 20
+
   searchResults: {
+    pageNumber: number,
     empty: boolean,
     first: boolean
     last: boolean,
@@ -102,6 +106,8 @@ export class SearchDeckComponent implements OnInit {
       content: this.searchForm.get('content').value,
       favoritesOnly: this.favoritesOnly,
       language: "FR",
+      page: this.currentPage,
+      pageSize: this.pageSize,
     };
 
     // c'est pas initialisé
@@ -115,6 +121,7 @@ export class SearchDeckComponent implements OnInit {
     searchRequest.subscribe(searchResults => {
       this.decks = searchResults.content
       this.searchResults = {
+        pageNumber: searchResults.pageable.pageNumber,
         empty: searchResults.empty,
         first: searchResults.first,
         last: searchResults.last,
@@ -147,7 +154,7 @@ export class SearchDeckComponent implements OnInit {
     }
   }
 
-  addUserFilterFromResult(username:string, event) {
+  addUserFilterFromResult(username: string, event) {
     this.selectUser(this.allUsers.find(user => user.username === username))
     event.stopPropagation();
     event.preventDefault()
@@ -158,15 +165,6 @@ export class SearchDeckComponent implements OnInit {
     const index = this.selectedUsers.findIndex(u => u.username === user.username)
     this.selectedUsers.splice(index, 1)
     this.search()
-  }
-
-  fixUser(user) {
-    // click on user in deck > show only his decks by resetting the user filters and fixing only this one
-    // may be replaced later by a link to the user page, if necessary
-    console.log(user);
-    this.selectedUsers = [];
-    this.selectedUsers.push(user);
-    this.search();
   }
 
   selectGod(god) {
@@ -212,6 +210,20 @@ export class SearchDeckComponent implements OnInit {
           deck.liked = false
         })
       }
+    }
+  }
+
+  pageUp() {
+    if (this.currentPage < this.searchResults.totalPages - 1) {
+      this.currentPage++
+      this.search()
+    }
+  }
+
+  pageDown() {
+    if (this.currentPage > 0) {
+      this.currentPage--
+      this.search()
     }
   }
 

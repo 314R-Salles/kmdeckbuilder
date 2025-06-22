@@ -29,7 +29,7 @@ import {SearchDeckComponent} from './decklists/search-deck/search-deck.component
 import {ViewDeckComponent} from './decklists/view-deck/view-deck.component';
 import {RaritySynthesisComponent} from './decklists/rarity-synthesis/rarity-synthesis.component';
 import {ViewListComponent} from './decklists/view-list/view-list.component';
-import {SectionComponent} from './section/section.component';
+import {SectionComponent} from './base/section/section.component';
 import {CardDropdownComponent} from './decklists/search/card-dropdown/card-dropdown.component';
 import {OwnerDropdownComponent} from './decklists/search/owner-dropdown/owner-dropdown.component';
 import {GodDropdownComponent} from './decklists/search/god-dropdown/god-dropdown.component';
@@ -37,6 +37,7 @@ import {HighlightDisplayComponent} from './decklists/search/highlight-display/hi
 import {TagManagementComponent} from './admin/tag-management/tag-management.component';
 import {TagDropdownComponent} from './decklists/search/tag-dropdown/tag-dropdown.component';
 import {VersionDropdownComponent} from "./decklists/version-dropdown/version-dropdown.component";
+import { PaginationComponent } from './base/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import {VersionDropdownComponent} from "./decklists/version-dropdown/version-dro
     TagManagementComponent,
     TagDropdownComponent,
     VersionDropdownComponent,
+    PaginationComponent,
   ],
   imports: [
     CommonModule,
@@ -108,7 +110,10 @@ export class AppModule {
 }
 
 function storageFactory(): OAuthStorage {
-  return localStorage;
+  if (typeof window !== 'undefined') {
+    return localStorage;
+  }
+  return null;
 }
 
 

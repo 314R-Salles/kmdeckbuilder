@@ -161,7 +161,8 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
     }
 
 
-    this.displayedCards = []
+    // ne pas vider la liste évite le clignogement de l'écran
+    // this.displayedCards = []
     this.apiService.getCards({
       type: type,
       hpGreaterThan: hpMin,
@@ -176,7 +177,8 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
       rarity: this.rarity != -1 ? this.rarity : null,
       language: "FR",
       family: null,
-      content: this.content ? this.content : null,
+      name: this.content ? this.content : null,
+      description: this.content ? this.content : null,
       pageNumber: this.pageNumber,
       pageSize: this.pageSize
 

@@ -1,0 +1,5 @@
+<div *ngIf="totalPages>1" style="display:flex; flex-direction: row; align-items: center">
+  <button class="paginationBtn" (click)="down()"> <</button>
+  <div> Page {{ pageNumber }} / {{ totalPages }}</div>
+  <button class="paginationBtn" (click)="up()"> ></button>
+</div>

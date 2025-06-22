@@ -1,9 +1,9 @@
-
 <form [formGroup]="searchForm" (ngSubmit)="search()">
-<km-section [title]="'Recherche de Decks'">
-  <div section-header style="position:relative;">
-    <span routerLink="/decks/create" style="position:absolute; right:0px; top:-70px; padding:5px; border:2px solid #FFD700; cursor:pointer; border-radius:4px; color:#FFD700;">Créer un deck</span>
-  </div>
+  <km-section [title]="'Recherche de Decks'">
+    <div section-header style="position:relative;">
+      <span routerLink="/decks/create"
+            style="position:absolute; right:0px; top:-70px; padding:5px; border:2px solid #FFD700; cursor:pointer; border-radius:4px; color:#FFD700;">Créer un deck</span>
+    </div>
 
     <div class="filterWrapper" style="flex-direction:row; position: relative">
       <!-- God filter -->
@@ -27,7 +27,8 @@
             <div class="card appFont2" (click)="removeTag(tag)"
                  style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
  height: 40px; font-size: 16px;  font-weight: 400;">
-              <img *ngIf="tag.iconId" style="width:30px;" class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+              <img *ngIf="tag.iconId" style="width:30px;" class="tagImg"
+                   [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
               <span style="padding: 0 5px"> {{ tag.title }} ({{ tag.count }})</span>
             </div>
           }</div>
@@ -51,7 +52,8 @@
 
       <!-- Author filter -->
       <div style="display: flex; flex-direction: column; padding: 0 5px;">
-        <app-owner-dropdown [selectedUsers]="selectedUsers" [allUsers]="allUsers" (onSelectUser)="selectUser($event)"></app-owner-dropdown>
+        <app-owner-dropdown [selectedUsers]="selectedUsers" [allUsers]="allUsers"
+                            (onSelectUser)="selectUser($event)"></app-owner-dropdown>
         <div style="padding: 0 10px"></div>
         <div style="display: flex; flex-wrap: wrap; align-content: center; width:300px; margin-top:10px;">
           @for (user of selectedUsers; track user.username) {
@@ -69,88 +71,112 @@
           <mat-icon [ngStyle]="{color: favoritesOnly ? 'red': 'white'}">favorite
           </mat-icon>
         </button>
-      <button style="width: 50px; height: 50px; margin-top:10px; cursor:pointer;" (click)="resetFilters()">Reset</button>
+        <button style="width: 50px; height: 50px; margin-top:10px; cursor:pointer;" (click)="resetFilters()">Reset
+        </button>
 
       </div>
     </div>
-  <!--
-  For now I really don't think those filters name filter are useful : both tags/cards filter allow for a much better filter.
-  And this way we can get a much cleaner UI. Will see if some of those are asked for.
-      <div class="singleLineFilters">
+    <!--
+    For now I really don't think those filters name filter are useful : both tags/cards filter allow for a much better filter.
+    And this way we can get a much cleaner UI. Will see if some of those are asked for.
+        <div class="singleLineFilters">
 
-        <div class="dropdown" style="margin-right: 30px">
-          <input class="dropbtn appFont2"
-                 style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 5px;"
-                 formControlName="content"
-                 type="text" placeholder="Nom ...">
+          <div class="dropdown" style="margin-right: 30px">
+            <input class="dropbtn appFont2"
+                   style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 5px;"
+                   formControlName="content"
+                   type="text" placeholder="Nom ...">
+          </div>
+
+        <div style="height: 40px;  padding-top: 10px; display: flex; margin-right: 30px">
+          <span style="width: 40px; align-self: center">PA</span>
+          <button style="width: 40px;" (click)="toggleActionPointsCompare()">
+            <span *ngIf="actionPointsCompareSup"> ≥ </span>
+            <span *ngIf="!actionPointsCompareSup"> ≤ </span>
+          </button>
+          max 387
+          <input style="width: 50px;" formControlName="actionPointsCost">
         </div>
 
-      <div style="height: 40px;  padding-top: 10px; display: flex; margin-right: 30px">
-        <span style="width: 40px; align-self: center">PA</span>
-        <button style="width: 40px;" (click)="toggleActionPointsCompare()">
-          <span *ngIf="actionPointsCompareSup"> ≥ </span>
-          <span *ngIf="!actionPointsCompareSup"> ≤ </span>
-        </button>
-        max 387
-        <input style="width: 50px;" formControlName="actionPointsCost">
+        Not a useful filter.
+        <div style="height: 40px;  padding-top: 10px; display: flex; margin-right: 30px">
+          <span style="width: 90px; align-self: center">Poussière</span>
+          <button style="width: 40px;" (click)="toggleDustCompare()">
+            <span *ngIf="dustCompareSup"> ≥ </span>
+            <span *ngIf="!dustCompareSup"> ≤ </span>
+          </button>
+
+          <input style="width: 50px;" formControlName="dustCost">
+        </div>
+
       </div>
 
-      Not a useful filter.
-      <div style="height: 40px;  padding-top: 10px; display: flex; margin-right: 30px">
-        <span style="width: 90px; align-self: center">Poussière</span>
-        <button style="width: 40px;" (click)="toggleDustCompare()">
-          <span *ngIf="dustCompareSup"> ≥ </span>
-          <span *ngIf="!dustCompareSup"> ≤ </span>
-        </button>
-
-        <input style="width: 50px;" formControlName="dustCost">
-      </div>
-
-    </div>
-
-  -->
-</km-section>
-    <km-section>
+    -->
+  </km-section>
+  <km-section>
     <div class="listDeck">
-      <div *ngIf="!decks.length" style="display:flex; align-content:center; flex-direction:column; align-items:center; width:100%;">
-        <img style="width:250px;" src="/assets/public/nothing_placeholder.png">
-        Aucun deck ne correspond à ces filtres.
-      </div>
-      @for (deck of decks; track deck.deckId) {
-        <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god" style="display:flex; flex-direction:row; cursor:pointer;">
-
-          <div style="display: flex; flex-direction: column; width: 130px; justify-content:space-around;">
-            <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-            <div [ngStyle]="{cursor: isLoggedIn ? 'pointer': 'default'}"
-                 style="display: flex; justify-content: center; flex-direction:row;"
-                 (click)="toggleFavorite(deck);$event.stopPropagation();$event.preventDefault()">
-              <mat-icon class="iconFavorite" style="" [ngStyle]="{color: deck.liked ? 'red': 'white'}">favorite
-              </mat-icon>
-              {{ deck.favoriteCount }}
-            </div>
-          </div>
-          <div style="display: flex; flex-direction: column; justify-content: center; width: calc(85% - 400px)">
-            <div class="title">{{ deck.name }}</div>
-            <div class="author" >par <span class="authorName" (click)="addUserFilterFromResult(deck.owner, $event);">{{ deck.owner }}</span></div>
-            <div class="creationDate">{{ deck.creationDate | date:'longDate' }}</div>
-            <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
-                <div style="position:relative;"><img [src]="'/assets/public/picto-PA.png'" style="width:35px; height:35px;" class="type"> <div style="font-family: 'geo2', 'arial', sans-serif !important; position:absolute; font-size:0.5em; transform: translate(-50%, -50%); left:50%; top:50%; -webkit-text-stroke: 0.7px #000000;">{{ deck.costAP }}</div></div>
-                <div style="display:flex; flex-direction:row; height:28px;">
-              @for (tag of deck.tags; track tag.id) {
-                <div style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
-                  <img style="width:20px; height:20px; margin-right:5px;" *ngIf="tag.iconId" class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-                  <span style="font-size:20px;">{{ tag.title }}</span>
-                </div>
-                }
-                </div>
-            </div>
-          </div>
-          <div style="position:absolute; right: 0">
-            <app-highlight-display [illustrations]="deck.highlights"></app-highlight-display>
-          </div>
+      @if (!decks.length) {
+        <div style="display:flex; align-content:center; flex-direction:column; align-items:center; width:100%;">
+          <img style="width:250px;" src="/assets/public/nothing_placeholder.png">
+          Aucun deck ne correspond à ces filtres.
         </div>
+      } @else {
+        <div style="align-self: flex-end">
+          <app-pagination [pageNumber]="searchResults?.pageNumber +1" [totalPages]="searchResults?.totalPages"
+                          (pageUp)="pageUp()" (pageDown)="pageDown()"></app-pagination>
+        </div>
+        @for (deck of decks; track deck.deckId) {
+          <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god"
+               style="display:flex; flex-direction:row; cursor:pointer;">
+
+            <div style="display: flex; flex-direction: column; width: 130px; justify-content:space-around;">
+              <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
+              <div [ngStyle]="{cursor: isLoggedIn ? 'pointer': 'default'}"
+                   style="display: flex; justify-content: center; flex-direction:row;"
+                   (click)="toggleFavorite(deck);$event.stopPropagation();$event.preventDefault()">
+                <mat-icon class="iconFavorite" style="" [ngStyle]="{color: deck.liked ? 'red': 'white'}">favorite
+                </mat-icon>
+                {{ deck.favoriteCount }}
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: center; width: calc(85% - 400px)">
+              <div class="title">{{ deck.name }}</div>
+              <div class="author" style="display: flex">par <span class="authorName" style="margin-left: 10px"
+                                                         (click)="addUserFilterFromResult(deck.owner, $event);">{{ deck.owner }}</span>
+                <mat-icon [matTooltip]="'Consulter le profil'" [routerLink]="['/user',deck.owner]">contact_page</mat-icon>
+              </div>
+              <div class="creationDate">{{ deck.creationDate | date:'longDate' }}</div>
+              <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
+                <div style="position:relative;"><img [src]="'/assets/public/picto-PA.png'"
+                                                     style="width:35px; height:35px;" class="type">
+                  <div
+                    style="font-family: 'geo2', 'arial', sans-serif !important; position:absolute; font-size:0.5em; transform: translate(-50%, -50%); left:50%; top:50%; -webkit-text-stroke: 0.7px #000000;">{{ deck.costAP }}
+                  </div>
+                </div>
+                <div style="display:flex; flex-direction:row; height:28px;">
+                  @for (tag of deck.tags; track tag.id) {
+                    <div
+                      style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
+                      <img style="width:20px; height:20px; margin-right:5px;" *ngIf="tag.iconId" class="tagImg"
+                           [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+                      <span style="font-size:20px;">{{ tag.title }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+            <div style="position:absolute; right: 0">
+              <app-highlight-display [illustrations]="deck.highlights"></app-highlight-display>
+            </div>
+          </div>
+        }
       }
+      <div style="align-self: flex-end">
+        <app-pagination [pageNumber]="searchResults?.pageNumber +1" [totalPages]="searchResults?.totalPages"
+                        (pageUp)="pageUp()" (pageDown)="pageDown()"></app-pagination>
+      </div>
     </div>
-</km-section>
+
+  </km-section>
 
 </form>

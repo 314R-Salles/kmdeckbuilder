@@ -22,12 +22,12 @@
     <!--    <hr>-->
     <!-- || currentTab == 1     && selectedCards.length != 45"-->
     <div style="display:flex;">
-    <button *ngIf="currentTab == 2 || currentTab == 1 && !isUpdate" type="button" id="prevBtn" (click)="nextPrev(-1)">
-      Précédent
-    </button>
-    <button [disabled]="currentTab == 0 && !god || currentTab == 1 && selectedCards.length != 45"
-            *ngIf="currentTab < 2" type="button" id="nextBtn" (click)="nextPrev(1)">Suivant
-    </button>
+      <button *ngIf="currentTab == 2 || currentTab == 1 && !isUpdate" type="button" id="prevBtn" (click)="nextPrev(-1)">
+        Précédent
+      </button>
+      <button [disabled]="currentTab == 0 && !god || currentTab == 1 && selectedCards.length != 45"
+              *ngIf="currentTab < 2" type="button" id="nextBtn" (click)="nextPrev(1)">Suivant
+      </button>
       <button *ngIf="currentTab == 2" [disabled]="deckForm.invalid || countDefaultCards() !== (3-illustrationsNumber)"
               (click)="saveDeck()"> {{ isUpdate ? 'Enregistrer' : 'Créer le deck' }}
       </button>
@@ -211,7 +211,7 @@
 
         <div style="display:flex; justify-content:center; flex-direction:column;">
           <button class="buttonChangePage" (click)="pageDown()"> <</button>
-          <span>{{+pageNumber+1}}/{{searchResults.totalPages}}</span>
+          <span>{{ +pageNumber + 1 }}/{{ searchResults.totalPages }}</span>
           <button class="buttonChangePage" (click)="pageUp()"> ></button>
         </div>
       </div>
@@ -250,19 +250,23 @@
       <div>
   <span class="bg-color-krosmique"
         style="width:15px; height:15px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); display:inline-block;"></span>
-        <span [ngStyle]="{'color': 7 === syntheseRarete.KROSMIQUE ? 'white': 'orange'}"> {{ syntheseRarete.KROSMIQUE }} / 7</span>
-      </div><div>
+        <span [ngStyle]="{'color': 7 === syntheseRarete.KROSMIQUE ? 'white': 'orange'}"> {{ syntheseRarete.KROSMIQUE }}
+          / 7</span>
+      </div>
+      <div>
     <span class="bg-color-infinite"
           style="width:15px; height:15px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); display:inline-block;"></span>
-      <span  [ngStyle]="{'color': 5 === syntheseRarete.INFINITE ? 'white': 'orange'}">{{ syntheseRarete.INFINITE }} / 5</span>
-    </div><div>
-  <span [ngStyle]="{'color': 45 === selectedCards.length ? 'white': 'red'}">{{ selectedCards.length }} </span> /
-  45
-  </div>
+        <span [ngStyle]="{'color': 5 === syntheseRarete.INFINITE ? 'white': 'orange'}">{{ syntheseRarete.INFINITE }}
+          / 5</span>
+      </div>
+      <div>
+        <span [ngStyle]="{'color': 45 === selectedCards.length ? 'white': 'red'}">{{ selectedCards.length }} </span> /
+        45
+      </div>
     </div>
 
-  <app-selected-list [synthese]="synthese" [syntheseCost]="syntheseCost" [max]="max"
-                     (removeCard)="removeCard($event)"
-                     style=""></app-selected-list>
+    <app-selected-list [synthese]="synthese" [syntheseCost]="syntheseCost" [max]="max"
+                       (removeCard)="removeCard($event)"
+                       style=""></app-selected-list>
   </div>
 </ng-template>

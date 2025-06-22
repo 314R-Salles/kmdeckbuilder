@@ -1,6 +1,6 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
-import {StoreService} from "../store.service";
-import {AuthService} from "../auth.service";
+import {StoreService} from "../../store.service";
+import {AuthService} from "../../auth.service";
 
 @Component({
   selector: 'km-section',

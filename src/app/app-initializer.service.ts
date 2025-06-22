@@ -35,9 +35,8 @@ export class AppInitializerService {
         switchMap(cardList => {
           this.storeService.setCardIllustrations(cardList)
           this.oauthService.configure({
-            // URL of identity provider. https://<YOUR_DOMAIN>.auth0.com
-            issuer: 'https://dev-ia8kmebkqhrnkdv1.eu.auth0.com/',
-            redirectUri: environment.REDIRECT_URI, // doit etre environment host : krosma.ga
+            issuer: 'https://login.krosmaga.tools/', // custom domain pour le tenant
+            redirectUri: environment.REDIRECT_URI,
             clientId: 'ZqIWm3UfEuSjX0RaliUtVyaEzQ7iBc09',
             responseType: 'code',
             scope: 'openid profile admin',
