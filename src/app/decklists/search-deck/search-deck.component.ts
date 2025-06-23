@@ -25,7 +25,8 @@ export class SearchDeckComponent implements OnInit {
     totalElements: number,
     totalPages: number
   }
-  decks = []
+
+  decks = null
   CARD_ILLUSTRATIONS
   searchForm
   actionPointsCompareSup = true
@@ -38,6 +39,7 @@ export class SearchDeckComponent implements OnInit {
   selectedTags = []
 
   allUsers = []
+  allTags = []
 
   constructor(private apiService: ApiService,
               private authenticatedApiService: AuthenticatedApiService,
@@ -48,6 +50,10 @@ export class SearchDeckComponent implements OnInit {
 
     this.apiService.getDeckOwners().subscribe(owners => {
       this.allUsers = owners;
+    })
+
+    this.apiService.getTagsByLanguage("FR").subscribe(tags => {
+      this.allTags = tags;
     })
 
     this.searchForm = new FormGroup({
@@ -154,8 +160,22 @@ export class SearchDeckComponent implements OnInit {
     }
   }
 
+
+  selectTag(tag) {
+    if (!this.selectedTags.map(t => t.title).includes(tag.title)) {
+      this.selectedTags.push(tag)
+      this.search()
+    }
+  }
+
   addUserFilterFromResult(username: string, event) {
     this.selectUser(this.allUsers.find(user => user.username === username))
+    event.stopPropagation();
+    event.preventDefault()
+  }
+
+  addTagFilterFromResult(tagName: string, event) {
+    this.selectTag(this.allTags.find(tag => tag.title === tagName))
     event.stopPropagation();
     event.preventDefault()
   }
@@ -175,11 +195,6 @@ export class SearchDeckComponent implements OnInit {
   removeGod(god) {
     const index = this.selectedGods.findIndex(u => u.id === god.id)
     this.selectedGods.splice(index, 1)
-    this.search()
-  }
-
-  selectTag(tag) {
-    this.selectedTags.push(tag)
     this.search()
   }
 

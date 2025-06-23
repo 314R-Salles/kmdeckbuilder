@@ -221,18 +221,18 @@ $transparency: 0.5;
 
 .iconFavorite {
   transition: all 0.35s;
- }
+}
 
- .iconFavorite:hover {
-   transform: scale(1.3);
-  }
+.iconFavorite:hover {
+  transform: scale(1.3);
+}
 
 .title {
   font-size: 35px;
-  // height: 27.5%;
   text-overflow: ellipsis;
-  overflow: hidden;
+  overflow-x: clip;
   white-space: nowrap;
+  margin-bottom: 5px;
 }
 
 .author {
@@ -242,12 +242,37 @@ $transparency: 0.5;
 }
 
 .authorName:hover {
-    text-decoration:underline;
+  text-decoration: underline;
 }
 
 .tags {
   font-size: 35px;
   // height: 17.5%;
+}
+
+.tag {
+  display: flex;
+  flex-direction: row;
+  background-color: #313282;
+  border-radius: 20px;
+  position: relative;
+  align-content: center;
+  align-items: center;
+  padding: 5px;
+  margin-left: 5px
+}
+
+.tag:hover {
+  border: rgb(255, 255, 255) solid 1px;
+}
+
+.toggleFavoriteButton {
+  border: #FFAE00 solid 2px;
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  background-color: #313282;
 }
 
 .creationDate {
@@ -316,7 +341,7 @@ $transparency: 0.5;
 .card:hover {
   filter: grayscale(100%);
   cursor: pointer;
-  }
+}
 
 .container {
   display: flex;
@@ -381,8 +406,8 @@ $transparency: 0.5;
 }
 
 .godMiniaFiltered {
-  width:50px;
-  cursor:pointer;
+  width: 50px;
+  cursor: pointer;
 }
 
 .godMiniaFiltered:hover {

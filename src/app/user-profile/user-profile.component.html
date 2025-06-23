@@ -5,7 +5,7 @@
       <div>{{ routeUser.username }}</div>
       <div>
         @if (routeUser.twitchUsername) {
-          Compte Twitch :   <a [href]="'https://www.twitch.tv/'+routeUser.twitchUsername" target="_blank">
+          Compte Twitch :   <a style="color: wheat" [href]="'https://www.twitch.tv/'+routeUser.twitchUsername" target="_blank">
             {{ routeUser.twitchUsername }}</a>
         } @else {
           Cet utilisateur n'a pas lié de compte Twitch
@@ -14,38 +14,38 @@
       <span>
       Aperçu la dernière fois le : {{ routeUser.lastLogin |date : 'mediumDate' }}
       </span>
-
-      <hr style="width: 100%">
-      <span>Ses derniers decks :</span>
-      <br>
-
-      <div class="listDeck">
-        @for (deck of decks; track deck.deckId) {
-          <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
-            <div style="display: flex; flex-direction: column; width: 90px">
-              <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-            </div>
-            <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
-              <div class="title"
-                   style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                <span>{{ deck.name }}</span>
-                <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
-                  <div style="display:flex; flex-direction:row; height:28px;">
-                    @for (tag of deck.tags; track tag.id) {
-                      <div
-                        style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
-                        <img style="width:20px; height:20px; margin-right:5px;" *ngIf="tag.iconId" class="tagImg"
-                             [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-                        <span style="font-size:20px;">{{ tag.title }}</span>
-                      </div>
-                    }
+      <div *ngIf="decks?.length">
+        <hr style="width: 100%">
+        <span>Ses derniers decks :</span>
+        <br>
+        <div class="listDeck">
+          @for (deck of decks; track deck.deckId) {
+            <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
+              <div style="display: flex; flex-direction: column; width: 90px">
+                <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
+              </div>
+              <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
+                <div class="title"
+                     style="display: flex; flex-direction: column; justify-content: space-evenly;">
+                  <span>{{ deck.name }}</span>
+                  <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
+                    <div style="display:flex; flex-direction:row; height:28px;">
+                      @for (tag of deck.tags; track tag.id) {
+                        <div
+                          style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
+                          <img style="width:20px; height:20px; margin-right:5px;" *ngIf="tag.iconId" class="tagImg"
+                               [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+                          <span style="font-size:20px;">{{ tag.title }}</span>
+                        </div>
+                      }
+                    </div>
                   </div>
                 </div>
+                <div class="author">{{ deck.owner }}</div>
               </div>
-              <div class="author">{{ deck.owner }}</div>
             </div>
-          </div>
-        }
+          }
+        </div>
       </div>
     </div>
   } @else {
@@ -87,70 +87,74 @@
 
       <br>
 
-      <hr>
-      Vos derniers favoris :
-      <br>
+      <div *ngIf="favorites?.length">
+        <hr>
+        Vos derniers favoris :
+        <br>
 
-      <div class="listDeck">
-        @for (deck of favorites; track deck.deckId) {
-          <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
-            <div style="display: flex; flex-direction: column; width: 90px">
-              <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-            </div>
-            <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
-              <div class="title"
-                   style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                <span>{{ deck.name }}</span>
-                <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
-                  <div style="display:flex; flex-direction:row; height:28px;">
-                    @for (tag of deck.tags; track tag.id) {
-                      <div
-                        style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
-                        <img style="width:20px; height:20px; margin-right:5px;" *ngIf="tag.iconId" class="tagImg"
-                             [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-                        <span style="font-size:20px;">{{ tag.title }}</span>
-                      </div>
-                    }
+        <div class="listDeck">
+          @for (deck of favorites; track deck.deckId) {
+            <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
+              <div style="display: flex; flex-direction: column; width: 90px">
+                <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
+              </div>
+              <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
+                <div class="title"
+                     style="display: flex; flex-direction: column; justify-content: space-evenly;">
+                  <span>{{ deck.name }}</span>
+                  <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
+                    <div style="display:flex; flex-direction:row; height:28px;">
+                      @for (tag of deck.tags; track tag.id) {
+                        <div
+                          style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
+                          <img style="width:20px; height:20px; margin-right:5px;" *ngIf="tag.iconId" class="tagImg"
+                               [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+                          <span style="font-size:20px;">{{ tag.title }}</span>
+                        </div>
+                      }
+                    </div>
                   </div>
                 </div>
+                <div class="author">{{ deck.owner }}</div>
               </div>
-              <div class="author">{{ deck.owner }}</div>
             </div>
-          </div>
-        }
+          }
+        </div>
       </div>
 
-      <hr style="width: 100%">
-      <span>Vos derniers decks :</span>
-      <br>
+      <div *ngIf="decks?.length">
+        <hr style="width: 100%">
+        <span>Vos derniers decks :</span>
+        <br>
 
-      <div class="listDeck">
-        @for (deck of decks; track deck.deckId) {
-          <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
-            <div style="display: flex; flex-direction: column; width: 90px">
-              <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-            </div>
-            <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
-              <div class="title"
-                   style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                <span>{{ deck.name }}</span>
-                <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
-                  <div style="display:flex; flex-direction:row; height:28px;">
-                    @for (tag of deck.tags; track tag.id) {
-                      <div
-                        style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
-                        <img style="width:20px; height:20px; margin-right:5px;" *ngIf="tag.iconId" class="tagImg"
-                             [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-                        <span style="font-size:20px;">{{ tag.title }}</span>
-                      </div>
-                    }
+        <div class="listDeck">
+          @for (deck of decks; track deck.deckId) {
+            <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
+              <div style="display: flex; flex-direction: column; width: 90px">
+                <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
+              </div>
+              <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
+                <div class="title"
+                     style="display: flex; flex-direction: column; justify-content: space-evenly;">
+                  <span>{{ deck.name }}</span>
+                  <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
+                    <div style="display:flex; flex-direction:row; height:28px;">
+                      @for (tag of deck.tags; track tag.id) {
+                        <div
+                          style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
+                          <img style="width:20px; height:20px; margin-right:5px;" *ngIf="tag.iconId" class="tagImg"
+                               [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+                          <span style="font-size:20px;">{{ tag.title }}</span>
+                        </div>
+                      }
+                    </div>
                   </div>
                 </div>
+                <div class="author">{{ deck.owner }}</div>
               </div>
-              <div class="author">{{ deck.owner }}</div>
             </div>
-          </div>
-        }
+          }
+        </div>
       </div>
     }
   }

@@ -66,7 +66,8 @@
       </div>
 
       <div style="display:flex; flex-direction:column; padding: 0 5px;">
-        <button *ngIf="isLoggedIn" style="width: 50px; height: 50px; cursor:pointer;"
+        <button *ngIf="isLoggedIn" class="toggleFavoriteButton"
+                [matTooltip]="favoritesOnly ? 'Afficher tous les decks' : 'Afficher vos favoris'"
                 (click)="toggleFavoriteFilter()">
           <mat-icon [ngStyle]="{color: favoritesOnly ? 'red': 'white'}">favorite
           </mat-icon>
@@ -115,7 +116,7 @@
   </km-section>
   <km-section>
     <div class="listDeck">
-      @if (!decks.length) {
+      @if (decks && !decks.length) {
         <div style="display:flex; align-content:center; flex-direction:column; align-items:center; width:100%;">
           <img style="width:250px;" src="/assets/public/nothing_placeholder.png">
           Aucun deck ne correspond à ces filtres.
@@ -141,9 +142,12 @@
             </div>
             <div style="display: flex; flex-direction: column; justify-content: center; width: calc(85% - 400px)">
               <div class="title">{{ deck.name }}</div>
-              <div class="author" style="display: flex">par <span class="authorName" style="margin-left: 10px"
-                                                         (click)="addUserFilterFromResult(deck.owner, $event);">{{ deck.owner }}</span>
-                <mat-icon [matTooltip]="'Consulter le profil'" [routerLink]="['/user',deck.owner]">contact_page</mat-icon>
+              <div class="author" style="display: flex">par
+                <span class="authorName" style="margin-left: 10px"
+                      [matTooltip]="'Ajouter '+deck.owner+' aux filtres de recherche'"
+                      (click)="addUserFilterFromResult(deck.owner, $event);">{{ deck.owner }}</span>
+                <mat-icon [matTooltip]="'Consulter le profil'" [routerLink]="['/user',deck.owner]">contact_page
+                </mat-icon>
               </div>
               <div class="creationDate">{{ deck.creationDate | date:'longDate' }}</div>
               <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
@@ -155,8 +159,8 @@
                 </div>
                 <div style="display:flex; flex-direction:row; height:28px;">
                   @for (tag of deck.tags; track tag.id) {
-                    <div
-                      style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
+                    <div (click)="addTagFilterFromResult(tag.title , $event);" class="tag"
+                         [matTooltip]="'Ajouter '+tag.title+' aux filtres de recherche'">
                       <img style="width:20px; height:20px; margin-right:5px;" *ngIf="tag.iconId" class="tagImg"
                            [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
                       <span style="font-size:20px;">{{ tag.title }}</span>

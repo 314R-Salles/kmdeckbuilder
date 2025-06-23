@@ -12,7 +12,8 @@ export class ViewListComponent implements OnChanges {
   @Input() cards;
   synthese
   CARD_ILLUSTRATIONS
-  constructor(              private storeService: StoreService) {
+
+  constructor(private storeService: StoreService) {
     this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
   }
 
@@ -34,12 +35,18 @@ export class ViewListComponent implements OnChanges {
       return synthese;
     }, this.synthese)
 
-    this.synthese['KROSFI'].sort((a, b) => a.costAP - b.costAP);
-    this.synthese['NEUTRE'].sort((a, b) => a.costAP - b.costAP);
-    this.synthese['GOD_CREA'].sort((a, b) => a.costAP - b.costAP);
-    this.synthese['GOD_SPELL'].sort((a, b) => a.costAP - b.costAP);
+    this.synthese['KROSFI'].sort(this.customSort);
+    this.synthese['NEUTRE'].sort(this.customSort);
+    this.synthese['GOD_CREA'].sort(this.customSort);
+    this.synthese['GOD_SPELL'].sort(this.customSort);
 
     let max = Math.max(this.synthese['NEUTRE'].length, this.synthese['GOD_CREA'].length, this.synthese['GOD_SPELL'].length, this.synthese['KROSFI'].length)
 
   }
+
+  customSort(cardA, cardB) {
+    if (cardA.costAP != cardB.costAP) return cardA.costAP - cardB.costAP
+    else return cardA.name.localeCompare(cardB.name)
+  }
+
 }

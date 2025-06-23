@@ -34,7 +34,7 @@ export class ViewDeckComponent implements OnChanges {
   ngOnChanges() {
     this.apiService.getDeck(this.id, this.version, "FR").pipe(
       switchMap(r => {
-        this.data = {...r, description: this.domSanitize.bypassSecurityTrustHtml(r.description)};
+        this.data = {...r, description: this.domSanitize.bypassSecurityTrustHtml(r.description.replaceAll("<p></p>", "<p><br></p>"))};
         this.updateState();
 
         return this.storeService.getUser()

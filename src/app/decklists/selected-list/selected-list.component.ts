@@ -20,13 +20,18 @@ export class SelectedListComponent {
       let godCards = this.updatedSynthese.filter(a => a.godType !== 'NEUTRE')
       let neutralCards = this.updatedSynthese.filter(a => a.godType === 'NEUTRE')
 
-      godCards.sort((a, b) => a.costAP - b.costAP);
-      neutralCards.sort((a, b) => a.costAP - b.costAP);
+      godCards.sort(this.customSort);
+      neutralCards.sort(this.customSort);
 
       this.updatedSynthese = [];
       this.updatedSynthese.push(...godCards)
       this.updatedSynthese.push(...neutralCards)
     }
+  }
+
+  customSort(cardA, cardB) {
+    if (cardA.costAP != cardB.costAP) return cardA.costAP - cardB.costAP
+    else return cardA.name.localeCompare(cardB.name)
   }
 
   @Output() removeCard = new EventEmitter<string>();
