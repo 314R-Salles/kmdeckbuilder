@@ -139,7 +139,7 @@
               <quill-editor class="content-editor"
                             formControlName="description"
                             [modules]="quillConfiguration"
-                            [styles]="{height: '200px', 'min-width': '500px', background:'white', color: 'black'}"
+                            [styles]="{'min-height': '200px', 'max-height':'500px', 'min-width': '500px', 'max-width':'1000px', background:'white', color: 'black'}"
               ></quill-editor>
             </div>
           </div>
@@ -208,14 +208,18 @@
                  class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
           }
         </div>
-
-        <div style="display:flex; justify-content:center; flex-direction:column;">
-          <button class="buttonChangePage" (click)="pageDown()"> <</button>
-          <span>{{ +pageNumber + 1 }}/{{ searchResults.totalPages }}</span>
-          <button class="buttonChangePage" (click)="pageUp()"> ></button>
-        </div>
       </div>
-
+    </div>
+    <div style="display:flex; justify-content:center; flex-direction:row;">
+      <button class="paginationBtn" (click)="pageDown()">« </button>
+      @for (page of createPagination(); track page) {
+      @if (page != "...") {
+      <button class="paginationBtn" (click)="pageSet(page)" [ngStyle]="{'background-color': page === pageNumber + 1? '#FF474D':'#313282'}"> {{page}}</button> }
+      @else {
+      <button class="paginationBtn" [ngStyle]="{'background-color': page === pageNumber ? '#FF474D':'#313282'}"> {{page}}</button>
+      }
+      }
+      <button class="paginationBtn" (click)="pageUp()"> »</button>
     </div>
 
   </div>

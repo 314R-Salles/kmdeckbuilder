@@ -41,7 +41,7 @@
 
   <ng-template #STATS>
     <div style="border: #FFAE00 solid 2px; box-sizing: border-box; display: flex; width: 100%;
-     height: 200px; padding: 10px; align-items: center">
+     height: 200px; padding: 10px;">
       <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+data.god+'.png'"/>
       <app-synthesis [syntheseCost]="syntheseCost" [max]="max"></app-synthesis>
       <app-rarity-synthesis [raritySynthesis]="syntheseRarete"></app-rarity-synthesis>
@@ -49,13 +49,13 @@
   </ng-template>
   <ng-template #DESC>
     <div
-      style="border: #FFAE00 solid 2px;box-sizing: border-box; display: flex; width: 100%; align-items: center; padding: 5px">
+      style="border: #FFAE00 solid 2px;box-sizing: border-box; display: flex; width: 100%; padding: 5px">
       <div [innerHTML]="data.description"></div>
     </div>
   </ng-template>
 
   <ng-template #CARDS>
-    <div style="border: #FFAE00 solid 2px;box-sizing: border-box; display: flex; width: 100%; align-items: center">
+    <div style="border: #FFAE00 solid 2px;box-sizing: border-box; display: flex; width: 100%;">
       <app-view-list style="width: 100%"
                      [cards]="data.cards"></app-view-list>
     </div>

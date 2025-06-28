@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormGroup} from "@angular/forms";
 import {God} from "../models/enums";
 
@@ -7,8 +7,11 @@ import {God} from "../models/enums";
   templateUrl: './filter-form.component.html',
   styleUrls: ['./filter-form.component.scss']
 })
-export class FilterFormComponent {
+export class FilterFormComponent implements OnInit {
 
+  ngOnInit() {
+    this.form.get('content').valueChanges.subscribe(change => {this.resetPage()})
+  }
   @Input() form: FormGroup
   @Input() god: number
 

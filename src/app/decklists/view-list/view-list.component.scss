@@ -93,3 +93,6 @@
   font-family: 'geo2', 'arial', sans-serif !important;
 }
 
+.card .cardSpec { display:none;}
+
+.card:hover>.cardSpec { display:block; z-index:20;}

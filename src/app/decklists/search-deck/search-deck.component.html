@@ -122,9 +122,9 @@
           Aucun deck ne correspond à ces filtres.
         </div>
       } @else {
-        <div style="align-self: flex-end">
+        <div style="align-self: center">
           <app-pagination [pageNumber]="searchResults?.pageNumber +1" [totalPages]="searchResults?.totalPages"
-                          (pageUp)="pageUp()" (pageDown)="pageDown()"></app-pagination>
+                          (pageUp)="pageUp()" (pageDown)="pageDown()" (pageSet)="pageSet($event)"></app-pagination>
         </div>
         @for (deck of decks; track deck.deckId) {
           <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god"
@@ -160,7 +160,8 @@
                 <div style="display:flex; flex-direction:row; height:28px;">
                   @for (tag of deck.tags; track tag.id) {
                     <div (click)="addTagFilterFromResult(tag.title , $event);" class="tag"
-                         [matTooltip]="'Ajouter '+tag.title+' aux filtres de recherche'">
+                         [matTooltip]="'Ajouter '+tag.title+' aux filtres de recherche'"
+                         [ngStyle]="{'background-color': tag.title === 'guide' ? '#FF474D':'#313282'}">
                       <img style="width:20px; height:20px; margin-right:5px;" *ngIf="tag.iconId" class="tagImg"
                            [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
                       <span style="font-size:20px;">{{ tag.title }}</span>
@@ -175,9 +176,11 @@
           </div>
         }
       }
-      <div style="align-self: flex-end">
+      <div style="align-self: center">
         <app-pagination [pageNumber]="searchResults?.pageNumber +1" [totalPages]="searchResults?.totalPages"
-                        (pageUp)="pageUp()" (pageDown)="pageDown()"></app-pagination>
+                        (pageUp)="pageUp()" (pageDown)="pageDown()" (pageSet)="pageSet($event)"></app-pagination>
+
+
       </div>
     </div>
 

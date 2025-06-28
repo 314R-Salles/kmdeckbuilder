@@ -141,6 +141,7 @@ export class SearchDeckComponent implements OnInit {
   selectCard(card) {
     // conversion en id nécessaire pour le includes, les "cards" sont différents objets à chaque ouverture de la liste déroulante
     // en fait le check est plus nécessaire puisque les options déjà selectionnées sont plus cliquable à nouveau
+    this.currentPage = 0;
     if (!this.selectedCards.map(c => c.id).includes(card.id)) {
       this.selectedCards = [...this.selectedCards, card]
       this.search()
@@ -148,12 +149,14 @@ export class SearchDeckComponent implements OnInit {
   }
 
   removeCard(card) {
+    this.currentPage = 0;
     const index = this.selectedCards.findIndex(c => c.id === card.id)
     this.selectedCards.splice(index, 1)
     this.search()
   }
 
   selectUser(user) {
+    this.currentPage = 0;
     if (!this.selectedUsers.map(u => u.username).includes(user.username)) {
       this.selectedUsers.push(user)
       this.search()
@@ -162,6 +165,7 @@ export class SearchDeckComponent implements OnInit {
 
 
   selectTag(tag) {
+    this.currentPage = 0;
     if (!this.selectedTags.map(t => t.title).includes(tag.title)) {
       this.selectedTags.push(tag)
       this.search()
@@ -182,29 +186,34 @@ export class SearchDeckComponent implements OnInit {
 
 
   removeUser(user) {
+    this.currentPage = 0;
     const index = this.selectedUsers.findIndex(u => u.username === user.username)
     this.selectedUsers.splice(index, 1)
     this.search()
   }
 
   selectGod(god) {
+    this.currentPage = 0;
     this.selectedGods.push(god)
     this.search()
   }
 
   removeGod(god) {
+    this.currentPage = 0;
     const index = this.selectedGods.findIndex(u => u.id === god.id)
     this.selectedGods.splice(index, 1)
     this.search()
   }
 
   removeTag(tag) {
+    this.currentPage = 0;
     const index = this.selectedTags.findIndex(u => u.id === tag.id)
     this.selectedTags.splice(index, 1)
     this.search()
   }
 
   toggleFavoriteFilter() {
+    this.currentPage = 0;
     this.favoritesOnly = !this.favoritesOnly;
     this.search()
   }
@@ -242,4 +251,8 @@ export class SearchDeckComponent implements OnInit {
     }
   }
 
+  pageSet(value) {
+    this.currentPage = value - 1;
+    this.search();
+  }
 }

@@ -202,7 +202,7 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
         return {count: card.count, costAP: card.costAP, rarity: card.rarity, id: card.id, highlight: card.highlight}
       }),
       name: this.deckForm.get('name').value,
-      description: this.deckForm.get('description').value,
+      description: this.deckForm.get('description').value.replace(/&nbsp;/g, ' '),
       god: this.god,
       tags: this.selectedTags.map(tag => tag.id)
     }
@@ -285,6 +285,10 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  pageSet(value) {
+      this.form.get('pageNumber').setValue(+value - 1);
+  }
+
   pageSizeList = [
     {value: 8, viewValue: '8'},
     {value: 24, viewValue: '24'},
@@ -325,6 +329,7 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
     if (this.isDisabled(card)) {
       this.param.classList.add('shaking')
     } else {
+      this.param.classList.add('pulsing')
       this.selectedCards.push(card);
       this.updateState();
     }
@@ -332,6 +337,7 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
 
   handleEnd = () => {
     this.param.classList.remove("shaking");
+    this.param.classList.remove('pulsing')
     this.param.removeEventListener("animationend", this.handleEnd)
   }
 
@@ -377,6 +383,44 @@ export class DeckbuilderComponent implements OnInit, AfterViewInit {
     // content: new FormControl(''),
   }
 
+
+  createPagination() {
+    // Want a length 11 array which contains value looking like this :
+    var pagination = [];
+
+    // Cas : pas assez de pages pour couper, 1 2 3 4 5 6 7 8 9 10 11
+    if (this.searchResults.totalPages <= 11) {
+      for (let i = 1; i <= this.searchResults.totalPages; i++)
+        pagination.push(i);
+    }
+    // Cas : début (pagenumber < 6) = 1 2 3 4 5 6 7 8 9 ... TOTALPAGES
+    else if (this.pageNumber < 7) {
+      for (let i = 1; i <= 9; i++)
+        pagination.push(i);
+
+      pagination.push("...");
+      pagination.push(this.searchResults.totalPages);
+    }
+    // Cas : fin = 1 ... TOTALPAGES-9 TOTALPAGES-8 ... TOTALPAGES
+    else if (this.pageNumber > this.searchResults.totalPages - 6) {
+      pagination.push(1);
+      pagination.push("...");
+
+      for (let i = this.searchResults.totalPages - 8; i <= this.searchResults.totalPages; i++)
+        pagination.push(i);
+    }
+    // Cas : milieu = 1 ...3 4 5 PAGENUMBER 7 8 9... TOTALPAGES
+    else {
+      pagination.push(1);
+      pagination.push("...");
+      for (let i = this.pageNumber-2; i<= this.pageNumber+4; i++)
+        pagination.push(i);
+      pagination.push("...");
+      pagination.push(this.searchResults.totalPages);
+    }
+    return pagination;
+
+  }
 
   // https://stackoverflow.com/questions/44243060/use-enum-as-restricted-key-type
   // + const {CREA, SORT} = CardType;  Object destructuring pour écriture plus légère

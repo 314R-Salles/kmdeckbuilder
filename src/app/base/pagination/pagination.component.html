@@ -1,5 +1,11 @@
 <div *ngIf="totalPages>1" style="display:flex; flex-direction: row; align-items: center">
-  <button class="paginationBtn" (click)="down()"> <</button>
-  <div> Page {{ pageNumber }} / {{ totalPages }}</div>
-  <button class="paginationBtn" (click)="up()"> ></button>
+  <button class="paginationBtn" (click)="down()">« PRÉCÉDENT</button>
+  @for (page of createPagination(); track page) {
+  @if (page != "...") {
+  <button class="paginationBtn" (click)="set(page)" [ngStyle]="{'background-color': page === pageNumber ? '#FF474D':'#313282'}"> {{page}}</button> }
+  @else {
+  <button class="paginationBtn" [ngStyle]="{'background-color': page === pageNumber ? '#FF474D':'#313282'}"> {{page}}</button>
+  }
+  }
+  <button class="paginationBtn" (click)="up()"> SUIVANT »</button>
 </div>
