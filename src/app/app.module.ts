@@ -10,7 +10,7 @@ import {AngularMaterialModule} from "./shared/angular.material.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {provideHttpClient} from "@angular/common/http";
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
-import {QuillModule} from "ngx-quill";
+// import {QuillModule} from "ngx-quill";
 import {AppInitializerService} from "./app-initializer.service";
 import {HomeComponent} from './home/home.component';
 import {NewsViewComponent} from './news/news-view/news-view.component';
@@ -85,9 +85,9 @@ import { PaginationComponent } from './base/pagination/pagination.component';
       //   }
       // }
     ),
-    QuillModule.forRoot({
-      suppressGlobalRegisterWarning: true
-    }),
+    // QuillModule.forRoot({
+    //   suppressGlobalRegisterWarning: true
+    // }),
     NgOptimizedImage
   ],
   providers: [
