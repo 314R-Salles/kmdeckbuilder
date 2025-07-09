@@ -6,9 +6,10 @@ import {StoreService} from "../../store.service";
 import {AuthenticatedApiService} from "../../api/authenticated-api.service";
 
 @Component({
-  selector: 'app-search-deck',
-  templateUrl: './search-deck.component.html',
-  styleUrl: './search-deck.component.scss'
+    selector: 'app-search-deck',
+    templateUrl: './search-deck.component.html',
+    styleUrl: './search-deck.component.scss',
+    standalone: false
 })
 export class SearchDeckComponent implements OnInit {
 

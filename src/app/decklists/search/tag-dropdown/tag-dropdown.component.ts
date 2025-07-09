@@ -3,9 +3,10 @@ import {ApiService} from "../../../api/api.service";
 
 
 @Component({
-  selector: 'app-tag-dropdown',
-  templateUrl: './tag-dropdown.component.html',
-  styleUrl: './tag-dropdown.component.scss'
+    selector: 'app-tag-dropdown',
+    templateUrl: './tag-dropdown.component.html',
+    styleUrl: './tag-dropdown.component.scss',
+    standalone: false
 })
 export class TagDropdownComponent {
 

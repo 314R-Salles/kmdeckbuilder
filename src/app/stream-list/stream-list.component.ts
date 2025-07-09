@@ -5,9 +5,10 @@ import {YtVideo} from "../models/ytVideo";
 import {isPlatformBrowser} from "@angular/common";
 
 @Component({
-  selector: 'app-stream-list',
-  templateUrl: './stream-list.component.html',
-  styleUrl: './stream-list.component.scss'
+    selector: 'app-stream-list',
+    templateUrl: './stream-list.component.html',
+    styleUrl: './stream-list.component.scss',
+    standalone: false
 })
 export class StreamListComponent implements AfterViewInit {
 

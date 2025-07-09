@@ -2,9 +2,10 @@ import {Component, EventEmitter, HostListener, Input, Output} from '@angular/cor
 import {GOD_ARRAY} from '../../models/enums';
 
 @Component({
-  selector: 'app-god-dropdown',
-  templateUrl: './god-dropdown.component.html',
-  styleUrl: './god-dropdown.component.scss'
+    selector: 'app-god-dropdown',
+    templateUrl: './god-dropdown.component.html',
+    styleUrl: './god-dropdown.component.scss',
+    standalone: false
 })
 export class GodDropdownComponent {
 

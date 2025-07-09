@@ -3,9 +3,10 @@ import {StoreService} from "../../store.service";
 import {AuthService} from "../../auth.service";
 
 @Component({
-  selector: 'km-section',
-  templateUrl: './section.component.html',
-  styleUrl: './section.component.scss'
+    selector: 'km-section',
+    templateUrl: './section.component.html',
+    styleUrl: './section.component.scss',
+    standalone: false
 })
 export class SectionComponent implements OnInit {
   @Input() title;

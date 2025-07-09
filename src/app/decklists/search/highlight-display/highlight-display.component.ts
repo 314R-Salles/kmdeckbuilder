@@ -2,9 +2,10 @@ import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {StoreService} from "../../../store.service";
 
 @Component({
-  selector: 'app-highlight-display',
-  templateUrl: './highlight-display.component.html',
-  styleUrl: './highlight-display.component.scss'
+    selector: 'app-highlight-display',
+    templateUrl: './highlight-display.component.html',
+    styleUrl: './highlight-display.component.scss',
+    standalone: false
 })
 export class HighlightDisplayComponent implements OnChanges {
 

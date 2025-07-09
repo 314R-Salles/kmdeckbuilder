@@ -3,9 +3,10 @@ import {CardType, CREA, SORT} from "../models/enums";
 import {StoreService} from "../../store.service";
 
 @Component({
-  selector: 'app-view-list',
-  templateUrl: './view-list.component.html',
-  styleUrl: './view-list.component.scss'
+    selector: 'app-view-list',
+    templateUrl: './view-list.component.html',
+    styleUrl: './view-list.component.scss',
+    standalone: false
 })
 export class ViewListComponent implements OnChanges {
 

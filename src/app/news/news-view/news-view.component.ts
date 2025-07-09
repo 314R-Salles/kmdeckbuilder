@@ -3,9 +3,10 @@ import {ApiService} from "../../api/api.service";
 import {StoreService} from "../../store.service";
 
 @Component({
-  selector: 'app-news-view',
-  templateUrl: './news-view.component.html',
-  styleUrl: './news-view.component.scss'
+    selector: 'app-news-view',
+    templateUrl: './news-view.component.html',
+    styleUrl: './news-view.component.scss',
+    standalone: false
 })
 export class NewsViewComponent implements OnChanges {
 

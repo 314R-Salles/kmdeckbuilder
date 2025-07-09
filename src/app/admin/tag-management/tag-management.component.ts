@@ -3,9 +3,10 @@ import {AdminApiService} from "../../api/admin-api.service";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-tag-management',
-  templateUrl: './tag-management.component.html',
-  styleUrl: './tag-management.component.scss'
+    selector: 'app-tag-management',
+    templateUrl: './tag-management.component.html',
+    styleUrl: './tag-management.component.scss',
+    standalone: false
 })
 export class TagManagementComponent {
 

@@ -12,9 +12,10 @@ import {StoreService} from "../../store.service";
 
 
 @Component({
-  selector: 'app-deckbuilder',
-  templateUrl: './deckbuilder.component.html',
-  styleUrl: './deckbuilder.component.scss'
+    selector: 'app-deckbuilder',
+    templateUrl: './deckbuilder.component.html',
+    styleUrl: './deckbuilder.component.scss',
+    standalone: false
 })
 export class DeckbuilderComponent implements OnInit, AfterViewInit {
 

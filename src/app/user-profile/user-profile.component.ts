@@ -6,9 +6,10 @@ import {AuthenticatedApiService} from "../api/authenticated-api.service";
 import {environment} from "../../environments/environment";
 
 @Component({
-  selector: 'app-user-profile',
-  templateUrl: './user-profile.component.html',
-  styleUrl: './user-profile.component.scss'
+    selector: 'app-user-profile',
+    templateUrl: './user-profile.component.html',
+    styleUrl: './user-profile.component.scss',
+    standalone: false
 })
 export class UserProfileComponent implements OnChanges{
 

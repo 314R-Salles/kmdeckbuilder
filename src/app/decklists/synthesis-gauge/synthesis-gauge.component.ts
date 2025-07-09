@@ -3,9 +3,10 @@ import {CardType, CREA, SORT} from "../models/enums";
 
 
 @Component({
-  selector: 'app-synthesis-gauge',
-  templateUrl: './synthesis-gauge.component.html',
-  styleUrl: './synthesis-gauge.component.scss'
+    selector: 'app-synthesis-gauge',
+    templateUrl: './synthesis-gauge.component.html',
+    styleUrl: './synthesis-gauge.component.scss',
+    standalone: false
 })
 export class SynthesisGaugeComponent {
   CREA = CREA

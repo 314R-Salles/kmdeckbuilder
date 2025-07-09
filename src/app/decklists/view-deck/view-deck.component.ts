@@ -7,9 +7,10 @@ import {switchMap} from "rxjs";
 
 
 @Component({
-  selector: 'app-view-deck',
-  templateUrl: './view-deck.component.html',
-  styleUrl: './view-deck.component.scss'
+    selector: 'app-view-deck',
+    templateUrl: './view-deck.component.html',
+    styleUrl: './view-deck.component.scss',
+    standalone: false
 })
 export class ViewDeckComponent implements OnChanges {
   data: any;

@@ -2,9 +2,10 @@ import {Component, HostListener, Input} from '@angular/core';
 
 
 @Component({
-  selector: 'app-version-dropdown',
-  templateUrl: './version-dropdown.component.html',
-  styleUrl: './version-dropdown.component.scss'
+    selector: 'app-version-dropdown',
+    templateUrl: './version-dropdown.component.html',
+    styleUrl: './version-dropdown.component.scss',
+    standalone: false
 })
 export class VersionDropdownComponent {
 

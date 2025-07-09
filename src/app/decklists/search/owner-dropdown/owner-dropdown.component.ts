@@ -2,9 +2,10 @@ import {Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleC
 import {ApiService} from "../../../api/api.service";
 
 @Component({
-  selector: 'app-owner-dropdown',
-  templateUrl: './owner-dropdown.component.html',
-  styleUrl: './owner-dropdown.component.scss'
+    selector: 'app-owner-dropdown',
+    templateUrl: './owner-dropdown.component.html',
+    styleUrl: './owner-dropdown.component.scss',
+    standalone: false
 })
 export class OwnerDropdownComponent implements OnChanges{
 

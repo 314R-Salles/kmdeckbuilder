@@ -4,9 +4,10 @@ import {StoreService} from "../store.service";
 import {AuthenticatedApiService} from "../api/authenticated-api.service";
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss',
+    standalone: false
 })
 export class HeaderComponent implements OnInit {
   user: any;

@@ -7,9 +7,10 @@ import {AdminApiService} from "../../api/admin-api.service";
 
 
 @Component({
-  selector: 'app-news-editor',
-  templateUrl: './news-editor.component.html',
-  styleUrl: './news-editor.component.scss'
+    selector: 'app-news-editor',
+    templateUrl: './news-editor.component.html',
+    styleUrl: './news-editor.component.scss',
+    standalone: false
 })
 export class NewsEditorComponent implements OnInit {
 

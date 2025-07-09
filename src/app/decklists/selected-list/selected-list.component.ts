@@ -2,9 +2,10 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {StoreService} from "../../store.service";
 
 @Component({
-  selector: 'app-selected-list',
-  templateUrl: './selected-list.component.html',
-  styleUrl: './selected-list.component.scss'
+    selector: 'app-selected-list',
+    templateUrl: './selected-list.component.html',
+    styleUrl: './selected-list.component.scss',
+    standalone: false
 })
 export class SelectedListComponent {
 

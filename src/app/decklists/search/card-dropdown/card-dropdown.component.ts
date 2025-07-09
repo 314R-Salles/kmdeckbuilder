@@ -3,9 +3,10 @@ import {ApiService} from "../../../api/api.service";
 import {StoreService} from "../../../store.service";
 
 @Component({
-  selector: 'app-card-dropdown',
-  templateUrl: './card-dropdown.component.html',
-  styleUrl: './card-dropdown.component.scss'
+    selector: 'app-card-dropdown',
+    templateUrl: './card-dropdown.component.html',
+    styleUrl: './card-dropdown.component.scss',
+    standalone: false
 })
 export class CardDropdownComponent implements OnChanges {
 

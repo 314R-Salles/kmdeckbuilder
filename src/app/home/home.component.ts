@@ -5,9 +5,10 @@ import {MatDialog} from "@angular/material/dialog";
 import {EmailVerifiedPopinComponent} from "../popins/email-verified-popin/email-verified-popin.component";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss',
+    standalone: false
 })
 export class HomeComponent implements OnInit {
 

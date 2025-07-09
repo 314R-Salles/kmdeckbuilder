@@ -3,9 +3,10 @@ import {CardRarity, CardType, COMMUNE, INFINITE, KROSMIQUE, PEU_COMMUNE, RARE} f
 
 
 @Component({
-  selector: 'app-rarity-synthesis',
-  templateUrl: './rarity-synthesis.component.html',
-  styleUrl: './rarity-synthesis.component.scss'
+    selector: 'app-rarity-synthesis',
+    templateUrl: './rarity-synthesis.component.html',
+    styleUrl: './rarity-synthesis.component.scss',
+    standalone: false
 })
 export class RaritySynthesisComponent {
 

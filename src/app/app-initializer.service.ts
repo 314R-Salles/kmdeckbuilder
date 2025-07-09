@@ -1,7 +1,7 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {ApiService} from "./api/api.service";
 import {StoreService} from "./store.service";
-import {from, switchMap, tap} from "rxjs";
+import {from, of, switchMap, tap} from "rxjs";
 import {AuthenticatedApiService} from "./api/authenticated-api.service";
 import {OAuthService} from "angular-oauth2-oidc";
 import {isPlatformBrowser} from "@angular/common";
@@ -62,7 +62,7 @@ export class AppInitializerService {
         })
       )
     } else {
-      return true
+      return of(true)
     }
 
     //?

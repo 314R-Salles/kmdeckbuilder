@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import { NgModule, inject, provideAppInitializer } from '@angular/core';
 import {BrowserModule, provideClientHydration} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -96,12 +96,10 @@ import { PaginationComponent } from './base/pagination/pagination.component';
     provideOAuthClient(), //???
     {provide: OAuthStorage, useFactory: storageFactory},
 // {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true},
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initApp,
-      multi: true,
-      deps: [AppInitializerService]
-    },
+    provideAppInitializer(() => {
+        const initializerFn = (initApp)(inject(AppInitializerService));
+        return initializerFn();
+      }),
     provideAnimationsAsync(), //???
   ],
   bootstrap: [AppComponent]
