@@ -16,7 +16,7 @@
         </button>
       }
       @if (currentTab == 2) {
-        <button [disabled]="deckForm.invalid || countDefaultCards() !== (3-illustrationsNumber)"
+        <button [disabled]="deckForm.invalid || countDefaultCards() !== (3-illustrationsNumber) || disableSaveButton"
                 (click)="saveDeck()"> {{ isUpdate ? 'Enregistrer' : 'Créer le deck' }}
         </button>
       }

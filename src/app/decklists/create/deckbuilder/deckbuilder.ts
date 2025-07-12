@@ -44,6 +44,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
   route = inject(ActivatedRoute);
   dialog = inject(MatDialog);
 
+  disableSaveButton = false
 
   // l'input id est fourni par la route en cas d'edit
   id = input<string>()
@@ -216,6 +217,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
   }
 
   saveDeck() {
+    this.disableSaveButton = true;
     let form = {
       deckId: this.id(),
       cards: Object.values(this.synthese).map(card => {

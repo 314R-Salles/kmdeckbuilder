@@ -14,6 +14,7 @@ import {DatePipe, NgClass, NgStyle} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
 import {OwnerDropdown} from '../owner-dropdown/owner-dropdown';
 import {CardDropdown} from '../card-dropdown/card-dropdown';
+import {HighlightDisplay} from "../highlight-display/highlight-display";
 
 @Component({
   selector: 'app-search-deck',
@@ -31,7 +32,8 @@ import {CardDropdown} from '../card-dropdown/card-dropdown';
     DatePipe,
     NgStyle,
     OwnerDropdown,
-    CardDropdown
+    CardDropdown,
+    HighlightDisplay
   ],
   templateUrl: './search-deck.html',
   styleUrl: './search-deck.scss'
