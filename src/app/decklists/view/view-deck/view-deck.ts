@@ -21,8 +21,9 @@ import {
   RARE,
   SORT
 } from '../../common/models/enums';
-import {rxResource, toSignal} from '@angular/core/rxjs-interop';
+import {toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {RaritySynthesis} from '../rarity-synthesis/rarity-synthesis';
+import {filter, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-view-deck',
@@ -51,28 +52,31 @@ export class ViewDeck {
   domSanitize = inject(DomSanitizer)
   storeService = inject(StoreService)
 
-  data = rxResource({
-    defaultValue: {name: '', owner: '', cards: [], versions: [], description: ''},
-    params: () => ({id: this.id(), version: this.version(), language: 'FR'}),
-    stream: ({params}) => this.apiService.getDeck(params),
-  });
+  data = toSignal(
+    toObservable<string>(this.id).pipe(
+      filter(id => !!id),
+      switchMap((id) => {
+        return this.apiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})
+      }),
+    ))
 
-  title = computed(() => this.data.value().name);
-  owner = computed(() => this.data.value().owner);
-  versions = computed(() => this.data.value().versions);
+  title = computed(() => this.data()?.name);
+  owner = computed(() => this.data()?.owner);
+  versions = computed(() => this.data()?.versions);
 
   description = computed(() =>
-    this.domSanitize.bypassSecurityTrustHtml(this.data.value().description.replaceAll("<p></p>", "<p><br></p>").replaceAll(/&nbsp;/g, ' ')));
-
+    this.domSanitize.bypassSecurityTrustHtml(this.data()?.description.replaceAll("<p></p>", "<p><br></p>").replaceAll(/&nbsp;/g, ' ')));
 
   user = toSignal(this.storeService.getUser())
-  canEdit = computed(() => this.owner() === this.user().username);
-  canClone = computed(() => this.user().username);
+  canEdit = computed(() => this.owner() === this.user()?.username);
+  canClone = computed(() => this.user()?.username);
 
   syntheseRarete = computed(() => {
     let result = {[COMMUNE]: 0, [PEU_COMMUNE]: 0, [RARE]: 0, [KROSMIQUE]: 0, [INFINITE]: 0};
-    this.data.value().cards.forEach(card =>
-      result[CardRarity[card.rarity]] = result[CardRarity[card.rarity]] + card.count)
+    if (this.data() != null) {
+      this.data().cards.forEach(card =>
+        result[CardRarity[card.rarity]] = result[CardRarity[card.rarity]] + card.count)
+    }
     return result
   })
 
@@ -87,14 +91,16 @@ export class ViewDeck {
       6: {[CREA]: 0, [SORT]: 0},
       7: {[CREA]: 0, [SORT]: 0}
     };
-    this.data.value().cards.reduce((synthese, card) => {
-      if (card.costAP >= 7) {
-        synthese[7][CardType[card.cardType]] = synthese[7][CardType[card.cardType]] + card.count
-      } else {
-        synthese[card.costAP][CardType[card.cardType]] = synthese[card.costAP][CardType[card.cardType]] + card.count
-      }
-      return synthese;
-    }, result)
+    if (this.data() != null) {
+      this.data().cards.reduce((synthese, card) => {
+        if (card.costAP >= 7) {
+          synthese[7][CardType[card.cardType]] = synthese[7][CardType[card.cardType]] + card.count
+        } else {
+          synthese[card.costAP][CardType[card.cardType]] = synthese[card.costAP][CardType[card.cardType]] + card.count
+        }
+        return synthese;
+      }, result)
+    }
     return result
   })
 

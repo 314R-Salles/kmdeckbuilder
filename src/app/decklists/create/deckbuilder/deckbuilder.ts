@@ -215,7 +215,6 @@ export class Deckbuilder implements OnInit, AfterViewInit {
     })
   }
 
-
   saveDeck() {
     let form = {
       deckId: this.id(),
@@ -260,9 +259,15 @@ export class Deckbuilder implements OnInit, AfterViewInit {
 
     if (this.id()) {
       this.apiService.getDeck({id: this.id(), version: this.version(), language: "FR"}).subscribe(deck => {
-        this.isUpdate = true
-        this.initStateFromService(deck)
-      })
+        this.storeService.getUser().subscribe( user => {
+            if (deck.owner != user.username) {
+                this.router.navigate(['/home']);
+            } else {
+                this.isUpdate = true
+                this.initStateFromService(deck)
+            }
+        })
+       })
     }
   }
 

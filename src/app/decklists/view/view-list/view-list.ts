@@ -2,6 +2,7 @@ import {Component, computed, inject, input} from '@angular/core';
 import {StoreService} from '../../../store.service';
 import {CardType, CREA, SORT} from '../../common/models/enums';
 import {NgClass, NgStyle, NgTemplateOutlet} from '@angular/common';
+import {customSort} from "../../../base/models/utils";
 
 @Component({
   selector: 'app-view-list',
@@ -15,44 +16,41 @@ import {NgClass, NgStyle, NgTemplateOutlet} from '@angular/common';
 })
 export class ViewList {
 
-  cards = input<any[]>([]);
+  cards = input<any[]>();
 
   sortedSynthesis = computed(() => {
     let synthese = {NEUTRE: [], GOD_CREA: [], GOD_SPELL: [], KROSFI: []}
-    this.cards().reduce((acc, card) => {
-      if (["INFINITE"].includes(card.rarity)) {
-        acc['KROSFI'].push(card)
-      } else if (card.godType === "NEUTRE") {
-        acc['NEUTRE'].push(card)
-      } else {
-        if (card.cardType === CardType[CREA]) {
-          acc['GOD_CREA'].push(card)
+    if (this.cards() != null) {
+      this.cards().reduce((acc, card) => {
+        if (["INFINITE"].includes(card.rarity)) {
+          acc['KROSFI'].push(card)
+        } else if (card.godType === "NEUTRE") {
+          acc['NEUTRE'].push(card)
+        } else {
+          if (card.cardType === CardType[CREA]) {
+            acc['GOD_CREA'].push(card)
+          }
+          if (card.cardType === CardType[SORT]) {
+            acc['GOD_SPELL'].push(card)
+          }
         }
-        if (card.cardType === CardType[SORT]) {
-          acc['GOD_SPELL'].push(card)
-        }
-      }
-      return acc;
-    }, synthese)
+        return acc;
+      }, synthese)
 
-    synthese['KROSFI'].sort(this.customSort);
-    synthese['NEUTRE'].sort(this.customSort);
-    synthese['GOD_CREA'].sort(this.customSort);
-    synthese['GOD_SPELL'].sort(this.customSort);
+      synthese['KROSFI'].sort(customSort);
+      synthese['NEUTRE'].sort(customSort);
+      synthese['GOD_CREA'].sort(customSort);
+      synthese['GOD_SPELL'].sort(customSort);
+    }
     return synthese;
   })
 
   CARD_ILLUSTRATIONS
 
   storeService = inject(StoreService)
+
   constructor() {
     this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
-  }
-
-  //FIXME déclaration commune dans le projet
-  customSort(cardA, cardB) {
-    if (cardA.costAP != cardB.costAP) return cardA.costAP - cardB.costAP
-    else return cardA.name.localeCompare(cardB.name)
   }
 
 }

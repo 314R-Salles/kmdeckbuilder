@@ -1,4 +1,4 @@
-@if (data.value()) {
+@if (data) {
   <app-section [backtrackPath]="'/decks/browse'" [title]=" title()" [titleSuffix]="'par ' + owner()">
 
     <div style="display: flex; height: 30px; margin-bottom: 5px">
@@ -7,7 +7,7 @@
           style="border: solid 2px #594867; width: 100px; display: flex; cursor: pointer; justify-content: space-evenly"
           [routerLink]="['/decks/edit', id(), version()]">
           <span> Editer </span>
-          <mat-icon style="font-size: 16px;     margin-top: 4px" [matTooltip]="'Créer une nouvelle version'">info
+          <mat-icon style="font-size: 16px;  margin-top: 4px" [matTooltip]="'Créer une nouvelle version'">info
           </mat-icon>
         </div>
       }
@@ -53,7 +53,9 @@
 <ng-template #STATS>
   <div style="border: #FFAE00 solid 2px; box-sizing: border-box; display: flex; width: 100%;
      height: 200px; padding: 10px;">
-    <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+data.value().god+'.png'"/>
+    @if (data()?.god) {
+      <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+ data().god +'.png'"/>
+    }
     <app-synthesis [syntheseCost]="syntheseCost()" [max]="max()"></app-synthesis>
     <app-rarity-synthesis [raritySynthesis]="syntheseRarete()"></app-rarity-synthesis>
   </div>
@@ -68,6 +70,6 @@
 <ng-template #CARDS>
   <div style="border: #FFAE00 solid 2px;box-sizing: border-box; display: flex; width: 100%;">
     <app-view-list style="width: 100%"
-                   [cards]="data.value().cards"></app-view-list>
+                   [cards]="data()?.cards"></app-view-list>
   </div>
 </ng-template>

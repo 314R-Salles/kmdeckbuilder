@@ -2,6 +2,7 @@ import {Component, computed, inject, input, output} from '@angular/core';
 import {StoreService} from '../../../store.service';
 import {NgClass} from '@angular/common';
 import {Synthesis} from '../../common/synthesis/synthesis';
+import { customSort } from '../../../base/models/utils';
 
 @Component({
   selector: 'app-selected-list',
@@ -25,8 +26,8 @@ export class SelectedList {
       let godCards = updatedSynthese.filter(a => a.godType !== 'NEUTRE')
       let neutralCards = updatedSynthese.filter(a => a.godType === 'NEUTRE')
 
-      godCards.sort(this.customSort);
-      neutralCards.sort(this.customSort);
+      godCards.sort(customSort);
+      neutralCards.sort(customSort);
 
       updatedSynthese = [];
       updatedSynthese.push(...godCards)
@@ -44,11 +45,6 @@ export class SelectedList {
 
   constructor() {
     this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
-  }
-
-  customSort(cardA, cardB) {
-    if (cardA.costAP != cardB.costAP) return cardA.costAP - cardB.costAP
-    else return cardA.name.localeCompare(cardB.name)
   }
 
   remove(key: number) {

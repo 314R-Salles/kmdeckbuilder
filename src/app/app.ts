@@ -9,5 +9,4 @@ import {Header} from './header/header';
   styleUrl: './app.scss'
 })
 export class App {
-  protected title = 'frontv3';
 }

@@ -24,17 +24,6 @@ export class StoreService {
     return this.user
   }
 
-  // marche pas
-  // isAdmin(): Observable<any> {
-  //   return this.getUser().pipe(
-  //     map(e => {
-  //       if (e?.admin) {
-  //         return e.admin
-  //       }
-  //     }))
-  // }
-
-
   setNews(news: any[]) {
     this.news = news
   }
