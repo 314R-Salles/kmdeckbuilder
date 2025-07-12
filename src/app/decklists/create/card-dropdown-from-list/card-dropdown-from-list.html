@@ -1,0 +1,23 @@
+<div class="dropdown" (click)="dropdownClick()">
+  <input class="dropbtn appFont2"
+         [(ngModel)]="cardSearch"
+         style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 2px;"
+         type="text" [placeholder]="'Sélectionner'">
+  <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
+    @for (card of displayedCards(); track card.id) {
+      <div class="card appFont2" [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
+           (click)="selectCard(card)" style="position:relative;">
+        <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]"
+             style="width:60px; height:30px; position:absolute; left:5px;">
+        <div style="position:absolute; left:75px; width:210px;">
+          <div
+            style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;">{{ card.name }} @if (card.infiniteLevel) {
+            <span> {{ card.infiniteLevel }}</span>
+          }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+

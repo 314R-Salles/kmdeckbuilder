@@ -1,0 +1,12 @@
+<!--Pas un ngFor sinon ça "re render" chaque element et on n'a pas l'effet transition -->
+<div style="display: flex; width: 300px; background: #100B37;
+justify-content: center; box-sizing: border-box; border: solid crimson 2px">
+  <app-synthesis-gauge [max]="max()" [key]="'0'" [value]="syntheseCost()[0]"></app-synthesis-gauge>
+  <app-synthesis-gauge [max]="max()" [key]="'1'" [value]="syntheseCost()[1]"></app-synthesis-gauge>
+  <app-synthesis-gauge [max]="max()" [key]="'2'" [value]="syntheseCost()[2]"></app-synthesis-gauge>
+  <app-synthesis-gauge [max]="max()" [key]="'3'" [value]="syntheseCost()[3]"></app-synthesis-gauge>
+  <app-synthesis-gauge [max]="max()" [key]="'4'" [value]="syntheseCost()[4]"></app-synthesis-gauge>
+  <app-synthesis-gauge [max]="max()" [key]="'5'" [value]="syntheseCost()[5]"></app-synthesis-gauge>
+  <app-synthesis-gauge [max]="max()" [key]="'6'" [value]="syntheseCost()[6]"></app-synthesis-gauge>
+  <app-synthesis-gauge [max]="max()" [key]="'7+'" [value]="syntheseCost()[7]"></app-synthesis-gauge>
+</div>

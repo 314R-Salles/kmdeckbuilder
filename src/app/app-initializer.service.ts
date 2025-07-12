@@ -1,7 +1,7 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {ApiService} from "./api/api.service";
 import {StoreService} from "./store.service";
-import {from, switchMap, tap} from "rxjs";
+import {from, of, switchMap, tap} from "rxjs";
 import {AuthenticatedApiService} from "./api/authenticated-api.service";
 import {OAuthService} from "angular-oauth2-oidc";
 import {isPlatformBrowser} from "@angular/common";
@@ -25,11 +25,6 @@ export class AppInitializerService {
       if (token) {
         this.authenticatedApiService.linkAccount(token).subscribe(user => this.storeService.setUser(user))
       }
-
-      // sert plus à rien ça
-      this.apiService.getLatestNewsIds(3).subscribe(news =>
-        this.storeService.setNews(news)
-      )
 
       return this.apiService.getCardIllustrations().pipe(
         switchMap(cardList => {
@@ -62,24 +57,8 @@ export class AppInitializerService {
         })
       )
     } else {
-      return true
+      return of(true)
     }
-
-    //?
-    // if (token) {
-    //   return forkJoin([
-    //     this.authenticatedApiService.linkAccount(token),
-    //     this.apiService.getLatestNewsIds(3)
-    //   ]).pipe( tap(res => {
-    //     this.storeService.setUser(res[0])
-    //     this.storeService.setNews(res[1])
-    //   }))
-    // }
-    //
-
-    // sauvegarder à l'arrivée dans l'appli les X derniers ids de news, pour naviguer entre les news
-    // utiliser un service pour stocker des données  et surtout avoir le initApp qui renvoie un observable à terminer avant que l'appli démarre.
-
   }
 
   clearHash() {

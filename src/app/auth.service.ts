@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {AuthConfig, OAuthService} from "angular-oauth2-oidc";
+import {inject, Injectable} from '@angular/core';
+import {OAuthService} from "angular-oauth2-oidc";
 
 // export const authCodeFlowConfig: AuthConfig = {
 //   // URL of identity provider. https://<YOUR_DOMAIN>.auth0.com
@@ -26,10 +26,9 @@ import {AuthConfig, OAuthService} from "angular-oauth2-oidc";
 })
 export class AuthService {
 
-  constructor(private oauth: OAuthService) {
-    // this.oauth.configure(authCodeFlowConfig);
-    // this.oauth.loadDiscoveryDocumentAndTryLogin();
-    // this.oauth.setupAutomaticSilentRefresh();
+  private oauth = inject(OAuthService);
+
+  constructor() {
   }
 
   login(): void {
