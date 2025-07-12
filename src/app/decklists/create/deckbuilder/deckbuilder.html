@@ -1,0 +1,255 @@
+<app-section [title]="currentTab ===1 ? null : isUpdate ? 'Mise à jour du deck' : 'Création du deck'"
+             [titleSuffix]="currentTab ===0 ? ' --- Choix du dieu' : ' --- Compléments'"
+             [forceSize]="currentTab ===1"
+             [requiresLogin]="true">
+  <div id="regForm" style="height: 100%; display:flex; flex-direction:column; align-items:center;">
+
+    <div style="display:flex;">
+      @if (currentTab == 2 || currentTab == 1 && !isUpdate) {
+        <button type="button" id="prevBtn" (click)="nextPrev(-1)">
+          Précédent
+        </button>
+      }
+      @if (currentTab < 2) {
+        <button [disabled]="currentTab == 0 && !god || currentTab == 1 && selectedCards.length != 45"
+                type="button" id="nextBtn" (click)="nextPrev(1)">Suivant
+        </button>
+      }
+      @if (currentTab == 2) {
+        <button [disabled]="deckForm.invalid || countDefaultCards() !== (3-illustrationsNumber)"
+                (click)="saveDeck()"> {{ isUpdate ? 'Enregistrer' : 'Créer le deck' }}
+        </button>
+      }
+
+    </div>
+    @if (currentTab === 0) {
+      <div class="godType">
+        <div id="sortDiv">
+          @for (godIndex of [1, 4, 2, 3, 8, 10, 6, 7, 5, 9]; track godIndex) {
+            <div class="imgContainer prevent-select">
+              <img [src]="'/assets/public/gods/GOD_'+God[godIndex]+'.png'" (click)="selectGod(godIndex)"
+                   [ngClass]="{'isSelected' : god === godIndex}" class="prevent-select" [alt]="God[godIndex]">
+            </div>
+          }
+        </div>
+      </div>
+    }
+    @if (currentTab === 1) {
+      <div class="deckbuilder" style="width: 100%; height: calc(100% - 45px)">
+        <div class="container shortScreenContainer ">
+          <button style=" width: 80px; height: 40px;
+        background: #3d1470; color: white;
+        position: absolute;right: 5px; bottom: 20px;">
+            <span [ngStyle]="{'color': 45 === selectedCards.length ? 'white': 'red'}">{{ selectedCards.length }} </span>
+            / 45
+          </button>
+        </div>
+        <div class="container largeScreenContainer">
+          <div *ngTemplateOutlet="MAIN"></div>
+          <div *ngTemplateOutlet="SYNTHESIS"></div>
+        </div>
+      </div>
+    }
+
+    <!--    permet d'avoir l'editeur quill généré et donc le setter à l'init, à voir si ça pose souci-->
+    <div [hidden]="currentTab !== 2">
+      <div class="validation">
+        <form [formGroup]="deckForm">
+          <div style="display: flex; flex-direction: column; padding: 5px;">
+            <label style="font-size: 20px"> Nom du deck : </label>
+            <input style="width: 300px;" formControlName="name">
+          </div>
+
+          <div style="display: flex; flex-direction: column; height: 300px; padding: 5px;">
+            <label style="font-size: 20px"> Présentation du deck : </label>
+            <div style="display: flex; flex-direction: column; height: 250px; position: relative">
+              <div style="display: flex; flex-direction: column; width: 30%">
+                <label style="font-size: 15px; margin-top: 30px"> Template : </label>
+                <div>
+                  <button (click)="illustDown()">-</button>
+                  {{ illustrationsNumber }}
+                  <button (click)="illustUp()">+</button>
+                </div>
+              </div>
+
+              @if (illustrationsNumber > 0) {
+                <div style="display: flex; flex-direction: column; width: 730px">
+                  <label style="font-size: 15px; margin-top: 30px"> Choix des cartes : </label>
+                  <div style="display: flex; flex-direction: row">
+                    <div>
+                      @if (illustrationsNumber) {
+                        <app-card-dropdown-from-list [cardOptions]="synthesisAsList" [selectedCards]="illustrations"
+                                                     (onSelectCard)="setCardAtIndex($event, selectedIndex)"/>
+                      }
+                    </div>
+                  </div>
+
+                  @if (illustrationsNumber === 1) {
+                    <div style="position: absolute; top: 10px; left: 400px">
+                      <div *ngTemplateOutlet="ONE_ILLUST"></div>
+                    </div>
+                  }
+
+                  @if (illustrationsNumber === 2) {
+                    <div style="position: absolute; top: 10px; left: 400px">
+                      <div *ngTemplateOutlet="TWO_ILLUST"></div>
+                    </div>
+                  }
+
+                  @if (illustrationsNumber === 3) {
+                    <div style="position: absolute; top: 10px; left: 400px">
+                      <div *ngTemplateOutlet="THREE_ILLUST"></div>
+                    </div>
+                  }
+                </div>
+              }
+
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; width: fit-content; padding: 5px;">
+            <label style="font-size: 20px"> Tags (optionnel) : </label>
+            <div style="">
+              <app-tag-dropdown [selectedTags]="selectedTags()" [allTags]="allTags()"
+                                (onSelectTag)="selectTag($event)"/>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; width: 500px">
+              @for (tag of selectedTags(); track tag.title) {
+                <div class="card appFont2" (click)="removeTag(tag)"
+                     style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
+ height: 40px; font-size: 16px;  font-weight: 400;">
+                  <span style="padding: 0 5px"> {{ tag.title }} </span>
+                </div>
+              }</div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; width: fit-content; padding: 5px;">
+            <label style="font-size: 20px"> Description (optionnel) : </label>
+            <!--            la div qui englobe permet de donner un style au background (toolbar + input) et le style de l'editor force pour l'input -->
+            <div style="background: #c6f8ff">
+              <quill-editor class="content-editor"
+                            formControlName="description"
+                            [modules]="quillConfiguration"
+                            [styles]="{'min-height': '200px', 'max-height':'500px', 'min-width': '500px', 'max-width':'1000px', background:'white', color: 'black'}"
+              ></quill-editor>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</app-section>
+
+
+<ng-template #ONE_ILLUST>
+  <div>
+    <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
+         style="position: absolute;"
+         [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 0 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
+         (click)="selectIndex(0)"
+         class="imgDeckBuilder">
+  </div>
+</ng-template>
+<ng-template #TWO_ILLUST>
+  <div>
+    <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
+         style="position: absolute; rotate: -8deg"
+         [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 0 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
+         (click)="selectIndex(0)"
+         class="imgDeckBuilder">
+    <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[illustrations[1].id]"
+         style="position: absolute;margin-left: 130px; rotate: 8deg"
+         [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 1 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
+         (click)="selectIndex(1)"
+         class="imgDeckBuilder">
+  </div>
+</ng-template>
+<ng-template #THREE_ILLUST>
+  <div>
+    <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
+         style="position: absolute; rotate: -15deg; top: 8px"
+         [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 0 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
+         (click)="selectIndex(0)"
+         class="imgDeckBuilder">
+    <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[illustrations[1].id]"
+         style="position: absolute; left: 100px; z-index: 5"
+         [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 1 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
+         (click)="selectIndex(1)"
+         class="imgDeckBuilder">
+    <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[illustrations[2].id]"
+         style="position: absolute;left: 200px; rotate: 15deg; top: 8px"
+         [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 2 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
+         (click)="selectIndex(2)"
+         class="imgDeckBuilder">
+  </div>
+</ng-template>
+
+
+<ng-template #MAIN>
+  <div class="formAndCards">
+    <app-filter-form [god]="god" [form]="form"></app-filter-form>
+    <div style="display: flex; ">
+      <div style="display:flex;">
+        <div class="cards">
+          @for (card of displayedCards(); track card.id; let idx = $index) {
+            <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[card.id]"
+                 (click)="selectCard(card, $event)"
+                 class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
+          }
+        </div>
+      </div>
+    </div>
+    <app-pagination [pageNumber]="searchResults?.pageNumber +1 " [totalPages]="searchResults?.totalPages"
+                    (pageUp)="pageUp()" (pageDown)="pageDown()" (pageSet)="pageSet($event)"></app-pagination>
+  </div>
+</ng-template>
+
+<ng-template #SHORT_MAIN>
+  <div class="formAndCards">
+    <app-filter-form [god]="god" [form]="form"></app-filter-form>
+    <div style="display: flex; height: calc(100% - 100px)">
+      <button class="buttonChangePage" (click)="pageDown()"> <</button>
+      <div style="display: flex; flex-wrap: wrap; width: 100%; justify-content: center">
+
+        @for (card of displayedCards(); track card.id; let idx = $index) {
+          <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[card.id]"
+               [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content'}"
+               (click)="selectCard(card, $event)"
+               class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
+        }
+      </div>
+      <button class="buttonChangePage" (click)="pageUp()"> ></button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #SYNTHESIS>
+  <div>
+    <div style="display:flex; flex-direction:row; justify-content:space-between;">
+      <div>
+        <img [src]="'/assets/public/picto-PA.png'" style="width:15px; height:15px;"> {{ currentApCost }}
+      </div>
+      <div>
+  <span class="bg-color-krosmique"
+        style="width:15px; height:15px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); display:inline-block;"></span>
+        <span [ngStyle]="{'color': 7 === syntheseRarete.KROSMIQUE ? 'white': 'orange'}"> {{ syntheseRarete.KROSMIQUE }}
+          / 7</span>
+      </div>
+      <div>
+    <span class="bg-color-infinite"
+          style="width:15px; height:15px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); display:inline-block;"></span>
+        <span [ngStyle]="{'color': 5 === syntheseRarete.INFINITE ? 'white': 'orange'}">{{ syntheseRarete.INFINITE }}
+          / 5</span>
+      </div>
+      <div>
+        <span [ngStyle]="{'color': 45 === selectedCards.length ? 'white': 'red'}">{{ selectedCards.length }} </span> /
+        45
+      </div>
+    </div>
+
+    <app-selected-list [synthese]="synthese" [syntheseCost]="syntheseCost" [max]="max"
+                       (removeCard)="removeCard($event)"
+                       style=""></app-selected-list>
+  </div>
+</ng-template>

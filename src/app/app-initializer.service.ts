@@ -26,11 +26,6 @@ export class AppInitializerService {
         this.authenticatedApiService.linkAccount(token).subscribe(user => this.storeService.setUser(user))
       }
 
-      // sert plus à rien ça
-      this.apiService.getLatestNewsIds(3).subscribe(news =>
-        this.storeService.setNews(news)
-      )
-
       return this.apiService.getCardIllustrations().pipe(
         switchMap(cardList => {
           this.storeService.setCardIllustrations(cardList)
@@ -64,22 +59,6 @@ export class AppInitializerService {
     } else {
       return of(true)
     }
-
-    //?
-    // if (token) {
-    //   return forkJoin([
-    //     this.authenticatedApiService.linkAccount(token),
-    //     this.apiService.getLatestNewsIds(3)
-    //   ]).pipe( tap(res => {
-    //     this.storeService.setUser(res[0])
-    //     this.storeService.setNews(res[1])
-    //   }))
-    // }
-    //
-
-    // sauvegarder à l'arrivée dans l'appli les X derniers ids de news, pour naviguer entre les news
-    // utiliser un service pour stocker des données  et surtout avoir le initApp qui renvoie un observable à terminer avant que l'appli démarre.
-
   }
 
   clearHash() {

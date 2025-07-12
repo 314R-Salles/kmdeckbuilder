@@ -1,0 +1,103 @@
+<form [formGroup]="form()">
+  <div class="container">
+    <div class="tile" [ngClass]="{'selected-type' : form().get('godCards').value}" (click)="factionChange('dieu')">
+      <img [ngClass]="{'grey': !form().get('godCards').value}" [src]="'/assets/public/gods/GOD_'+God[god()]+'.png'">
+    </div>
+    <div class="tile" [ngClass]="{'selected-type' : form().get('neutralCards').value} "
+         (click)="factionChange('neutre')">
+      <img [ngClass]="{'grey': !form().get('neutralCards').value}" [src]="'/assets/public/gods/GOD_'+God[0]+'.png'">
+    </div>
+    <div (click)="typeChange('sort')" class="tile"
+         [matTooltip]="tooltipType['fr_spell_'+ (form().get('isSpell').value ? 'hide' : 'show')]"
+         [ngClass]="{'selected-type' : form().get('isSpell').value}">
+      <img [src]="'/assets/public/spellIcon.png'" class="type">
+    </div>
+    <div (click)="typeChange('crea')" class="tile"
+         [matTooltip]="tooltipType['fr_minion_'+ (form().get('isMinion').value ? 'hide' : 'show')]"
+         [ngClass]="{'selected-type' : form().get('isMinion').value}">
+      <img [src]="'/assets/public/creatureIcon.png'" class="type">
+    </div>
+    <div class="dropdown" (mouseleave)="dropdownOff()">
+      <div class="dropbtn appFont2" (click)="dropdownRarity()" [ngClass]="form().get('rarity').value.color">
+        @if (form().get('rarity').value.color != 'color-all') {
+          <span [ngClass]="form().get('rarity').value.bgColor"
+                style="width:50px; height:50px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+        }
+
+        @if (form().get('rarity').value.color === 'color-all') {
+          <div>
+             <span class="bg-color-infinite"
+                   style="width:50px; height:50px; clip-path: polygon(50% 0, 75% 25%, 50% 50%, 25% 25%); position:absolute; top:5px; left:5px;"></span>
+            <span class="bg-color-krosmique"
+                  style="width:50px; height:50px; clip-path: polygon(50% 50%, 75% 75%, 50% 100%, 25% 75%); position:absolute; top:5px; left:5px;"></span>
+            <span class="bg-color-rare"
+                  style="width:50px; height:50px; clip-path: polygon(25% 25%, 50% 50%, 25% 75%, 0 50%); position:absolute; top:5px; left:5px;"></span>
+            <span class="bg-color-uncommon"
+                  style="width:50px; height:50px; clip-path: polygon(75% 25%, 100% 50%, 75% 75%, 50% 50%); position:absolute; top:5px; left:5px;"></span>
+          </div>
+        }
+
+      </div>
+
+      <div class="dropdown-content" [ngStyle]="{'display' : displayDropdownRarity ? 'block' : 'none'}">
+        @for (rarity of rarities['fr']; track rarity; let idx = $index, e = $even) {
+          <span class="appFont2" [ngClass]="rarity.color" (click)="raritySelect(rarity)">
+
+            @if (rarity.color === 'color-all') {
+              <div>
+                <span class="bg-color-infinite"
+                      style="width:50px; height:50px; clip-path: polygon(50% 0, 75% 25%, 50% 50%, 25% 25%); position:absolute; top:5px; left:5px;"></span>
+              <span class="bg-color-krosmique"
+                    style="width:50px; height:50px; clip-path: polygon(50% 50%, 75% 75%, 50% 100%, 25% 75%); position:absolute; top:5px; left:5px;"></span>
+              <span class="bg-color-rare"
+                    style="width:50px; height:50px; clip-path: polygon(25% 25%, 50% 50%, 25% 75%, 0 50%); position:absolute; top:5px; left:5px;"></span>
+              <span class="bg-color-uncommon"
+                    style="width:50px; height:50px; clip-path: polygon(75% 25%, 100% 50%, 75% 75%, 50% 50%); position:absolute; top:5px; left:5px;"></span>
+           </div>
+            }
+
+            @if (rarity.color != 'color-all') {
+              <span [ngClass]="rarity.bgColor"
+                    style="width:50px; height:50px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+            }
+              </span>
+        }
+      </div>
+    </div>
+
+    <!-- when 'large screen', same as game -->
+    <div class="largeScreenContainer" style="display:flex;">
+      <!--    <div style="display:flex;">-->
+      @for (cost of costs; track cost; let idx = $index, e = $even) {
+        <div class="tile" [ngClass]="{'selected-type' : form().get('apValue').value == cost.value}"
+             (click)="setFilterValue('apValue', cost.value)">
+          <img [src]="'/assets/public/pa/'+cost.label+'.png'"
+               [ngClass]="{'grey': form().get('apValue').value != cost.value}"></div>
+      }
+    </div>
+
+    <!-- when 'small' screen, pa becomes a dropdown -->
+    <div class="shortScreenContainer">
+      <div class="dropdown" (mouseleave)="dropdownOff()">
+        <div class="dropbtn appFont2" (click)="dropdownPA()" [ngClass]="form().get('rarity').value.color">
+          <span style="width:50px; height:50px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+        </div>
+        <div class="dropdown-content" [ngStyle]="{'display' : displayDropdownPA ? 'block' : 'none'}">
+          @for (cost of costs; track cost; let idx = $index, e = $even) {
+            <div class="tile" [ngClass]="{'selected-type' : form().get('apValue').value == cost.value}"
+                 (click)="setFilterValue('apValue', cost.value)">
+              <img [src]="'/assets/public/pa/'+cost.label+'.png'"
+                   [ngClass]="{'grey': form().get('apValue').value != cost.value}"></div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <input class="search-input appFont2" style="padding-left: 1vw; width: 100%;" type="text"
+           placeholder="Nom, effet ..." formControlName="content">
+
+
+  </div>
+
+
+</form>

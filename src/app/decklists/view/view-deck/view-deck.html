@@ -1,0 +1,73 @@
+@if (data.value()) {
+  <app-section [backtrackPath]="'/decks/browse'" [title]=" title()" [titleSuffix]="'par ' + owner()">
+
+    <div style="display: flex; height: 30px; margin-bottom: 5px">
+      @if (canEdit()) {
+        <div
+          style="border: solid 2px #594867; width: 100px; display: flex; cursor: pointer; justify-content: space-evenly"
+          [routerLink]="['/decks/edit', id(), version()]">
+          <span> Editer </span>
+          <mat-icon style="font-size: 16px;     margin-top: 4px" [matTooltip]="'Créer une nouvelle version'">info
+          </mat-icon>
+        </div>
+      }
+
+      @if (canClone()) {
+        <div
+          style="border: solid 2px #594867; width: 100px; display: flex; cursor: pointer; justify-content: space-evenly"
+          [routerLink]="['/decks/create']" [queryParams]="{from: id(), v:version()}">
+          ><span> Cloner </span>
+          <mat-icon style="font-size: 16px; margin-top: 4px" [matTooltip]="'Utiliser comme base pour un nouveau deck'">
+            info
+          </mat-icon>
+        </div>
+      }
+      @if (versions()?.length > 1) {
+        <div style="width: 120px; display: flex; margin-left: 100px; justify-content: space-around">
+          <div> Version</div>
+          <app-version-dropdown [deckId]="id()" [currentVersion]="version()"
+                                [allVersions]="versions()"/>
+        </div>
+      }
+    </div>
+    <div class="container shortScreenContainer">
+      <div *ngTemplateOutlet="STATS"></div>
+      <div *ngTemplateOutlet="CARDS"></div>
+      <div *ngTemplateOutlet="DESC"></div>
+    </div>
+
+    <div class="container largeScreenContainer">
+      <div class="columnContainer">
+        <div *ngTemplateOutlet="STATS"></div>
+        <div *ngTemplateOutlet="DESC"></div>
+      </div>
+      <div *ngTemplateOutlet="CARDS"></div>
+    </div>
+
+  </app-section>
+
+}
+
+<!--TEMPLATES-->
+
+<ng-template #STATS>
+  <div style="border: #FFAE00 solid 2px; box-sizing: border-box; display: flex; width: 100%;
+     height: 200px; padding: 10px;">
+    <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+data.value().god+'.png'"/>
+    <app-synthesis [syntheseCost]="syntheseCost()" [max]="max()"></app-synthesis>
+    <app-rarity-synthesis [raritySynthesis]="syntheseRarete()"></app-rarity-synthesis>
+  </div>
+</ng-template>
+<ng-template #DESC>
+  <div
+    style="border: #FFAE00 solid 2px;box-sizing: border-box; display: flex; width: 100%; padding: 5px">
+    <div [innerHTML]="description()"></div>
+  </div>
+</ng-template>
+
+<ng-template #CARDS>
+  <div style="border: #FFAE00 solid 2px;box-sizing: border-box; display: flex; width: 100%;">
+    <app-view-list style="width: 100%"
+                   [cards]="data.value().cards"></app-view-list>
+  </div>
+</ng-template>

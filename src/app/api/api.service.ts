@@ -2,9 +2,8 @@ import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {TwitchModel} from "../models/twitch.model";
-import {YtVideo} from "../models/ytVideo";
-
+import {TwitchModel} from "../base/models/twitch.model";
+import {YtVideo} from "../base/models/ytVideo";
 
 @Injectable({
   providedIn: 'root'
@@ -67,8 +66,8 @@ export class ApiService {
     return this.http.get<any>(this.BASE_API + `/decks/owners`);
   }
 
-  getDeck(id, version, language): Observable<any> {
-    return this.http.get<any>(this.BASE_API + `/decks/${id}/language/${language}/version/${version}`);
+  getDeck(params : {id: string, version: number, language: string}): Observable<any> {
+    return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}`);
   }
 
   getTagsByLanguage(language): Observable<any> {

@@ -1,0 +1,176 @@
+<app-section [title]="'Profil'" [requiresLogin]="!readOnly()">
+
+  @if (readOnly() && routeUser()) {
+    <div style="display:flex; flex-direction: column">
+      <div>{{ routeUser().username }}</div>
+      <div>
+        @if (routeUser().twitchUsername) {
+          Compte Twitch :   <a style="color: wheat" [href]="'https://www.twitch.tv/'+routeUser().twitchUsername"
+                               target="_blank"> {{ routeUser().twitchUsername }}</a>
+        } @else {
+          Cet utilisateur n'a pas lié de compte Twitch
+        }
+      </div>
+      <span>
+      Aperçu la dernière fois le : {{ routeUser().lastLogin |date : 'mediumDate' }}
+      </span>
+      @if (routeUserdecks().length > 0) {
+        <div>
+          <hr style="width: 100%">
+          <span>Ses derniers decks :</span>
+          <br>
+          <div class="listDeck">
+            @for (deck of routeUserdecks(); track deck.deckId) {
+              <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
+                <div style="display: flex; flex-direction: column; width: 90px">
+                  <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
+                </div>
+                <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
+                  <div class="title"
+                       style="display: flex; flex-direction: column; justify-content: space-evenly;">
+                    <span>{{ deck.name }}</span>
+                    <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
+                      <div style="display:flex; flex-direction:row; height:28px;">
+                        @for (tag of deck.tags; track tag.id) {
+                          <div
+                            style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
+                            @if (tag.iconId) {
+                              <img style="width:20px; height:20px; margin-right:5px;" class="tagImg"
+                                   [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+                            }
+
+                            <span style="font-size:20px;">{{ tag.title }}</span>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <div class="author">{{ deck.owner }}</div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+    </div>
+  } @else {
+    <!--  il faut le if user sinon c'est évalué, meme avec le requiresLogin du km-section-->
+    @if (connectedUser()) {
+      <form [formGroup]="form()" (ngSubmit)="updateUser()">
+        <div style="display: flex; flex-direction: column">
+          <div>
+            Pseudo :
+            <label>
+              <input formControlName="username">
+            </label>
+            <button type="submit">Enregistrer</button>
+          </div>
+          @if (takenUsername) {
+            <mat-error style="color: red;">Ce pseudo est déjà utilisé</mat-error>
+          }
+
+          <br>
+        </div>
+      </form>
+
+      <br>
+      @if (connectedUser()?.twitchUsername) {
+        Compte Twitch : {{ connectedUser().twitchUsername }}
+        <button (click)="unlink()">Retirer l'association</button>
+      } @else {
+        Lier un compte Twitch  <a [href]=url style="color:white;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitch"
+               viewBox="0 0 16 16">
+            <path
+              d="M3.857 0 1 2.857v10.286h3.429V16l2.857-2.857H9.57L14.714 8V0zm9.714 7.429-2.285 2.285H9l-2 2v-2H4.429V1.143h9.142z"/>
+            <path d="M11.857 3.143h-1.143V6.57h1.143zm-3.143 0H7.571V6.57h1.143z"/>
+          </svg>
+        </a>
+      }
+
+      <br>
+
+
+      @if (favorites()?.length > 0) {
+        <div>
+          <hr>
+          Vos derniers favoris :
+          <br>
+
+          <div class="listDeck">
+            @for (deck of favorites(); track deck.deckId) {
+              <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
+                <div style="display: flex; flex-direction: column; width: 90px">
+                  <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
+                </div>
+                <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
+                  <div class="title"
+                       style="display: flex; flex-direction: column; justify-content: space-evenly;">
+                    <span>{{ deck.name }}</span>
+                    <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
+                      <div style="display:flex; flex-direction:row; height:28px;">
+                        @for (tag of deck.tags; track tag.id) {
+                          <div
+                            style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
+                            @if (tag.iconId) {
+                              <img style="width:20px; height:20px; margin-right:5px;" class="tagImg"
+                                   [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+                            }
+
+                            <span style="font-size:20px;">{{ tag.title }}</span>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <div class="author">{{ deck.owner }}</div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (connectedUserDecks()?.length > 0) {
+        <div>
+          <hr style="width: 100%">
+          <span>Vos derniers decks :</span>
+          <br>
+
+          <div class="listDeck">
+            @for (deck of connectedUserDecks(); track deck.deckId) {
+              <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
+                <div style="display: flex; flex-direction: column; width: 90px">
+                  <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
+                </div>
+                <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
+                  <div class="title"
+                       style="display: flex; flex-direction: column; justify-content: space-evenly;">
+                    <span>{{ deck.name }}</span>
+                    <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
+                      <div style="display:flex; flex-direction:row; height:28px;">
+                        @for (tag of deck.tags; track tag.id) {
+                          <div
+                            style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
+                            @if (tag.iconId) {
+                              <img style="width:20px; height:20px; margin-right:5px;" class="tagImg"
+                                   [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+                            }
+                            <span style="font-size:20px;">{{ tag.title }}</span>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <div class="author">{{ deck.owner }}</div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+    }
+  }
+</app-section>

@@ -1,0 +1,18 @@
+.paginationBtn {
+  width: 40px;
+  height: 40px;
+  color: white;
+  font-size: 15px;
+  font-weight: bolder;
+  border: solid 1px gold;
+  border-radius: 2px;
+  box-sizing: border-box;
+  padding-left:8px;
+  padding-right:8px;
+  background: #313282;
+}
+
+.paginationBtn:hover {
+  cursor:pointer;
+  background: rgb(165, 190, 255, 0.5) !important;
+}
