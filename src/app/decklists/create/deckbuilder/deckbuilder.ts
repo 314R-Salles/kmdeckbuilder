@@ -261,15 +261,15 @@ export class Deckbuilder implements OnInit, AfterViewInit {
 
     if (this.id()) {
       this.apiService.getDeck({id: this.id(), version: this.version(), language: "FR"}).subscribe(deck => {
-        this.storeService.getUser().subscribe( user => {
-            if (deck.owner != user.username) {
-                this.router.navigate(['/home']);
-            } else {
-                this.isUpdate = true
-                this.initStateFromService(deck)
-            }
+        this.storeService.getUser().subscribe(user => {
+          if (deck.owner != user.username) {
+            this.router.navigate(['/home']);
+          } else {
+            this.isUpdate = true
+            this.initStateFromService(deck)
+          }
         })
-       })
+      })
     }
   }
 
@@ -346,8 +346,14 @@ export class Deckbuilder implements OnInit, AfterViewInit {
   removeCard(cardId) {
     this.selectedCards.splice(this.selectedCards.findIndex(card => card.id === cardId), 1);
     // il faut prévoir que la carte retirée ne peut plus servir pour le highlight
-
     this.updateState();
+
+    if (!this.synthese[cardId]) {
+      const highlightId = this.illustrations.findIndex(card => card.id === cardId)
+      if (highlightId != -1) {
+        this.illustrations[highlightId] = DEFAULT_CARD
+      }
+    }
   }
 
 
@@ -460,6 +466,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
 
   illustDown() {
     if (this.illustrationsNumber > 0) {
+      this.synthese[this.illustrations[this.illustrationsNumber - 1].id].highlight = null;
       this.illustrations[this.illustrationsNumber - 1] = DEFAULT_CARD
       this.illustrationsNumber--
     }

@@ -53,7 +53,7 @@ export class ViewDeck {
   storeService = inject(StoreService)
 
   data = toSignal(
-    toObservable<string>(this.id).pipe(
+    toObservable<number>(this.version).pipe(
       filter(id => !!id),
       switchMap((id) => {
         return this.apiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})
