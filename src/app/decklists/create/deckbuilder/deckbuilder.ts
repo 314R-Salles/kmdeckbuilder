@@ -466,7 +466,9 @@ export class Deckbuilder implements OnInit, AfterViewInit {
 
   illustDown() {
     if (this.illustrationsNumber > 0) {
-      this.synthese[this.illustrations[this.illustrationsNumber - 1].id].highlight = null;
+      if (this.synthese[this.illustrations[this.illustrationsNumber - 1].id]) {
+        this.synthese[this.illustrations[this.illustrationsNumber - 1].id].highlight = null;
+      }
       this.illustrations[this.illustrationsNumber - 1] = DEFAULT_CARD
       this.illustrationsNumber--
     }
