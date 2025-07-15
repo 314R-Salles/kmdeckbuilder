@@ -131,8 +131,8 @@
                           (pageUp)="pageUp()" (pageDown)="pageDown()" (pageSet)="pageSet($event)"></app-pagination>
         </div>
         @for (deck of decks(); track deck.deckId) {
-          <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god"
-               style="display:flex; flex-direction:row; cursor:pointer;">
+          <a [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god"
+               style="display:flex; flex-direction:row; cursor:pointer; text-decoration:none; color:white;">
 
             <div style="display: flex; flex-direction: column; width: 130px; justify-content:space-around;">
               <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
@@ -150,8 +150,9 @@
                 <span class="authorName" style="margin-left: 10px"
                       [matTooltip]="'Ajouter '+deck.owner+' aux filtres de recherche'"
                       (click)="addUserFilterFromResult(deck.owner, $event);">{{ deck.owner }}</span>
-                <mat-icon [matTooltip]="'Consulter le profil'" [routerLink]="['/user',deck.owner]">contact_page
-                </mat-icon>
+                <a [routerLink]="['/user',deck.owner]" style="color:white; text-decoration:none;">
+                <mat-icon [matTooltip]="'Consulter le profil'" >contact_page
+                </mat-icon></a>
               </div>
               <div class="creationDate">{{ deck.creationDate | date:'longDate' }}</div>
               <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
@@ -179,7 +180,7 @@
             <div style="position:absolute; right: 0">
               <app-highlight-display [illustrations]="deck.highlights"></app-highlight-display>
             </div>
-          </div>
+          </a>
         }
       }
       <div style="align-self: center">
