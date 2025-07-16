@@ -5,7 +5,7 @@
          type="text" placeholder="Tags">
   <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedTags().length ? 'block' : 'none'}">
     @for (tag of displayedTags(); track tag.title) {
-      <div class="tag appFont2" (click)="selectTag(tag)" style="position:relative;">
+      <div class="tag appFont2" (click)="selectTag(tag, false)" style="position:relative;">
         @if (tag.iconId) {
           <img style="width:30px; position:absolute; left:5px;" class="tagImg"
                [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
@@ -16,6 +16,7 @@
             ({{ tag.count }})
           </div>
         </div>
+        <div style="position:absolute; right:5px; padding:5px;background-color:red;" (click)="selectTag(tag, true);$event.stopPropagation();$event.preventDefault()">-</div>
       </div>
     }
   </div>

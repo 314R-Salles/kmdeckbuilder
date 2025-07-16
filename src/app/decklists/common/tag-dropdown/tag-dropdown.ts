@@ -19,9 +19,10 @@ export class TagDropdown {
   allTags = input<{ title: string, count: number, iconId: string }[]>([]);
   withCount = input<boolean>(false);
   onSelectTag = output<{ title: string, count: number, iconId: string }>();
+  onNegativeSelectTag = output<{ title: string, count: number, iconId: string }>();
 
   tagSearch = signal<string>('');
-
+  t = 0
 
   displayedTags = computed(() => {
     let r = this.allTags().filter(result => !this.selectedTags().map(c => c.title).includes(result.title));
@@ -32,9 +33,17 @@ export class TagDropdown {
     this.displayDropdown = !this.displayDropdown
   }
 
-  selectTag(tag) {
+  selectTag(tag, negative) {
     this.displayDropdown = false // passer false ici, permet de garder le dropdown ouvert puisque dropdownClick se déclenche dans la foulée
-    this.onSelectTag.emit(tag);
+    if (!negative)
+      this.onSelectTag.emit(tag);
+    else
+      this.onNegativeSelectTag.emit(tag);
+
+    if (this.displayedTags().length == 1) {
+      this.tagSearch.set(null);
+      this.displayDropdown = true
+    }
   }
 
   clickedInside

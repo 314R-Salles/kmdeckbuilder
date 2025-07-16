@@ -62,8 +62,10 @@ export class SearchDeck implements OnInit {
 
   selectedCards = signal<any>([])
   selectedUsers = signal<any>([])
+  selectedNegativeUsers = signal<any>([])
   selectedGods = signal<any>([])
   selectedTags = signal<any>([])
+  selectedNegativeTags = signal<any>([])
 
   allUsers = signal<any>([])
   allTags = signal<any>([])
@@ -124,7 +126,9 @@ export class SearchDeck implements OnInit {
     this.favoritesOnly = false;
     this.selectedCards.set([]);
     this.selectedTags.set([]);
+    this.selectedNegativeTags.set([]);
     this.selectedUsers.set([]);
+    this.selectedNegativeUsers.set([]);
     this.searchForm.reset()
     this.search()
   }
@@ -134,7 +138,9 @@ export class SearchDeck implements OnInit {
       gods: this.selectedGods().length ? this.selectedGods().map(g => g.id) : null,
       cards: this.selectedCards().length ? this.selectedCards().map(c => c.id) : null,
       tags: this.selectedTags().length ? this.selectedTags().map(c => c.id) : null,
+      negativeTags: this.selectedNegativeTags().length ? this.selectedNegativeTags().map(c => c.id) : null,
       users: this.selectedUsers().length ? this.selectedUsers().map(u => u.username) : null,
+      negativeUsers: this.selectedNegativeUsers().length ? this.selectedNegativeUsers().map(u => u.username) : null,
       actionPointCost: this.searchForm.get('actionPointsCost').value,
       actionCostGeq: this.actionPointsCompareSup,
       dustGeq: this.dustCompareSup,
@@ -184,10 +190,13 @@ export class SearchDeck implements OnInit {
     this.resetPageAndSearch()
   }
 
-  selectUser(user) {
-    this.selectedUsers.update(values => {
-      return [...values, user];
-    });
+  selectUser(user, negative) {
+    if (!negative)
+      this.selectedUsers.update(values => {
+        return [...values, user];
+      });
+    else
+      this.selectedNegativeUsers.update(values => { return [...values, user]; });
     this.resetPageAndSearch()
   }
 
@@ -201,11 +210,24 @@ export class SearchDeck implements OnInit {
     this.resetPageAndSearch()
   }
 
+  removeNegativeUser(user) {
+    this.selectedNegativeUsers.update(values => {
+          const index = values.findIndex(u => u.username === user.username)
+          values.splice(index, 1)
+          return [...values];
+        });
+        this.resetPageAndSearch()
+    }
 
-  selectTag(tag) {
-    this.selectedTags.update(values => {
-      return [...values, tag];
-    });
+  selectTag(tag, negative) {
+    if (!negative)
+      this.selectedTags.update(values => {
+        return [...values, tag];
+      });
+    else
+      this.selectedNegativeTags.update(values => {
+              return [...values, tag];
+      });
     this.resetPageAndSearch()
   }
 
@@ -218,9 +240,18 @@ export class SearchDeck implements OnInit {
     this.resetPageAndSearch()
   }
 
+  removeNegativeTag(tag) {
+      this.selectedNegativeTags.update(values => {
+        const index = values.findIndex(u => u.id === tag.id)
+        values.splice(index, 1)
+        return [...values];
+      });
+      this.resetPageAndSearch()
+    }
+
   addUserFilterFromResult(username: string, event) {
     if (!this.selectedUsers().map(u => u.username).includes(username)) {
-      this.selectUser(this.allUsers().find(user => user.username === username))
+      this.selectUser(this.allUsers().find(user => user.username === username), false)
     }
     event.stopPropagation();
     event.preventDefault()
@@ -228,7 +259,7 @@ export class SearchDeck implements OnInit {
 
   addTagFilterFromResult(tagName: string, event) {
     if (!this.selectedTags().map(t => t.title).includes(tagName)) {
-      this.selectTag(this.allTags().find(tag => tag.title === tagName))
+      this.selectTag(this.allTags().find(tag => tag.title === tagName), false)
     }
     event.stopPropagation();
     event.preventDefault()

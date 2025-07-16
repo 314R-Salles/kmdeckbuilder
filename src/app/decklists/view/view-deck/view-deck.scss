@@ -1,7 +1,33 @@
 .deckImgGod {
   width: 120px;
-  padding: 20px;
+  padding-left: 20px;
+  padding-right:20px;
+  padding-top:10px;
 }
+
+.tag {
+  display: flex;
+  flex-direction: row;
+  background-color: #313282;
+  border-radius: 20px;
+  position: relative;
+  align-content: center;
+  align-items: center;
+  padding: 5px;
+  margin: 5px
+}
+
+.buttonUpdate {
+  border: solid 1px gold;
+  width: 100px;
+  display: flex;
+  cursor: pointer;
+  justify-content: space-evenly
+}
+
+.buttonUpdate:hover {
+  -webkit-box-shadow: inset 1px 0px 20px 0px white;
+ }
 
 .viewDeckContainer{
   margin: 0 auto;

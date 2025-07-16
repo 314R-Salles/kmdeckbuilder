@@ -43,10 +43,15 @@ export class AuthenticatedApiService {
     return this.http.post(this.PRIVATE_BASE_API + '/deck', form, {headers})
   }
 
-  addToFavorites(deckId): Observable<number> {
+  addToFavorites(deckId: string): Observable<number> {
     let headers = this.getAuthHeaders();
     return this.http.get<number>(this.PRIVATE_BASE_API + '/user/favorite/add/' + deckId, {headers})
   }
+
+  deleteDeck(deckId): Observable<any> {
+    let headers = this.getAuthHeaders();
+    return this.http.post<any>(this.PRIVATE_BASE_API + '/user/deck/' + deckId, null, {headers})
+   }
 
   removeFromFavorites(deckId): Observable<number> {
     let headers = this.getAuthHeaders();
@@ -57,7 +62,6 @@ export class AuthenticatedApiService {
     let headers = this.getAuthHeaders();
     return this.http.post<any>(this.PRIVATE_BASE_API + `/decks`, form, {headers});
   }
-
 
   getRecentFavorites(language: string): Observable<any> {
     let headers = this.getAuthHeaders();

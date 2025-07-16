@@ -1,12 +1,14 @@
 import {Component, HostListener, input} from '@angular/core';
 import {NgStyle} from '@angular/common';
 import {RouterLink} from '@angular/router';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-version-dropdown',
   imports: [
     NgStyle,
-    RouterLink
+    RouterLink,
+    MatIcon
   ],
   templateUrl: './version-dropdown.html',
   styleUrl: './version-dropdown.scss'

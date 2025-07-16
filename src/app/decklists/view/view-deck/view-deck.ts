@@ -1,7 +1,12 @@
 import {Component, computed, inject, input} from '@angular/core';
+import {DeckDeletedPopin} from '../../../popins/deck-deleted-popin/deck-deleted-popin';
+import {DeckDeletionPopin} from '../../../popins/deck-deletion-popin/deck-deletion-popin';
 import {Section} from '../../../base/section/section';
 import {RouterLink} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {AuthenticatedApiService} from '../../../api/authenticated-api.service';
 import {VersionDropdown} from '../version-dropdown/version-dropdown';
+import {ActivatedRoute, Router} from '@angular/router';
 import {NgTemplateOutlet} from '@angular/common';
 import {Synthesis} from '../../common/synthesis/synthesis';
 import {ViewList} from '../view-list/view-list';
@@ -10,6 +15,7 @@ import {MatIcon} from '@angular/material/icon';
 import {ApiService} from '../../../api/api.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {StoreService} from '../../../store.service';
+import {NgStyle} from '@angular/common';
 import {
   CardRarity,
   CardType,
@@ -36,7 +42,8 @@ import {filter, switchMap} from "rxjs";
     Synthesis,
     ViewList,
     MatIcon,
-    RaritySynthesis
+    RaritySynthesis,
+    NgStyle
   ],
   templateUrl: './view-deck.html',
   styleUrl: './view-deck.scss'
@@ -49,8 +56,11 @@ export class ViewDeck {
   version = input.required<number>()
 
   apiService = inject(ApiService)
+  authenticatedApiService = inject(AuthenticatedApiService)
   domSanitize = inject(DomSanitizer)
   storeService = inject(StoreService)
+  dialog = inject(MatDialog);
+  router = inject(Router);
 
   data = toSignal(
     toObservable<number>(this.version).pipe(
@@ -60,22 +70,23 @@ export class ViewDeck {
       }),
     ))
 
+  d = this.data()
   title = computed(() => this.data()?.name);
   owner = computed(() => this.data()?.owner);
   versions = computed(() => this.data()?.versions);
 
   description = computed(() =>
-    this.domSanitize.bypassSecurityTrustHtml(this.data()?.description.replaceAll("<p></p>", "<p><br></p>").replaceAll(/&nbsp;/g, ' ')));
+    this.domSanitize.bypassSecurityTrustHtml(this.data()?.description.replaceAll("<p></p>", "<p><br></p>").replaceAll(/&nbsp;/g, ' ').replaceAll(/(?=\s)[^\r\n\t]/g, ' ')));
 
   user = toSignal(this.storeService.getUser())
   canEdit = computed(() => this.owner() === this.user()?.username);
   canClone = computed(() => this.user()?.username);
 
   syntheseRarete = computed(() => {
-    let result = {[COMMUNE]: 0, [PEU_COMMUNE]: 0, [RARE]: 0, [KROSMIQUE]: 0, [INFINITE]: 0};
+    let result = {[COMMUNE]: {[SORT]: 0, [CREA]: 0}, [PEU_COMMUNE]: {[SORT]: 0, [CREA]: 0}, [RARE]: {[SORT]: 0, [CREA]: 0}, [KROSMIQUE]: {[SORT]: 0, [CREA]: 0}, [INFINITE]: {[SORT]: 0, [CREA]: 0}};
     if (this.data() != null) {
       this.data().cards.forEach(card =>
-        result[CardRarity[card.rarity]] = result[CardRarity[card.rarity]] + card.count)
+        result[CardRarity[card.rarity]][CardType[card.cardType]] = result[CardRarity[card.rarity]][CardType[card.cardType]] + card.count)
     }
     return result
   })
@@ -106,4 +117,52 @@ export class ViewDeck {
 
   max = computed(() => Math.max(...Object.values(this.syntheseCost()).map(v => v[CREA] + v[SORT])))
 
+
+toggleFavorite(deck) {
+    if (this.canClone()) {
+      if (!deck.liked) {
+        this.authenticatedApiService.addToFavorites(deck.deckId).subscribe(r => {
+          deck.favoriteCount += 1
+          deck.liked = true
+          // this.decks.find(deck => deck.deckId === deck.deckId).favoriteCount += 1
+          // this.decks.find(deck => deck.deckId === deck.deckId).liked = true
+        })
+      } else {
+        this.authenticatedApiService.removeFromFavorites(deck.deckId).subscribe(r => {
+          deck.favoriteCount -= 1
+          deck.liked = false
+        })
+      }
+    }
+  }
+
+  deleteDeckConfirmation(deck) {
+    const dialogRef = this.dialog.open(DeckDeletionPopin, {
+            // width: '400px',
+            // height: '250px',
+            panelClass: 'endModalCss',
+            data: {}
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              this.deleteDeck(deck)
+              // this.router.navigate(['/decks/view', response.deckId, response.version])
+            } else {
+            }
+
+          });
+
+  }
+  deleteDeck(deck) {
+    this.authenticatedApiService.deleteDeck(deck.deckId).subscribe(r => {
+      const dialogRef = this.dialog.open(DeckDeletedPopin, {
+        // width: '400px',
+        // height: '250px',
+        panelClass: 'endModalCss',
+        data: {}
+      });
+      dialogRef.afterClosed().subscribe(result => { this.router.navigate(['/home'])});
+    });
+  }
 }

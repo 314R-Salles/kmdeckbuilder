@@ -18,6 +18,7 @@ export class OwnerDropdown {
   allUsers = input<{ username: string, count: number }[]>([]);
   selectedUsers = input<{ username: string, count: number }[]>([]);
   onSelectUser = output<any>();
+  onNegativeSelectUser = output<any>();
   userSearch = signal<string>('');
 
   displayedUsers = computed(() => {
@@ -33,9 +34,17 @@ export class OwnerDropdown {
     this.displayDropdown = !this.displayDropdown
   }
 
-  selectUser(user) {
+  selectUser(user, negative) {
     this.displayDropdown = false // passer false ici, permet de garder le dropdown ouvert puisque dropdownClick se déclenche dans la foulée
-    this.onSelectUser.emit(user);
+    if (!negative)
+      this.onSelectUser.emit(user);
+    else
+      this.onNegativeSelectUser.emit(user);
+
+    if (this.displayedUsers().length == 1) {
+              this.userSearch.set(null);
+              this.displayDropdown = true
+            }
   }
 
 

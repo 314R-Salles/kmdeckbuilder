@@ -1,5 +1,5 @@
 import {Component, input} from '@angular/core';
-import {COMMUNE, INFINITE, KROSMIQUE, PEU_COMMUNE, RARE} from '../../common/models/enums';
+import {COMMUNE, INFINITE, KROSMIQUE, PEU_COMMUNE, RARE, SORT, CREA} from '../../common/models/enums';
 import {NgClass} from '@angular/common';
 
 @Component({
@@ -23,4 +23,6 @@ export class RaritySynthesis {
       {key: INFINITE, label: 'Infinite', color: 'color-infinite', bgColor: 'bg-color-infinite'},
     ]
   }
+
+  cardType = [{ key: CREA }, { key: SORT }]
 }

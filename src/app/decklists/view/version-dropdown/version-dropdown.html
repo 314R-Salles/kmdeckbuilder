@@ -1,6 +1,8 @@
 <div class="dropdown">
   <div class="dropbtn appFont2" (click)="dropdown()">
-    {{ currentVersion() }}
+    {{ currentVersion() }} <mat-icon style="font-size: 18px; width:16px; display:flex; justify-content:center; align-items:center;">
+    arrow_drop_down
+  </mat-icon>
   </div>
   <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
     @for (version of allVersions(); track version) {

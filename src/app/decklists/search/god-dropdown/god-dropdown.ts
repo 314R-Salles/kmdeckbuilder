@@ -33,6 +33,11 @@ export class GodDropdown {
   selectGod(god) {
     this.displayDropdown = false // passer false ici, permet de garder le dropdown ouvert puisque dropdownClick se déclenche dans la foulée
     this.onSelectGod.emit(god);
+
+    if (this.displayedGods().length == 1) {
+          this.godSearch.set(null);
+          this.displayDropdown = true
+        }
   }
 
   clickedInside

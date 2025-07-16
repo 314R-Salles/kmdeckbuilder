@@ -49,7 +49,6 @@ export class Deckbuilder implements OnInit, AfterViewInit {
   // l'input id est fourni par la route en cas d'edit
   id = input<string>()
   version = input<number>();
-
   isUpdate = false
   isClone = false
 
@@ -214,6 +213,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
         totalPages: searchResults.totalPages
       }
     })
+
   }
 
   saveDeck() {
@@ -224,7 +224,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
         return {count: card.count, costAP: card.costAP, rarity: card.rarity, id: card.id, highlight: card.highlight}
       }),
       name: this.deckForm.get('name').value,
-      description: this.deckForm.get('description').value.replace(/&nbsp;/g, ' '),
+      description: this.deckForm.get('description').value.replace(/&nbsp;/g, ' ').replaceAll(/(?=\s)[^\r\n\t]/g, ' '),
       god: this.god,
       tags: this.selectedTags().map(tag => tag.id)
     }
