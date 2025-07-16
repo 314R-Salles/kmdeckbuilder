@@ -14,7 +14,6 @@ import {Section} from "../../base/section/section";
 })
 export class TagManagement {
 
-  selectedTag
   formGroup: FormGroup
 
   constructor(
@@ -25,10 +24,6 @@ export class TagManagement {
         this.addNewRow(tag)
       })
     })
-  }
-
-  select(id) {
-    this.selectedTag = id;
   }
 
   saveAllChanges() {

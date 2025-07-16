@@ -15,7 +15,7 @@
         </thead>
         <tbody formArrayName="tagArray">
           @for (tag of formArr.controls; track idx; let idx = $index) {
-            <tr style="" (click)="select(idx)" [formGroupName]="idx">
+            <tr [formGroupName]="idx">
               <td style="width: 14%;"><input formControlName="frTitle"></td>
               <td style="width: 14%;"><input formControlName="enTitle"></td>
               <td style="width: 14%;"><input formControlName="esTitle"></td>

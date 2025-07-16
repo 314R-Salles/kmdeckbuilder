@@ -148,6 +148,7 @@ export class SearchDeck implements OnInit {
       content: this.searchForm.get('content').value,
       favoritesOnly: this.favoritesOnly,
       language: "FR",
+      searchBy: "RECENT", // check enum java
       page: this.currentPage,
       pageSize: this.pageSize,
     };
@@ -292,15 +293,21 @@ export class SearchDeck implements OnInit {
     if (this.isLoggedIn) {
       if (!deck.liked) {
         this.authenticatedApiService.addToFavorites(deck.deckId).subscribe(r => {
-          deck.favoriteCount += 1
-          deck.liked = true
-          // this.decks.find(deck => deck.deckId === deck.deckId).favoriteCount += 1
-          // this.decks.find(deck => deck.deckId === deck.deckId).liked = true
+          this.decks.update(values => {
+            const toBeUpdated = values.find(u => u.deckId === deck.deckId)
+            toBeUpdated.favoriteCount += 1
+            toBeUpdated.liked = true
+            return [...values];
+          });
         })
       } else {
         this.authenticatedApiService.removeFromFavorites(deck.deckId).subscribe(r => {
-          deck.favoriteCount -= 1
-          deck.liked = false
+          this.decks.update(values => {
+            const toBeUpdated = values.find(u => u.deckId === deck.deckId)
+            toBeUpdated.favoriteCount -= 1
+            toBeUpdated.liked = false
+            return [...values];
+          });
         })
       }
     }

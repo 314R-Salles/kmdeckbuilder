@@ -42,6 +42,7 @@ export class UserProfile {
           const request = {
             users: [this.connectedUser().username],
             language: "FR",
+            searchBy: "RECENT",
             page: 0,
             pageSize: 20,
           };
@@ -96,6 +97,7 @@ export class UserProfile {
         if (user) {
           const request = {
             users: [user.username],
+            searchBy: "RECENT",
             language: "FR",
             page: 0,
             pageSize: 20,
