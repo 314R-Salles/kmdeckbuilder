@@ -58,11 +58,6 @@ export class AuthenticatedApiService {
     return this.http.get<number>(this.PRIVATE_BASE_API + '/user/favorite/remove/' + deckId, {headers})
   }
 
-  getDecks(form: any): Observable<any> {
-    let headers = this.getAuthHeaders();
-    return this.http.post<any>(this.PRIVATE_BASE_API + `/decks`, form, {headers});
-  }
-
   getRecentFavorites(language: string): Observable<any> {
     let headers = this.getAuthHeaders();
     return this.http.post<any>(this.PRIVATE_BASE_API + `/decks/recentFavorites/${language}`, null, {headers});
