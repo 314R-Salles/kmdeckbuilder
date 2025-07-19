@@ -35,6 +35,10 @@ export class ApiService {
     return this.http.get<TwitchModel[]>(this.BASE_API + '/twitch/vods');
   }
 
+  checkVideo(videoId): Observable<{ type: string, invalidFormat: boolean }> {
+    return this.http.get<any>(this.BASE_API + `/twitch/check/${videoId}`);
+  }
+
   getLastVideos(): Observable<YtVideo[]> {
     return this.http.get<YtVideo[]>(this.BASE_API + '/youtube/videos');
   }

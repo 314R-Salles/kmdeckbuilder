@@ -1,4 +1,4 @@
-@if (data) {
+@if (data()) {
   <app-section [backtrackPath]="'/decks/browse'" [title]=" title()" [titleSuffix]="'par ' + owner()">
 
     <div style="display: flex; height: 30px; margin-bottom: 5px">
@@ -13,9 +13,10 @@
       @if (canEdit()) {
         <div
           style="border: solid 2px #594867; width: 100px; display: flex; cursor: pointer; justify-content: space-evenly"
-          [routerLink]="['/decks/edit', id(), version()]"  class="buttonUpdate">
+          [routerLink]="['/decks/edit', id(), version()]" class="buttonUpdate">
           <span> Editer </span>
-          <mat-icon style="font-size: 16px;  margin-top: 4px" [matTooltip]="'Modifier le deck à partir de cette version'">info
+          <mat-icon style="font-size: 16px;  margin-top: 4px"
+                    [matTooltip]="'Modifier le deck à partir de cette version'">info
           </mat-icon>
         </div>
       }
@@ -23,9 +24,10 @@
       @if (canClone()) {
         <div
           style="border: solid 2px #594867; width: 100px; display: flex; cursor: pointer; justify-content: space-evenly"
-          [routerLink]="['/decks/create']" [queryParams]="{from: id(), v:version()}"  class="buttonUpdate">
+          [routerLink]="['/decks/create']" [queryParams]="{from: id(), v:version()}" class="buttonUpdate">
           <span> Cloner </span>
-          <mat-icon style="font-size: 16px; margin-top: 4px" [matTooltip]="'Dupliquer ce deck avec à partir de cette version'">
+          <mat-icon style="font-size: 16px; margin-top: 4px"
+                    [matTooltip]="'Dupliquer ce deck avec à partir de cette version'">
             info
           </mat-icon>
         </div>
@@ -39,13 +41,15 @@
       }
 
       @if (canEdit()) {
-      <div
-        style="border: solid 2px #594867; width: 100px; display: flex; cursor: pointer; justify-content: space-evenly"
-        (click)="deleteDeckConfirmation(data());$event.stopPropagation();$event.preventDefault()"  class="buttonUpdate">
-        <span> Delete </span>
-        <mat-icon style="font-size: 16px;  margin-top: 4px" [matTooltip]="'Supprime définitivement ce deck et toutes ses versions.'">info
-        </mat-icon>
-      </div>
+        <div
+          style="border: solid 2px #594867; width: 100px; display: flex; cursor: pointer; justify-content: space-evenly"
+          (click)="deleteDeckConfirmation(data());$event.stopPropagation();$event.preventDefault()"
+          class="buttonUpdate">
+          <span> Delete </span>
+          <mat-icon style="font-size: 16px;  margin-top: 4px"
+                    [matTooltip]="'Supprime définitivement ce deck et toutes ses versions.'">info
+          </mat-icon>
+        </div>
       }
     </div>
     <div class="container shortScreenContainer">
@@ -69,7 +73,8 @@
 <!--TEMPLATES-->
 
 <ng-template #STATS>
-  <div style="border: #FFAE00 solid 2px; box-sizing: border-box; display: flex; flex-direction:column; width: 100%; padding: 10px;">
+  <div
+    style="border: #FFAE00 solid 2px; box-sizing: border-box; display: flex; flex-direction:column; width: 100%; padding: 10px;">
     <div style="display:flex;">
       <div style="position:relative;">
         @if (data()?.god) {
@@ -83,19 +88,19 @@
         </div>
 
       </div>
-    <app-synthesis [syntheseCost]="syntheseCost()" [max]="max()"></app-synthesis>
-    <app-rarity-synthesis [raritySynthesis]="syntheseRarete()"></app-rarity-synthesis>
+      <app-synthesis [syntheseCost]="syntheseCost()" [max]="max()"></app-synthesis>
+      <app-rarity-synthesis [raritySynthesis]="syntheseRarete()"></app-rarity-synthesis>
     </div>
     <div style="display:flex; flex-direction:row; flex-wrap:wrap; margin-top:5px;">
       @for (tag of data().tags; track tag.id) {
-      <div class="tag"
-           [ngStyle]="{'background-color': tag.title === 'guide' ? '#FF474D':'#313282'}">
-        @if (tag.iconId) {
-          <img style="width:20px; height:20px; margin-right:5px;" class="tagImg"
-             [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-        }
-        <span style="font-size:20px;">{{ tag.title }}</span>
-      </div>
+        <div class="tag"
+             [ngStyle]="{'background-color': tag.title === 'guide' ? '#FF474D':'#313282'}">
+          @if (tag.iconId) {
+            <img style="width:20px; height:20px; margin-right:5px;" class="tagImg"
+                 [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+          }
+          <span style="font-size:20px;">{{ tag.title }}</span>
+        </div>
       }
     </div>
 
@@ -103,8 +108,22 @@
 </ng-template>
 <ng-template #DESC>
   <div
-    style="border: #FFAE00 solid 2px;box-sizing: border-box; display: flex; width: 100%; padding: 5px">
+    style="display:flex; flex-direction: column; border: #FFAE00 solid 2px;box-sizing: border-box; width: 100%; padding: 5px">
     <div [innerHTML]="description()"></div>
+
+    @if (displayTwitchIframe()) {
+      <div style=" aspect-ratio: 16 / 9;">
+        <iframe [src]="twitchIframeUrl()" height="100%" width="100%" allowfullscreen="true"></iframe>
+      </div>
+    }
+
+    @if (displayYoutubeIframe()) {
+      <div style="width: 100%; background: black; display: flex; justify-content: center">
+        <div>
+          <youtube-player [videoId]="youtubeVideoId()"/>
+        </div>
+      </div>
+    }
   </div>
 </ng-template>
 

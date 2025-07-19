@@ -10,13 +10,15 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {StoreService} from '../../../store.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Section} from '../../../base/section/section';
-import {NgClass, NgStyle, NgTemplateOutlet} from '@angular/common';
+import {JsonPipe, NgClass, NgStyle, NgTemplateOutlet} from '@angular/common';
 import {FilterForm} from '../filter-form/filter-form';
 import {CardDropdownFromList} from '../card-dropdown-from-list/card-dropdown-from-list';
 import {TagDropdown} from '../../common/tag-dropdown/tag-dropdown';
 import {SelectedList} from '../selected-list/selected-list';
 import {QuillEditorComponent} from 'ngx-quill';
 import {Pagination} from '../../../base/pagination/pagination';
+import {VideoValidator} from "../../../base/models/utils";
+import {MatError} from "@angular/material/input";
 
 @Component({
   selector: 'app-deckbuilder',
@@ -31,7 +33,9 @@ import {Pagination} from '../../../base/pagination/pagination';
     QuillEditorComponent,
     NgTemplateOutlet,
     CardDropdownFromList,
-    Pagination
+    Pagination,
+    MatError,
+    JsonPipe
   ],
   templateUrl: './deckbuilder.html',
   styleUrl: './deckbuilder.scss'
@@ -85,8 +89,13 @@ export class Deckbuilder implements OnInit, AfterViewInit {
   god: number; // le dieu est une donnée fixée, pas dans le formulaire (pour swap neutre / dieu faut garder l'info)
   language: number; // language est comme le dieu, fixé par le site, pas un choix du formulaire
 
+  videoLinkData = {}
+
   deckForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
+    videoLink: new FormControl('', {
+      asyncValidators: [VideoValidator.createValidator(this.apiService, this.videoLinkData)]
+    }),
     description: new FormControl('', [])
   })
 
@@ -224,6 +233,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
         return {count: card.count, costAP: card.costAP, rarity: card.rarity, id: card.id, highlight: card.highlight}
       }),
       name: this.deckForm.get('name').value,
+      videoLink: this.videoLinkControl.value,
       description: this.deckForm.get('description').value.replace(/&nbsp;/g, ' ').replaceAll(/(?=\s)[^\r\n\t]/g, ' '),
       god: this.god,
       tags: this.selectedTags().map(tag => tag.id)
@@ -295,6 +305,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
 
     this.deckForm.get('name').setValue(deck.name)
     this.deckForm.get('description').setValue(deck.description);
+    this.deckForm.get('videoLink').setValue(deck.videoLink);
 
     this.updateState()
     this.getFilteredCards()
@@ -631,5 +642,9 @@ export class Deckbuilder implements OnInit, AfterViewInit {
 
   get pageSize() {
     return this.form.get('pageSize').value;
+  }
+
+  get videoLinkControl() {
+    return this.deckForm.get('videoLink');
   }
 }

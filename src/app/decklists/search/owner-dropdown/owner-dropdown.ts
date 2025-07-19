@@ -52,7 +52,6 @@ export class OwnerDropdown {
 
   @HostListener('click', ['$event'])
   clickInside(event) {
-    // event.stopPropagation();
     this.clickedInside = true
   }
 
