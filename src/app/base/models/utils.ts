@@ -51,13 +51,17 @@ export class VideoValidator {
 }
 
 export function isValidTwitchURL(url) {
-  const parsed = new URL(url);
-  const hostname = parsed.hostname.toLowerCase();
-  if (hostname === 'www.twitch.tv' || hostname === 'twitch.tv') {
-    const id = parsed.pathname.slice(8); // /videos
-    return {type: 'twitch', validId: !isNaN(+id), id};
-  } else {
-    return {type: 'unknown'};
+  try {
+    const parsed = new URL(url);
+    const hostname = parsed.hostname.toLowerCase();
+    if (hostname === 'www.twitch.tv' || hostname === 'twitch.tv') {
+      const id = parsed.pathname.slice(8); // /videos
+      return {type: 'twitch', validId: !isNaN(+id), id};
+    } else {
+      return {type: 'unknown'};
+    }
+  } catch {
+    return {invalidUrl: true};
   }
 }
 
