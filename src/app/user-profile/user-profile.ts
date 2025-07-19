@@ -46,7 +46,7 @@ export class UserProfile {
             page: 0,
             pageSize: 20,
           };
-          return this.authenticatedApiService.getDecks(request)
+          return this.apiService.getDecks(request)
         } else {
           return of({content: []})
         }
