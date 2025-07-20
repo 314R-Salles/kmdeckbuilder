@@ -2,12 +2,11 @@ import {Component, computed, inject, input, OnInit, signal} from '@angular/core'
 import {DeckDeletedPopin} from '../../../popins/deck-deleted-popin/deck-deleted-popin';
 import {DeckDeletionPopin} from '../../../popins/deck-deletion-popin/deck-deletion-popin';
 import {Section} from '../../../base/section/section';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {AuthenticatedApiService} from '../../../api/authenticated-api.service';
 import {VersionDropdown} from '../version-dropdown/version-dropdown';
-import {ActivatedRoute, Router} from '@angular/router';
-import {NgTemplateOutlet} from '@angular/common';
+import {NgStyle, NgTemplateOutlet} from '@angular/common';
 import {Synthesis} from '../../common/synthesis/synthesis';
 import {ViewList} from '../view-list/view-list';
 import {MatTooltip} from '@angular/material/tooltip';
@@ -15,7 +14,6 @@ import {MatIcon} from '@angular/material/icon';
 import {ApiService} from '../../../api/api.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {StoreService} from '../../../store.service';
-import {NgStyle} from '@angular/common';
 import {
   CardRarity,
   CardType,
@@ -30,6 +28,9 @@ import {
 import {toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {RaritySynthesis} from '../rarity-synthesis/rarity-synthesis';
 import {filter, switchMap} from "rxjs";
+import {environment} from "../../../../environments/environment";
+import {isValidTwitchURL, isValidYouTubeURL} from "../../../base/models/utils";
+import {YouTubePlayer} from "@angular/youtube-player";
 
 @Component({
   selector: 'app-view-deck',
@@ -43,12 +44,15 @@ import {filter, switchMap} from "rxjs";
     ViewList,
     MatIcon,
     RaritySynthesis,
-    NgStyle
+    NgStyle,
+    YouTubePlayer
   ],
   templateUrl: './view-deck.html',
   styleUrl: './view-deck.scss'
 })
 export class ViewDeck {
+
+  parent = environment.TWITCH_PARENT;
 
 
   displayDropdown = false
@@ -87,11 +91,34 @@ export class ViewDeck {
   description = computed(() =>
     this.domSanitize.bypassSecurityTrustHtml(this.data()?.description.replaceAll("<p></p>", "<p><br></p>").replaceAll(/&nbsp;/g, ' ').replaceAll(/(?=\s)[^\r\n\t]/g, ' ')));
 
+  displayTwitchIframe = computed(() => {
+    const twitchCheck = isValidTwitchURL(this.data()?.videoLink)
+    return twitchCheck.validId;
+  })
+  twitchIframeUrl = computed(() => {
+    const twitchCheck = isValidTwitchURL(this.data()?.videoLink)
+    return this.domSanitize.bypassSecurityTrustResourceUrl(`https://player.twitch.tv/?video=${twitchCheck.id}&parent=${this.parent}&autoplay=false`)
+  })
+
+  displayYoutubeIframe = computed(() => {
+    const ytCheck = isValidYouTubeURL(this.data()?.videoLink)
+    return ytCheck.validId;
+  })
+  youtubeVideoId = computed(() => {
+    return isValidYouTubeURL(this.data()?.videoLink).id
+  })
+
   canEdit = computed(() => this.owner() === this.user()?.username);
   canClone = computed(() => this.user()?.username);
 
   syntheseRarete = computed(() => {
-    let result = {[COMMUNE]: {[SORT]: 0, [CREA]: 0}, [PEU_COMMUNE]: {[SORT]: 0, [CREA]: 0}, [RARE]: {[SORT]: 0, [CREA]: 0}, [KROSMIQUE]: {[SORT]: 0, [CREA]: 0}, [INFINITE]: {[SORT]: 0, [CREA]: 0}};
+    let result = {
+      [COMMUNE]: {[SORT]: 0, [CREA]: 0},
+      [PEU_COMMUNE]: {[SORT]: 0, [CREA]: 0},
+      [RARE]: {[SORT]: 0, [CREA]: 0},
+      [KROSMIQUE]: {[SORT]: 0, [CREA]: 0},
+      [INFINITE]: {[SORT]: 0, [CREA]: 0}
+    };
     if (this.data() != null) {
       this.data().cards.forEach(card =>
         result[CardRarity[card.rarity]][CardType[card.cardType]] = result[CardRarity[card.rarity]][CardType[card.cardType]] + card.count)
@@ -125,7 +152,6 @@ export class ViewDeck {
 
   max = computed(() => Math.max(...Object.values(this.syntheseCost()).map(v => v[CREA] + v[SORT])))
 
-
 toggleFavorite(deck) {
     if (this.canClone() && !this.canEdit()) {
       if (!deck.liked) {
@@ -146,22 +172,23 @@ toggleFavorite(deck) {
 
   deleteDeckConfirmation(deck) {
     const dialogRef = this.dialog.open(DeckDeletionPopin, {
-            // width: '400px',
-            // height: '250px',
-            panelClass: 'endModalCss',
-            data: {}
-          });
+      // width: '400px',
+      // height: '250px',
+      panelClass: 'endModalCss',
+      data: {}
+    });
 
-          dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-              this.deleteDeck(deck)
-              // this.router.navigate(['/decks/view', response.deckId, response.version])
-            } else {
-            }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteDeck(deck)
+        // this.router.navigate(['/decks/view', response.deckId, response.version])
+      } else {
+      }
 
-          });
+    });
 
   }
+
   deleteDeck(deck) {
     this.authenticatedApiService.deleteDeck(deck.deckId).subscribe(r => {
       const dialogRef = this.dialog.open(DeckDeletedPopin, {
@@ -170,7 +197,9 @@ toggleFavorite(deck) {
         panelClass: 'endModalCss',
         data: {}
       });
-      dialogRef.afterClosed().subscribe(result => { this.router.navigate(['/home'])});
+      dialogRef.afterClosed().subscribe(result => {
+        this.router.navigate(['/home'])
+      });
     });
   }
 }

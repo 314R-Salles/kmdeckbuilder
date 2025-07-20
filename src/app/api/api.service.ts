@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {TwitchModel} from "../base/models/twitch.model";
 import {YtVideo} from "../base/models/ytVideo";
+import {OAuthService} from "angular-oauth2-oidc";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,12 @@ export class ApiService {
 
   BASE_API = environment.JAVA_API + '/public';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private oauth: OAuthService) {
+  }
+
+  private getAuthHeaders() {
+    let headers = new HttpHeaders();
+    return headers.append('Authorization', 'Bearer ' + this.oauth.getAccessToken())
   }
 
   // user
@@ -27,6 +33,10 @@ export class ApiService {
 
   getVods(): Observable<TwitchModel[]> {
     return this.http.get<TwitchModel[]>(this.BASE_API + '/twitch/vods');
+  }
+
+  checkVideo(videoId): Observable<{ type: string, invalidFormat: boolean }> {
+    return this.http.get<any>(this.BASE_API + `/twitch/check/${videoId}`);
   }
 
   getLastVideos(): Observable<YtVideo[]> {
@@ -59,14 +69,19 @@ export class ApiService {
   }
 
   getDecks(form: any): Observable<any> {
-    return this.http.post<any>(this.BASE_API + `/decks`, form);
+    if (this.oauth.hasValidAccessToken()) {
+      let headers = this.getAuthHeaders();
+      return this.http.post<any>(this.BASE_API + `/decks`, form, {headers})
+    } else {
+      return this.http.post<any>(this.BASE_API + `/decks`, form)
+    }
   }
 
   getDeckOwners(): Observable<any> {
     return this.http.get<any>(this.BASE_API + `/decks/owners`);
   }
 
-  getDeck(params : {id: string, version: number, language: string}): Observable<any> {
+  getDeck(params: { id: string, version: number, language: string }): Observable<any> {
     return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}`);
   }
 

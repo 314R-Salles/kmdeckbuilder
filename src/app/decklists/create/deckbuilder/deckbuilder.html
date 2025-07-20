@@ -16,7 +16,7 @@
         </button>
       }
       @if (currentTab == 2) {
-        <button [disabled]="deckForm.invalid || countDefaultCards() !== (3-illustrationsNumber) || disableSaveButton"
+        <button [disabled]="!deckForm.valid || countDefaultCards() !== (3-illustrationsNumber) || disableSaveButton"
                 (click)="saveDeck()"> {{ isUpdate ? 'Enregistrer' : 'Créer le deck' }}
         </button>
       }
@@ -56,9 +56,22 @@
       <div class="validation">
         <form [formGroup]="deckForm">
           <div style="display: flex; flex-direction: column; padding: 5px;">
-            <label style="font-size: 20px"> Nom du deck : </label>
-            <input style="width: 300px;" formControlName="name">
+            <label for="name" style="font-size: 20px"> Nom du deck : </label>
+            <input style="width: 300px;" id="name" formControlName="name">
           </div>
+
+          <label for="videoLink" style="font-size: 20px"> Lien vidéo : </label>
+          <input style="width: 300px;" id="videoLink" formControlName="videoLink">
+          @if (videoLinkControl.hasError('unknownHostError')) {
+            <mat-error style="color: red;">Seuls Youtube et Twitch sont tolérés</mat-error>
+          }
+          @if (videoLinkControl.hasError('invalidFormatError')) {
+            <mat-error style="color: red;">Seuls les Highlights Twitch sont acceptés</mat-error>
+          }
+          @if (videoLinkControl.hasError('invalidLinkError')) {
+            <mat-error style="color: red;">Impossible de récupérer la vidéo</mat-error>
+          }
+          {{ videoLinkData | json }} <- si c'est yt ou twitch pour afficher une icone?
 
           <div style="display: flex; flex-direction: column; height: 300px; padding: 5px;">
             <label style="font-size: 20px"> Présentation du deck : </label>

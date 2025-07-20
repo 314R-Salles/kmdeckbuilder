@@ -153,15 +153,7 @@ export class SearchDeck implements OnInit {
       pageSize: this.pageSize,
     };
 
-    // c'est pas initialisé
-    let searchRequest;
-    if (this.isLoggedIn) {
-      searchRequest = this.authenticatedApiService.getDecks(request)
-    } else {
-      searchRequest = this.apiService.getDecks(request)
-    }
-
-    searchRequest.subscribe(searchResults => {
+    this.apiService.getDecks(request).subscribe(searchResults => {
       this.decks.set(searchResults.content);
       this.searchResults = {
         pageNumber: searchResults.pageable.pageNumber,
@@ -197,7 +189,9 @@ export class SearchDeck implements OnInit {
         return [...values, user];
       });
     else
-      this.selectedNegativeUsers.update(values => { return [...values, user]; });
+      this.selectedNegativeUsers.update(values => {
+        return [...values, user];
+      });
     this.resetPageAndSearch()
   }
 
@@ -213,12 +207,12 @@ export class SearchDeck implements OnInit {
 
   removeNegativeUser(user) {
     this.selectedNegativeUsers.update(values => {
-          const index = values.findIndex(u => u.username === user.username)
-          values.splice(index, 1)
-          return [...values];
-        });
-        this.resetPageAndSearch()
-    }
+      const index = values.findIndex(u => u.username === user.username)
+      values.splice(index, 1)
+      return [...values];
+    });
+    this.resetPageAndSearch()
+  }
 
   selectTag(tag, negative) {
     if (!negative)
@@ -227,7 +221,7 @@ export class SearchDeck implements OnInit {
       });
     else
       this.selectedNegativeTags.update(values => {
-              return [...values, tag];
+        return [...values, tag];
       });
     this.resetPageAndSearch()
   }
@@ -242,13 +236,13 @@ export class SearchDeck implements OnInit {
   }
 
   removeNegativeTag(tag) {
-      this.selectedNegativeTags.update(values => {
-        const index = values.findIndex(u => u.id === tag.id)
-        values.splice(index, 1)
-        return [...values];
-      });
-      this.resetPageAndSearch()
-    }
+    this.selectedNegativeTags.update(values => {
+      const index = values.findIndex(u => u.id === tag.id)
+      values.splice(index, 1)
+      return [...values];
+    });
+    this.resetPageAndSearch()
+  }
 
   addUserFilterFromResult(username: string, event) {
     if (!this.selectedUsers().map(u => u.username).includes(username)) {

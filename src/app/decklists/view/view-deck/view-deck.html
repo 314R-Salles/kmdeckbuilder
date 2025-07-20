@@ -1,4 +1,4 @@
-@if (data) {
+@if (data()) {
   <app-section [backtrackPath]="'/decks/browse'" [title]=" title()" [titleSuffix]="'par ' + owner()">
     <div before-section-header style="position:relative;">
       <div [ngStyle]="{cursor: canClone() ? 'pointer': 'default'}"
@@ -75,7 +75,8 @@
 <!--TEMPLATES-->
 
 <ng-template #STATS>
-  <div style="border: #FFAE00 solid 2px; box-sizing: border-box; display: flex; flex-direction:column; width: 100%; padding: 10px;">
+  <div
+    style="border: #FFAE00 solid 2px; box-sizing: border-box; display: flex; flex-direction:column; width: 100%; padding: 10px;">
     <div style="display:flex;">
       <div style="position:relative;">
         @if (data()?.god) {
@@ -89,19 +90,19 @@
         </div>
 
       </div>
-    <app-synthesis [syntheseCost]="syntheseCost()" [max]="max()"></app-synthesis>
-    <app-rarity-synthesis [raritySynthesis]="syntheseRarete()"></app-rarity-synthesis>
+      <app-synthesis [syntheseCost]="syntheseCost()" [max]="max()"></app-synthesis>
+      <app-rarity-synthesis [raritySynthesis]="syntheseRarete()"></app-rarity-synthesis>
     </div>
     <div style="display:flex; flex-direction:row; flex-wrap:wrap; margin-top:5px;">
       @for (tag of data().tags; track tag.id) {
-      <div class="tag"
-           [ngStyle]="{'background-color': tag.title === 'guide' ? '#FF474D':'#313282'}">
-        @if (tag.iconId) {
-          <img style="width:20px; height:20px; margin-right:5px;" class="tagImg"
-             [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-        }
-        <span style="font-size:20px;">{{ tag.title }}</span>
-      </div>
+        <div class="tag"
+             [ngStyle]="{'background-color': tag.title === 'guide' ? '#FF474D':'#313282'}">
+          @if (tag.iconId) {
+            <img style="width:20px; height:20px; margin-right:5px;" class="tagImg"
+                 [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+          }
+          <span style="font-size:20px;">{{ tag.title }}</span>
+        </div>
       }
     </div>
 
@@ -113,6 +114,20 @@
     <div style="border: 2px solid white; padding:10px 5px 5px 5px; position:relative;">
       <span style="display:relative; position:absolute; top:-10px; right:-10px; background:#262241; border: 2px solid white; padding:2px;">Description</span>
       <div [innerHTML]="description()"></div>
+
+    @if (displayTwitchIframe()) {
+      <div style=" aspect-ratio: 16 / 9;">
+        <iframe [src]="twitchIframeUrl()" height="100%" width="100%" allowfullscreen="true"></iframe>
+      </div>
+    }
+
+    @if (displayYoutubeIframe()) {
+      <div style="width: 100%; background: black; display: flex; justify-content: center">
+        <div>
+          <youtube-player [videoId]="youtubeVideoId()"/>
+        </div>
+      </div>
+    }
     </div>
   </div>
 </ng-template>
