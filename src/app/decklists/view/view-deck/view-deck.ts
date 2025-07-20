@@ -1,4 +1,4 @@
-import {Component, computed, inject, input} from '@angular/core';
+import {Component, computed, inject, input, OnInit, signal} from '@angular/core';
 import {DeckDeletedPopin} from '../../../popins/deck-deleted-popin/deck-deleted-popin';
 import {DeckDeletionPopin} from '../../../popins/deck-deletion-popin/deck-deletion-popin';
 import {Section} from '../../../base/section/section';
@@ -35,8 +35,8 @@ import {filter, switchMap} from "rxjs";
   selector: 'app-view-deck',
   imports: [
     Section,
-    RouterLink,
     MatTooltip,
+    RouterLink,
     VersionDropdown,
     NgTemplateOutlet,
     Synthesis,
@@ -50,6 +50,7 @@ import {filter, switchMap} from "rxjs";
 })
 export class ViewDeck {
 
+
   displayDropdown = false
 
   id = input.required<string>()
@@ -62,15 +63,23 @@ export class ViewDeck {
   dialog = inject(MatDialog);
   router = inject(Router);
 
+  user = toSignal(this.storeService.getUser())
+  isLoggedIn = computed(() => this.user()?.username);
+  //  .subscribe(e => this.isLoggedIn.set(!!(e && e.lastLogin)))
+
   data = toSignal(
     toObservable<number>(this.version).pipe(
       filter(id => !!id),
       switchMap((id) => {
-        return this.apiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})
+
+        if (this.isLoggedIn()) {
+          return this.authenticatedApiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})
+        } else {
+          return this.apiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})
+        }
       }),
     ))
 
-  d = this.data()
   title = computed(() => this.data()?.name);
   owner = computed(() => this.data()?.owner);
   versions = computed(() => this.data()?.versions);
@@ -78,7 +87,6 @@ export class ViewDeck {
   description = computed(() =>
     this.domSanitize.bypassSecurityTrustHtml(this.data()?.description.replaceAll("<p></p>", "<p><br></p>").replaceAll(/&nbsp;/g, ' ').replaceAll(/(?=\s)[^\r\n\t]/g, ' ')));
 
-  user = toSignal(this.storeService.getUser())
   canEdit = computed(() => this.owner() === this.user()?.username);
   canClone = computed(() => this.user()?.username);
 
@@ -119,7 +127,7 @@ export class ViewDeck {
 
 
 toggleFavorite(deck) {
-    if (this.canClone()) {
+    if (this.canClone() && !this.canEdit()) {
       if (!deck.liked) {
         this.authenticatedApiService.addToFavorites(deck.deckId).subscribe(r => {
           deck.favoriteCount += 1

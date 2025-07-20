@@ -19,14 +19,25 @@
 
 .buttonUpdate {
   border: solid 1px gold;
-  width: 100px;
+  padding:0 10px;
   display: flex;
   cursor: pointer;
-  justify-content: space-evenly
+  justify-content: space-evenly;
+  margin: 0 5px;
 }
 
-.buttonUpdate:hover {
+.buttonUpdate span {
+  padding-right:5px}
+
+.buttonUpdate mat-icon {
+  display:flex;
+  align-content:center;
+  justify-content:center;
+  align-items:center;
+  }
+.buttonUpdate:hover, .backArrow:hover, .likeButton:hover {
   -webkit-box-shadow: inset 1px 0px 20px 0px white;
+  cursor:pointer;
  }
 
 .viewDeckContainer{

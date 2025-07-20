@@ -12,8 +12,11 @@
 
   <ng-template #NEUTRE>
     @if (sortedSynthesis()['NEUTRE'].length) {
-      <div>
-        Neutres
+      <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
+        <span style="display:relative; position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
+
+  <img [src]="'/assets/public/creatureIcon.png'" style="width:20px; height:20px;" class="type">
+        </span>
         @for (card of sortedSynthesis()['NEUTRE']; track card.id) {
           <div [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
                class="card appFont2"
@@ -46,8 +49,13 @@
   </ng-template>
   <ng-template #GOD_CREA>
     @if (sortedSynthesis()['GOD_CREA'].length) {
-      <div>
-        Créas dieu
+    <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
+      <span style="display:relative; position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
+
+  <img [src]="'/assets/public/creatureIcon.png'" style="width:20px; height:20px;" class="type">
+      </span>
+
+
         @for (card of sortedSynthesis()['GOD_CREA']; track card.id) {
           <div [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
                class="card appFont2"
@@ -80,8 +88,11 @@
 
   <ng-template #GOD_SPELL>
     @if (sortedSynthesis()['GOD_SPELL'].length) {
-      <div>
-        Sorts dieu
+    <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
+      <span style="display:relative; position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
+
+<img [src]="'/assets/public/spellIcon.png'" style="width:20px; height:20px;" class="type">
+      </span>
         @for (card of sortedSynthesis()['GOD_SPELL']; track card.id) {
           <div [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
                class="card appFont2"
@@ -116,8 +127,11 @@
 
   <ng-template #KROSFI>
     @if (sortedSynthesis()['KROSFI'].length) {
-      <div>
-        Infinites
+    <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
+      <span style="display: flex; align-items: baseline; position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
+        <span style="
+  background: #FFFFEE !important; display: block; width:15px; height:15px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+      </span>
         @for (card of sortedSynthesis()['KROSFI']; track card.id) {
           <div [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
                class="card appFont2"

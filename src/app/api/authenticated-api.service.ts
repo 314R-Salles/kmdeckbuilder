@@ -68,6 +68,11 @@ export class AuthenticatedApiService {
     return this.http.post<any>(this.PRIVATE_BASE_API + `/decks/recentFavorites/${language}`, null, {headers});
   }
 
+  getDeck(params : {id: string, version: number, language: string}): Observable<any> {
+    let headers = this.getAuthHeaders();
+    return this.http.get<any>(this.PRIVATE_BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}`, {headers});
+  }
+
   private getAuthHeaders() {
     let headers = new HttpHeaders();
     return headers.append('Authorization', 'Bearer ' + this.oauth.getAccessToken())

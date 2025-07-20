@@ -1,12 +1,12 @@
 <form [formGroup]="searchForm" (ngSubmit)="search()">
   <app-section [title]="'Recherche de Decks'">
-    <div section-header style="position:relative;">
+    <div after-section-header style="position:relative;">
       <span routerLink="/decks/create"
             style="position:absolute; right:0px; top:-70px; padding:5px; border:2px solid #FFD700; cursor:pointer; border-radius:4px; color:#FFD700;">Créer un deck</span>
     </div>
 
     <div class="filterWrapper" style="flex-direction:column; position: relative">
-      <div style="flex-directio:row; display:flex;">
+      <div style="flex-direction:row; display:flex;">
         <div style="display: flex; flex-wrap: wrap; width: 300px; margin-top:10px;">
           @for (god of selectedGods(); track god.id) {
           <img (click)="removeGod(god)" [src]="'/assets/public/gods/GOD_'+god.name+'.png'"
@@ -80,6 +80,19 @@
             </mat-icon>
           </button>
           }
+          <button class="toggleFavoriteButton"
+                  [matTooltip]="sortFilter == 'RECENT' ? 'Trier par : plus aimé.' : 'Trier par : plus récent.'"
+                  (click)="toggleSortFilter()">
+            @if (sortFilter == "RECENT")
+            {
+            <img style="width:30px;" src="/assets/public/new_filter.png">
+
+            }
+            @else {
+
+            <img style="width:30px;" src="/assets/public/like_filter.png">
+            }
+          </button>
 
           <button class="toggleFavoriteButton" [matTooltip]="'Remettre à zéro les filtres.'" style="width: 50px; height: 50px; cursor:pointer;" (click)="resetFilters()">
             <mat-icon style="color:white;">delete
@@ -146,7 +159,7 @@
 
             <div style="display: flex; flex-direction: column; width: 130px; justify-content:space-around;">
               <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-              <div [ngStyle]="{cursor: isLoggedIn ? 'pointer': 'default'}"
+              <div [ngStyle]="{cursor: isLoggedIn && !deck.isOwner ? 'pointer': 'default'}"
                    style="display: flex; justify-content: center; flex-direction:row;"
                    (click)="toggleFavorite(deck);$event.stopPropagation();$event.preventDefault()">
                 <mat-icon class="iconFavorite" style="" [ngStyle]="{color: deck.liked ? 'red': 'white'}">favorite

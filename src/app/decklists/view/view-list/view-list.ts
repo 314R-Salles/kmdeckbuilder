@@ -17,6 +17,7 @@ import {customSort} from "../../../base/models/utils";
 export class ViewList {
 
   cards = input<any[]>();
+  data = input<any>();
 
   sortedSynthesis = computed(() => {
     let synthese = {NEUTRE: [], GOD_CREA: [], GOD_SPELL: [], KROSFI: []}

@@ -59,7 +59,7 @@ export class SearchDeck implements OnInit {
   actionPointsCompareSup = true
   dustCompareSup = true
   favoritesOnly = false
-
+  sortFilter = "RECENT"
   selectedCards = signal<any>([])
   selectedUsers = signal<any>([])
   selectedNegativeUsers = signal<any>([])
@@ -148,7 +148,7 @@ export class SearchDeck implements OnInit {
       content: this.searchForm.get('content').value,
       favoritesOnly: this.favoritesOnly,
       language: "FR",
-      searchBy: "RECENT", // check enum java
+      searchBy: this.sortFilter, // check enum java
       page: this.currentPage,
       pageSize: this.pageSize,
     };
@@ -288,9 +288,18 @@ export class SearchDeck implements OnInit {
     this.resetPageAndSearch()
   }
 
+toggleSortFilter() {
+  if (this.sortFilter == "RECENT")
+    this.sortFilter = "FAVORITE";
+   else
+    this.sortFilter = "RECENT";
+
+  this.resetPageAndSearch();
+ }
+
   // update à la main  du liked/count pour pas faire un refresh complet de la recherche
   toggleFavorite(deck) {
-    if (this.isLoggedIn) {
+    if (this.isLoggedIn && !deck.owned) {
       if (!deck.liked) {
         this.authenticatedApiService.addToFavorites(deck.deckId).subscribe(r => {
           this.decks.update(values => {
