@@ -1,12 +1,11 @@
 @if (data()) {
   <app-section [backtrackPath]="'/decks/browse'" [title]=" title()" [titleSuffix]="'par ' + owner()">
     <div before-section-header style="position:relative;">
-      <div [ngStyle]="{cursor: canClone() ? 'pointer': 'default'}"
+      <div [ngStyle]="{cursor: canClone() && !canEdit() ? 'pointer': 'default'}"
            style="display: flex; justify-content: center; flex-direction:row; position: absolute; top:-70px; left: -50px; border:1px solid white;"
            (click)="toggleFavorite(data());$event.stopPropagation();$event.preventDefault()"
             class="likeButton">
-        <mat-icon class="iconFavorite" style="" [ngStyle]="{color: data().liked ? 'red': 'white'}">favorite
-        </mat-icon>
+        <mat-icon class="iconFavorite" [ngStyle]="{color: data().liked ? 'red': 'white'}">favorite</mat-icon>
         {{ data().favoriteCount }}
       </div>
     </div>
@@ -111,13 +110,13 @@
 <ng-template #DESC>
   <div
     style="box-sizing: border-box; display: flex; width: 100%; padding: 5px">
-    <div style="border: 2px solid white; padding:10px 5px 5px 5px; position:relative;">
-      <span style="display:relative; position:absolute; top:-10px; right:-10px; background:#262241; border: 2px solid white; padding:2px;">Description</span>
+    <div style="width: 100%; border: 2px solid white; padding:10px 5px 5px 5px; position:relative;">
+      <span style="position:absolute; top:-10px; right:-10px; background:#262241; border: 2px solid white; padding:2px;">Description</span>
       <div [innerHTML]="description()"></div>
 
     @if (displayTwitchIframe()) {
       <div style=" aspect-ratio: 16 / 9;">
-        <iframe [src]="twitchIframeUrl()" height="100%" width="100%" allowfullscreen="true"></iframe>
+        <iframe title='twitchPlayer' [src]="twitchIframeUrl()" height="100%" width="100%" allowfullscreen="true"></iframe>
       </div>
     }
 

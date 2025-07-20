@@ -10,7 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {StoreService} from '../../../store.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Section} from '../../../base/section/section';
-import {JsonPipe, NgClass, NgStyle, NgTemplateOutlet} from '@angular/common';
+import {NgClass, NgStyle, NgTemplateOutlet} from '@angular/common';
 import {FilterForm} from '../filter-form/filter-form';
 import {CardDropdownFromList} from '../card-dropdown-from-list/card-dropdown-from-list';
 import {TagDropdown} from '../../common/tag-dropdown/tag-dropdown';
@@ -35,7 +35,6 @@ import {MatError} from "@angular/material/input";
     CardDropdownFromList,
     Pagination,
     MatError,
-    JsonPipe
   ],
   templateUrl: './deckbuilder.html',
   styleUrl: './deckbuilder.scss'
@@ -89,7 +88,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
   god: number; // le dieu est une donnée fixée, pas dans le formulaire (pour swap neutre / dieu faut garder l'info)
   language: number; // language est comme le dieu, fixé par le site, pas un choix du formulaire
 
-  videoLinkData = {}
+  videoLinkData = {type: null}
 
   deckForm = new FormGroup({
     name: new FormControl('', [Validators.required]),

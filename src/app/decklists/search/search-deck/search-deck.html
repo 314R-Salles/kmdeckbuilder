@@ -9,92 +9,91 @@
       <div style="flex-direction:row; display:flex;">
         <div style="display: flex; flex-wrap: wrap; width: 300px; margin-top:10px;">
           @for (god of selectedGods(); track god.id) {
-          <img (click)="removeGod(god)" [src]="'/assets/public/gods/GOD_'+god.name+'.png'"
-               class="godMiniaFiltered prevent-select">
+            <img (click)="removeGod(god)" [src]="'/assets/public/gods/GOD_'+god.name+'.png'"
+                 class="godMiniaFiltered prevent-select">
           }</div>
 
         <div style="display: flex; flex-wrap: wrap; width: 300px; margin-top:10px;">
           @for (tag of selectedTags(); track tag.title) {
-          <div class="card appFont2" (click)="removeTag(tag)"
-               style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
+            <div class="card appFont2" (click)="removeTag(tag)"
+                 style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
  height: 40px; font-size: 16px;  font-weight: 400;">
-            @if (tag.iconId) {
-            <img style="width:30px;" class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
-            }
-            <span style="padding: 0 5px"> {{ tag.title }} ({{ tag.count }})</span>
-          </div>
+              @if (tag.iconId) {
+                <img style="width:30px;" class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
+              }
+              <span style="padding: 0 5px"> {{ tag.title }} ({{ tag.count }})</span>
+            </div>
           }
           @for (tag of selectedNegativeTags(); track tag.title) {
-          <div class="card appFont2" (click)="removeNegativeTag(tag)"
-               style="background: red;   border: solid 1px #ffffff7a;  border-radius: 5px;
+            <div class="card appFont2" (click)="removeNegativeTag(tag)"
+                 style="background: red;   border: solid 1px #ffffff7a;  border-radius: 5px;
  height: 40px; font-size: 16px;  font-weight: 400;">
-            @if (tag.iconId) {
-            <img style="width:30px;" class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
-            }
-            <span style="padding: 0 5px"> {{ tag.title }} ({{ tag.count }})</span>
-          </div>
+              @if (tag.iconId) {
+                <img style="width:30px;" class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
+              }
+              <span style="padding: 0 5px"> {{ tag.title }} ({{ tag.count }})</span>
+            </div>
           }</div>
 
         <div style="display: flex; flex-wrap: wrap; align-content: center; width:300px; margin-top:10px;">
           @for (card of selectedCards(); track card.id) {
-          <div class="card appFont2"
-               [matTooltip]="card.name + (card.infiniteLevel ? ' ' + card.infiniteLevel : '')"
-               [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
-               (click)="removeCard(card)" style="position:relative; overflow: hidden">
-            <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]">
-          </div>
+            <div class="card appFont2"
+                 [matTooltip]="card.name + (card.infiniteLevel ? ' ' + card.infiniteLevel : '')"
+                 [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
+                 (click)="removeCard(card)" style="position:relative; overflow: hidden">
+              <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]">
+            </div>
           }</div>
 
 
         <div style="display: flex; flex-wrap: wrap; align-content: center; width:300px; margin-top:10px;">
           @for (user of selectedUsers(); track user.username) {
-          <div class="card appFont2" (click)="removeUser(user)"
-               style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
+            <div class="card appFont2" (click)="removeUser(user)"
+                 style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
  height: 40px; font-size: 16px;  font-weight: 400;">
-            <span style="padding: 0 5px"> {{ user.username }} - {{ user.count }}</span>
-          </div>
+              <span style="padding: 0 5px"> {{ user.username }} - {{ user.count }}</span>
+            </div>
           }
           @for (user of selectedNegativeUsers(); track user.username) {
-          <div class="card appFont2" (click)="removeNegativeUser(user)"
-               style="background: red;   border: solid 1px #ffffff7a;  border-radius: 5px;
+            <div class="card appFont2" (click)="removeNegativeUser(user)"
+                 style="background: red;   border: solid 1px #ffffff7a;  border-radius: 5px;
  height: 40px; font-size: 16px;  font-weight: 400;">
-            <span style="padding: 0 5px"> {{ user.username }} - {{ user.count }}</span>
-          </div>
+              <span style="padding: 0 5px"> {{ user.username }} - {{ user.count }}</span>
+            </div>
           }</div>
       </div>
       <div style="flex-directio:row; display:flex;">
         <app-god-dropdown [selectedGods]="selectedGods()" (onSelectGod)="selectGod($event)"></app-god-dropdown>
         <app-tag-dropdown [withCount]="true" [selectedTags]="selectedTags()" [allTags]="allTags()"
-                          (onSelectTag)="selectTag($event, false)" (onNegativeSelectTag)="selectTag($event, true)"></app-tag-dropdown>
+                          (onSelectTag)="selectTag($event, false)"
+                          (onNegativeSelectTag)="selectTag($event, true)"></app-tag-dropdown>
         <app-card-dropdown [selectedGods]="selectedGods()" [selectedCards]="selectedCards()"
                            (onSelectCard)="selectCard($event)"></app-card-dropdown>
         <app-owner-dropdown [selectedUsers]="selectedUsers()" [allUsers]="allUsers()"
-                            (onSelectUser)="selectUser($event, false)" (onNegativeSelectUser)="selectUser($event, true)"></app-owner-dropdown>
+                            (onSelectUser)="selectUser($event, false)"
+                            (onNegativeSelectUser)="selectUser($event, true)"></app-owner-dropdown>
 
         <div style="display:flex; flex-direction:row; padding: 0 5px;">
           @if (isLoggedIn) {
-          <button class="toggleFavoriteButton"
-                  [matTooltip]="favoritesOnly ? 'Afficher tous les decks' : 'Afficher vos favoris'"
-                  (click)="toggleFavoriteFilter()">
-            <mat-icon [ngStyle]="{color: favoritesOnly ? 'red': 'white'}">favorite
-            </mat-icon>
-          </button>
+            <button class="toggleFavoriteButton"
+                    [matTooltip]="favoritesOnly ? 'Afficher tous les decks' : 'Afficher vos favoris'"
+                    (click)="toggleFavoriteFilter()">
+              <mat-icon [ngStyle]="{color: favoritesOnly ? 'red': 'white'}">favorite
+              </mat-icon>
+            </button>
           }
           <button class="toggleFavoriteButton"
-                  [matTooltip]="sortFilter == 'RECENT' ? 'Trier par : plus aimé.' : 'Trier par : plus récent.'"
+                  [matTooltip]="sortFilter == 'RECENT' ?  'Trié par : plus récent.' : 'Trié par : plus aimé.'"
                   (click)="toggleSortFilter()">
-            @if (sortFilter == "RECENT")
-            {
-            <img style="width:30px;" src="/assets/public/new_filter.png">
-
-            }
-            @else {
-
-            <img style="width:30px;" src="/assets/public/like_filter.png">
+            @if (sortFilter == "RECENT") {
+              <img style="width:30px;" src="/assets/public/new_filter.png">
+            } @else {
+              <img style="width:30px;" src="/assets/public/like_filter.png">
             }
           </button>
 
-          <button class="toggleFavoriteButton" [matTooltip]="'Remettre à zéro les filtres.'" style="width: 50px; height: 50px; cursor:pointer;" (click)="resetFilters()">
+          <button class="toggleFavoriteButton" [matTooltip]="'Remettre à zéro les filtres.'"
+                  style="width: 50px; height: 50px; cursor:pointer;" (click)="resetFilters()">
             <mat-icon style="color:white;">delete
             </mat-icon>
           </button>
@@ -155,7 +154,7 @@
         </div>
         @for (deck of decks(); track deck.deckId) {
           <a [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god"
-               style="display:flex; flex-direction:row; cursor:pointer; text-decoration:none; color:white;">
+             style="display:flex; flex-direction:row; cursor:pointer; text-decoration:none; color:white;">
 
             <div style="display: flex; flex-direction: column; width: 130px; justify-content:space-around;">
               <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
@@ -174,8 +173,9 @@
                       [matTooltip]="'Ajouter '+deck.owner+' aux filtres de recherche'"
                       (click)="addUserFilterFromResult(deck.owner, $event);">{{ deck.owner }}</span>
                 <a [routerLink]="['/user',deck.owner]" style="color:white; text-decoration:none;">
-                <mat-icon [matTooltip]="'Consulter le profil'" >contact_page
-                </mat-icon></a>
+                  <mat-icon [matTooltip]="'Consulter le profil'">contact_page
+                  </mat-icon>
+                </a>
               </div>
               <div class="creationDate">{{ deck.creationDate | date:'longDate' }}</div>
               <div class="tags" style="display:flex; flex-direction:row;align-items:center;">

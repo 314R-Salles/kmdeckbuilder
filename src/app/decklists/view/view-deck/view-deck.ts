@@ -1,4 +1,4 @@
-import {Component, computed, inject, input, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, input, signal} from '@angular/core';
 import {DeckDeletedPopin} from '../../../popins/deck-deleted-popin/deck-deleted-popin';
 import {DeckDeletionPopin} from '../../../popins/deck-deletion-popin/deck-deletion-popin';
 import {Section} from '../../../base/section/section';
@@ -25,9 +25,9 @@ import {
   RARE,
   SORT
 } from '../../common/models/enums';
-import {toObservable, toSignal} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {RaritySynthesis} from '../rarity-synthesis/rarity-synthesis';
-import {filter, switchMap} from "rxjs";
+import {switchMap} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {isValidTwitchURL, isValidYouTubeURL} from "../../../base/models/utils";
 import {YouTubePlayer} from "@angular/youtube-player";
@@ -68,21 +68,25 @@ export class ViewDeck {
   router = inject(Router);
 
   user = toSignal(this.storeService.getUser())
-  isLoggedIn = computed(() => this.user()?.username);
-  //  .subscribe(e => this.isLoggedIn.set(!!(e && e.lastLogin)))
 
-  data = toSignal(
-    toObservable<number>(this.version).pipe(
-      filter(id => !!id),
-      switchMap((id) => {
+  // readOnlyData = toSignal(
+  //   toObservable<number>(this.version).pipe(
+  //     filter(id => !!id),
+  //     switchMap((id) => {
+  //       return this.apiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})
+  //     }),
+  //   ))
 
-        if (this.isLoggedIn()) {
-          return this.authenticatedApiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})
-        } else {
-          return this.apiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})
-        }
-      }),
-    ))
+
+  data = signal<any>(null);
+
+  constructor() {
+    toObservable(this.version).pipe(
+      switchMap((id) => this.apiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})),
+      takeUntilDestroyed(),
+    ).subscribe(response => this.data.set(response));
+  }
+
 
   title = computed(() => this.data()?.name);
   owner = computed(() => this.data()?.owner);
@@ -152,19 +156,16 @@ export class ViewDeck {
 
   max = computed(() => Math.max(...Object.values(this.syntheseCost()).map(v => v[CREA] + v[SORT])))
 
-toggleFavorite(deck) {
+  toggleFavorite(deck) {
+    // peut like si connecté et pas propriétaire
     if (this.canClone() && !this.canEdit()) {
       if (!deck.liked) {
         this.authenticatedApiService.addToFavorites(deck.deckId).subscribe(r => {
-          deck.favoriteCount += 1
-          deck.liked = true
-          // this.decks.find(deck => deck.deckId === deck.deckId).favoriteCount += 1
-          // this.decks.find(deck => deck.deckId === deck.deckId).liked = true
+          this.data.set({...deck, favoriteCount: deck.favoriteCount + 1, liked: true})
         })
       } else {
         this.authenticatedApiService.removeFromFavorites(deck.deckId).subscribe(r => {
-          deck.favoriteCount -= 1
-          deck.liked = false
+          this.data.set({...deck, favoriteCount: deck.favoriteCount - 1, liked: false})
         })
       }
     }
@@ -172,8 +173,6 @@ toggleFavorite(deck) {
 
   deleteDeckConfirmation(deck) {
     const dialogRef = this.dialog.open(DeckDeletionPopin, {
-      // width: '400px',
-      // height: '250px',
       panelClass: 'endModalCss',
       data: {}
     });
@@ -181,10 +180,7 @@ toggleFavorite(deck) {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.deleteDeck(deck)
-        // this.router.navigate(['/decks/view', response.deckId, response.version])
-      } else {
       }
-
     });
 
   }

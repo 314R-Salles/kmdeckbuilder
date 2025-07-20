@@ -7,7 +7,6 @@ import {AuthService} from "../../auth.service";
 @Component({
   selector: 'app-section',
   imports: [
-    RouterLink,
     NgClass
   ],
   templateUrl: './section.html',

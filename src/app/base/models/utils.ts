@@ -12,6 +12,7 @@ export class VideoValidator {
   static createValidator(apiService: ApiService, data: any): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors> => {
       if (control.value === '' || control.value === null) {
+        data.type = null;
         return of(null);
       }
       return of(control.value).pipe(
@@ -35,13 +36,16 @@ export class VideoValidator {
           if (['youtube', 'twitch'].includes(videoCheck.type)) {
             data.type = videoCheck.type;
             if (!videoCheck.validId) {
+              data.type = null;
               return {invalidLinkError: true};
             } else if (videoCheck.invalidFormat) {
+              data.type = null;
               return {invalidFormatError: true};
             } else {
               return null;
             }
           } else {
+            data.type = null;
             return {unknownHostError: true};
           }
         })

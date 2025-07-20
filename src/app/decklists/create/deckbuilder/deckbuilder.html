@@ -60,19 +60,6 @@
             <input style="width: 300px;" id="name" formControlName="name">
           </div>
 
-          <label for="videoLink" style="font-size: 20px"> Lien vidéo : </label>
-          <input style="width: 300px;" id="videoLink" formControlName="videoLink">
-          @if (videoLinkControl.hasError('unknownHostError')) {
-            <mat-error style="color: red;">Seuls Youtube et Twitch sont tolérés</mat-error>
-          }
-          @if (videoLinkControl.hasError('invalidFormatError')) {
-            <mat-error style="color: red;">Seuls les Highlights Twitch sont acceptés</mat-error>
-          }
-          @if (videoLinkControl.hasError('invalidLinkError')) {
-            <mat-error style="color: red;">Impossible de récupérer la vidéo</mat-error>
-          }
-          {{ videoLinkData | json }} <- si c'est yt ou twitch pour afficher une icone?
-
           <div style="display: flex; flex-direction: column; height: 300px; padding: 5px;">
             <label style="font-size: 20px"> Présentation du deck : </label>
             <div style="display: flex; flex-direction: column; height: 250px; position: relative">
@@ -134,6 +121,23 @@
                   <span style="padding: 0 5px"> {{ tag.title }} </span>
                 </div>
               }</div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; padding: 5px;">
+            <label for="videoLink" style="font-size: 20px"> Lien vidéo (optionnel) : </label>
+            <input style="width: 300px;" id="videoLink" formControlName="videoLink">
+            @if (videoLinkData?.type) {
+              <span style="margin: 5px 0 0 5px"> Format reconnu : {{ videoLinkData.type }}</span>
+            }
+            @if (videoLinkControl.hasError('unknownHostError')) {
+              <mat-error style="color: red;">Seuls Youtube et Twitch sont tolérés</mat-error>
+            }
+            @if (videoLinkControl.hasError('invalidFormatError')) {
+              <mat-error style="color: red;">Seuls les Highlights Twitch sont acceptés</mat-error>
+            }
+            @if (videoLinkControl.hasError('invalidLinkError')) {
+              <mat-error style="color: red;">Impossible de récupérer la vidéo</mat-error>
+            }
           </div>
 
           <div style="display: flex; flex-direction: column; width: fit-content; padding: 5px;">

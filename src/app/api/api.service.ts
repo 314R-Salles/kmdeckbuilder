@@ -82,7 +82,12 @@ export class ApiService {
   }
 
   getDeck(params: { id: string, version: number, language: string }): Observable<any> {
-    return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}`);
+    if (this.oauth.hasValidAccessToken()) {
+      let headers = this.getAuthHeaders();
+      return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}`, {headers});
+    } else {
+      return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}`);
+    }
   }
 
   getTagsByLanguage(language): Observable<any> {
