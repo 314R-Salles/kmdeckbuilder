@@ -3,15 +3,11 @@
   border: rgba(255, 255, 255, 0.62) solid 1px;
   border-radius: 5px;
   box-sizing: border-box;
-  //display: flex;
-  //align-items: center
 }
 
 .card {
   height: 40px;
   width: 300px;
-  //-webkit-box-shadow: inset 0px 0px 0px 10px rgba(255, 255, 255, 0.62);
-  //-moz-box-shadow: inset 0px 0px 0px 10px rgba(255, 255, 255, 0.62);
   box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.62);
   display: flex;
   align-items: center;
@@ -33,64 +29,6 @@
 .container {
   display: flex;
   justify-content: space-around
-}
-
-.INFINITE {
-  background: linear-gradient(180deg, rgba(140, 154, 228, 1) 0%, rgba(162, 227, 236, 1) 100%);
-}
-
-.KROSMIQUE {
-  background: linear-gradient(180deg, rgba(132, 25, 184, 1) 10%, rgba(100, 60, 181, 1) 35%, rgba(83, 64, 180, 1) 65%, rgba(79, 108, 207, 1) 91%);
-}
-
-.NEUTRE {
-  background: #b7a17a;
-}
-
-.IOP {
-  background: #A3210E;
-}
-
-.ECAFLIP {
-  background: #6C1084;
-}
-
-.CRA {
-  background: #424617;
-}
-
-.ENIRIPSA {
-  background: #B54C3C;
-}
-
-.SACRIEUR {
-  background: #302821;
-}
-
-.SADIDA {
-  background: #6B7200;
-}
-
-.SRAM {
-  background: #39405A;
-}
-
-.XELOR {
-  background: #263578;
-}
-
-.ENUTROF {
-  background: #9B7400;
-}
-
-.FECA {
-  background: #523C39FF;
-}
-
-
-.appFont2 {
-  color: white !important;
-  font-family: 'geo2', 'arial', sans-serif !important;
 }
 
 .card .cardSpec { display:none;}

@@ -104,7 +104,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
     isSpell: new FormControl(true),
     isMinion: new FormControl(true),
     apValue: new FormControl(null),
-    rarity: new FormControl({key: -1, label: 'Toutes les raretés', color: 'color-all', bgColor: 'bg-color-all'},),
+    rarity: new FormControl({key: -1, label: 'Toutes les raretés', color: '', bgColor: ''},),
     content: new FormControl(''),
     language: new FormControl('FR'),
     // pagination
@@ -170,8 +170,8 @@ export class Deckbuilder implements OnInit, AfterViewInit {
 
     // Pour gérer les options X+ on définit un Min Max
     // Exemple si selection 7+, alors min 7 et max null pour dire pas de max
-    const apMin = this.apValue;
-    const apMax = this.apValue === 7 ? null : this.apValue;
+    const apMin = this.apValue?.value;
+    const apMax = this.apValue?.value === 7 ? null : this.apValue?.value;
 
     // si 1-, min = 0, max = 1
     const atMin = this.atValue === 1 ? 0 : this.atValue;
@@ -381,8 +381,8 @@ export class Deckbuilder implements OnInit, AfterViewInit {
     this.form.get('rarity').setValue({
       key: -1,
       label: 'Toutes les raretés',
-      color: 'color-all',
-      bgColor: 'bg-color-all'
+      color: '',
+      bgColor: ''
     })
     this.form.get('pageNumber').setValue(0)
     this.form.get('pageSize').setValue(10)

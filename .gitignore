@@ -2,6 +2,7 @@
 
 /src/assets/public/minia
 /src/assets/public/card
+/src/assets/public/tagIcon
 
 # Compiled output
 /dist

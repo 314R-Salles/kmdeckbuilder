@@ -90,6 +90,11 @@ export class ApiService {
     }
   }
 
+  getDeckForCrawler(params: { id: string, version: number }): Observable<any> {
+    return this.http.get<any>(this.BASE_API + `/seo/decks/${params.id}/version/${params.version}`);
+  }
+
+
   getTagsByLanguage(language): Observable<any> {
     return this.http.get<any>(this.BASE_API + `/tags/language/${language}`);
   }

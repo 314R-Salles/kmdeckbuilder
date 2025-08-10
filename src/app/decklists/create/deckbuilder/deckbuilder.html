@@ -205,15 +205,13 @@
 <ng-template #MAIN>
   <div class="formAndCards">
     <app-filter-form [god]="god" [form]="form"></app-filter-form>
-    <div style="display: flex; ">
-      <div style="display:flex;">
-        <div class="cards">
-          @for (card of displayedCards(); track card.id; let idx = $index) {
-            <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[card.id]"
-                 (click)="selectCard(card, $event)"
-                 class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
-          }
-        </div>
+    <div style="display: flex;">
+      <div class="cards">
+        @for (card of displayedCards(); track card.id; let idx = $index) {
+          <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[card.id]"
+               (click)="selectCard(card, $event)"
+               class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
+        }
       </div>
     </div>
     <app-pagination [pageNumber]="searchResults?.pageNumber +1 " [totalPages]="searchResults?.totalPages"

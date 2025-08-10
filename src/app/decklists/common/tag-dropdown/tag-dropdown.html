@@ -1,14 +1,12 @@
 <div class="dropdown" (click)="dropdownClick()">
   <input class="dropbtn appFont2"
          [(ngModel)]="tagSearch"
-         style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 2px;"
          type="text" placeholder="Tags">
   <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedTags().length ? 'block' : 'none'}">
     @for (tag of displayedTags(); track tag.title) {
       <div class="tag appFont2" (click)="selectTag(tag, false)" style="position:relative;">
         @if (tag.iconId) {
-          <img style="width:30px; position:absolute; left:5px;" class="tagImg"
-               [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+          <img style="position:absolute; left:5px;" class="tagImg bigger" [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
         }
         <div style="position:absolute; left:40px; width:235px;">
           <div

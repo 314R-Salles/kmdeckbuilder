@@ -109,16 +109,6 @@ export class SearchDeck implements OnInit {
     ).subscribe(_ => this.search())
   }
 
-  toggleActionPointsCompare() {
-    this.actionPointsCompareSup = !this.actionPointsCompareSup;
-    this.search();
-  }
-
-  toggleDustCompare() {
-    this.dustCompareSup = !this.dustCompareSup;
-    this.search();
-  }
-
   resetFilters() {
     this.selectedGods.set([])
     this.dustCompareSup = true;
@@ -148,7 +138,7 @@ export class SearchDeck implements OnInit {
       content: this.searchForm.get('content').value,
       favoritesOnly: this.favoritesOnly,
       language: "FR",
-      searchBy: this.sortFilter, // check enum java
+      searchBy: this.sortFilter || "RECENT", // Bug initialisation, parfois la requete part avec null
       page: this.currentPage,
       pageSize: this.pageSize,
     };
@@ -282,14 +272,14 @@ export class SearchDeck implements OnInit {
     this.resetPageAndSearch()
   }
 
-toggleSortFilter() {
-  if (this.sortFilter == "RECENT")
-    this.sortFilter = "FAVORITE";
-   else
-    this.sortFilter = "RECENT";
+  toggleSortFilter() {
+    if (this.sortFilter == "RECENT")
+      this.sortFilter = "FAVORITE";
+    else
+      this.sortFilter = "RECENT";
 
-  this.resetPageAndSearch();
- }
+    this.resetPageAndSearch();
+  }
 
   // update à la main  du liked/count pour pas faire un refresh complet de la recherche
   toggleFavorite(deck) {

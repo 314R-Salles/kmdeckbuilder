@@ -1,7 +1,6 @@
 <div class="dropdown" (click)="dropdownClick()">
   <input class="dropbtn appFont2"
          [(ngModel)]="godSearch"
-         style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 2px;"
          type="text" placeholder="Dieux">
   <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedGods().length ? 'block' : 'none'}">
     @for (god of displayedGods(); track god.id; ) {

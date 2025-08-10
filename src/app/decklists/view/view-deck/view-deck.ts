@@ -1,4 +1,4 @@
-import {Component, computed, inject, input, signal} from '@angular/core';
+import {Component, computed, inject, input, PLATFORM_ID, signal} from '@angular/core';
 import {DeckDeletedPopin} from '../../../popins/deck-deleted-popin/deck-deleted-popin';
 import {DeckDeletionPopin} from '../../../popins/deck-deletion-popin/deck-deletion-popin';
 import {Section} from '../../../base/section/section';
@@ -6,13 +6,13 @@ import {Router, RouterLink} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {AuthenticatedApiService} from '../../../api/authenticated-api.service';
 import {VersionDropdown} from '../version-dropdown/version-dropdown';
-import {NgStyle, NgTemplateOutlet} from '@angular/common';
+import {isPlatformBrowser, NgStyle, NgTemplateOutlet} from '@angular/common';
 import {Synthesis} from '../../common/synthesis/synthesis';
 import {ViewList} from '../view-list/view-list';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatIcon} from '@angular/material/icon';
 import {ApiService} from '../../../api/api.service';
-import {DomSanitizer} from '@angular/platform-browser';
+import {DomSanitizer, Meta, Title} from '@angular/platform-browser';
 import {StoreService} from '../../../store.service';
 import {
   CardRarity,
@@ -69,22 +69,37 @@ export class ViewDeck {
 
   user = toSignal(this.storeService.getUser())
 
-  // readOnlyData = toSignal(
-  //   toObservable<number>(this.version).pipe(
-  //     filter(id => !!id),
-  //     switchMap((id) => {
-  //       return this.apiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})
-  //     }),
-  //   ))
-
+  platformId = inject(PLATFORM_ID);
+  metaService = inject(Meta)
+  titleService = inject(Title)
 
   data = signal<any>(null);
 
   constructor() {
-    toObservable(this.version).pipe(
-      switchMap((id) => this.apiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})),
-      takeUntilDestroyed(),
-    ).subscribe(response => this.data.set(response));
+    if (isPlatformBrowser(this.platformId)) {
+      toObservable(this.version).pipe(
+        switchMap((id) => this.apiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})),
+        takeUntilDestroyed(),
+      ).subscribe(response => this.data.set(response));
+    } else {
+      this.apiService.getDeckForCrawler({id: this.id(), version: this.version()}).subscribe(deckView => {
+        // this.titleService.setTitle(deckView.name)
+        this.metaService.removeTag("name='description'");
+        this.metaService.addTags([
+          {
+            name: 'description',
+            content: deckView.name,
+          },
+          {
+            property: 'og:image',
+            content: `/assets/${this.id()}-${this.version()}-${this.version()}.png`
+          }, {
+            property: 'twitter:image',
+            content: `/assets/${this.id()}-${this.version()}-${this.version()}.png`
+          },
+        ]);
+      })
+    }
   }
 
 

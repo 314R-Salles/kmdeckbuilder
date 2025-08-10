@@ -118,14 +118,14 @@ export class UserProfile {
   updateUser() {
     this.takenUsername = false
     this.authenticatedApiService.updateUser({
-      username: this.form()!.get('username')?.value,
-      iconId: this.form()!.get('iconId')?.value || 0,
+      username: this.form().get('username')?.value,
+      iconId: this.form().get('iconId')?.value || 0,
     }).subscribe({
       next: user => {
         this.storeService.setUser(user)
         this.router.navigate(['/user', user.username])
       },
-      error: err => this.takenUsername = true
+      error: _ => this.takenUsername = true
     })
 
   }

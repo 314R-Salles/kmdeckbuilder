@@ -1,45 +1,4 @@
-.dropdown:focus {
-  z-index: 5;
-}
 
-.dropbtn {
-  display: flex;
-  align-items: center;
-  background: #313282;
-  color: white;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-}
-
-.dropdown {
-  width: 300px;
-  height: 50px;
-  position: relative;
-  display: inline-block;
-
-  border: solid 1px gold; //#ffffff7a;
-  border-radius: 2px;
-  box-sizing: border-box;
-}
-
-
-.dropdown:hover {
-  cursor: pointer;
-  -webkit-box-shadow: inset 1px 0px 20px 0px white;
-}
-
-.dropdown-content {
-  width: 100%!important;
-  display: none;
-  position: absolute;
-  background : #313282;
-  // background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgb(30, 54, 158, 90%) 65%, rgb(60, 39, 185, 90%) 95%);
-  border: solid 1px gold;
-  margin-top:5px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
 
 .card:hover {
   background: rgb(165, 190, 255, 0.5) !important;
@@ -48,14 +7,11 @@
 
 .card {
   border-bottom: rgba(255, 255, 255, 0.62) solid 1px;
-  // border-radius: 5px;
   box-sizing: border-box;
 }
 
 .card {
   height: 40px;
-  // width: 300px; > with 300 it overlap with the border, not necessary to specify because it extends to the parent
-  // box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.62);
   display: flex;
   align-items: center;
 
@@ -72,62 +28,3 @@
   margin-left: 1px;
   border-radius: 3px;
 }
-
-.INFINITE {
-  background: linear-gradient(180deg, rgba(140, 154, 228, 1) 0%, rgba(162, 227, 236, 1) 100%);
-}
-
-.KROSMIQUE {
-  background: linear-gradient(180deg, rgba(132, 25, 184, 1) 10%, rgba(100, 60, 181, 1) 35%, rgba(83, 64, 180, 1) 65%, rgba(79, 108, 207, 1) 91%);
-}
-
-.NEUTRE {
-  background: #b7a17a;
-}
-
-.IOP {
-  background: #A3210E;
-}
-
-.ECAFLIP {
-  background: #6C1084;
-}
-
-.CRA {
-  background: #424617;
-}
-
-.ENIRIPSA {
-  background: #B54C3C;
-}
-
-.SACRIEUR {
-  background: #302821;
-}
-
-.SADIDA {
-  background: #6B7200;
-}
-
-.SRAM {
-  background: #39405A;
-}
-
-.XELOR {
-  background: #263578;
-}
-
-.ENUTROF {
-  background: #9B7400;
-}
-
-.FECA {
-  background: #523C39FF;
-}
-
-
-.appFont2 {
-  color: white !important;
-  font-family: 'geo2', 'arial', sans-serif !important;
-}
-

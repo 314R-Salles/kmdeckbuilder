@@ -35,7 +35,6 @@ export class OwnerDropdown {
   }
 
   selectUser(user, negative) {
-    this.displayDropdown = false // passer false ici, permet de garder le dropdown ouvert puisque dropdownClick se déclenche dans la foulée
     if (!negative)
       this.onSelectUser.emit(user);
     else

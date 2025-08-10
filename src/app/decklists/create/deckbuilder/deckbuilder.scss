@@ -2,14 +2,6 @@
   filter: sepia(100%) hue-rotate(115deg) brightness(0.85);
 }
 
-
-.appFont2 {
-  color: white !important;
-  font-family: 'geo2', 'arial', sans-serif !important;
-}
-
-
-
 // faut que ça reste court, sinon risque en spammant de bloquer l'anim sur une carte (mais à ce stade là est ce que l'user peut pas aller se faire foutre?)
 .shaking {
   animation: shake 0.25s;
@@ -73,14 +65,6 @@
 }
 
 
-#regForm {
-  //background-color: #ffa6a6;
-  //margin: 100px auto;
-  //padding: 40px;
-  //width: 70%;
-  //min-width: 300px;
-}
-
 
 .imgContainer {
   padding: 2px;
@@ -99,7 +83,6 @@
 }
 
 .isSelected {
-  //background-color: green;
   -webkit-box-shadow: inset 1px 0px 20px 0px #4fcce1 !important;
 }
 
@@ -162,7 +145,6 @@ input.invalid {
 }
 
 .formAndCards {
-  // width: 100%;
 }
 
 @media (max-width: 1399px) {

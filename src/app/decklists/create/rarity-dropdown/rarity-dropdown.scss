@@ -1,0 +1,29 @@
+.bg-color-common {
+  background: #B8A27B !important;
+}
+
+.bg-color-uncommon {
+  background: #88B6EA !important;
+}
+
+.bg-color-rare {
+  background: #FFAE00 !important;
+}
+
+.bg-color-krosmique {
+  background: #D46EEA !important;
+}
+
+.bg-color-infinite {
+  background: #FFFFEE !important;
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border: solid #b5b3ec 1px;
+  box-sizing: border-box;
+}

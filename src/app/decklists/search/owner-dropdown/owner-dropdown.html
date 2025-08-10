@@ -1,22 +1,21 @@
 <div class="dropdown" (click)="dropdownClick()">
-  <input class="dropbtn appFont2"
-         [(ngModel)]="userSearch"
-         style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 5px;"
-         type="text" placeholder="Auteurs">
-  <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedUsers().length ? 'block' : 'none'}">
-    @for (user of displayedUsers(); track user.username) {
-      <div class="user appFont2" (click)="selectUser(user, false)" style="position:relative;">
+  <input class="dropbtn appFont2" [(ngModel)]="userSearch" type="text" placeholder="Auteurs">
+</div>
+<div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedUsers().length ? 'block' : 'none'}">
+  @for (user of displayedUsers(); track user.username) {
+    <div class="user appFont2" (click)="selectUser(user, false)" style="position:relative;">
         <span class="entry-bubble">
           {{ user.count }}
         </span>
-        <div style="position:absolute; left:55px; width:235px;">
-          <div
-            style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;"> {{ user.username }}
-          </div>
+      <div style="position:absolute; left:55px; width:235px;">
+        <div
+          style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;"> {{ user.username }}
         </div>
-        <div style="position:absolute; right:5px; padding:5px;background-color:red;" (click)="selectUser(user, true);$event.stopPropagation();$event.preventDefault()">-</div>
       </div>
-    }
-  </div>
+      <div style="position:absolute; right:5px; padding:5px;background-color:red;"
+           (click)="selectUser(user, true);$event.stopPropagation();$event.preventDefault()">-
+      </div>
+    </div>
+  }
 </div>
 

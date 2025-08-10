@@ -22,7 +22,6 @@ export class TagDropdown {
   onNegativeSelectTag = output<{ title: string, count: number, iconId: string }>();
 
   tagSearch = signal<string>('');
-  t = 0
 
   displayedTags = computed(() => {
     let r = this.allTags().filter(result => !this.selectedTags().map(c => c.title).includes(result.title));

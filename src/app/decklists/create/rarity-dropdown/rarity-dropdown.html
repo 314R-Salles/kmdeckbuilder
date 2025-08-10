@@ -1,0 +1,38 @@
+<div class="dropdown rarity">
+  <div class="dropbtn rarity appFont2" (click)="dropdownClick()">
+    @if (selectedRarity().key != '-1') {
+      <div [ngClass]="selectedRarity().bgColor"
+           style="width:50px; height:50px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></div>
+    } @else {
+      <span class="bg-color-infinite"
+            style="width:50px; height:50px; clip-path: polygon(50% 0, 75% 25%, 50% 50%, 25% 25%); position:absolute; top:5px; left:5px;"></span>
+      <span class="bg-color-krosmique"
+            style="width:50px; height:50px; clip-path: polygon(50% 50%, 75% 75%, 50% 100%, 25% 75%); position:absolute; top:5px; left:5px;"></span>
+      <span class="bg-color-rare"
+            style="width:50px; height:50px; clip-path: polygon(25% 25%, 50% 50%, 25% 75%, 0 50%); position:absolute; top:5px; left:5px;"></span>
+      <span class="bg-color-uncommon"
+            style="width:50px; height:50px; clip-path: polygon(75% 25%, 100% 50%, 75% 75%, 50% 50%); position:absolute; top:5px; left:5px;"></span>
+    }
+
+  </div>
+
+  <div class="dropdown-content rarity" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
+    @for (rarity of rarities(); track rarity.key; ) {
+      <span class="tile appFont2" [ngClass]="rarity.color" (click)="selectRarity(rarity)">
+             @if (rarity.key != '-1') {
+               <span [ngClass]="rarity.bgColor"
+                     style="width:50px; height:50px;clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+             } @else {
+               <span class="bg-color-infinite"
+                     style="width:50px; height:50px; clip-path: polygon(50% 0, 75% 25%, 50% 50%, 25% 25%); position:absolute; top:5px; left:5px;"></span>
+               <span class="bg-color-krosmique"
+                     style="width:50px; height:50px; clip-path: polygon(50% 50%, 75% 75%, 50% 100%, 25% 75%); position:absolute; top:5px; left:5px;"></span>
+               <span class="bg-color-rare"
+                     style="width:50px; height:50px; clip-path: polygon(25% 25%, 50% 50%, 25% 75%, 0 50%); position:absolute; top:5px; left:5px;"></span>
+               <span class="bg-color-uncommon"
+                     style="width:50px; height:50px; clip-path: polygon(75% 25%, 100% 50%, 75% 75%, 50% 50%); position:absolute; top:5px; left:5px;"></span>
+             }
+      </span>
+    }
+  </div>
+</div>

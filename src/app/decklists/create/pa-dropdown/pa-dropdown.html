@@ -1,0 +1,15 @@
+<div class="dropdown PA">
+  <div class="dropbtn PA appFont2" (click)="dropdownClick()">
+    <div class="cost" [ngClass]="{'selected-type' : selectedCost(), 'grey': selectedCost() == null }">
+      <img [src]="selectedCost() ? '/assets/public/pa/'+ selectedCost().label+'.png' : '/assets/public/picto-PA.png'">
+    </div>
+  </div>
+  <div class="dropdown-content PA" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
+    @for (cost of costs(); track cost) {
+      <div class="cost" [ngClass]="{'selected-type' : selectedCost() == cost}"
+           (click)="selectCost(cost)">
+        <img [src]="'/assets/public/pa/'+cost.label+'.png'"
+             [ngClass]="{'grey': selectedCost() != cost}"></div>
+    }
+  </div>
+</div>
