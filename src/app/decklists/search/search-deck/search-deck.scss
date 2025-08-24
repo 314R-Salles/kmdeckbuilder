@@ -6,7 +6,6 @@
   display: flex;
 }
 
-
 .listDeck {
   display: flex;
   flex-direction: column;
@@ -83,10 +82,12 @@
   align-content: center;
   align-items: center;
   padding: 5px;
-  margin-left: 5px
+  margin-right: 5px;
+  box-sizing: border-box;//FIXME
 }
 
 .tag:hover {
+
   border: rgb(255, 255, 255) solid 1px;
 }
 
@@ -136,4 +137,17 @@
 
 .godMiniaFiltered:hover {
   filter: grayscale(100%);
+}
+
+
+.customAfterSectionTitle {
+  padding: 5px;
+  border: 2px solid #FFD700;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #FFD700;
+}
+
+.customAfterSectionTitle:hover {
+  background: #262241;
 }

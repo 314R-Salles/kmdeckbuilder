@@ -2,16 +2,17 @@
   <input class="dropbtn appFont2"
          [(ngModel)]="godSearch"
          type="text" placeholder="Dieux">
-  <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedGods().length ? 'block' : 'none'}">
-    @for (god of displayedGods(); track god.id; ) {
-      <div class="user appFont2" (click)="selectGod(god)" style="position:relative;">
-        <img [src]="'/assets/public/gods/GOD_'+god.name+'.png'" class="entry-bubble prevent-select">
-        <div style="position:absolute; left:50px; width:235px;">
-          <div
-            style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;"> {{ god.name }}
-          </div>
+</div>
+
+<div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedGods().length ? 'block' : 'none'}">
+  @for (god of displayedGods(); track god.id; ) {
+    <div class="user appFont2" (click)="selectGod(god)" style="position:relative;">
+      <img [src]="'/assets/public/gods/GOD_'+god.name+'.png'" class="entry-bubble prevent-select">
+      <div style="position:absolute; left:50px; width:235px;">
+        <div
+          style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;"> {{ god.name }}
         </div>
       </div>
-    }
-  </div>
+    </div>
+  }
 </div>

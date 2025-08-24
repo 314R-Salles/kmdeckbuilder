@@ -240,8 +240,6 @@ export class Deckbuilder implements OnInit, AfterViewInit {
 
     this.authenticatedApiService.saveDeck(form).subscribe(response => {
       const dialogRef = this.dialog.open(DeckCreatedPopin, {
-        // width: '400px',
-        // height: '250px',
         panelClass: 'endModalCss',
         data: {deckId: response.deckId, isUpdate: this.isUpdate}
       });

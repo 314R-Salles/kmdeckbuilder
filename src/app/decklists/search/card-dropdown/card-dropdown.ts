@@ -69,7 +69,7 @@ export class CardDropdown {
 
     if (this.displayedCards().length == 1) {
           this.cardSearch.set(null);
-          this.displayDropdown = true
+          this.displayDropdown = false
         }
   }
 

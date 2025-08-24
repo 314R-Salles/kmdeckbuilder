@@ -1,11 +1,13 @@
 import {Component, HostListener, input, output} from '@angular/core';
 import {NgClass, NgStyle} from "@angular/common";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-pa-dropdown',
   imports: [
     NgClass,
-    NgStyle
+    NgStyle,
+    FormsModule
   ],
   templateUrl: './pa-dropdown.html',
   styleUrl: './pa-dropdown.scss'

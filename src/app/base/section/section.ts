@@ -13,10 +13,7 @@ import {AuthService} from "../../auth.service";
   styleUrl: './section.scss'
 })
 export class Section implements OnInit {
-  title = input<string>();
-  titleSuffix = input<string>();
   forceSize = input<boolean>(false);
-  backtrackPath = input<string>();
   requiresLogin = input<boolean>(false);
 
   isLoggedIn = signal<boolean>(false)
@@ -31,6 +28,5 @@ export class Section implements OnInit {
   login() {
     this.authService.login();
   }
-
 
 }

@@ -111,7 +111,6 @@ export class FilterForm  implements OnInit   {
   }
 
   get apValue() {
-    console.log(this.form().get('apValue').value)
     return this.form().get('apValue').value;
   }
 
@@ -142,42 +141,42 @@ export class FilterForm  implements OnInit   {
   rarities = {
     fr: [
       {key: '-1', label: 'Toutes les raretés', color: '', bgColor: ''},
-      {key: '0', label: 'Commune', color: 'color-common', bgColor: 'bg-color-common'},
-      {key: '1', label: 'Peu Commune', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
-      {key: '2', label: 'Rare', color: 'color-rare', bgColor: 'bg-color-rare'},
-      {key: '3', label: 'Krosmique', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
-      {key: '4', label: 'Infinite', color: 'color-infinite', bgColor: 'bg-color-infinite'},
+      {key: '0', label: 'Commune', color: 'color-common', bgColor: 'bg-common'},
+      {key: '1', label: 'Peu Commune', color: 'color-uncommon', bgColor: 'bg-uncommon'},
+      {key: '2', label: 'Rare', color: 'color-rare', bgColor: 'bg-rare'},
+      {key: '3', label: 'Krosmique', color: 'color-krosmique', bgColor: 'bg-krosmique'},
+      {key: '4', label: 'Infinite', color: 'color-infinite', bgColor: 'bg-infinite'},
     ],
     en: {
-      '0': {label: 'Common', color: 'color-common', bgColor: 'bg-color-common'},
-      '2': {label: 'Rare', color: 'color-rare', bgColor: 'bg-color-rare'},
-      '4': {label: 'Infinite', color: 'color-infinite', bgColor: 'bg-color-infinite'},
-      '3': {label: 'Krosmic', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
-      '1': {label: 'Uncommon', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
+      '0': {label: 'Common', color: 'color-common', bgColor: 'bg-common'},
+      '2': {label: 'Rare', color: 'color-rare', bgColor: 'bg-rare'},
+      '4': {label: 'Infinite', color: 'color-infinite', bgColor: 'bg-infinite'},
+      '3': {label: 'Krosmic', color: 'color-krosmique', bgColor: 'bg-krosmique'},
+      '1': {label: 'Uncommon', color: 'color-uncommon', bgColor: 'bg-uncommon'},
       '-1': {label: 'All rarities', color: '', bgColor: ''},
     },
     br: {
-      '0': {label: 'Comum', color: 'color-common', bgColor: 'bg-color-common'},
-      '2': {label: 'Rara', color: 'color-rare', bgColor: 'bg-color-rare'},
-      '4': {label: 'Infinita', color: 'color-infinite', bgColor: 'bg-color-infinite'},
-      '3': {label: 'Krósmica', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
-      '1': {label: 'Incomum', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
+      '0': {label: 'Comum', color: 'color-common', bgColor: 'bg-common'},
+      '2': {label: 'Rara', color: 'color-rare', bgColor: 'bg-rare'},
+      '4': {label: 'Infinita', color: 'color-infinite', bgColor: 'bg-infinite'},
+      '3': {label: 'Krósmica', color: 'color-krosmique', bgColor: 'bg-krosmique'},
+      '1': {label: 'Incomum', color: 'color-uncommon', bgColor: 'bg-uncommon'},
       '-1': {label: 'Todas as raridades', color: '', bgColor: ''},
     },
     es: {
-      '0': {label: 'Común', color: 'color-common', bgColor: 'bg-color-common'},
-      '2': {label: 'Rara', color: 'color-rare', bgColor: 'bg-color-rare'},
-      '4': {label: 'Infinita', color: 'color-infinite', bgColor: 'bg-color-infinite'},
-      '3': {label: 'Krósmica', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
-      '1': {label: 'Poco común', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
+      '0': {label: 'Común', color: 'color-common', bgColor: 'bg-common'},
+      '2': {label: 'Rara', color: 'color-rare', bgColor: 'bg-rare'},
+      '4': {label: 'Infinita', color: 'color-infinite', bgColor: 'bg-infinite'},
+      '3': {label: 'Krósmica', color: 'color-krosmique', bgColor: 'bg-krosmique'},
+      '1': {label: 'Poco común', color: 'color-uncommon', bgColor: 'bg-uncommon'},
       '-1': {label: 'Todos los tipos de carta', color: '', bgColor: ''}
     },
     ru: {
-      '0': {label: 'Обычная', color: 'color-common', bgColor: 'bg-color-common'},
-      '2': {label: 'Редкая', color: 'color-rare', bgColor: 'bg-color-rare'},
-      '4': {label: 'Запредельная', color: 'color-infinite', bgColor: 'bg-color-infinite'},
-      '3': {label: 'Кросмическая', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
-      '1': {label: 'Необычная', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
+      '0': {label: 'Обычная', color: 'color-common', bgColor: 'bg-common'},
+      '2': {label: 'Редкая', color: 'color-rare', bgColor: 'bg-rare'},
+      '4': {label: 'Запредельная', color: 'color-infinite', bgColor: 'bg-infinite'},
+      '3': {label: 'Кросмическая', color: 'color-krosmique', bgColor: 'bg-krosmique'},
+      '1': {label: 'Необычная', color: 'color-uncommon', bgColor: 'bg-uncommon'},
       '-1': {label: 'Любая редкость', color: '', bgColor: ''},
     }
 

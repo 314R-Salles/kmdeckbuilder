@@ -1,5 +1,9 @@
-<app-section
-  [title]="frontPage() ?  notEnoughLiveStream ? 'En ce moment ou presque sur Twitch' : 'En ce moment sur Twitch' : 'Krosmaga sur Twitch et Youtube'">
+<app-section>
+
+  <ng-container section-header>
+    <div class="sectionTitle"> {{ frontPage() ?  notEnoughLiveStream ? 'En ce moment ou presque sur Twitch' : 'En ce moment sur Twitch' : 'Krosmaga sur Twitch et Youtube' }}</div>
+  </ng-container>
+
   <div>
     <div id="TwitchLive" style=" display: flex;  flex-direction: column;">
       <div class="streams-panel">

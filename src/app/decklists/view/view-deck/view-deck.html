@@ -1,72 +1,80 @@
 @if (data()) {
-  <app-section [backtrackPath]="'/decks/browse'" [title]=" title()" [titleSuffix]="'par ' + owner()">
-    <div before-section-header style="position:relative;">
-      <div [ngStyle]="{cursor: canClone() && !canEdit() ? 'pointer': 'default'}"
-           style="display: flex; justify-content: center; flex-direction:row; position: absolute; top:-70px; left: -50px; border:1px solid white;"
-           (click)="toggleFavorite(data());$event.stopPropagation();$event.preventDefault()"
-            class="likeButton">
+  <app-section>
+    <ng-container section-header>
+      <div class="sectionTitle">{{ title() }}</div>
+      <div class="sectionSubtitle">{{ 'par ' + owner() }}</div>
+    </ng-container>
+
+    <ng-container before-section-header>
+      <div class="beforeSectionTitle customBeforeSectionTitle" [ngStyle]="{cursor: canClone() && !canEdit() ? 'pointer': 'default'}"
+           (click)="toggleFavorite(data());$event.stopPropagation();$event.preventDefault()">
         <mat-icon class="iconFavorite" [ngStyle]="{color: data().liked ? 'red': 'white'}">favorite</mat-icon>
         {{ data().favoriteCount }}
       </div>
-    </div>
+    </ng-container>
 
-    <div after-section-header style="position:relative;">
-      <mat-icon class="backArrow" [routerLink]="'/decks/browse'" style="position: absolute; top:-80px; right: 20px">keyboard_backspace</mat-icon>
-    </div>
-
-    <div style="display: flex; height: 30px; margin-bottom: 5px">
-
-      <div style="border: solid 2px #594867; display: flex; justify-content: space-around; padding: 0 10px;">
-        <span style="align-content:center; padding-right:5px;"> Version</span>
-        <app-version-dropdown [deckId]="id()" [currentVersion]="version()"
-                              [allVersions]="versions()"/>
+    <ng-container after-section-header>
+      <div class="afterSectionTitle customAfterSectionTitle" [routerLink]="'/decks/browse'">
+        <mat-icon>keyboard_backspace</mat-icon>
       </div>
+    </ng-container>
 
-      @if (canClone()) {
-      <div
-        style="border: solid 2px #594867; display: flex; cursor: pointer; justify-content: space-evenly"
-        [routerLink]="['/decks/create']" [queryParams]="{from: id(), v:version()}"  class="buttonUpdate">
-        <span style="align-content:center;"> Dupliquer </span>
-        <mat-icon style="font-size: 16px;" [matTooltip]="'Créer un NOUVEAU deck à partir de cette version'">
-          info
-        </mat-icon>
-      </div>
-      }
+    <div>
+      <div style="display: flex; height: 30px; margin-bottom: 5px">
 
-      @if (canEdit()) {
-        <div
-          style="border: solid 2px #594867; display: flex; cursor: pointer; justify-content: space-evenly"
-          [routerLink]="['/decks/edit', id(), version()]"  class="buttonUpdate">
-          <span style="align-content:center;"> Editer </span>
-          <mat-icon style="font-size: 16px;" [matTooltip]="'Modifier le deck existant à partir de cette version'">info
-          </mat-icon>
+        <div style="border: solid 2px #594867; display: flex; justify-content: space-around; padding: 0 10px;">
+          <span style="align-content:center; padding-right:5px;"> Version</span>
+          <app-version-dropdown [deckId]="id()" [currentVersion]="version()"
+                                [allVersions]="versions()"/>
         </div>
-      }
 
-      @if (canEdit()) {
-      <div
-        style="border: solid 2px red; display: flex; cursor: pointer; justify-content: space-evenly; color:red;"
-        (click)="deleteDeckConfirmation(data());$event.stopPropagation();$event.preventDefault()"  class="buttonUpdate">
-        <span style="align-content:center;"> Supprimer </span>
-        <mat-icon style="font-size: 16px;" [matTooltip]="'Supprime définitivement ce deck et toutes ses versions.'">warning
-        </mat-icon>
+        @if (canClone()) {
+          <div
+            style="border: solid 2px #594867; display: flex; cursor: pointer; justify-content: space-evenly"
+            [routerLink]="['/decks/create']" [queryParams]="{from: id(), v:version()}" class="buttonUpdate">
+            <span style="align-content:center;"> Dupliquer </span>
+            <mat-icon style="font-size: 16px;" [matTooltip]="'Créer un NOUVEAU deck à partir de cette version'">
+              info
+            </mat-icon>
+          </div>
+        }
+
+        @if (canEdit()) {
+          <div
+            style="border: solid 2px #594867; display: flex; cursor: pointer; justify-content: space-evenly"
+            [routerLink]="['/decks/edit', id(), version()]" class="buttonUpdate">
+            <span style="align-content:center;"> Editer </span>
+            <mat-icon style="font-size: 16px;" [matTooltip]="'Modifier le deck existant à partir de cette version'">info
+            </mat-icon>
+          </div>
+        }
+
+        @if (canEdit()) {
+          <div
+            style="border: solid 2px red; display: flex; cursor: pointer; justify-content: space-evenly; color:red;"
+            (click)="deleteDeckConfirmation(data());$event.stopPropagation();$event.preventDefault()"
+            class="buttonUpdate">
+            <span style="align-content:center;"> Supprimer </span>
+            <mat-icon style="font-size: 16px;" [matTooltip]="'Supprime définitivement ce deck et toutes ses versions.'">
+              warning
+            </mat-icon>
+          </div>
+        }
       </div>
-      }
-    </div>
-    <div class="container shortScreenContainer">
-      <div *ngTemplateOutlet="STATS"></div>
-      <div *ngTemplateOutlet="CARDS"></div>
-      <div *ngTemplateOutlet="DESC"></div>
-    </div>
-
-    <div class="container largeScreenContainer">
-      <div class="columnContainer">
+      <div class="container shortScreenContainer">
         <div *ngTemplateOutlet="STATS"></div>
         <div *ngTemplateOutlet="CARDS"></div>
+        <div *ngTemplateOutlet="DESC"></div>
       </div>
-      <div *ngTemplateOutlet="DESC"></div>
-    </div>
 
+      <div class="container largeScreenContainer">
+        <div class="columnContainer">
+          <div *ngTemplateOutlet="STATS"></div>
+          <div *ngTemplateOutlet="CARDS"></div>
+        </div>
+        <div *ngTemplateOutlet="DESC"></div>
+      </div>
+    </div>
   </app-section>
 
 }
@@ -110,22 +118,24 @@
   <div
     style="box-sizing: border-box; display: flex; width: 100%; padding: 5px">
     <div style="width: 100%; border: 2px solid white; padding:10px 5px 5px 5px; position:relative;">
-      <span style="position:absolute; top:-10px; right:-10px; background:#262241; border: 2px solid white; padding:2px;">Description</span>
+      <span
+        style="position:absolute; top:-10px; right:-10px; background:#262241; border: 2px solid white; padding:2px;">Description</span>
       <div [innerHTML]="description()"></div>
 
-    @if (displayTwitchIframe()) {
-      <div style=" aspect-ratio: 16 / 9;">
-        <iframe title='twitchPlayer' [src]="twitchIframeUrl()" height="100%" width="100%" allowfullscreen="true"></iframe>
-      </div>
-    }
-
-    @if (displayYoutubeIframe()) {
-      <div style="width: 100%; background: black; display: flex; justify-content: center">
-        <div>
-          <youtube-player [videoId]="youtubeVideoId()"/>
+      @if (displayTwitchIframe()) {
+        <div style=" aspect-ratio: 16 / 9;">
+          <iframe title='twitchPlayer' [src]="twitchIframeUrl()" height="100%" width="100%"
+                  allowfullscreen="true"></iframe>
         </div>
-      </div>
-    }
+      }
+
+      @if (displayYoutubeIframe()) {
+        <div style="width: 100%; background: black; display: flex; justify-content: center">
+          <div>
+            <youtube-player [videoId]="youtubeVideoId()"/>
+          </div>
+        </div>
+      }
     </div>
   </div>
 </ng-template>

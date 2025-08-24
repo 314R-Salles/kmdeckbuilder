@@ -1,5 +1,8 @@
-<app-section [title]="'Profil'" [requiresLogin]="!readOnly()">
+<app-section [requiresLogin]="!readOnly()">
 
+  <ng-container section-header>
+    <div class="sectionTitle">Profil</div>
+  </ng-container>
   @if (readOnly() && routeUser()) {
     <div style="display:flex; flex-direction: column">
       <div>{{ routeUser().username }}</div>

@@ -1,5 +1,5 @@
 import {Component, HostListener, input, output} from '@angular/core';
-import {JsonPipe, NgClass, NgStyle} from "@angular/common";
+import {NgClass, NgStyle} from "@angular/common";
 
 @Component({
   selector: 'app-rarity-dropdown',

@@ -25,7 +25,37 @@ body {
 }
 
 
+//////////////
+// SECTION
+//////////////
+
+.sectionTitle {
+  font-weight: bolder;
+  font-size: 30px;
+  padding: 15px;
+}
+
+.sectionSubtitle {
+  font-weight: bolder;
+  font-size: 22px;
+}
+
+.beforeSectionTitle {
+  border-radius: 4px;
+}
+
+.afterSectionTitle {
+  border-radius: 4px;
+  margin-right: 20px;
+}
+
+
+//////////////
+// COULEURS
+//////////////
+
 $transparency: 0.5;
+
 $iop: #A3210E;
 $ecaflip: #6C1084;
 $cra: #424617;
@@ -38,9 +68,58 @@ $enutrof: #9B7400;
 $feca: #523C39FF;
 $neutre: #b7a17a;
 
+$common: #B8A27B;
+$uncommon: #88B6EA;
+$rare:#FFAE00;
+$krosmique:#D46EEA;
+$infinite:#FFFFEE;
+
 .grey {
   filter: grayscale(1);
 }
+
+.bg-common {
+  background: $common !important;
+}
+
+.bg-uncommon {
+  background: $uncommon !important;
+}
+
+.bg-rare {
+  background: $rare !important;
+}
+
+.bg-krosmique {
+  background: $krosmique !important;
+}
+
+.bg-infinite {
+  background: $infinite !important;
+}
+
+.color-common {
+  color: $common !important;
+}
+
+.color-uncommon {
+  color: $uncommon !important;
+}
+
+.color-rare {
+  color: $rare !important;
+}
+
+.color-krosmique {
+  color: $krosmique !important;
+}
+
+.color-infinite {
+  color: $infinite !important;
+}
+
+
+
 
 
 .card {
@@ -227,7 +306,7 @@ $neutre: #b7a17a;
   width: 300px;
   height: 50px;
   position: relative;
-  display: inline-block;
+  //display: inline-block;
 
   border: solid 1px gold;
   border-radius: 2px;
@@ -282,8 +361,6 @@ $neutre: #b7a17a;
 }
 
 
-
-
 //////////////
 // TAGS
 //////////////
@@ -299,7 +376,7 @@ $neutre: #b7a17a;
 }
 
 .appFont2 {
-  color: white !important;
+  color: white;
   font-family: 'geo2', 'arial', sans-serif !important;
 }
 

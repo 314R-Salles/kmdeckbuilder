@@ -1,15 +1,15 @@
 <div class="dropdown" (click)="dropdownClick()">
   <input class="dropbtn appFont2" [(ngModel)]="userSearch" type="text" placeholder="Auteurs">
 </div>
+
 <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedUsers().length ? 'block' : 'none'}">
   @for (user of displayedUsers(); track user.username) {
     <div class="user appFont2" (click)="selectUser(user, false)" style="position:relative;">
-        <span class="entry-bubble">
-          {{ user.count }}
-        </span>
+      <span class="entry-bubble">          {{ user.count }}        </span>
       <div style="position:absolute; left:55px; width:235px;">
         <div
-          style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;"> {{ user.username }}
+          style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;">
+          {{ user.username }}
         </div>
       </div>
       <div style="position:absolute; right:5px; padding:5px;background-color:red;"
@@ -18,4 +18,3 @@
     </div>
   }
 </div>
-

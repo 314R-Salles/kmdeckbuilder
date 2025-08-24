@@ -33,7 +33,6 @@ export class TagDropdown {
   }
 
   selectTag(tag, negative) {
-    this.displayDropdown = false // passer false ici, permet de garder le dropdown ouvert puisque dropdownClick se déclenche dans la foulée
     if (!negative)
       this.onSelectTag.emit(tag);
     else
@@ -41,7 +40,7 @@ export class TagDropdown {
 
     if (this.displayedTags().length == 1) {
       this.tagSearch.set(null);
-      this.displayDropdown = true
+      this.displayDropdown = false
     }
   }
 

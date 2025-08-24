@@ -85,7 +85,6 @@ export class SearchDeck implements OnInit {
   }
 
   ngOnInit() {
-
     this.apiService.getDeckOwners().subscribe(owners => {
       this.allUsers.set(owners);
     })
@@ -102,6 +101,7 @@ export class SearchDeck implements OnInit {
         this.search();
       })
 
+    this.reloadFilters();
 
     this.searchForm.valueChanges.pipe(
       debounceTime(50),
@@ -119,11 +119,14 @@ export class SearchDeck implements OnInit {
     this.selectedNegativeTags.set([]);
     this.selectedUsers.set([]);
     this.selectedNegativeUsers.set([]);
+    this.sortFilter = "RECENT"
     this.searchForm.reset()
     this.search()
   }
 
   search() {
+    this.saveFilters();
+
     const request = {
       gods: this.selectedGods().length ? this.selectedGods().map(g => g.id) : null,
       cards: this.selectedCards().length ? this.selectedCards().map(c => c.id) : null,
@@ -138,7 +141,7 @@ export class SearchDeck implements OnInit {
       content: this.searchForm.get('content').value,
       favoritesOnly: this.favoritesOnly,
       language: "FR",
-      searchBy: this.sortFilter || "RECENT", // Bug initialisation, parfois la requete part avec null
+      searchBy: this.sortFilter,
       page: this.currentPage,
       pageSize: this.pageSize,
     };
@@ -330,4 +333,39 @@ export class SearchDeck implements OnInit {
     this.currentPage = 0;
     this.search()
   }
+
+  reloadFilters() {
+    this.setSignalWithStorageValue(this.selectedGods, 'gods')
+    this.setSignalWithStorageValue(this.selectedCards, 'cards')
+    this.setSignalWithStorageValue(this.selectedTags, 'tags')
+    this.setSignalWithStorageValue(this.selectedNegativeTags, 'negativeTags')
+    this.setSignalWithStorageValue(this.selectedUsers, 'users')
+    this.setSignalWithStorageValue(this.selectedNegativeUsers, 'negativeUsers')
+    this.favoritesOnly = JSON.parse(sessionStorage.getItem('favoritesOnly')) || false
+    this.sortFilter = JSON.parse(sessionStorage.getItem('sortFilter')) || "RECENT"
+    this.currentPage = JSON.parse(sessionStorage.getItem('currentPage')) || 0
+    this.pageSize = JSON.parse(sessionStorage.getItem('pageSize')) || 20
+  }
+
+  saveFilters() {
+    sessionStorage.setItem('gods', JSON.stringify(this.selectedGods()))
+    sessionStorage.setItem('cards', JSON.stringify(this.selectedCards()))
+    sessionStorage.setItem('tags', JSON.stringify(this.selectedTags()))
+    sessionStorage.setItem('negativeTags', JSON.stringify(this.selectedNegativeTags()))
+    sessionStorage.setItem('users', JSON.stringify(this.selectedUsers()))
+    sessionStorage.setItem('negativeUsers', JSON.stringify(this.selectedNegativeUsers()))
+    sessionStorage.setItem('sortFilter', JSON.stringify(this.sortFilter))
+    sessionStorage.setItem('currentPage', JSON.stringify(this.currentPage))
+    sessionStorage.setItem('pageSize', JSON.stringify(this.pageSize))
+    sessionStorage.setItem('favoritesOnly', JSON.stringify(this.favoritesOnly))
+  }
+
+
+  setSignalWithStorageValue(signal, stored) {
+    const val = sessionStorage.getItem(stored);
+    if (val && val.length) {
+      signal.set(JSON.parse(val))
+    }
+  }
+
 }

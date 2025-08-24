@@ -1,8 +1,8 @@
 .deckImgGod {
   width: 120px;
   padding-left: 20px;
-  padding-right:20px;
-  padding-top:10px;
+  padding-right: 20px;
+  padding-top: 10px;
 }
 
 .tag {
@@ -19,7 +19,7 @@
 
 .buttonUpdate {
   border: solid 1px gold;
-  padding:0 10px;
+  padding: 0 10px;
   display: flex;
   cursor: pointer;
   justify-content: space-evenly;
@@ -27,22 +27,24 @@
 }
 
 .buttonUpdate span {
-  padding-right:5px}
+  padding-right: 5px
+}
 
 .buttonUpdate mat-icon {
-  display:flex;
-  align-content:center;
-  justify-content:center;
-  align-items:center;
-  }
-.buttonUpdate:hover, .backArrow:hover, .likeButton:hover {
-  -webkit-box-shadow: inset 1px 0px 20px 0px white;
-  cursor:pointer;
- }
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
 
-.viewDeckContainer{
+.buttonUpdate:hover, .likeButton:hover {
+  -webkit-box-shadow: inset 1px 0px 20px 0px white;
+  cursor: pointer;
+}
+
+.viewDeckContainer {
   margin: 0 auto;
-  width :75%;
+  width: 75%;
 }
 
 .columnContainer {
@@ -54,11 +56,11 @@
 @media (max-width: 1700px) {
   .viewDeckContainer {
     margin: 0 auto;
-    width :100%;
+    width: 100%;
   }
 }
 
-.container{
+.container {
   width: 100%;
   display: flex;
 }
@@ -66,6 +68,7 @@
 .shortScreenContainer {
   flex-direction: column;
 }
+
 .largeScreenContainer {
   flex-direction: row;
 }
@@ -94,4 +97,20 @@
   .cardColumn {
     width: 25%;
   }
+}
+
+
+.customAfterSectionTitle:hover {
+  -webkit-box-shadow: inset 1px 0px 20px 0px white;
+  cursor: pointer;
+}
+
+.customBeforeSectionTitle {
+  display: flex;
+  align-items: baseline;
+}
+
+.customBeforeSectionTitle:hover {
+  -webkit-box-shadow: inset 1px 0px 20px 0px white;
+  cursor: pointer;
 }

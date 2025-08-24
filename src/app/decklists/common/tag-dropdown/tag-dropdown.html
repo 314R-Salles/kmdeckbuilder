@@ -2,21 +2,24 @@
   <input class="dropbtn appFont2"
          [(ngModel)]="tagSearch"
          type="text" placeholder="Tags">
-  <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedTags().length ? 'block' : 'none'}">
-    @for (tag of displayedTags(); track tag.title) {
-      <div class="tag appFont2" (click)="selectTag(tag, false)" style="position:relative;">
-        @if (tag.iconId) {
-          <img style="position:absolute; left:5px;" class="tagImg bigger" [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-        }
-        <div style="position:absolute; left:40px; width:235px;">
-          <div
-            style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;"> {{ tag.title }}
-            ({{ tag.count }})
-          </div>
+</div>
+<div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedTags().length ? 'block' : 'none'}">
+  @for (tag of displayedTags(); track tag.title) {
+    <div class="tag appFont2" (click)="selectTag(tag, false)" style="position:relative;">
+      @if (tag.iconId) {
+        <img style="position:absolute; left:5px;" class="tagImg bigger"
+             [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
+      }
+      <div style="position:absolute; left:40px; width:235px;">
+        <div
+          style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;"> {{ tag.title }}
+          ({{ tag.count }})
         </div>
-        <div style="position:absolute; right:5px; padding:5px;background-color:red;" (click)="selectTag(tag, true);$event.stopPropagation();$event.preventDefault()">-</div>
       </div>
-    }
-  </div>
+      <div style="position:absolute; right:5px; padding:5px;background-color:red;"
+           (click)="selectTag(tag, true);$event.stopPropagation();$event.preventDefault()">-
+      </div>
+    </div>
+  }
 </div>
 

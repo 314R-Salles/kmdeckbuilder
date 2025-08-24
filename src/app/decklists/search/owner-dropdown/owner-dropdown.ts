@@ -26,7 +26,6 @@ export class OwnerDropdown {
     return r.filter(user => !this.userSearch() || user.username.toLowerCase().indexOf(this.userSearch().toLowerCase()) != -1);
   })
 
-
   constructor() {
   }
 
@@ -41,9 +40,9 @@ export class OwnerDropdown {
       this.onNegativeSelectUser.emit(user);
 
     if (this.displayedUsers().length == 1) {
-              this.userSearch.set(null);
-              this.displayDropdown = true
-            }
+      this.userSearch.set(null);
+      this.displayDropdown = false
+    }
   }
 
 
