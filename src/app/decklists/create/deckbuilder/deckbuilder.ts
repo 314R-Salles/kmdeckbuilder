@@ -483,6 +483,8 @@ export class Deckbuilder implements OnInit, AfterViewInit {
     if (this.selectedIndex >= this.illustrationsNumber) {
       this.selectedIndex = this.illustrationsNumber - 1;
     }
+    // permet de rafraichir l'input de app-card-dropdown-from-list
+    this.illustrations = [...this.illustrations]
 
   }
 
