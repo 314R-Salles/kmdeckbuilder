@@ -1,0 +1,37 @@
+<div class="dropdown rarity" (click)="dropdownClick()">
+  <div class="dropbtn rarity appFont2">
+    @if (selectedRarity().key != '-1') {
+      <div [ngClass]="selectedRarity().bgColor" class="token"
+           style="clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></div>
+    } @else {
+      <span class="token bg-infinite"
+            style="clip-path: polygon(50% 0, 75% 25%, 50% 50%, 25% 25%); position:absolute"></span>
+      <span class="token bg-krosmique"
+            style="clip-path: polygon(50% 50%, 75% 75%, 50% 100%, 25% 75%); position:absolute"></span>
+      <span class="token bg-rare"
+            style="clip-path: polygon(25% 25%, 50% 50%, 25% 75%, 0 50%); position:absolute"></span>
+      <span class="token bg-uncommon"
+            style="clip-path: polygon(75% 25%, 100% 50%, 75% 75%, 50% 50%); position:absolute"></span>
+    }
+  </div>
+</div>
+
+<div class="dropdown-content rarity" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
+  @for (rarity of rarities(); track rarity.key; ) {
+    <span class="tile appFont2" [ngClass]="rarity.color" (click)="selectRarity(rarity)">
+             @if (rarity.key != '-1') {
+               <span [ngClass]="rarity.bgColor" class="token"
+                     style="clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+             } @else {
+               <span class="token bg-infinite"
+                     style="clip-path: polygon(50% 0, 75% 25%, 50% 50%, 25% 25%); position:absolute"></span>
+               <span class="token bg-krosmique"
+                     style="clip-path: polygon(50% 50%, 75% 75%, 50% 100%, 25% 75%); position:absolute"></span>
+               <span class="token bg-rare"
+                     style="clip-path: polygon(25% 25%, 50% 50%, 25% 75%, 0 50%); position:absolute"></span>
+               <span class="token bg-uncommon"
+                     style="clip-path: polygon(75% 25%, 100% 50%, 75% 75%, 50% 50%); position:absolute"></span>
+             }
+      </span>
+  }
+</div>

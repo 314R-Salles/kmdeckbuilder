@@ -1,7 +1,15 @@
-<app-section [title]="currentTab ===1 ? null : isUpdate ? 'Mise à jour du deck' : 'Création du deck'"
-             [titleSuffix]="currentTab ===0 ? ' --- Choix du dieu' : ' --- Compléments'"
-             [forceSize]="currentTab ===1"
+<app-section [forceSize]="currentTab ===1"
              [requiresLogin]="true">
+
+  @if(currentTab !== 1) {
+    <ng-container section-header>
+      <div class="sectionTitle">{{ isUpdate ? 'Mise à jour du deck' : 'Création du deck' }}
+      </div>
+      <div class="sectionSubtitle">{{ currentTab === 0 ? ' --- Choix du dieu' : ' --- Compléments' }}</div>
+    </ng-container>
+  }
+
+
   <div id="regForm" style="height: 100%; display:flex; flex-direction:column; align-items:center;">
 
     <div style="display:flex;">
@@ -206,7 +214,6 @@
   <div class="formAndCards">
     <app-filter-form [god]="god" [form]="form"></app-filter-form>
     <div style="display: flex; justify-content:center; ">
-      <div style="display:flex;">
         <div class="cards">
           @if (displayedCards() && !displayedCards().length) {
           <div style="display:flex; align-content:center; flex-direction:column; align-items:center; width:100%;">
@@ -222,7 +229,6 @@
             }
           }
         </div>
-      </div>
     </div>
     <app-pagination [pageNumber]="searchResults?.pageNumber +1 " [totalPages]="searchResults?.totalPages"
                     (pageUp)="pageUp()" (pageDown)="pageDown()" (pageSet)="pageSet($event)"></app-pagination>
@@ -256,13 +262,13 @@
         <img [src]="'/assets/public/picto-PA.png'" style="width:15px; height:15px;"> {{ currentApCost }}
       </div>
       <div>
-  <span class="bg-color-krosmique"
+  <span class="bg-krosmique"
         style="width:15px; height:15px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); display:inline-block;"></span>
         <span [ngStyle]="{'color': 7 === syntheseRarete.KROSMIQUE ? 'white': 'orange'}"> {{ syntheseRarete.KROSMIQUE }}
           / 7</span>
       </div>
       <div>
-    <span class="bg-color-infinite"
+    <span class="bg-infinite"
           style="width:15px; height:15px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); display:inline-block;"></span>
         <span [ngStyle]="{'color': 5 === syntheseRarete.INFINITE ? 'white': 'orange'}">{{ syntheseRarete.INFINITE }}
           / 5</span>

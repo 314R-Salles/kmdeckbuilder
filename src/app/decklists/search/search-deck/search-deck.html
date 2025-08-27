@@ -1,9 +1,12 @@
 <form [formGroup]="searchForm" (ngSubmit)="search()">
-  <app-section [title]="'Recherche de Decks'">
-    <div after-section-header style="position:relative;">
-      <span routerLink="/decks/create"
-            style="position:absolute; right:0px; top:-70px; padding:5px; border:2px solid #FFD700; cursor:pointer; border-radius:4px; color:#FFD700;">Créer un deck</span>
-    </div>
+  <app-section>
+    <ng-container section-header>
+      <div class="sectionTitle">Recherche de Decks</div>
+    </ng-container>
+
+    <ng-container after-section-header>
+      <div routerLink="/decks/create" class="afterSectionTitle customAfterSectionTitle">Créer un deck</div>
+    </ng-container>
 
     <div class="filterWrapper" style="flex-direction:column; position: relative">
       <div style="flex-direction:row; display:flex;">
@@ -19,7 +22,7 @@
                  style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
  height: 40px; font-size: 16px;  font-weight: 400;">
               @if (tag.iconId) {
-                <img style="width:30px;" class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
+                <img class="tagImg bigger" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
               }
               <span style="padding: 0 5px"> {{ tag.title }} ({{ tag.count }})</span>
             </div>
@@ -29,7 +32,7 @@
                  style="background: red;   border: solid 1px #ffffff7a;  border-radius: 5px;
  height: 40px; font-size: 16px;  font-weight: 400;">
               @if (tag.iconId) {
-                <img style="width:30px;" class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
+                <img class="tagImg bigger" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
               }
               <span style="padding: 0 5px"> {{ tag.title }} ({{ tag.count }})</span>
             </div>
@@ -62,7 +65,7 @@
             </div>
           }</div>
       </div>
-      <div style="flex-directio:row; display:flex;">
+      <div style="flex-direction:row; display:flex;">
         <app-god-dropdown [selectedGods]="selectedGods()" (onSelectGod)="selectGod($event)"></app-god-dropdown>
         <app-tag-dropdown [withCount]="true" [selectedTags]="selectedTags()" [allTags]="allTags()"
                           (onSelectTag)="selectTag($event, false)"
@@ -97,48 +100,9 @@
             <mat-icon style="color:white;">delete
             </mat-icon>
           </button>
-
         </div>
       </div>
-
-
     </div>
-    <!--
-    For now I really don't think those filters name filter are useful : both tags/cards filter allow for a much better filter.
-    And this way we can get a much cleaner UI. Will see if some of those are asked for.
-        <div class="singleLineFilters">
-
-          <div class="dropdown" style="margin-right: 30px">
-            <input class="dropbtn appFont2"
-                   style="padding-left: 20px; width: 298px; height: 100%; box-sizing: border-box; border-radius: 5px;"
-                   formControlName="content"
-                   type="text" placeholder="Nom ...">
-          </div>
-
-        <div style="height: 40px;  padding-top: 10px; display: flex; margin-right: 30px">
-          <span style="width: 40px; align-self: center">PA</span>
-          <button style="width: 40px;" (click)="toggleActionPointsCompare()">
-            <span *ngIf="actionPointsCompareSup"> ≥ </span>
-            <span *ngIf="!actionPointsCompareSup"> ≤ </span>
-          </button>
-          max 387
-          <input style="width: 50px;" formControlName="actionPointsCost">
-        </div>
-
-        Not a useful filter.
-        <div style="height: 40px;  padding-top: 10px; display: flex; margin-right: 30px">
-          <span style="width: 90px; align-self: center">Poussière</span>
-          <button style="width: 40px;" (click)="toggleDustCompare()">
-            <span *ngIf="dustCompareSup"> ≥ </span>
-            <span *ngIf="!dustCompareSup"> ≤ </span>
-          </button>
-
-          <input style="width: 50px;" formControlName="dustCost">
-        </div>
-
-      </div>
-
-    -->
   </app-section>
   <app-section>
     <div class="listDeck">
@@ -157,7 +121,16 @@
              style="display:flex; flex-direction:row; cursor:pointer; text-decoration:none; color:white;">
 
             <div style="display: flex; flex-direction: column; width: 130px; justify-content:space-around;">
-              <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
+              <div style="position:relative;">
+                <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
+                <div style="position:absolute; width:35px; height:35px; right:16px; bottom:0">
+                  <img [src]="'/assets/public/picto-PA.png'" style="width:35px; height:35px; position:absolute;"
+                       class="type">
+                  <div
+                    style="font-family: 'geo2', 'arial', sans-serif !important; position:absolute; font-size:1.3em; transform: translate(-50%, -50%); left:50%; top:50%; -webkit-text-stroke: 0.7px #000000;">{{ deck.costAP }}
+                  </div>
+                </div>
+              </div>
               <div [ngStyle]="{cursor: isLoggedIn && !deck.isOwner ? 'pointer': 'default'}"
                    style="display: flex; justify-content: center; flex-direction:row;"
                    (click)="toggleFavorite(deck);$event.stopPropagation();$event.preventDefault()">
@@ -179,22 +152,16 @@
               </div>
               <div class="creationDate">{{ deck.creationDate | date:'longDate' }}</div>
               <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
-                <div style="position:relative;"><img [src]="'/assets/public/picto-PA.png'"
-                                                     style="width:35px; height:35px;" class="type">
-                  <div
-                    style="font-family: 'geo2', 'arial', sans-serif !important; position:absolute; font-size:0.5em; transform: translate(-50%, -50%); left:50%; top:50%; -webkit-text-stroke: 0.7px #000000;">{{ deck.costAP }}
-                  </div>
-                </div>
-                <div style="display:flex; flex-direction:row; height:28px;">
+                <div style="display:flex; flex-direction:row; height:28px;  z-index: 10;">
                   @for (tag of deck.tags; track tag.id) {
                     <div (click)="addTagFilterFromResult(tag.title , $event);" class="tag"
                          [matTooltip]="'Ajouter '+tag.title+' aux filtres de recherche'"
                          [ngStyle]="{'background-color': tag.title === 'guide' ? '#FF474D':'#313282'}">
                       @if (tag.iconId) {
-                        <img style="width:20px; height:20px; margin-right:5px;" class="tagImg"
-                             [src]="'/assets/public/tagIcon/'+tag.iconId"/>
+                        <img class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
                       }
-                      <span style="font-size:20px;">{{ tag.title }}</span>
+                      <span style="font-size:20px; white-space:nowrap;">
+                        {{ tag.title }}</span>
                     </div>
                   }
                 </div>
@@ -209,11 +176,7 @@
       <div style="align-self: center">
         <app-pagination [pageNumber]="searchResults?.pageNumber +1" [totalPages]="searchResults?.totalPages"
                         (pageUp)="pageUp()" (pageDown)="pageDown()" (pageSet)="pageSet($event)"></app-pagination>
-
-
       </div>
     </div>
-
   </app-section>
-
 </form>

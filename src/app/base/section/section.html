@@ -1,28 +1,25 @@
-<div style="display: flex; width: 100%; color: white;  justify-content: space-evenly;"
-     [ngClass]="{forcedSize: forceSize()}">
-
+<div style="display: flex; width: 100%; color: white;" [ngClass]="{forcedSize: forceSize()}">
 
   <div style="margin-top: 10px; display: flex;  flex-direction: column;" class="section"
        [ngClass]="{forcedSize: forceSize()}">
 
-    <ng-content select="before-section-header"></ng-content>
-
-    @if (title()) {
-      <div style="font-weight:bolder; font-size: 30px; padding: 20px; display:inline; position: relative">
-        {{ title() }} <span style="font-size: 22px">{{ titleSuffix() }}</span>
+    <div style="display: flex;  justify-content: space-between; align-items: center">
+      <div style="display: flex; justify-content: flex-start; align-items: baseline;">
+        <ng-content select="[before-section-header]"></ng-content>
+        <ng-content select="[section-header]"></ng-content>
       </div>
-    }
+      <div>
+        <ng-content select="[after-section-header]"></ng-content>
+      </div>
+    </div>
 
-    <ng-content select="after-section-header"></ng-content>
-
-    <!-- [ngClass]="{forcedSize: forceSize}" -->
     <div
       style="border: #FFAE00 solid 2px; border-radius: 10px; box-sizing: border-box; padding: 20px; background: #262241">
       @if (requiresLogin() && !isLoggedIn()) {
         Cette fonctionnalité est réservée aux utilisateurs connectés.
         <div style="background: #3e9ef6;" (click)="login()">Se connecter</div>
       } @else {
-        <ng-content/>
+        <ng-content></ng-content>
       }
     </div>
   </div>

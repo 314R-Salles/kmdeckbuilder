@@ -1,30 +1,3 @@
-.dropbtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgb(30, 54, 158, 90%) 65%, rgb(60, 39, 185, 90%) 95%);
-  color: white;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-}
-
-.dropdown {
-  width: 40px;
-  position: relative;
-  display: inline-block;
-
-  border: solid 1px #ffffff7a;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-
-.dropdown:hover {
-  cursor: pointer;
-  -webkit-box-shadow: inset 1px 0px 20px 0px white;
-}
-
 .dropdown-content {
   display: none;
   position: absolute;
@@ -45,23 +18,5 @@
 
 .dropdown-content span:hover {
   background-color: rgb(165, 190, 255, 0.5)
-}
-
-.dropdown:hover .dropdown-content {
-  // display: block;
-}
-
-.dropdown:hover .dropbtn {
-  //width: 100%;
-  //background-color: #4982ea;
-}
-
-.appFont2 {
-  font-family: 'geo2', 'arial', sans-serif !important;
-  font-size: 18px;
-}
-
-.container {
-  display: flex;
 }
 

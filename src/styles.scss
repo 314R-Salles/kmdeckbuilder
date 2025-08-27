@@ -24,6 +24,363 @@ body {
   --header-menu: 40px;
 }
 
+
+//////////////
+// SECTION
+//////////////
+
+.sectionTitle {
+  font-weight: bolder;
+  font-size: 30px;
+  padding: 15px;
+}
+
+.sectionSubtitle {
+  font-weight: bolder;
+  font-size: 22px;
+}
+
+.beforeSectionTitle {
+  border-radius: 4px;
+}
+
+.afterSectionTitle {
+  border-radius: 4px;
+  margin-right: 20px;
+}
+
+
+//////////////
+// COULEURS
+//////////////
+
+$transparency: 0.5;
+
+$iop: #A3210E;
+$ecaflip: #6C1084;
+$cra: #424617;
+$eniripsa: #B54C3C;
+$sacrieur: #302821;
+$sadida: #6B7200;
+$sram: #39405A;
+$xelor: #263578;
+$enutrof: #9B7400;
+$feca: #523C39FF;
+$neutre: #b7a17a;
+
+$common: #B8A27B;
+$uncommon: #88B6EA;
+$rare:#FFAE00;
+$krosmique:#D46EEA;
+$infinite:#FFFFEE;
+
+.grey {
+  filter: grayscale(1);
+}
+
+.bg-common {
+  background: $common !important;
+}
+
+.bg-uncommon {
+  background: $uncommon !important;
+}
+
+.bg-rare {
+  background: $rare !important;
+}
+
+.bg-krosmique {
+  background: $krosmique !important;
+}
+
+.bg-infinite {
+  background: $infinite !important;
+}
+
+.color-common {
+  color: $common !important;
+}
+
+.color-uncommon {
+  color: $uncommon !important;
+}
+
+.color-rare {
+  color: $rare !important;
+}
+
+.color-krosmique {
+  color: $krosmique !important;
+}
+
+.color-infinite {
+  color: $infinite !important;
+}
+
+
+
+
+
+.card {
+  &.INFINITE {
+    background: linear-gradient(180deg, rgba(140, 154, 228, 1) 0%, rgba(162, 227, 236, 1) 100%);
+  }
+
+  &.KROSMIQUE {
+    background: linear-gradient(180deg, rgba(132, 25, 184, 1) 10%, rgba(100, 60, 181, 1) 35%, rgba(83, 64, 180, 1) 65%, rgba(79, 108, 207, 1) 91%);
+  }
+
+  &.NEUTRE {
+    background: $neutre;
+  }
+
+  &.IOP {
+    background: $iop;
+  }
+
+  &.ECAFLIP {
+    background: $ecaflip;
+  }
+
+  &.CRA {
+    background: $cra;
+  }
+
+  &.ENIRIPSA {
+    background: $eniripsa;
+  }
+
+  &.SACRIEUR {
+    background: $sacrieur;
+  }
+
+  &.SADIDA {
+    background: $sadida;
+  }
+
+  &.SRAM {
+    background: $sram;
+  }
+
+  &.XELOR {
+    background: $xelor;
+  }
+
+  &.ENUTROF {
+    background: $enutrof;
+  }
+
+  &.FECA {
+    background: $feca;
+  }
+}
+
+
+.deck {
+  &.IOP {
+    border: 3px solid $iop;
+  }
+
+  &.IOP:hover {
+    background: rgba($iop, $transparency);
+  }
+
+  &.ECAFLIP {
+    border: 3px solid $ecaflip;
+  }
+
+  &.ECAFLIP:hover {
+    background: rgba($ecaflip, $transparency);
+  }
+
+  &.CRA {
+    border: 3px solid $cra;
+  }
+
+  &.CRA:hover {
+    background: rgba($cra, $transparency);
+  }
+
+  &.ENIRIPSA {
+    border: 3px solid $eniripsa;
+  }
+
+  &.ENIRIPSA:hover {
+    background: rgba($eniripsa, $transparency);
+  }
+
+  &.SACRIEUR {
+    border: 3px solid $sacrieur;
+  }
+
+  &.SACRIEUR:hover {
+    background: rgba($sacrieur, $transparency);
+  }
+
+  &.SADIDA {
+    border: 3px solid $sadida;
+  }
+
+  &.SADIDA:hover {
+    background: rgba($sadida, $transparency);
+  }
+
+  &.SRAM {
+    border: 3px solid $sram;
+  }
+
+  &.SRAM:hover {
+    background: rgba($sram, $transparency);
+  }
+
+  &.XELOR {
+    border: 3px solid $xelor;
+  }
+
+  &.XELOR:hover {
+    background: rgba($xelor, $transparency);
+  }
+
+  &.ENUTROF {
+    border: 3px solid $enutrof;
+  }
+
+  &.ENUTROF:hover {
+    background: rgba($enutrof, $transparency);
+  }
+
+  &.FECA {
+    border: 3px solid $feca;
+  }
+
+  &.FECA:hover {
+    background: rgba($feca, $transparency);
+  }
+}
+
+//////////////
+// DROPDOWNS
+//////////////
+
+.dropdown:focus {
+  z-index: 5;
+}
+
+.dropbtn {
+  display: flex;
+  width: 300px;
+  align-items: center;
+  background: #313282;
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+
+  padding-left: 20px;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 2px;
+
+  &.version {
+    width: 40px;
+    padding-left: 0px;
+    justify-content: center;
+  }
+
+  &.rarity {
+    width: 60px;
+    padding-left: 0px;
+    justify-content: center;
+  }
+
+  &.PA {
+    width: 60px;
+    padding-left: 0px;
+    justify-content: center;
+  }
+}
+
+
+.dropdown {
+  width: 300px;
+  height: 50px;
+  position: relative;
+  //display: inline-block;
+
+  border: solid 1px gold;
+  border-radius: 2px;
+  //box-sizing: border-box;
+
+  &.version {
+    width: 40px;
+    height: unset;
+    justify-content: center;
+  }
+
+  &.rarity {
+    width: 60px;
+    height: 60px;
+    justify-content: center;
+  }
+
+  &.PA {
+    width: 60px;
+    height: unset;
+    justify-content: center;
+  }
+
+}
+
+.dropdown:hover {
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  width: 300px;
+  position: absolute;
+  background: #313282;
+  border: solid 1px gold;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  margin-top: 5px;
+
+  &.version {
+    width: 40px;
+  }
+
+  &.rarity {
+    width: 60px;
+  }
+
+  &.PA {
+    width: 60px;
+  }
+
+}
+
+
+//////////////
+// TAGS
+//////////////
+
+.tagImg {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+
+  &.bigger {
+    width: 30px;
+  }
+}
+
+.appFont2 {
+  color: white;
+  font-family: 'geo2', 'arial', sans-serif !important;
+}
+
+
 .prevent-select {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
@@ -59,7 +416,6 @@ body {
     width: 400px;
     height: 200px;
     position: relative;
-    //box-shadow: var(--mat-dialog-container-elevation-shadow, 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12));
     border-radius: unset;
     background-color: unset;
   }

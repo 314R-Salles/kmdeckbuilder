@@ -1,8 +1,10 @@
 import {Component, input, OnInit} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {God} from '../../common/models/enums';
-import {NgClass, NgStyle} from '@angular/common';
+import {NgClass} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
+import {PaDropdown} from "../pa-dropdown/pa-dropdown";
+import {RarityDropdown} from "../rarity-dropdown/rarity-dropdown";
 
 @Component({
   selector: 'app-filter-form',
@@ -10,7 +12,8 @@ import {MatTooltip} from '@angular/material/tooltip';
     ReactiveFormsModule,
     NgClass,
     MatTooltip,
-    NgStyle,
+    PaDropdown,
+    RarityDropdown,
   ],
   templateUrl: './filter-form.html',
   styleUrl: './filter-form.scss'
@@ -20,7 +23,7 @@ export class FilterForm  implements OnInit   {
   god = input.required<number>();
 
   ngOnInit() {
-    this.form().get('content').valueChanges.subscribe(change => {this.resetPage()})
+    this.form().get('content').valueChanges.subscribe(_ => {this.resetPage()})
   }
 
   God = God;
@@ -69,7 +72,7 @@ export class FilterForm  implements OnInit   {
 
   }
 
-  setFilterValue(filter: string, value: number) {
+  setFilterValue(filter: string, value: any) {
     this.resetPage()
     if (this.form().get(filter)?.value == value) {
       this.form().get(filter)?.setValue(null);
@@ -85,19 +88,6 @@ export class FilterForm  implements OnInit   {
     this.displayDropdownPA = false;
   }
 
-  dropdownRarity() {
-    this.displayDropdownRarity = !this.displayDropdownRarity;
-  }
-
-  dropdownPA() {
-    this.displayDropdownPA = !this.displayDropdownPA;
-  }
-
-  dropdownOff() {
-    this.displayDropdownRarity = false;
-    this.displayDropdownPA = false;
-  }
-
   costs = [
     {value: 0, label: '0'},
     {value: 1, label: '1'},
@@ -108,33 +98,6 @@ export class FilterForm  implements OnInit   {
     {value: 6, label: '6'},
     {value: 7, label: '7+'},
   ];
-  pms = [
-    {value: 1, label: '1-'},
-    {value: 2, label: '2'},
-    {value: 3, label: '3'},
-    {value: 4, label: '4+'},
-  ];
-
-  atks = [
-    {value: 1, label: '1-'},
-    {value: 2, label: '2'},
-    {value: 3, label: '3'},
-    {value: 4, label: '4'},
-    {value: 5, label: '5'},
-    {value: 6, label: '6+'},
-  ];
-
-
-  hps = [
-    {value: 1, label: '1-'},
-    {value: 2, label: '2'},
-    {value: 3, label: '3'},
-    {value: 4, label: '4'},
-    {value: 5, label: '5'},
-    {value: 6, label: '6+'},
-  ];
-
-
 
   constructor() {
   }
@@ -175,56 +138,46 @@ export class FilterForm  implements OnInit   {
     ru_spell_show: 'Показать заклинания',
   }
 
-  rarityList = [
-    {key: 0, value: 'Common', bgColor: 'bg-color-common', color: 'color-common'},
-    {key: 2, value: 'Rare', bgColor: 'bg-color-rare', color: 'color-rare'},
-    {key: 4, value: 'Infinite', bgColor: 'bg-color-infinite', color: 'color-infinite'},
-    {key: 3, value: 'Krosmique', bgColor: 'bg-color-krosmique', color: 'color-krosmique'},
-    {key: 1, value: 'Uncommon', bgColor: 'bg-color-uncommon', color: 'color-uncommon'},
-    {key: -1, value: 'All', bgColor: 'bg-color-all', color: 'color-all'},
-  ];
-
-
   rarities = {
     fr: [
-      {key: '-1', label: 'Toutes les raretés', color: 'color-all', bgColor: 'bg-color-all'},
-      {key: '0', label: 'Commune', color: 'color-common', bgColor: 'bg-color-common'},
-      {key: '1', label: 'Peu Commune', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
-      {key: '2', label: 'Rare', color: 'color-rare', bgColor: 'bg-color-rare'},
-      {key: '3', label: 'Krosmique', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
-      {key: '4', label: 'Infinite', color: 'color-infinite', bgColor: 'bg-color-infinite'},
+      {key: '-1', label: 'Toutes les raretés', color: '', bgColor: ''},
+      {key: '0', label: 'Commune', color: 'color-common', bgColor: 'bg-common'},
+      {key: '1', label: 'Peu Commune', color: 'color-uncommon', bgColor: 'bg-uncommon'},
+      {key: '2', label: 'Rare', color: 'color-rare', bgColor: 'bg-rare'},
+      {key: '3', label: 'Krosmique', color: 'color-krosmique', bgColor: 'bg-krosmique'},
+      {key: '4', label: 'Infinite', color: 'color-infinite', bgColor: 'bg-infinite'},
     ],
     en: {
-      '0': {label: 'Common', color: 'color-common', bgColor: 'bg-color-common'},
-      '2': {label: 'Rare', color: 'color-rare', bgColor: 'bg-color-rare'},
-      '4': {label: 'Infinite', color: 'color-infinite', bgColor: 'bg-color-infinite'},
-      '3': {label: 'Krosmic', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
-      '1': {label: 'Uncommon', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
-      '-1': {label: 'All rarities', color: 'color-all', bgColor: 'bg-color-all'},
+      '0': {label: 'Common', color: 'color-common', bgColor: 'bg-common'},
+      '2': {label: 'Rare', color: 'color-rare', bgColor: 'bg-rare'},
+      '4': {label: 'Infinite', color: 'color-infinite', bgColor: 'bg-infinite'},
+      '3': {label: 'Krosmic', color: 'color-krosmique', bgColor: 'bg-krosmique'},
+      '1': {label: 'Uncommon', color: 'color-uncommon', bgColor: 'bg-uncommon'},
+      '-1': {label: 'All rarities', color: '', bgColor: ''},
     },
     br: {
-      '0': {label: 'Comum', color: 'color-common', bgColor: 'bg-color-common'},
-      '2': {label: 'Rara', color: 'color-rare', bgColor: 'bg-color-rare'},
-      '4': {label: 'Infinita', color: 'color-infinite', bgColor: 'bg-color-infinite'},
-      '3': {label: 'Krósmica', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
-      '1': {label: 'Incomum', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
-      '-1': {label: 'Todas as raridades', color: 'color-all', bgColor: 'bg-color-all'},
+      '0': {label: 'Comum', color: 'color-common', bgColor: 'bg-common'},
+      '2': {label: 'Rara', color: 'color-rare', bgColor: 'bg-rare'},
+      '4': {label: 'Infinita', color: 'color-infinite', bgColor: 'bg-infinite'},
+      '3': {label: 'Krósmica', color: 'color-krosmique', bgColor: 'bg-krosmique'},
+      '1': {label: 'Incomum', color: 'color-uncommon', bgColor: 'bg-uncommon'},
+      '-1': {label: 'Todas as raridades', color: '', bgColor: ''},
     },
     es: {
-      '0': {label: 'Común', color: 'color-common', bgColor: 'bg-color-common'},
-      '2': {label: 'Rara', color: 'color-rare', bgColor: 'bg-color-rare'},
-      '4': {label: 'Infinita', color: 'color-infinite', bgColor: 'bg-color-infinite'},
-      '3': {label: 'Krósmica', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
-      '1': {label: 'Poco común', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
-      '-1': {label: 'Todos los tipos de carta', color: 'color-all', bgColor: 'bg-color-all'}
+      '0': {label: 'Común', color: 'color-common', bgColor: 'bg-common'},
+      '2': {label: 'Rara', color: 'color-rare', bgColor: 'bg-rare'},
+      '4': {label: 'Infinita', color: 'color-infinite', bgColor: 'bg-infinite'},
+      '3': {label: 'Krósmica', color: 'color-krosmique', bgColor: 'bg-krosmique'},
+      '1': {label: 'Poco común', color: 'color-uncommon', bgColor: 'bg-uncommon'},
+      '-1': {label: 'Todos los tipos de carta', color: '', bgColor: ''}
     },
     ru: {
-      '0': {label: 'Обычная', color: 'color-common', bgColor: 'bg-color-common'},
-      '2': {label: 'Редкая', color: 'color-rare', bgColor: 'bg-color-rare'},
-      '4': {label: 'Запредельная', color: 'color-infinite', bgColor: 'bg-color-infinite'},
-      '3': {label: 'Кросмическая', color: 'color-krosmique', bgColor: 'bg-color-krosmique'},
-      '1': {label: 'Необычная', color: 'color-uncommon', bgColor: 'bg-color-uncommon'},
-      '-1': {label: 'Любая редкость', color: 'color-all', bgColor: 'bg-color-all'},
+      '0': {label: 'Обычная', color: 'color-common', bgColor: 'bg-common'},
+      '2': {label: 'Редкая', color: 'color-rare', bgColor: 'bg-rare'},
+      '4': {label: 'Запредельная', color: 'color-infinite', bgColor: 'bg-infinite'},
+      '3': {label: 'Кросмическая', color: 'color-krosmique', bgColor: 'bg-krosmique'},
+      '1': {label: 'Необычная', color: 'color-uncommon', bgColor: 'bg-uncommon'},
+      '-1': {label: 'Любая редкость', color: '', bgColor: ''},
     }
 
   }

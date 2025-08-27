@@ -2,177 +2,8 @@
   width: 80vw;
 }
 
-.isSelected {
-  -webkit-box-shadow: inset 1px 0px 20px 0px #4fcce1 !important;
-}
-
 .filterWrapper {
   display: flex;
-}
-
-.filterGodWrapper {
-  width: 430px;
-  display: flex;
-  flex-wrap: wrap;
-  padding-right: 50px;
-}
-
-.filterGodWrapper img {
-  width: 50px;
-  padding: 2px;
-}
-
-.imgContainer {
-  padding: 2px;
-}
-
-.imgContainer img:hover {
-  cursor: pointer;
-  -webkit-box-shadow: inset 1px 0px 20px 0px white;
-}
-
-.imgContainer img {
-  width: 75px;
-  padding: 2px;
-  border: solid 1px #ffffff7a;
-  border-radius: 5px;
-}
-
-.search-input {
-  // background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgba(6, 22, 92, 0.9) 65%, rgba(2, 4, 7, 0.9) 92%);
-  color: white;
-  font-size: 16px;
-  padding: 0;
-
-  width: 300px;
-  height: 50px;
-  position: relative;
-  display: inline-block;
-
-  border: solid 1px #ffffff7a;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-
-.dropdown:focus {
-  z-index: 5;
-}
-
-.dropbtn {
-  display: flex;
-  align-items: center;
-  background: red;
-  // background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgb(30, 54, 158, 90%) 65%, rgb(60, 39, 185, 90%) 95%);
-  color: white;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-}
-
-.dropdown {
-  width: 300px;
-  height: 50px;
-  position: relative;
-  display: inline-block;
-
-  border: solid 1px #ffffff7a;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-
-.dropdown:hover {
-  cursor: pointer;
-  -webkit-box-shadow: inset 1px 0px 20px 0px white;
-}
-
-
-.singleLineFilters {
-  display: flex;
-  flex-direction: row;
-}
-
-.IOP {
-  border: 3px solid #A3210E;
-}
-
-.ECAFLIP {
-  border: 3px solid #6C1084;
-}
-
-.CRA {
-  border: 3px solid #424617;
-}
-
-.ENIRIPSA {
-  border: 3px solid #B54C3C;
-}
-
-.SACRIEUR {
-  border: 3px solid #302821;
-}
-
-.SADIDA {
-  border: 3px solid #6B7200;
-}
-
-.SRAM {
-  border: 3px solid #39405A;
-}
-
-.XELOR {
-  border: 3px solid #263578;
-}
-
-.ENUTROF {
-  border: 3px solid #9B7400;
-}
-
-.FECA {
-  border: 3px solid #523C39FF;
-}
-
-$transparency: 0.5;
-
-.IOP:hover {
-  background: rgba(163, 33, 14, $transparency);
-}
-
-.ECAFLIP:hover {
-  background: rgba(108, 16, 132, $transparency);
-}
-
-.CRA:hover {
-  background: rgba(66, 70, 23, $transparency);
-}
-
-.ENIRIPSA:hover {
-  background: rgba(181, 76, 60, $transparency);
-}
-
-.SACRIEUR:hover {
-  background: rgba(48, 40, 33, $transparency);
-}
-
-.SADIDA:hover {
-  background: rgba(107, 114, 0, $transparency);
-}
-
-.SRAM:hover {
-  background: rgba(57, 64, 90, $transparency);
-}
-
-.XELOR:hover {
-  background: rgba(38, 53, 120, $transparency);
-}
-
-.ENUTROF:hover {
-  background: rgba(155, 116, 0, $transparency);
-}
-
-.FECA:hover {
-  background: rgba(82, 60, 57, $transparency);
 }
 
 .listDeck {
@@ -188,18 +19,10 @@ $transparency: 0.5;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  //align-items: center;
   border-radius: 5px;
   overflow: hidden;
   height: 160px;
-
   position: relative;
-}
-
-.deckData {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 2;
 }
 
 .deckImgGod {
@@ -259,10 +82,12 @@ $transparency: 0.5;
   align-content: center;
   align-items: center;
   padding: 5px;
-  margin-left: 5px
+  margin-right: 5px;
+  box-sizing: border-box;//FIXME
 }
 
 .tag:hover {
+
   border: rgb(255, 255, 255) solid 1px;
 }
 
@@ -277,48 +102,6 @@ $transparency: 0.5;
 
 .creationDate {
   font-size: 12px;
-  // height: 17.5%;
-}
-
-.costPaText {
-  position: absolute;
-  bottom: 0;
-  left: 25px;
-  font-size: 20px;
-  color: white;
-  text-shadow: 2px 0 #3495eb, -2px 0 #3495eb, 0 2px #3495eb, 0 -2px #3495eb, 1px 1px #3495eb, -1px -1px #3495eb, 1px -1px #3495eb, -1px 1px #3495eb;
-}
-
-.costPA {
-  position: relative;
-  width: 60px;
-}
-
-.costDust {
-  position: relative;
-  width: 80px;
-}
-
-.costDustText {
-  position: absolute;
-  bottom: 0;
-  left: 25px;
-  font-size: 20px;
-  color: white;
-  text-shadow: 2px 0 #3495eb, -2px 0 #3495eb, 0 2px #3495eb, 0 -2px #3495eb, 1px 1px #3495eb, -1px -1px #3495eb, 1px -1px #3495eb, -1px 1px #3495eb;
-}
-
-.like {
-  position: relative;
-}
-
-.likeText {
-  position: absolute;
-  top: 20px;
-  left: 25px;
-  font-size: 30px;
-  color: white;
-  text-shadow: 2px 0 #eba534, -2px 0 #eba534, 0 2px #eba534, 0 -2px #eba534, 1px 1px #eba534, -1px -1px #eba534, 1px -1px #eba534, -1px 1px #eba534;
 }
 
 .card {
@@ -326,8 +109,6 @@ $transparency: 0.5;
   border: rgba(255, 255, 255, 0.62) solid 1px;
   border-radius: 5px;
   box-sizing: border-box;
-  //-webkit-box-shadow: inset 0px 0px 0px 10px rgba(255, 255, 255, 0.62);
-  //-moz-box-shadow: inset 0px 0px 0px 10px rgba(255, 255, 255, 0.62);
   box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.62);
   display: flex;
   align-items: center;
@@ -348,62 +129,6 @@ $transparency: 0.5;
   justify-content: space-around
 }
 
-.INFINITE-card {
-  background: linear-gradient(180deg, rgba(140, 154, 228, 1) 0%, rgba(162, 227, 236, 1) 100%);
-}
-
-.KROSMIQUE-card {
-  background: linear-gradient(180deg, rgba(132, 25, 184, 1) 10%, rgba(100, 60, 181, 1) 35%, rgba(83, 64, 180, 1) 65%, rgba(79, 108, 207, 1) 91%);
-}
-
-.NEUTRE-card {
-  background: #b7a17a;
-}
-
-.IOP-card {
-  background: #A3210E;
-}
-
-.ECAFLIP-card {
-  background: #6C1084;
-}
-
-.CRA-card {
-  background: #424617;
-}
-
-.ENIRIPSA-card {
-  background: #B54C3C;
-}
-
-.SACRIEUR-card {
-  background: #302821;
-}
-
-.SADIDA-card {
-  background: #6B7200;
-}
-
-.SRAM-card {
-  background: #39405A;
-}
-
-.XELOR-card {
-  background: #263578;
-}
-
-.ENUTROF-card {
-  background: #9B7400;
-}
-
-.FECA-card {
-  background: #523C39FF;
-}
-
-.appFont2 {
-  color: white !important;
-  font-family: 'geo2', 'arial', sans-serif !important;
-}
 
 .godMiniaFiltered {
   width: 50px;
@@ -412,4 +137,17 @@ $transparency: 0.5;
 
 .godMiniaFiltered:hover {
   filter: grayscale(100%);
+}
+
+
+.customAfterSectionTitle {
+  padding: 5px;
+  border: 2px solid #FFD700;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #FFD700;
+}
+
+.customAfterSectionTitle:hover {
+  background: #262241;
 }

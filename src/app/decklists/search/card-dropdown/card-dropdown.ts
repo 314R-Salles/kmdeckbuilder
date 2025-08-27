@@ -65,13 +65,11 @@ export class CardDropdown {
   }
 
   selectCard(card) {
-    this.displayDropdown = false
     this.onSelectCard.emit(card);
-
 
     if (this.displayedCards().length == 1) {
           this.cardSearch.set(null);
-          this.displayDropdown = true
+          this.displayDropdown = false
         }
   }
 

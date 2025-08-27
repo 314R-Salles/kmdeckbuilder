@@ -24,12 +24,8 @@ export class VersionDropdown {
 
   clickedInside
 
-  dropdownOff() {
-    this.displayDropdown = false;
-  }
-
-  dropdown() {
-    this.displayDropdown = true;
+  dropdownClick() {
+    this.displayDropdown = !this.displayDropdown
   }
 
   @HostListener('click', ['$event'])

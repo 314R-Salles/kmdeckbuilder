@@ -3,41 +3,6 @@
   flex-wrap: wrap;
 }
 
-#fill {
-  flex-grow:2;
-  border-bottom: 0.2em solid #FFAE00;
-}
-
-.fill:hover {
-}
-
-.streams-tab {
-  display:flex;
-  overflow:hidden;
-}
-
-.streams-tab button:hover {
-  background-color: #ddd;
-}
-
-.streams-tab button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-  border-bottom: 0.2em solid #FFAE00;
-}
-
-.streams-tab button.active {
-  border-bottom:none;
-  border-top: 0.2em solid #FFAE00;
-  border-right: 0.2em solid #FFAE00;
-  border-left: 0.2em solid #FFAE00;
-
-}
 .stream-thumbnail {
   width: 320px;
   height: 100%;
@@ -51,8 +16,6 @@
 
 .stream-thumbnail:hover > a > img {
   background-color:rgba(255, 255, 255, 0.3);
-}
-.stream-thumbnail > a > img {
 }
 
 .stream-displayName {

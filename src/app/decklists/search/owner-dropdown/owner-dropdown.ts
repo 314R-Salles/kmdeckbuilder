@@ -26,7 +26,6 @@ export class OwnerDropdown {
     return r.filter(user => !this.userSearch() || user.username.toLowerCase().indexOf(this.userSearch().toLowerCase()) != -1);
   })
 
-
   constructor() {
   }
 
@@ -35,16 +34,15 @@ export class OwnerDropdown {
   }
 
   selectUser(user, negative) {
-    this.displayDropdown = false // passer false ici, permet de garder le dropdown ouvert puisque dropdownClick se déclenche dans la foulée
     if (!negative)
       this.onSelectUser.emit(user);
     else
       this.onNegativeSelectUser.emit(user);
 
     if (this.displayedUsers().length == 1) {
-              this.userSearch.set(null);
-              this.displayDropdown = true
-            }
+      this.userSearch.set(null);
+      this.displayDropdown = false
+    }
   }
 
 
