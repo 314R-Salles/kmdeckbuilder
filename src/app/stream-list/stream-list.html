@@ -1,9 +1,9 @@
 <app-section
-  [title]="frontPage() ?  notEnoughLiveStream ? 'En ce moment ou presque sur Twitch' : 'En ce moment sur Twitch' : 'Krosmaga sur Twitch et Youtube'">
+  [title]="frontPage() ?  noLiveStream ? notEnoughLiveStream ? 'Récemment' : 'En ce moment sur Twitch' : 'En ce moment ou presque' :  'Krosmaga sur Twitch et Youtube'">
   <div>
     <div id="TwitchLive" style=" display: flex;  flex-direction: column;">
       <div class="streams-panel">
-        @for (stream of streams(); track (stream.id || stream.username)) {
+        @for (stream of streams(); track stream.displayName) {
           @if (stream.fake) {
               <div class="stream-thumbnail" style="color:black; max-width:320px;">
                 <div
@@ -14,10 +14,8 @@
                   {{ stream.title }}
               </div>
             </div>
-          } @else if (stream.live) {
-            <div [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream}"></div>
           } @else {
-            <div [ngTemplateOutlet]="VOD" [ngTemplateOutletContext]="{stream}"></div>
+            <div [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream}"></div>
           }
         }
       </div>
@@ -26,15 +24,13 @@
     @if (!frontPage()) {
       <div id="TwitchVod" style="display: flex;  flex-direction: column;">
         <div class="streams-panel">
-          @for (vod of vods(); track vod.id) {
-            <div [ngTemplateOutlet]="VOD" [ngTemplateOutletContext]="{stream:vod}"></div>
+          @for (vod of vods(); track vod.displayName) {
+            <div [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream:vod}"></div>
           } @empty {
             <span style="color: white">On dirait qu'il n'y a pas de VOD !</span>
           }
           <div class="stream-thumbnail" style="color:black; max-width:320px;">
-            <a href="https://www.twitch.tv/directory/category/krosmaga/videos/all" target="_blank"
-               title=""
-               style="text-decoration:none;">
+            <a href="https://www.twitch.tv/directory/category/krosmaga/videos/all" target="_blank" title="" style="text-decoration:none;">
               <div
                 style="width:320px; height:180px; border-top-left-radius:10px; border-top-right-radius:10px; background-color:#523c7c; display:flex; justify-content:center; align-items:center;">
                 <img style="width:250px; height:83px;" [src]="'/assets/public/twitch_wordmark.png'"></div>
@@ -53,7 +49,7 @@
       <div class="streams-panel" id="YoutubeVod" style="display: flex;  flex-direction: column;">
         <div class="streams-panel">
           @for (video of videos(); track video.url) {
-            <div [ngTemplateOutlet]="VODYoutube" [ngTemplateOutletContext]="{stream:video}"></div>
+            <div [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream:video}"></div>
           } @empty {
             <li style="color: white">On dirait qu'il n'y a pas de vidéos !</li>
           }
@@ -84,101 +80,54 @@
       <div style="position:relative;">
         <div style="position:relative; height:180px;">
           <img
-            style="border-top-left-radius:10px; border-top-right-radius:10px; outline:4px solid red; outline-offset:-4px;"
-            [src]=stream.thumbnailUrl>
-          <img class="stream-profilePic" src={{stream.profileImage}} style="position:absolute; left:5px; bottom:5px;">
+            style="border-top-left-radius:10px; border-top-right-radius:10px; outline-offset:-4px;"
+            [src]=stream.thumbnailUrl
+            [ngStyle]="{'outline': stream.live ? '4px solid #FF0000':''}">
+          <img class="stream-profilePic" src={{stream.profileImage}} style="position:absolute; left:5px; bottom:5px;"
+          [ngStyle]="{'outline': stream.youtube || stream.live ? '4px solid #FF0000':'4px solid #523c7c'}">
+          @if (!stream.live) {
+          <div
+            style="position:absolute; font-color:white; padding:0px 0.4rem; color:white; bottom:0px; right:0px; border-top-left-radius:5px;"
+            [ngStyle]="{'background-color': !stream.youtube ? '#523c7c':'#FF0000'}">{{ stream.duration }}
+          </div>
+          }
           @if (stream.live) {
             <div
-              style="position:absolute; font-weight: bold; border-top-left-radius:10px; font-color:white; padding:0px 0.4rem; color:white; background-color:red; top:0px; left:0px;">
+              style="position:absolute; font-weight: bold; border-top-left-radius:10px; font-color:white; padding:0px 0.4rem; color:white; background-color:red; top:0px; left:0px; border-bottom-radius:5px; ">
               LIVE
             </div>
           }
-
         </div>
         <div class="stream-data"
-             style="display:flex; background-color: #523c7c; border-bottom-left-radius:10px; border-bottom-right-radius:10px;">
+             style="display:flex; border-bottom-left-radius:10px; border-bottom-right-radius:10px;"
+             [ngStyle]="{'background-color': !stream.youtube ? '#523c7c':'#FF0000'}">
           <div class="stream-data-string" style="overflow:hidden; margin-left:5px; margin-right:5px; width:100%;">
             <div style="display:flex;">
               <div class="stream-displayName">{{ stream.displayName }}</div>
+              @if (stream.live) {
               <div style="margin-left:5px; color:white;">/ depuis {{ stream.startedAt }}</div>
+              }
+              @else {
+              <div style="margin-left:5px; color:white;">/ il y a {{ stream.created_at }}</div>
+              }
             </div>
             <div class="stream-title" style="margin-top:-3px; display:flex; justify-content:space-between;">
               <div style="overflow:hidden; text-overflow: ellipsis;">{{ stream.title }}</div>
               <div style="margin-left:5px;">
+                @if (stream.live) {
                 <svg style="width:10px" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                   <path
                     d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z"/>
                 </svg>
-                {{ stream.viewerCount }}
+                }
+                @else {
+                <svg style="width:10px;" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                  <path
+                    d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/>
+                </svg>
+                }
+                {{ stream.view }}
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </a>
-  </div>
-</ng-template>
-
-<!-- Template Twitch VOD panel -->
-<ng-template #VOD let-vod="stream">
-  <div class="stream-thumbnail" style="color:black; max-width:320px;">
-    <a href={{vod.url}} target="_blank" title="{{vod.title}}" style="text-decoration:none;">
-      <div style="position:relative; height:180px;">
-        <img style="border-top-left-radius:10px; border-top-right-radius:10px;" src={{vod.thumbnailUrl}}>
-        <img class="stream-profilePic" src={{vod.profileImage}} style="position:absolute; left:5px; bottom:5px;">
-        <div
-          style="position:absolute; font-color:white; padding:0px 0.4rem; color:white; background-color:#523c7c; bottom:0px; right:0px; border-top-left-radius:5px;">{{ vod.duration }}
-        </div>
-      </div>
-      <div class="stream-data"
-           style="display:flex; background-color: #523c7c; border-bottom-left-radius:10px; border-bottom-right-radius:10px;">
-        <div class="stream-data-string" style="overflow:hidden; margin-left:5px; margin-right:5px; width:100%;">
-          <div style="display:flex;">
-            <div class="stream-displayName">{{ vod.displayName }}</div>
-            <div style="margin-left:5px; color:white;">/ il y a {{ vod.created_at }}</div>
-          </div>
-          <div class="stream-title" style="margin-top:-3px; display:flex; justify-content:space-between;">
-            <div style="overflow:hidden; text-overflow: ellipsis;">{{ vod.title }}</div>
-            <div style="margin-left:5px;">
-              <svg style="width:10px;" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                <path
-                  d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/>
-              </svg>
-              {{ vod.viewCount }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </a>
-  </div>
-</ng-template>
-
-<!-- Template Youtube panel -->
-<ng-template #VODYoutube let-vod="stream">
-  <div class="stream-thumbnail" style="color:black; max-width:320px;">
-    <a href={{vod.url}} target="_blank" title="{{vod.title}}" style="text-decoration:none;">
-      <div style="position:relative; height:180px;">
-        <img style="border-top-left-radius:10px; border-top-right-radius:10px;" src={{vod.thumbnailUrl}}>
-        <img class="stream-profilePic" src={{vod.profileImage}} style="position:absolute; left:5px; bottom:5px;">
-        <div
-          style="position:absolute; font-color:white; padding:0px 0.4rem; color:white; background-color:#FF0000; bottom:0px; right:0px; border-top-left-radius:5px;">{{ vod.duration }}
-        </div>
-      </div>
-      <div class="stream-data"
-           style="display:flex; background-color: #FF0000; border-bottom-left-radius:10px; border-bottom-right-radius:10px;">
-        <div class="stream-data-string" style="overflow:hidden; margin-left:5px; margin-right:5px; width:100%;">
-          <div style="display:flex;">
-            <div class="stream-displayName">{{ vod.channelTitle }}</div>
-            <div style="margin-left:5px; color:white;">/ il y a {{ vod.publishedAt }}</div>
-          </div>
-          <div class="stream-title" style="margin-top:-3px; display:flex; justify-content:space-between;">
-            <div style="overflow:hidden; text-overflow: ellipsis;">{{ vod.title }}</div>
-            <div style="margin-left:5px;">
-              <svg style="width:10px;" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                <path
-                  d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/>
-              </svg>
-              {{ vod.viewCount }}
             </div>
           </div>
         </div>

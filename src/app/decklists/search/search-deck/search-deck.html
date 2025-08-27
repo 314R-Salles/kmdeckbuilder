@@ -153,7 +153,7 @@
                           (pageUp)="pageUp()" (pageDown)="pageDown()" (pageSet)="pageSet($event)"></app-pagination>
         </div>
         @for (deck of decks(); track deck.deckId) {
-          <a [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god"
+          <a [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck" [ngClass]="deck.god"
              style="display:flex; flex-direction:row; cursor:pointer; text-decoration:none; color:white;">
 
             <div style="display: flex; flex-direction: column; width: 130px; justify-content:space-around;">

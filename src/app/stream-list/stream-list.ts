@@ -1,14 +1,14 @@
 import {AfterViewInit, Component, inject, input, PLATFORM_ID, signal} from '@angular/core';
-import {PLACEHOLDER, TwitchModel} from '../base/models/twitch.model';
-import {YtVideo} from '../base/models/ytVideo';
+import {PLACEHOLDER, MediaModel} from '../base/models/media.model';
 import {ApiService} from '../api/api.service';
-import {isPlatformBrowser, NgTemplateOutlet} from '@angular/common';
+import {isPlatformBrowser, NgTemplateOutlet, NgStyle} from '@angular/common';
 import {Section} from '../base/section/section';
 
 @Component({
   selector: 'app-stream-list',
   imports: [
     NgTemplateOutlet,
+    NgStyle,
     Section
   ],
   templateUrl: './stream-list.html',
@@ -18,12 +18,12 @@ export class StreamList implements AfterViewInit {
 
   frontPage = input<boolean>(false);
 
-  streams = signal<TwitchModel[]>([])
-  vods = signal<TwitchModel[]>([])
-  videos = signal<YtVideo[]>([])
-
+  streams = signal<MediaModel[]>([])
+  vods = signal<MediaModel[]>([])
+  videos = signal<MediaModel[]>([])
 
   notEnoughLiveStream = false
+  noLiveStream = false
 
   apiService = inject(ApiService)
   platformId = inject(PLATFORM_ID);
@@ -33,6 +33,7 @@ export class StreamList implements AfterViewInit {
       this.apiService.getStreams().subscribe(streams => {
         this.streams.set(this.updateStreams(streams))
 
+        this.noLiveStream = this.streams().length == 0;
         if (this.streams().length == 0) {
           this.streams.update(values => {
             return [...values, PLACEHOLDER];
@@ -41,10 +42,12 @@ export class StreamList implements AfterViewInit {
 
         if (this.streams().length < 4 && this.frontPage()) {
           this.notEnoughLiveStream = true
-          this.apiService.getVods().subscribe(vods => {
+          this.apiService.getVodsAndVideos().subscribe(vods => {
             vods = vods
               // cacher les vods temporaires pendant les streams
               .filter(vod => vod.thumbnailUrl !== "https://vod-secure.twitch.tv/_404/404_processing_%{width}x%{height}.png")
+              // cacher les vods de moins de 15 minutes (stream cut involontairement)
+              .filter(vod => vod.duration.includes('h') || Number(vod.duration.split('m')[0])>=15)
               .sort((a, b) => {
                 if (a.created_at < b.created_at) {
                   return 1;
@@ -67,6 +70,7 @@ export class StreamList implements AfterViewInit {
           this.vods.set(this.updateVods(
             vods
               .filter(vod => vod.thumbnailUrl !== "https://vod-secure.twitch.tv/_404/404_processing_%{width}x%{height}.png")
+              .filter(vod => vod.duration.includes('h') || Number(vod.duration.split('m')[0])>=15)
               .splice(0, 11)
           )))
         this.apiService.getLastVideos().subscribe(videos => this.videos.set(this.updateYoutubeVideos(videos).splice(0, 11)))
@@ -74,13 +78,11 @@ export class StreamList implements AfterViewInit {
     }
   }
 
-  updateStreams(streams: TwitchModel[]): TwitchModel[] {
+  updateStreams(streams: MediaModel[]): MediaModel[] {
     return streams.map(stream => {
         return {
           ...stream,
-          url: 'https://www.twitch.tv/' + stream.username,
-          live: true,
-          startedAt: this.makeDate(stream.startedAt),
+          created_at: this.makeDate(stream.created_at),
           thumbnailUrl:
             stream.thumbnailUrl
               .replace('{width}', '320')
@@ -90,11 +92,10 @@ export class StreamList implements AfterViewInit {
     );
   }
 
-  updateVods(vods: TwitchModel[]): TwitchModel[] {
+  updateVods(vods: MediaModel[]): MediaModel[] {
     return vods.map(vod => {
         return {
           ...vod,
-          live: false,
           created_at: this.makeDate(vod.created_at),
           thumbnailUrl:
             vod.thumbnailUrl
@@ -105,11 +106,11 @@ export class StreamList implements AfterViewInit {
     );
   }
 
-  updateYoutubeVideos(videos: YtVideo[]): YtVideo[] {
+  updateYoutubeVideos(videos: MediaModel[]): MediaModel[] {
     return videos.map(video => {
         return {
           ...video,
-          publishedAt: this.makeDate(video.publishedAt),
+          created_at: this.makeDate(video.created_at)
         }
       }
     );

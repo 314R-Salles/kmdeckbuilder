@@ -6,7 +6,7 @@ import {RenderMode, ServerRoute} from '@angular/ssr';
 // Tout le reste, on aura des balises génériques (pour l'instant) donc ça sera traité par le navigateur
 export const serverRoutes: ServerRoute[] = [
   {
-    path: 'decks/view/:id/:version',
+    path: 'decks/view/:id/:version/:minorVersion',
     renderMode: RenderMode.Server,
   },
   {

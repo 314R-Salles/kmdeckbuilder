@@ -16,8 +16,9 @@ import {MatIcon} from '@angular/material/icon';
 export class VersionDropdown {
 
   deckId = input.required<string>()
-  allVersions = input.required<number[]>()
+  allVersions = input.required<string[]>()
   currentVersion = input.required<number>()
+  minorVersion = input.required<number>()
 
   displayDropdown = false
 

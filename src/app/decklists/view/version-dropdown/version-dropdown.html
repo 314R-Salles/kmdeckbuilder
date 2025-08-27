@@ -1,6 +1,6 @@
 <div class="dropdown">
   <div class="dropbtn appFont2" (click)="dropdown()">
-    {{ currentVersion() }}
+    {{ currentVersion() }}.{{ minorVersion() }}
     @if (allVersions().length > 1) {
     <mat-icon style="font-size: 18px; width:16px; display:flex; justify-content:center; align-items:center;">
     arrow_drop_down
@@ -10,7 +10,7 @@
   @if (allVersions().length > 1) {
   <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
     @for (version of allVersions(); track version) {
-      <span class="appFont2" [routerLink]="['/decks/view', deckId(), version]">{{ version }}</span>
+      <span class="appFont2" [routerLink]="['/decks/view', deckId(), version.split('.')[0], version.split('.')[1]]">{{ version }}</span>
     }
   </div>
   }

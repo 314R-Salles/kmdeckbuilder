@@ -18,14 +18,14 @@
 
       <div style="border: solid 2px #594867; display: flex; justify-content: space-around; padding: 0 10px;">
         <span style="align-content:center; padding-right:5px;"> Version</span>
-        <app-version-dropdown [deckId]="id()" [currentVersion]="version()"
+        <app-version-dropdown [deckId]="id()" [currentVersion]="version()" [minorVersion]="minorVersion()"
                               [allVersions]="versions()"/>
       </div>
 
       @if (canClone()) {
       <div
         style="border: solid 2px #594867; display: flex; cursor: pointer; justify-content: space-evenly"
-        [routerLink]="['/decks/create']" [queryParams]="{from: id(), v:version()}"  class="buttonUpdate">
+        [routerLink]="['/decks/create']" [queryParams]="{from: id(), v:version(), mV:minorVersion()}"  class="buttonUpdate">
         <span style="align-content:center;"> Dupliquer </span>
         <mat-icon style="font-size: 16px;" [matTooltip]="'Créer un NOUVEAU deck à partir de cette version'">
           info
@@ -36,7 +36,7 @@
       @if (canEdit()) {
         <div
           style="border: solid 2px #594867; display: flex; cursor: pointer; justify-content: space-evenly"
-          [routerLink]="['/decks/edit', id(), version()]"  class="buttonUpdate">
+          [routerLink]="['/decks/edit', id(), version(), minorVersion()]"  class="buttonUpdate">
           <span style="align-content:center;"> Editer </span>
           <mat-icon style="font-size: 16px;" [matTooltip]="'Modifier le deck existant à partir de cette version'">info
           </mat-icon>

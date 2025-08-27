@@ -52,6 +52,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
   // l'input id est fourni par la route en cas d'edit
   id = input<string>()
   version = input<number>();
+  minorVersion = input<number>();
   isUpdate = false
   isClone = false
 
@@ -248,7 +249,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          this.router.navigate(['/decks/view', response.deckId, response.version])
+          this.router.navigate(['/decks/view', response.deckId, response.version, response.minorVersion])
         } else {
           this.router.navigate(['/home'])
         }
@@ -261,7 +262,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
   initFromParams() {
     this.route.queryParamMap.subscribe(params => {
       if (params.get("from")) {
-        this.apiService.getDeck({id: params.get("from"), version: +params.get("v"), language: 'FR'}).subscribe(deck => {
+        this.apiService.getDeck({id: params.get("from"), version: +params.get("v"), minorVersion: +params.get("mV"), language: 'FR'}).subscribe(deck => {
           this.isClone = true // dans la réponse du deck => évite une erreur console
           this.initStateFromService(deck)
         })
@@ -269,7 +270,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
     })
 
     if (this.id()) {
-      this.apiService.getDeck({id: this.id(), version: this.version(), language: "FR"}).subscribe(deck => {
+      this.apiService.getDeck({id: this.id(), version: this.version(), minorVersion: this.minorVersion(), language: "FR"}).subscribe(deck => {
         this.storeService.getUser().subscribe(user => {
           if (deck.owner != user.username) {
             this.router.navigate(['/home']);

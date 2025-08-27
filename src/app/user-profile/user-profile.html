@@ -21,7 +21,7 @@
           <br>
           <div class="listDeck">
             @for (deck of routeUserdecks(); track deck.deckId) {
-              <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
+              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck" [ngClass]="deck.god">
                 <div style="display: flex; flex-direction: column; width: 90px">
                   <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
                 </div>
@@ -100,7 +100,7 @@
 
           <div class="listDeck">
             @for (deck of favorites(); track deck.deckId) {
-              <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
+              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck" [ngClass]="deck.god">
                 <div style="display: flex; flex-direction: column; width: 90px">
                   <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
                 </div>
@@ -140,7 +140,7 @@
 
           <div class="listDeck">
             @for (deck of connectedUserDecks(); track deck.deckId) {
-              <div [routerLink]="['/decks/view', deck.deckId, deck.version]" class="deck" [ngClass]="deck.god">
+              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck" [ngClass]="deck.god">
                 <div style="display: flex; flex-direction: column; width: 90px">
                   <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
                 </div>

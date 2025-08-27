@@ -59,6 +59,7 @@ export class ViewDeck {
 
   id = input.required<string>()
   version = input.required<number>()
+  minorVersion = input.required<number>()
 
   apiService = inject(ApiService)
   authenticatedApiService = inject(AuthenticatedApiService)
@@ -82,7 +83,7 @@ export class ViewDeck {
 
   constructor() {
     toObservable(this.version).pipe(
-      switchMap((id) => this.apiService.getDeck({id: this.id(), version: this.version(), language: 'FR'})),
+      switchMap((id) => this.apiService.getDeck({id: this.id(), version: this.version(), minorVersion: this.minorVersion(), language: 'FR'})),
       takeUntilDestroyed(),
     ).subscribe(response => this.data.set(response));
   }

@@ -16,6 +16,6 @@ export const routes: Routes = [
   {path: 'decks/create', component: Deckbuilder},
   {path: 'decks/browse', component: SearchDeck},
   {path: 'media', component: StreamList},
-  {path: 'decks/view/:id/:version', component: ViewDeck},
-  {path: 'decks/edit/:id/:version', component: Deckbuilder},
+  {path: 'decks/view/:id/:version/:minorVersion', component: ViewDeck},
+  {path: 'decks/edit/:id/:version/:minorVersion', component: Deckbuilder},
 ];

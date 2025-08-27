@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {TwitchModel} from "../base/models/twitch.model";
-import {YtVideo} from "../base/models/ytVideo";
+import {MediaModel} from "../base/models/media.model";
 import {OAuthService} from "angular-oauth2-oidc";
 
 @Injectable({
@@ -27,20 +26,24 @@ export class ApiService {
   }
 
   // videos
-  getStreams(): Observable<TwitchModel[]> {
-    return this.http.get<TwitchModel[]>(this.BASE_API + '/twitch/streams');
+  getStreams(): Observable<MediaModel[]> {
+    return this.http.get<MediaModel[]>(this.BASE_API + '/twitch/streams');
   }
 
-  getVods(): Observable<TwitchModel[]> {
-    return this.http.get<TwitchModel[]>(this.BASE_API + '/twitch/vods');
+  getVods(): Observable<MediaModel[]> {
+    return this.http.get<MediaModel[]>(this.BASE_API + '/twitch/vods');
+  }
+
+  getVodsAndVideos(): Observable<MediaModel[]> {
+    return this.http.get<MediaModel[]>(this.BASE_API + '/media/content');
   }
 
   checkVideo(videoId): Observable<{ type: string, invalidFormat: boolean }> {
     return this.http.get<any>(this.BASE_API + `/twitch/check/${videoId}`);
   }
 
-  getLastVideos(): Observable<YtVideo[]> {
-    return this.http.get<YtVideo[]>(this.BASE_API + '/youtube/videos');
+  getLastVideos(): Observable<MediaModel[]> {
+    return this.http.get<MediaModel[]>(this.BASE_API + '/youtube/videos');
   }
 
   //news
@@ -81,12 +84,12 @@ export class ApiService {
     return this.http.get<any>(this.BASE_API + `/decks/owners`);
   }
 
-  getDeck(params: { id: string, version: number, language: string }): Observable<any> {
+  getDeck(params: { id: string, version: number, minorVersion: number, language: string }): Observable<any> {
     if (this.oauth.hasValidAccessToken()) {
       let headers = this.getAuthHeaders();
-      return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}`, {headers});
+      return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}/minorVersion/${params.minorVersion}`, {headers});
     } else {
-      return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}`);
+      return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}/minorVersion/${params.minorVersion}`);
     }
   }
 

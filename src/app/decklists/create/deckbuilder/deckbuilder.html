@@ -205,13 +205,21 @@
 <ng-template #MAIN>
   <div class="formAndCards">
     <app-filter-form [god]="god" [form]="form"></app-filter-form>
-    <div style="display: flex; ">
+    <div style="display: flex; justify-content:center; ">
       <div style="display:flex;">
         <div class="cards">
-          @for (card of displayedCards(); track card.id; let idx = $index) {
-            <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[card.id]"
-                 (click)="selectCard(card, $event)"
-                 class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
+          @if (displayedCards() && !displayedCards().length) {
+          <div style="display:flex; align-content:center; flex-direction:column; align-items:center; width:100%;">
+            <img style="width:250px;" src="/assets/public/nothing_placeholder.png">
+            Aucune carte ne correspond à ces filtres.
+          </div>
+          }
+          @else {
+            @for (card of displayedCards(); track card.id; let idx = $index) {
+              <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[card.id]"
+                   (click)="selectCard(card, $event)"
+                   class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
+            }
           }
         </div>
       </div>
