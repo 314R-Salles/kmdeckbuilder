@@ -93,8 +93,8 @@ export class ApiService {
     }
   }
 
-  getDeckForCrawler(params: { id: string, version: number }): Observable<any> {
-    return this.http.get<any>(this.BASE_API + `/seo/decks/${params.id}/version/${params.version}`);
+  getDeckForCrawler(params: { id: string, version: number, minorVersion: number }): Observable<any> {
+    return this.http.get<any>(this.BASE_API + `/seo/decks/${params.id}/version/${params.version}/minorVersion/${params.minorVersion}`);
   }
 
 
