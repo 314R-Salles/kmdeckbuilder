@@ -11,9 +11,20 @@
   flex-flow: row;
   align-items: center;
   justify-content: space-between;
-  height:45px;
+  height: 45px;
   background: #313282;
   color: white;
+}
+
+.headerBtn {
+  border: 1px solid #FFAE00;
+  border-radius: 2px;
+  margin-right: 5px;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  background-color: #262241;
 }
 
 // Revoir les menus dans les headers pour avoir du routerLinkActive?
@@ -35,7 +46,7 @@
   left: 10px;
   min-width: 160px;
   font-size: xx-large;
-  cursor:pointer;
+  cursor: pointer;
   //color: #ffd8eb !important; // theme material par defaut
 }
 
@@ -52,10 +63,10 @@
 .library-button {
   text-align: center;
   width: 100px;
-  cursor:pointer;
-  align-content:center;
-  margin-right:2px;
-  margin-left:2px;
+  cursor: pointer;
+  align-content: center;
+  margin-right: 2px;
+  margin-left: 2px;
 }
 
 .library-button:hover {

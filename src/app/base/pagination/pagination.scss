@@ -12,7 +12,7 @@
   background: #313282;
 }
 
-.paginationBtn:hover {
+.paginationBtn:hover:not(.disabledBtn)  {
   cursor:pointer;
   background: rgb(165, 190, 255, 0.5) !important;
 }

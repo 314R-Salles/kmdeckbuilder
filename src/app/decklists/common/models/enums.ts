@@ -45,7 +45,11 @@ export const GOD_ARRAY = [
 
 
 export enum Language {
-  FR, EN, ES, BR, RU
+  FR = 'FR',
+  EN = 'EN',
+  ES = 'ES',
+  BR = 'BR',
+  RU = 'RU'
 }
 
 

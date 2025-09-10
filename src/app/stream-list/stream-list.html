@@ -109,7 +109,7 @@
             <div style="display:flex;">
               <div class="stream-displayName">{{ stream.displayName }}</div>
               @if (stream.live) {
-              <div style="margin-left:5px; color:white;">/ depuis {{ stream.startedAt }}</div>
+              <div style="margin-left:5px; color:white;">/ depuis {{ stream.created_at }}</div>
               }
               @else {
               <div style="margin-left:5px; color:white;">/ il y a {{ stream.created_at }}</div>

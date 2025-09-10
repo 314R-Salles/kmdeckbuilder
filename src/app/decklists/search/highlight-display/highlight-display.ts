@@ -1,6 +1,7 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, inject, input} from '@angular/core';
 import {StoreService} from '../../../store.service';
 import {NgTemplateOutlet} from "@angular/common";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-highlight-display',
@@ -12,12 +13,11 @@ import {NgTemplateOutlet} from "@angular/common";
 })
 export class HighlightDisplay {
 
+  storeService = inject(StoreService);
+
+  currentLanguage = toSignal(this.storeService.getLanguage())
   illustrations = input<{ highlightOrder: number; cardId: number }[]>();
   illustrationsNumber = computed(() => this.illustrations()?.length)
-  CARD_ILLUSTRATIONS
-
-  constructor(private storeService: StoreService) {
-    this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap()
-  }
+  CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap()
 
 }

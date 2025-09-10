@@ -27,7 +27,7 @@ import {
 } from '../../common/models/enums';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {RaritySynthesis} from '../rarity-synthesis/rarity-synthesis';
-import {switchMap} from "rxjs";
+import {combineLatest, debounceTime, switchMap} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {isValidTwitchURL, isValidYouTubeURL} from "../../../base/models/utils";
 import {YouTubePlayer} from "@angular/youtube-player";
@@ -74,12 +74,17 @@ export class ViewDeck {
   metaService = inject(Meta)
   titleService = inject(Title)
 
+  combinedObservable
+    = combineLatest([toObservable(this.version), this.storeService.getLanguage()])
+    .pipe(debounceTime(50))
+
+
   data = signal<any>(null);
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
-      toObservable(this.version).pipe(
-        switchMap((id) => this.apiService.getDeck({id: this.id(), version: this.version(), minorVersion: this.minorVersion(), language: 'FR'})),
+      this.combinedObservable.pipe(
+        switchMap(([version, language]) => this.apiService.getDeck({id: this.id(), version, minorVersion: this.minorVersion(), language})),
         takeUntilDestroyed(),
       ).subscribe(response => this.data.set(response));
     } else {
@@ -204,8 +209,6 @@ export class ViewDeck {
   deleteDeck(deck) {
     this.authenticatedApiService.deleteDeck(deck.deckId).subscribe(r => {
       const dialogRef = this.dialog.open(DeckDeletedPopin, {
-        // width: '400px',
-        // height: '250px',
         panelClass: 'endModalCss',
         data: {}
       });

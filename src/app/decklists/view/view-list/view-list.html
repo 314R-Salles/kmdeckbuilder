@@ -13,7 +13,7 @@
   <ng-template #NEUTRE>
     @if (sortedSynthesis()['NEUTRE'].length) {
       <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
-        <span style="display:relative; position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
+        <span style="position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
 
   <img [src]="'/assets/public/creatureIcon.png'" style="width:20px; height:20px;" class="type">
         </span>
@@ -38,9 +38,8 @@
               </div>
             }
             <div class="cardSpec">
-              <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[card.id]">
+              <img [src]="'/assets/public/card/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
             </div>
-
           </div>
         }
       </div>
@@ -49,8 +48,8 @@
   </ng-template>
   <ng-template #GOD_CREA>
     @if (sortedSynthesis()['GOD_CREA'].length) {
-    <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
-      <span style="display:relative; position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
+      <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
+      <span style="position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
 
   <img [src]="'/assets/public/creatureIcon.png'" style="width:20px; height:20px;" class="type">
       </span>
@@ -78,7 +77,7 @@
               </div>
             }
             <div class="cardSpec">
-              <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[card.id]">
+              <img [src]="'/assets/public/card/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
             </div>
           </div>
         }
@@ -88,8 +87,8 @@
 
   <ng-template #GOD_SPELL>
     @if (sortedSynthesis()['GOD_SPELL'].length) {
-    <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
-      <span style="display:relative; position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
+      <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
+      <span style="position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
 
 <img [src]="'/assets/public/spellIcon.png'" style="width:20px; height:20px;" class="type">
       </span>
@@ -100,7 +99,7 @@
           >
             <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]"
                  style="width:60px; height:30px; position:absolute; left:10px;">
-            <!--        les krosfi sont en x2 donc pas de compteur donc width 215 au lieu de 188? ou alors c'est si count = 1? -->
+            <!--        les krosfi sont en x1 donc pas de compteur donc width 215 au lieu de 188? ou alors c'est si count = 1? -->
             <div style="position:absolute; left:75px;"
                  [ngStyle]="{'width.px': 'KROSMIQUE' === card.rarity ? 215: 188}">
               <div
@@ -117,7 +116,7 @@
               </div>
             }
             <div class="cardSpec">
-              <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[card.id]">
+              <img [src]="'/assets/public/card/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
             </div>
           </div>
         }
@@ -127,8 +126,9 @@
 
   <ng-template #KROSFI>
     @if (sortedSynthesis()['KROSFI'].length) {
-    <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
-      <span style="display: flex; align-items: baseline; position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
+      <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
+      <span
+        style="display: flex; align-items: baseline; position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
         <span style="
   background: #FFFFEE !important; display: block; width:15px; height:15px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
       </span>
@@ -153,7 +153,7 @@
               </div>
             }
             <div class="cardSpec">
-              <img [src]="'/assets/public/card/fr/'+CARD_ILLUSTRATIONS[card.id]">
+              <img [src]="'/assets/public/card/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
             </div>
           </div>
         }

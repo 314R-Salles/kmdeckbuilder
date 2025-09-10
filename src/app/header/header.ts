@@ -4,6 +4,7 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {AuthService} from "../auth.service";
+import {LanguageDropdown} from "../base/language-dropdown/language-dropdown";
 
 @Component({
   selector: 'app-header',
@@ -13,6 +14,7 @@ import {AuthService} from "../auth.service";
     MatMenu,
     MatMenuTrigger,
     MatMenuItem,
+    LanguageDropdown,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss'

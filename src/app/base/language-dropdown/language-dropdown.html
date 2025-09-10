@@ -1,0 +1,10 @@
+<div class="dropdown language" (click)="dropdownClick()">
+  <div class="dropbtn language appFont2">
+    {{ currentLanguage() }}
+  </div>
+</div>
+<div class="dropdown-content language" [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
+  @for (language of allLanguages; track language) {
+    <span class="appFont2" (click)="setLanguage(language)">{{ language }}</span>
+  }
+</div>

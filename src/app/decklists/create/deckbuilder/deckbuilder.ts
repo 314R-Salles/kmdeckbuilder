@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, inject, input, OnInit, signal} from '@angular/core';
+import {AfterViewInit, Component, computed, inject, input, OnDestroy, OnInit, signal} from '@angular/core';
 import {DeckCreatedPopin} from '../../../popins/deck-created-popin/deck-created-popin';
 import {CardType, CREA, DEFAULT_CARD, God, SORT} from '../../common/models/enums';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {debounceTime, distinctUntilChanged} from 'rxjs';
+import {combineLatest, debounceTime, distinctUntilChanged, switchMap} from 'rxjs';
 import {Card} from '../../common/models/card.model';
 import {ApiService} from '../../../api/api.service';
 import {AuthenticatedApiService} from '../../../api/authenticated-api.service';
@@ -19,6 +19,7 @@ import {QuillEditorComponent} from 'ngx-quill';
 import {Pagination} from '../../../base/pagination/pagination';
 import {VideoValidator} from "../../../base/models/utils";
 import {MatError} from "@angular/material/input";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-deckbuilder',
@@ -39,7 +40,7 @@ import {MatError} from "@angular/material/input";
   templateUrl: './deckbuilder.html',
   styleUrl: './deckbuilder.scss'
 })
-export class Deckbuilder implements OnInit, AfterViewInit {
+export class Deckbuilder implements OnInit, OnDestroy, AfterViewInit {
   apiService = inject(ApiService);
   authenticatedApiService = inject(AuthenticatedApiService);
   router = inject(Router);
@@ -55,6 +56,10 @@ export class Deckbuilder implements OnInit, AfterViewInit {
   minorVersion = input<number>();
   isUpdate = false
   isClone = false
+  currentLanguage = toSignal(this.storeService.getLanguage())
+  cardNames = computed(() => this.storeService.getCardNamesAsMap(this.currentLanguage()))
+
+  currentTab = signal<number>(0);
 
   God = God;
   CARD_ILLUSTRATIONS
@@ -107,7 +112,6 @@ export class Deckbuilder implements OnInit, AfterViewInit {
     apValue: new FormControl(null),
     rarity: new FormControl({key: -1, label: 'Toutes les raretés', color: '', bgColor: ''},),
     content: new FormControl(''),
-    language: new FormControl('FR'),
     // pagination
     pageNumber: new FormControl(0),
     pageSize: new FormControl(21),
@@ -118,7 +122,6 @@ export class Deckbuilder implements OnInit, AfterViewInit {
     extension: new FormControl(''),
   });
 
-  currentTab = 0;
 
   // pour bloquer les infinites du meme nom
   lockedSisterInfinites = []
@@ -132,8 +135,13 @@ export class Deckbuilder implements OnInit, AfterViewInit {
   ];
 
   selectedTags = signal<any>([])
-  allTags = signal<any>([])
+  allTags = toSignal(
+    this.storeService.getLanguage().pipe(
+      switchMap((language) => {
+        return this.apiService.getTagsByLanguage(language)
+      })))
 
+  subscriptions = []
 
   constructor() {
     this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap()
@@ -143,17 +151,27 @@ export class Deckbuilder implements OnInit, AfterViewInit {
     this.initFromParams()
   }
 
-  ngOnInit(): void {
-    this.apiService.getTagsByLanguage("FR").subscribe(tags => {
-      this.allTags.set(tags);
-    })
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe())
+  }
 
-    this.form.valueChanges.pipe(
+  ngOnInit(): void {
+    this.subscriptions.push(combineLatest([
+      this.form.valueChanges,
+      this.storeService.getLanguage()
+    ]).pipe(
       // Annule les doubles appels quand une modif du formulaire en déclenche une autre.
       // Exemple : décocher sort et créa recoche une valeur, les filtres forcent la page 0
       debounceTime(50),
       distinctUntilChanged(),
-    ).subscribe(_ => this.getFilteredCards());
+    ).subscribe(_ => {
+      this.getFilteredCards()
+    }));
+
+    this.subscriptions.push(this.storeService.getLanguage().subscribe(_ => {
+      this.updateState() // rafraichir la liste des cartes selectionnées
+      this.getFilteredCards() // recharger les cartes à l'écran (nom différent donc ordre d'affichage différent)
+    }))
   }
 
   selectGod(index: number) {
@@ -204,7 +222,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
       atLessThan: atMax,
       gods: gods,
       rarity: this.rarity != -1 ? this.rarity : null,
-      language: "FR",
+      language: this.currentLanguage(),
       family: null,
       name: this.content ? this.content : null,
       description: this.content ? this.content : null,
@@ -234,7 +252,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
       }),
       name: this.deckForm.get('name').value,
       videoLink: this.videoLinkControl.value,
-      description: this.deckForm.get('description').value.replace(/&nbsp;/g, ' ').replaceAll(/(?=\s)[^\r\n\t]/g, ' '),
+      description: this.deckForm.get('description').value?.replace(/&nbsp;/g, ' ').replaceAll(/(?=\s)[^\r\n\t]/g, ' ') || '',
       god: this.god,
       tags: this.selectedTags().map(tag => tag.id)
     }
@@ -260,7 +278,12 @@ export class Deckbuilder implements OnInit, AfterViewInit {
   initFromParams() {
     this.route.queryParamMap.subscribe(params => {
       if (params.get("from")) {
-        this.apiService.getDeck({id: params.get("from"), version: +params.get("v"), minorVersion: +params.get("mV"), language: 'FR'}).subscribe(deck => {
+        this.apiService.getDeck({
+          id: params.get("from"),
+          version: +params.get("v"),
+          minorVersion: +params.get("mV"),
+          language: this.currentLanguage()
+        }).subscribe(deck => {
           this.isClone = true // dans la réponse du deck => évite une erreur console
           this.initStateFromService(deck)
         })
@@ -268,7 +291,12 @@ export class Deckbuilder implements OnInit, AfterViewInit {
     })
 
     if (this.id()) {
-      this.apiService.getDeck({id: this.id(), version: this.version(), minorVersion: this.minorVersion(), language: "FR"}).subscribe(deck => {
+      this.apiService.getDeck({
+        id: this.id(),
+        version: this.version(),
+        minorVersion: this.minorVersion(),
+        language: this.currentLanguage()
+      }).subscribe(deck => {
         this.storeService.getUser().subscribe(user => {
           if (deck.owner != user.username) {
             this.router.navigate(['/home']);
@@ -283,7 +311,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
 
   initStateFromService(deck) {
     this.god = +God[deck.god]
-    this.currentTab = 1
+    this.currentTab.set(1)
 
     // faut ajouter chaque carte en autant d'exemplaires que son 'count'
     deck.cards.forEach(card => {
@@ -292,18 +320,21 @@ export class Deckbuilder implements OnInit, AfterViewInit {
       }
     })
 
-    deck.highlights.forEach(h => {
-      this.selectedCards.find(c => c.id === h.cardId).highlight = h.highlightOrder
-      this.illustrations[h.highlightOrder] = this.selectedCards.find(c => c.id === h.cardId);
-    })
+    // Lors d'une duplication on ne recharge pas les compléments
+    if (!this.isClone) {
+      deck.highlights.forEach(h => {
+        this.selectedCards.find(c => c.id === h.cardId).highlight = h.highlightOrder
+        this.illustrations[h.highlightOrder] = this.selectedCards.find(c => c.id === h.cardId);
+      })
 
-    this.selectedTags.set(deck.tags)
+      this.selectedTags.set(deck.tags)
 
-    this.illustrationsNumber = deck.highlights.length
+      this.illustrationsNumber = deck.highlights.length
 
-    this.deckForm.get('name').setValue(deck.name)
-    this.deckForm.get('description').setValue(deck.description);
-    this.deckForm.get('videoLink').setValue(deck.videoLink);
+      this.deckForm.get('name').setValue(deck.name)
+      this.deckForm.get('description').setValue(deck.description);
+      this.deckForm.get('videoLink').setValue(deck.videoLink);
+    }
 
     this.updateState()
     this.getFilteredCards()
@@ -447,6 +478,8 @@ export class Deckbuilder implements OnInit, AfterViewInit {
       this.syntheseRarete[card.rarity] = this.syntheseRarete[card.rarity] + 1
       synthese[card.id] = synthese[card.id] ? {...synthese[card.id], count: synthese[card.id].count + 1} : {
         ...card,
+        // on attribue aux carte un nom dans le front en fonction de la langue pour que la liste des cartes sélectionnées se réoordonne
+        name: this.cardNames()[card.id],
         count: 1
       };
       return synthese;
@@ -529,7 +562,7 @@ export class Deckbuilder implements OnInit, AfterViewInit {
 
 
   nextPrev(n) {
-    this.currentTab += n
+    this.currentTab.update(v => v += n)
   }
 
 

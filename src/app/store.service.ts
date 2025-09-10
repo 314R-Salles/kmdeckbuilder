@@ -1,16 +1,24 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Observable, ReplaySubject} from "rxjs";
+import {ApiService} from "./api/api.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoreService {
 
+  apiService = inject(ApiService)
+
   news: any[]
   cardIllustrations = []
+  cardNames = {
+    FR: [], EN: [], ES: [], BR: [], RU: []
+  }
   private userSubject = new ReplaySubject(1);
+  private languageSubject: ReplaySubject<string> = new ReplaySubject(1);
 
   user = this.userSubject.asObservable();
+  language: Observable<string> = this.languageSubject.asObservable();
 
   constructor() {
     this.userSubject.next(null) // valeur initiale sinon les guards fonctionnent pas.
@@ -23,6 +31,46 @@ export class StoreService {
   getUser(): Observable<any> {
     return this.user
   }
+
+  // en fait charger les tags ici de la meme façon? //FIXME
+  setLanguage(language: string) {
+    if (this.getCardNames(language).length === 0) {
+      this.apiService.getCardNamesByLanguage(language).subscribe(cards => {
+        this.setCardNames(this.getStorageLanguage(), cards)
+        this.languageSubject.next(language)
+      })
+    } else {
+      this.languageSubject.next(language)
+    }
+  }
+
+  getLanguage() {
+    return this.language
+  }
+
+  setStorageLanguage(language: string) {
+    localStorage.setItem('language', language)
+  }
+
+  getStorageLanguage() {
+    return localStorage.getItem('language')
+  }
+
+  setCardNames(language: string, cards: any[]) {
+    this.cardNames[language] = cards;
+  }
+
+  getCardNames(language) {
+    return this.cardNames[language];
+  }
+
+  getCardNamesAsMap(language) {
+    return this.cardNames[language].reduce(function (map, obj) {
+      map[obj.id] = obj.name;
+      return map;
+    }, {})
+  }
+
 
   setNews(news: any[]) {
     this.news = news

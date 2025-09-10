@@ -8,7 +8,7 @@ import {Router, RouterLink} from '@angular/router';
 import {DatePipe, NgClass} from '@angular/common';
 import {MatError} from '@angular/material/input';
 import {Section} from '../base/section/section';
-import {map, of, switchMap} from "rxjs";
+import {combineLatest, debounceTime, filter, map, switchMap} from "rxjs";
 import {toObservable, toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
@@ -34,22 +34,27 @@ export class UserProfile {
   apiService = inject(ApiService);
   authenticatedApiService = inject(AuthenticatedApiService);
 
+  username = input.required<string>();
+  readOnly = computed(() => !this.connectedUser() || this.username() !== this.connectedUser().username);
   connectedUser = toSignal(this.storeService.getUser())
+
+
+  combinedObservable
+    = combineLatest([toObservable<string>(this.username), this.storeService.getUser(), this.storeService.getLanguage()])
+    .pipe(debounceTime(50))
+
   connectedUserDecks = toSignal(
-    toObservable<any>(this.connectedUser).pipe(
-      switchMap((_) => {
-        if (_) {
-          const request = {
-            users: [this.connectedUser().username],
-            language: "FR",
-            searchBy: "RECENT",
-            page: 0,
-            pageSize: 20,
-          };
-          return this.apiService.getDecks(request)
-        } else {
-          return of({content: []})
-        }
+    this.combinedObservable.pipe(
+      filter(([_, user, __]) => !!user),
+      switchMap(([_, user, language]) => {
+        const request = {
+          users: [user.username],
+          language,
+          searchBy: "RECENT",
+          page: 0,
+          pageSize: 20,
+        };
+        return this.apiService.getDecks(request)
       }),
       map(searchResults => {
         return searchResults.content;
@@ -57,13 +62,10 @@ export class UserProfile {
     ))
 
   favorites = toSignal(
-    toObservable<any>(this.connectedUser).pipe(
-      switchMap((_) => {
-        if (_) {
-          return this.authenticatedApiService.getRecentFavorites("FR")
-        } else {
-          return of({content: []})
-        }
+    this.combinedObservable.pipe(
+      filter(([_, user, __]) => !!user),
+      switchMap(([_, __, language]) => {
+        return this.authenticatedApiService.getRecentFavorites(language)
       }),
       map(searchResults => {
         return searchResults.content;
@@ -77,42 +79,31 @@ export class UserProfile {
   }));
 
 
-  username = input.required<string>();
-
-
   routeUser = toSignal(
-    toObservable<string>(this.username).pipe(
-      switchMap((search) => {
-        if (search) {
-          return this.apiService.getUser(this.username())
-        } else {
-          return of(null)
-        }
-      }),
+    this.combinedObservable.pipe(
+      // filter(([username, _, __]) => !!username),
+      switchMap(([username, _, __]) => {
+        return this.apiService.getUser(this.username())
+      })
     ))
 
   routeUserdecks = toSignal(
-    toObservable<any>(this.routeUser).pipe(
-      switchMap((user) => {
-        if (user) {
-          const request = {
-            users: [user.username],
-            searchBy: "RECENT",
-            language: "FR",
-            page: 0,
-            pageSize: 20,
-          };
-          return this.apiService.getDecks(request)
-        } else {
-          return of({content: []})
-        }
+    this.combinedObservable.pipe(
+      filter(([username, _, __]) => !!username),
+      switchMap(([username, __, language]) => {
+        const request = {
+          users: [username],
+          searchBy: "RECENT",
+          language,
+          page: 0,
+          pageSize: 20,
+        };
+        return this.apiService.getDecks(request)
       }),
       map(searchResults => {
         return searchResults.content;
       })
     ))
-
-  readOnly = computed(() => !this.connectedUser() || this.username() !== this.connectedUser().username);
 
 
   updateUser() {

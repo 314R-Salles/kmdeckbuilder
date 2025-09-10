@@ -1,0 +1,22 @@
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: linear-gradient(90deg, rgba(20, 43, 128, 0.9) 10%, rgba(13, 34, 121, 0.9) 35%, rgb(30, 54, 158, 90%) 65%, rgb(30, 39, 185, 90%) 95%);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+
+  width: 40px;
+  z-index: 1;
+}
+
+.dropdown-content span {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border: solid #b5b3ec 1px;
+  box-sizing: border-box;
+}
+
+.dropdown-content span:hover {
+  background-color: rgb(165, 190, 255, 0.5)
+}
+

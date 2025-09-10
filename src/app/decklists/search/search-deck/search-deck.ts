@@ -1,9 +1,9 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {ApiService} from '../../../api/api.service';
 import {AuthenticatedApiService} from '../../../api/authenticated-api.service';
 import {StoreService} from '../../../store.service';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {debounceTime, distinctUntilChanged} from 'rxjs';
+import {combineLatest, debounceTime, distinctUntilChanged, switchMap} from 'rxjs';
 import {Pagination} from '../../../base/pagination/pagination';
 import {Section} from '../../../base/section/section';
 import {RouterLink} from '@angular/router';
@@ -15,6 +15,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {OwnerDropdown} from '../owner-dropdown/owner-dropdown';
 import {CardDropdown} from '../card-dropdown/card-dropdown';
 import {HighlightDisplay} from "../highlight-display/highlight-display";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-search-deck',
@@ -38,7 +39,12 @@ import {HighlightDisplay} from "../highlight-display/highlight-display";
   templateUrl: './search-deck.html',
   styleUrl: './search-deck.scss'
 })
-export class SearchDeck implements OnInit {
+export class SearchDeck implements OnInit, OnDestroy {
+  apiService = inject(ApiService)
+  authenticatedApiService = inject(AuthenticatedApiService)
+  storeService = inject(StoreService)
+
+  currentLanguage = toSignal(this.storeService.getLanguage())
 
   isLoggedIn
 
@@ -68,7 +74,13 @@ export class SearchDeck implements OnInit {
   selectedNegativeTags = signal<any>([])
 
   allUsers = signal<any>([])
-  allTags = signal<any>([])
+
+  allTags = toSignal(
+    this.storeService.getLanguage().pipe(
+      switchMap((language) => {
+        return this.apiService.getTagsByLanguage(language)
+      })))
+
 
   searchForm = new FormGroup({
     content: new FormControl(''),
@@ -76,12 +88,14 @@ export class SearchDeck implements OnInit {
     dustCost: new FormControl('')
   })
 
-  apiService = inject(ApiService)
-  authenticatedApiService = inject(AuthenticatedApiService)
-  storeService = inject(StoreService)
+  subscriptions = []
 
   constructor() {
     this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe())
   }
 
   ngOnInit() {
@@ -89,17 +103,16 @@ export class SearchDeck implements OnInit {
       this.allUsers.set(owners);
     })
 
-    this.apiService.getTagsByLanguage("FR").subscribe(tags => {
-      this.allTags.set(tags);
-    })
-
-    this.storeService.getUser().pipe(
+    this.subscriptions.push(combineLatest([
+      this.storeService.getUser(),
+      this.storeService.getLanguage()
+    ]).pipe(
       // peut eviter un appel sur  avec user null puis un appel sur user valorisé
       debounceTime(50))
-      .subscribe(e => {
-        this.isLoggedIn = e?.lastLogin
+      .subscribe(([user, _]) => {
+        this.isLoggedIn = user?.lastLogin
         this.search();
-      })
+      }))
 
     this.reloadFilters();
 
@@ -140,7 +153,7 @@ export class SearchDeck implements OnInit {
       dustCost: this.searchForm.get('dustCost').value,
       content: this.searchForm.get('content').value,
       favoritesOnly: this.favoritesOnly,
-      language: "FR",
+      language: this.currentLanguage(),
       searchBy: this.sortFilter,
       page: this.currentPage,
       pageSize: this.pageSize,

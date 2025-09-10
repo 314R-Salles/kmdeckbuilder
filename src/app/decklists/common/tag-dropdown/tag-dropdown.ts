@@ -24,7 +24,7 @@ export class TagDropdown {
   tagSearch = signal<string>('');
 
   displayedTags = computed(() => {
-    let r = this.allTags().filter(result => !this.selectedTags().map(c => c.title).includes(result.title));
+    let r = (this.allTags() || []).filter(result => !this.selectedTags().map(c => c.title).includes(result.title));
     return r.filter(tag => !this.tagSearch() || tag.title.toLowerCase().indexOf(this.tagSearch().toLowerCase()) != -1);
   })
 

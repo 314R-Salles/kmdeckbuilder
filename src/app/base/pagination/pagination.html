@@ -3,7 +3,8 @@
     <button class="paginationBtn" type="button" (click)="down()">«</button>
     @for (page of pagination(); track page) {
       <button class="paginationBtn" type="button" (click)="set(page)"
-              [ngStyle]="{'background-color': page === pageNumber() ? '#FF474D':'#313282'}"> {{ page }}
+              [ngClass]="{'disabledBtn': page < 0}"
+              [ngStyle]="{'background-color': page === pageNumber() ? '#FF474D':'#313282'}"> {{ page > 0 ? page : '...' }}
       </button>
     }
     <button class="paginationBtn" type="button" (click)="up()">»</button>

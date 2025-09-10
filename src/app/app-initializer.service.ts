@@ -21,12 +21,21 @@ export class AppInitializerService {
 
   initApp() {
     if (isPlatformBrowser(this.platformId)) {
+      if (this.storeService.getStorageLanguage() == null) {
+        this.storeService.setStorageLanguage('FR')
+      }
+      this.storeService.setLanguage(this.storeService.getStorageLanguage())
+
       let token = this.extractToken();
       if (token) {
         this.authenticatedApiService.linkAccount(token).subscribe(user => this.storeService.setUser(user))
       }
 
-      return this.apiService.getCardIllustrations().pipe(
+      return this.apiService.getCardNamesByLanguage(this.storeService.getStorageLanguage()).pipe(
+        switchMap(cards => {
+         this.storeService.setCardNames(this.storeService.getStorageLanguage(), cards)
+          return this.apiService.getCardIllustrations()
+        }),
         switchMap(cardList => {
           this.storeService.setCardIllustrations(cardList)
           this.oauthService.configure({

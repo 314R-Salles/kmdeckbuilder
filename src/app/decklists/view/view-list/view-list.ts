@@ -3,6 +3,7 @@ import {StoreService} from '../../../store.service';
 import {CardType, CREA, SORT} from '../../common/models/enums';
 import {NgClass, NgStyle, NgTemplateOutlet} from '@angular/common';
 import {customSort} from "../../../base/models/utils";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-view-list',
@@ -15,9 +16,10 @@ import {customSort} from "../../../base/models/utils";
   styleUrl: './view-list.scss'
 })
 export class ViewList {
+  storeService = inject(StoreService);
+  currentLanguage = toSignal(this.storeService.getLanguage())
 
   cards = input<any[]>();
-  data = input<any>();
 
   sortedSynthesis = computed(() => {
     let synthese = {NEUTRE: [], GOD_CREA: [], GOD_SPELL: [], KROSFI: []}
@@ -47,8 +49,6 @@ export class ViewList {
   })
 
   CARD_ILLUSTRATIONS
-
-  storeService = inject(StoreService)
 
   constructor() {
     this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();

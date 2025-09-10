@@ -2,8 +2,7 @@
 
 @for (card of updatedSynthese(); track card.id) {
   <div [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType" class="card appFont2"
-       (click)="remove(card.id)" style="position:relative;"
-  >
+       (click)="remove(card.id)" style="position:relative;">
     <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]"
          style="width:60px; height:30px; position:absolute; left:10px;">
     <div style="position:absolute; left:75px; width:188px;">

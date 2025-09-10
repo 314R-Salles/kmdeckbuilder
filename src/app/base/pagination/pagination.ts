@@ -1,10 +1,11 @@
 import {Component, computed, input, output} from '@angular/core';
-import {NgStyle} from '@angular/common';
+import {NgClass, NgStyle} from '@angular/common';
 
 @Component({
   selector: 'app-pagination',
   imports: [
-    NgStyle
+    NgStyle,
+    NgClass
   ],
   templateUrl: './pagination.html',
   styleUrl: './pagination.scss'
@@ -29,14 +30,15 @@ export class Pagination {
   }
 
   set(page) {
-    if (page != "...") {
+    if (page > 0) {
       this.pageSet.emit(page);
     }
   }
 
+  // on met un numéro de page négatif là où on va afficher "..." à l'écran (pour créer un array de numbers plutot qu'un array mixte (number/string)
   pagination = computed(() => {
     // Want a length 11 array which contains value looking like this :
-    const pagination = [];
+    const pagination: number[] = [];
 
     // Cas : pas assez de pages pour couper, 1 2 3 4 5 6 7 8 9 10 11
     if (this.totalPages() <= 11) {
@@ -48,13 +50,13 @@ export class Pagination {
       for (let i = 1; i <= 9; i++)
         pagination.push(i);
 
-      pagination.push("...");
+      pagination.push(-1);
       pagination.push(this.totalPages());
     }
     // Cas : fin = 1 ... TOTALPAGES-9 TOTALPAGES-8 ... TOTALPAGES
     else if (this.pageNumber() > this.totalPages() - 6) {
       pagination.push(1);
-      pagination.push("...");
+      pagination.push(-1);
 
       for (let i = this.totalPages() - 8; i <= this.totalPages(); i++)
         pagination.push(i);
@@ -62,10 +64,10 @@ export class Pagination {
     // Cas : milieu = 1 ...3 4 5 PAGENUMBER 7 8 9... TOTALPAGES
     else {
       pagination.push(1);
-      pagination.push("...");
+      pagination.push(-1);
       for (let i = this.pageNumber() - 3; i <= this.pageNumber() + 3; i++)
         pagination.push(i);
-      pagination.push("...");
+      pagination.push(-2);
       pagination.push(this.totalPages());
     }
     return pagination;

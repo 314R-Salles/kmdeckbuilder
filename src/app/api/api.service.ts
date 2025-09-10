@@ -71,6 +71,10 @@ export class ApiService {
     return this.http.get<any>(this.BASE_API + `/cards/illustrations`);
   }
 
+  getCardNamesByLanguage(language): Observable<any> {
+    return this.http.get<any>(this.BASE_API + `/cards/names/${language}`);
+  }
+
   getDecks(form: any): Observable<any> {
     if (this.oauth.hasValidAccessToken()) {
       let headers = this.getAuthHeaders();
