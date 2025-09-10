@@ -24,6 +24,8 @@ export class CardDropdown {
   apiService = inject(ApiService)
   storeService = inject(StoreService)
 
+  currentLanguage = toSignal(this.storeService.getLanguage())
+
   selectedGods = input<any[]>([]);
   selectedCards = input<any[]>([]);
   onSelectCard = output<any>();
@@ -39,7 +41,7 @@ export class CardDropdown {
           return this.apiService.getCardsByName({
             gods: this.selectedGods().length ? [...this.selectedGods().map(g => g.id), 0] : [],
             name: search,
-            language: 'FR',
+            language: this.currentLanguage(),
             pageNumber: 0,
             pageSize: 100
           })

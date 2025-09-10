@@ -4,10 +4,12 @@ import {UserProfile} from "./user-profile/user-profile";
 import {SearchDeck} from "./decklists/search/search-deck/search-deck";
 import {StreamList} from "./stream-list/stream-list";
 import {ViewDeck} from "./decklists/view/view-deck/view-deck";
+import {Temppage} from "./temppage/temppage";
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: Home},
+  {path: 'temp', component: Temppage},
   {path: 'user', component: UserProfile},
   {path: 'user/:username', component: UserProfile},
   {

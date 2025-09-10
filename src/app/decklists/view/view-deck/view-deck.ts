@@ -87,24 +87,24 @@ export class ViewDeck {
         switchMap(([version, language]) => this.apiService.getDeck({id: this.id(), version, minorVersion: this.minorVersion(), language})),
         takeUntilDestroyed(),
       ).subscribe(response => this.data.set(response));
-    } else {
-      this.apiService.getDeckForCrawler({id: this.id(), version: this.version(), minorVersion: this.minorVersion()}).subscribe(deckView => {
-        // this.titleService.setTitle(deckView.name)
-        this.metaService.removeTag("name='description'");
-        this.metaService.addTags([
-          {
-            name: 'description',
-            content: deckView.name,
-          },
-          {
-            property: 'og:image',
-            content: `/assets/${this.id()}-${this.version()}-${this.minorVersion()}.png`
-          }, {
-            property: 'twitter:image',
-            content: `/assets/${this.id()}-${this.version()}-${this.minorVersion()}.png`
-          },
-        ]);
-      })
+    // } else {
+    //   this.apiService.getDeckForCrawler({id: this.id(), version: this.version(), minorVersion: this.minorVersion()}).subscribe(deckView => {
+    //     // this.titleService.setTitle(deckView.name)
+    //     this.metaService.removeTag("name='description'");
+    //     this.metaService.addTags([
+    //       {
+    //         name: 'description',
+    //         content: deckView.name,
+    //       },
+    //       {
+    //         property: 'og:image',
+    //         content: `/assets/${this.id()}-${this.version()}-${this.minorVersion()}.png`
+    //       }, {
+    //         property: 'twitter:image',
+    //         content: `/assets/${this.id()}-${this.version()}-${this.minorVersion()}.png`
+    //       },
+    //     ]);
+    //   })
     }
   }
 
