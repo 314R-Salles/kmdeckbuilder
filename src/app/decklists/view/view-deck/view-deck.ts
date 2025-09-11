@@ -84,11 +84,11 @@ export class ViewDeck {
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
       this.combinedObservable.pipe(
-        switchMap(([version, language]) => this.apiService.getDeck({id: this.id(), version, minorVersion: this.minorVersion(), language})),
+        switchMap(([version, language]) => this.apiService.getDeck({id: this.id(), version, language})),
         takeUntilDestroyed(),
       ).subscribe(response => this.data.set(response));
     // } else {
-    //   this.apiService.getDeckForCrawler({id: this.id(), version: this.version(), minorVersion: this.minorVersion()}).subscribe(deckView => {
+    //   this.apiService.getDeckForCrawler({id: this.id(), version: this.version()}).subscribe(deckView => {
     //     // this.titleService.setTitle(deckView.name)
     //     this.metaService.removeTag("name='description'");
     //     this.metaService.addTags([

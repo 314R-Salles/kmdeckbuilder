@@ -88,17 +88,17 @@ export class ApiService {
     return this.http.get<any>(this.BASE_API + `/decks/owners`);
   }
 
-  getDeck(params: { id: string, version: number, minorVersion: number, language: string }): Observable<any> {
+  getDeck(params: { id: string, version: number, language: string }): Observable<any> {
     if (this.oauth.hasValidAccessToken()) {
       let headers = this.getAuthHeaders();
-      return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}/minorVersion/${params.minorVersion}`, {headers});
+      return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}`, {headers});
     } else {
-      return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}/minorVersion/${params.minorVersion}`);
+      return this.http.get<any>(this.BASE_API + `/decks/${params.id}/language/${params.language}/version/${params.version}`);
     }
   }
 
-  getDeckForCrawler(params: { id: string, version: number, minorVersion: number }): Observable<any> {
-    return this.http.get<any>(this.BASE_API + `/seo/decks/${params.id}/version/${params.version}/minorVersion/${params.minorVersion}`);
+  getDeckForCrawler(params: { id: string, version: number}): Observable<any> {
+    return this.http.get<any>(this.BASE_API + `/seo/decks/${params.id}/version/${params.version}`);
   }
 
 

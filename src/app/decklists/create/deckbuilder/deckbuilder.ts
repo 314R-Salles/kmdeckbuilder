@@ -281,7 +281,6 @@ export class Deckbuilder implements OnInit, OnDestroy, AfterViewInit {
         this.apiService.getDeck({
           id: params.get("from"),
           version: +params.get("v"),
-          minorVersion: +params.get("mV"),
           language: this.currentLanguage()
         }).subscribe(deck => {
           this.isClone = true // dans la réponse du deck => évite une erreur console
@@ -294,7 +293,6 @@ export class Deckbuilder implements OnInit, OnDestroy, AfterViewInit {
       this.apiService.getDeck({
         id: this.id(),
         version: this.version(),
-        minorVersion: this.minorVersion(),
         language: this.currentLanguage()
       }).subscribe(deck => {
         this.storeService.getUser().subscribe(user => {
