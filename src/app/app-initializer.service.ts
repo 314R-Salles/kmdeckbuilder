@@ -31,11 +31,7 @@ export class AppInitializerService {
         this.authenticatedApiService.linkAccount(token).subscribe(user => this.storeService.setUser(user))
       }
 
-      return this.apiService.getCardNamesByLanguage(this.storeService.getStorageLanguage()).pipe(
-        switchMap(cards => {
-         this.storeService.setCardNames(this.storeService.getStorageLanguage(), cards)
-          return this.apiService.getCardIllustrations()
-        }),
+      return this.apiService.getCardIllustrations().pipe(
         switchMap(cardList => {
           this.storeService.setCardIllustrations(cardList)
           this.oauthService.configure({
