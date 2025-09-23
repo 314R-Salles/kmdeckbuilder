@@ -12,6 +12,8 @@ import {provideClientHydration, withEventReplay} from '@angular/platform-browser
 import {OAuthStorage, provideOAuthClient} from 'angular-oauth2-oidc';
 import {provideHttpClient, withFetch} from '@angular/common/http';
 import {AppInitializerService} from './app-initializer.service';
+import {provideTranslateService} from "@ngx-translate/core";
+import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +27,14 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => {
       const initializerFn = (initApp)(inject(AppInitializerService));
       return initializerFn();
+    }),
+    provideTranslateService({
+      loader: provideTranslateHttpLoader({
+        prefix: '/assets/public/i18n/',
+        suffix: '.json'
+      }),
+      fallbackLang: 'en',
+      lang: 'en'
     }),
   ]
 };

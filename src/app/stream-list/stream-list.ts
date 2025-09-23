@@ -3,13 +3,15 @@ import {PLACEHOLDER, MediaModel} from '../base/models/media.model';
 import {ApiService} from '../api/api.service';
 import {isPlatformBrowser, NgTemplateOutlet, NgStyle} from '@angular/common';
 import {Section} from '../base/section/section';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-stream-list',
   imports: [
     NgTemplateOutlet,
     NgStyle,
-    Section
+    Section,
+    TranslatePipe
   ],
   templateUrl: './stream-list.html',
   styleUrl: './stream-list.scss'
@@ -31,13 +33,12 @@ export class StreamList implements AfterViewInit {
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.apiService.getStreams().subscribe(streams => {
-        this.streams.set(this.updateStreams(streams))
+        this.noLiveStream = streams.length == 0;
 
-        this.noLiveStream = this.streams().length == 0;
-        if (this.streams().length == 0) {
-          this.streams.update(values => {
-            return [...values, PLACEHOLDER];
-          });
+        if (this.noLiveStream) {
+          this.streams.set([PLACEHOLDER]);
+        } else {
+          this.streams.set(this.updateStreams(streams))
         }
 
         if (this.streams().length < 4 && this.frontPage()) {
@@ -47,7 +48,7 @@ export class StreamList implements AfterViewInit {
               // cacher les vods temporaires pendant les streams
               .filter(vod => vod.thumbnailUrl !== "https://vod-secure.twitch.tv/_404/404_processing_%{width}x%{height}.png")
               // cacher les vods de moins de 15 minutes (stream cut involontairement)
-              .filter(vod => vod.duration.includes('h') || Number(vod.duration.split('m')[0])>=15)
+              .filter(vod => vod.duration.includes('h') || Number(vod.duration.split('m')[0]) >= 15)
               .sort((a, b) => {
                 if (a.created_at < b.created_at) {
                   return 1;
@@ -70,7 +71,7 @@ export class StreamList implements AfterViewInit {
           this.vods.set(this.updateVods(
             vods
               .filter(vod => vod.thumbnailUrl !== "https://vod-secure.twitch.tv/_404/404_processing_%{width}x%{height}.png")
-              .filter(vod => vod.duration.includes('h') || Number(vod.duration.split('m')[0])>=15)
+              .filter(vod => vod.duration.includes('h') || Number(vod.duration.split('m')[0]) >= 15)
               .splice(0, 11)
           )))
         this.apiService.getLastVideos().subscribe(videos => this.videos.set(this.updateYoutubeVideos(videos).splice(0, 11)))

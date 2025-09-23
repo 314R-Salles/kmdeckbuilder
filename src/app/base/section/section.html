@@ -16,8 +16,8 @@
     <div
       style="border: #FFAE00 solid 2px; border-radius: 10px; box-sizing: border-box; padding: 20px; background: #262241">
       @if (requiresLogin() && !isLoggedIn()) {
-        Cette fonctionnalité est réservée aux utilisateurs connectés.
-        <div style="background: #3e9ef6;" (click)="login()">Se connecter</div>
+        {{ 'login.required' | translate }}
+        <div style="background: #3e9ef6;" (click)="login()"> {{ 'login.button' | translate }}</div>
       } @else {
         <ng-content></ng-content>
       }

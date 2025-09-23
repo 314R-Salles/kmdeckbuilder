@@ -1,11 +1,13 @@
 <app-section [forceSize]="currentTab() ===1"
              [requiresLogin]="true">
 
-  @if(currentTab() !== 1) {
+  @if (currentTab() !== 1) {
     <ng-container section-header>
-      <div class="sectionTitle">{{ isUpdate ? 'Mise à jour du deck' : 'Création du deck' }}
+      <div class="sectionTitle">{{ (isUpdate ? 'deckbuilder.update.title' : 'deckbuilder.create.title') | translate }}
       </div>
-      <div class="sectionSubtitle">{{ currentTab() === 0 ? ' --- Choix du dieu' : ' --- Compléments' }}</div>
+      <div
+        class="sectionSubtitle">{{ (currentTab() === 0 ? 'deckbuilder.subtitles.god' : 'deckbuilder.subtitles.complements') | translate }}
+      </div>
     </ng-container>
   }
 
@@ -15,17 +17,17 @@
     <div style="display:flex;">
       @if (currentTab() == 2 || currentTab() == 1 && !isUpdate) {
         <button type="button" id="prevBtn" (click)="nextPrev(-1)">
-          Précédent
+          {{ 'deckbuilder.buttons.previous' | translate }}
         </button>
       }
       @if (currentTab() < 2) {
         <button [disabled]="currentTab() == 0 && !god || currentTab() == 1 && selectedCards.length != 45"
-                type="button" id="nextBtn" (click)="nextPrev(1)">Suivant
+                type="button" id="nextBtn" (click)="nextPrev(1)">  {{ 'deckbuilder.buttons.next' | translate }}
         </button>
       }
       @if (currentTab() == 2) {
         <button [disabled]="!deckForm.valid || countDefaultCards() !== (3-illustrationsNumber) || disableSaveButton"
-                (click)="saveDeck()"> {{ isUpdate ? 'Enregistrer' : 'Créer le deck' }}
+                (click)="saveDeck()"> {{ (isUpdate ? 'deckbuilder.buttons.save' : 'deckbuilder.buttons.create') | translate }}
         </button>
       }
 
@@ -214,21 +216,20 @@
   <div class="formAndCards">
     <app-filter-form [god]="god" [form]="form"></app-filter-form>
     <div style="display: flex; justify-content:center; ">
-        <div class="cards">
-          @if (displayedCards() && !displayedCards().length) {
+      <div class="cards">
+        @if (displayedCards() && !displayedCards().length) {
           <div style="display:flex; align-content:center; flex-direction:column; align-items:center; width:100%;">
             <img style="width:250px;" src="/assets/public/nothing_placeholder.png">
             Aucune carte ne correspond à ces filtres.
           </div>
+        } @else {
+          @for (card of displayedCards(); track card.id; let idx = $index) {
+            <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"
+                 (click)="selectCard(card, $event)"
+                 class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
           }
-          @else {
-            @for (card of displayedCards(); track card.id; let idx = $index) {
-              <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"
-                   (click)="selectCard(card, $event)"
-                   class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
-            }
-          }
-        </div>
+        }
+      </div>
     </div>
     <app-pagination [pageNumber]="searchResults?.pageNumber +1 " [totalPages]="searchResults?.totalPages"
                     (pageUp)="pageUp()" (pageDown)="pageDown()" (pageSet)="pageSet($event)"></app-pagination>

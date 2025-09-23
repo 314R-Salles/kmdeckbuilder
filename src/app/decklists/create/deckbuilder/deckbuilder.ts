@@ -20,6 +20,7 @@ import {Pagination} from '../../../base/pagination/pagination';
 import {VideoValidator} from "../../../base/models/utils";
 import {MatError} from "@angular/material/input";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-deckbuilder',
@@ -36,6 +37,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
     CardDropdownFromList,
     Pagination,
     MatError,
+    TranslatePipe,
   ],
   templateUrl: './deckbuilder.html',
   styleUrl: './deckbuilder.scss'

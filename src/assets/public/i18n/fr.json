@@ -1,0 +1,41 @@
+{
+  "login": {
+    "required": "Cette fonctionnalité est réservée aux utilisateurs connectés.",
+    "button": "Se connecter"
+  },
+  "streamList": {
+    "noStream": "Aucun live en cours",
+    "noVod": "On dirait qu'il n'y a pas de VOD !",
+    "noVideo": "On dirait qu'il n'y a pas de vidéos !",
+    "moreVods": "Plus de vidéos sur twitch",
+    "moreVideos": "Plus de vidéos sur Youtube",
+    "mediaPage": {
+      "title": "Krosmaga sur Twitch et Youtube"
+    },
+    "frontPage": {
+      "title": {
+        "twitchOnly": "En ce moment sur Twitch",
+        "mixedContent": "En ce moment ou presque",
+        "noLiveStream": "Récemment"
+      }
+    }
+  },
+  "deckbuilder": {
+    "update": {
+      "title": "Mise à jour du deck"
+    },
+    "create": {
+      "title": "Création du deck"
+    },
+    "subtitles": {
+      "god": " --- Choix du dieu",
+      "complements": " --- Compléments"
+    },
+    "buttons": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "create": "Créer le deck",
+      "save": "Enregistrer"
+    }
+  }
+}

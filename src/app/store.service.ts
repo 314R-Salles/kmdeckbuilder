@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {Observable, ReplaySubject} from "rxjs";
 import {ApiService} from "./api/api.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Injectable({
   providedIn: 'root'
@@ -8,14 +9,15 @@ import {ApiService} from "./api/api.service";
 export class StoreService {
 
   apiService = inject(ApiService)
+  translate = inject(TranslateService)
 
   news: any[]
   cardIllustrations = []
   cardNames = {
     FR: [], EN: [], ES: [], BR: [], RU: []
   }
-  private userSubject = new ReplaySubject(1);
-  private languageSubject: ReplaySubject<string> = new ReplaySubject(1);
+  private readonly userSubject = new ReplaySubject(1);
+  private readonly languageSubject: ReplaySubject<string> = new ReplaySubject(1);
 
   user = this.userSubject.asObservable();
   language: Observable<string> = this.languageSubject.asObservable();
@@ -38,9 +40,19 @@ export class StoreService {
       this.apiService.getCardNamesByLanguage(language).subscribe(cards => {
         this.setCardNames(this.getStorageLanguage(), cards)
         this.languageSubject.next(language)
+        this.useLanguage(language)
       })
     } else {
       this.languageSubject.next(language)
+      this.useLanguage(language)
+    }
+  }
+
+  useLanguage(language) {
+    if (language === 'FR') {
+      this.translate.use('fr');
+    } else {
+      this.translate.use('en');
     }
   }
 

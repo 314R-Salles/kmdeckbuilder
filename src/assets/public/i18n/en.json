@@ -1,0 +1,41 @@
+{
+  "login": {
+    "required": "This feature requires an account.",
+    "button": "Login"
+  },
+  "streamList": {
+    "noStream": "Nobody's streaming",
+    "noVod": "There doesn't seem to be any VOD !",
+    "noVideo": "There doesn't seem to be any video !",
+    "moreVods": "More VODs on Twitch",
+    "moreVideos": "More videos on Youtube",
+    "mediaPage": {
+      "title": "Krosmaga on Twitch and Youtube"
+    },
+    "frontPage": {
+      "title": {
+        "twitchOnly": "Live on Twitch",
+        "mixedContent": "Live (mostly)",
+        "noLiveStream": "Last"
+      }
+    }
+  },
+  "deckbuilder": {
+    "update": {
+      "title": "Deck update"
+    },
+    "create": {
+      "title": "Deck creation"
+    },
+    "subtitles": {
+      "god": " --- God selection",
+      "complements": " --- Complements"
+    },
+    "buttons": {
+      "previous": "Previous",
+      "next": "Next",
+      "create": "Create deck",
+      "save": "Save"
+    }
+  }
+}

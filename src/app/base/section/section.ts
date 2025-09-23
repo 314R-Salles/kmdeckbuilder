@@ -1,13 +1,14 @@
 import {Component, inject, input, OnInit, signal} from '@angular/core';
 import {StoreService} from '../../store.service';
-import {RouterLink} from '@angular/router';
 import {NgClass} from '@angular/common';
 import {AuthService} from "../../auth.service";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-section',
   imports: [
-    NgClass
+    NgClass,
+    TranslatePipe
   ],
   templateUrl: './section.html',
   styleUrl: './section.scss'

@@ -15,7 +15,7 @@ export class MediaModel {
 }
 
 export const PLACEHOLDER: MediaModel = {
-  displayName: "", title: 'Aucun live en cours.', created_at: "", url: "",
+  displayName: "", title: 'streamList.noStream.title', created_at: "", url: "",
   thumbnailUrl: '/assets/public/nothing_placeholder.png', view: "", duration: "",
   profileImage: "", live: false, fake: true, youtube: false
 }
