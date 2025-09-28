@@ -1,7 +1,7 @@
 <div class="dropdown" (click)="dropdownClick()">
   <input class="dropbtn appFont2"
          [(ngModel)]="tagSearch"
-         type="text" placeholder="Tags">
+         type="text" placeholder="{{'placeholders.tags' | translate}}">
 </div>
 <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedTags().length ? 'block' : 'none'}">
   @for (tag of displayedTags(); track tag.title) {

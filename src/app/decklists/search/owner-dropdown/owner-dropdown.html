@@ -1,5 +1,5 @@
 <div class="dropdown" (click)="dropdownClick()">
-  <input class="dropbtn appFont2" [(ngModel)]="userSearch" type="text" placeholder="Auteurs">
+  <input class="dropbtn appFont2" [(ngModel)]="userSearch" type="text" placeholder="{{'placeholders.authors' | translate}}">
 </div>
 
 <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedUsers().length ? 'block' : 'none'}">

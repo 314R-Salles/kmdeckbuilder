@@ -1,7 +1,7 @@
 <div class="dropdown" (click)="dropdownClick()">
   <input class="dropbtn appFont2"
          [(ngModel)]="cardSearch"
-         type="text" [placeholder]="'Contient ...'">
+         type="text" placeholder="{{'placeholders.cards' | translate}}">
 </div>
 <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedCards().length ? 'block' : 'none'}">
   @for (card of displayedCards(); track card.id) {

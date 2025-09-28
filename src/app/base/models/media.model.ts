@@ -1,4 +1,4 @@
-// Un modèle "commun pour vod et stream"
+// Un modèle commun pour tous les types de vidéos
 
 export class MediaModel {
   displayName: string = ''
@@ -12,10 +12,11 @@ export class MediaModel {
   live: boolean = false
   youtube: boolean = false
   fake: boolean = false
+  formattedDate?: string = ''
 }
 
 export const PLACEHOLDER: MediaModel = {
-  displayName: "", title: 'streamList.noStream.title', created_at: "", url: "",
+  displayName: "", title: 'streamList.noStream', created_at: "", url: "",
   thumbnailUrl: '/assets/public/nothing_placeholder.png', view: "", duration: "",
   profileImage: "", live: false, fake: true, youtube: false
 }

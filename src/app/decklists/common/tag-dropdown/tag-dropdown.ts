@@ -1,12 +1,14 @@
 import {Component, computed, HostListener, input, output, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgStyle} from '@angular/common';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-tag-dropdown',
   imports: [
     FormsModule,
-    NgStyle
+    NgStyle,
+    TranslatePipe
   ],
   templateUrl: './tag-dropdown.html',
   styleUrl: './tag-dropdown.scss'

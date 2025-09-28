@@ -9,6 +9,8 @@
     "noVideo": "There doesn't seem to be any video !",
     "moreVods": "More VODs on Twitch",
     "moreVideos": "More videos on Youtube",
+    "liveSince": "{{value}} ago",
+    "publishedAt": "{{value}} ago",
     "mediaPage": {
       "title": "Krosmaga on Twitch and Youtube"
     },
@@ -37,5 +39,40 @@
       "create": "Create deck",
       "save": "Save"
     }
+  },
+  "placeholders": {
+    "gods": "Gods",
+    "tags": "Tags",
+    "cards": "Contains ...",
+    "authors": "Authors"
+  },
+  "gods": {
+    "sadida": "Sadida",
+    "ecaflip": "Ecaflip",
+    "feca": "Feca",
+    "enutrof": "Enutrof",
+    "xelor": "Xelor",
+    "iop": "Iop",
+    "cra": "Cra",
+    "eniripsa": "Eniripsa",
+    "sram": "Sram",
+    "sacrieur": "Sacrier"
+  },
+  "searchDeck": {
+    "title": "Deck Search",
+    "createButton": "Create deck",
+    "searchBy": {
+      "recent": "Sort by: most recent",
+      "favorites": "Sort by: most liked"
+    },
+    "toggle": {
+      "favorites": "Display your favorites",
+      "all": "Display all decks"
+    },
+    "reset": "Reset all filters",
+    "noResult": "No deck matches your search",
+    "by": "by",
+    "addToFilters": "Add {{value}} to the search filters",
+    "goToProfile": "Check profile"
   }
 }

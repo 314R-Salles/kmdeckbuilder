@@ -1,12 +1,14 @@
 import {Component, computed, HostListener, input, output, signal} from '@angular/core';
 import {NgStyle} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-owner-dropdown',
   imports: [
     NgStyle,
-    FormsModule
+    FormsModule,
+    TranslatePipe
   ],
   templateUrl: './owner-dropdown.html',
   styleUrl: './owner-dropdown.scss'

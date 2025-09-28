@@ -1,18 +1,20 @@
 <form [formGroup]="searchForm" (ngSubmit)="search()">
   <app-section>
     <ng-container section-header>
-      <div class="sectionTitle">Recherche de Decks</div>
+      <div class="sectionTitle">{{ 'searchDeck.title' | translate }}</div>
     </ng-container>
 
     <ng-container after-section-header>
-      <div routerLink="/decks/create" class="afterSectionTitle customAfterSectionTitle">Créer un deck</div>
+      <div routerLink="/decks/create"
+           class="afterSectionTitle customAfterSectionTitle">{{ 'searchDeck.createButton' | translate }}
+      </div>
     </ng-container>
 
     <div class="filterWrapper" style="flex-direction:column; position: relative">
       <div style="flex-direction:row; display:flex;">
         <div style="display: flex; flex-wrap: wrap; width: 300px; margin-top:10px;">
           @for (god of selectedGods(); track god.id) {
-            <img (click)="removeGod(god)" [src]="'/assets/public/gods/GOD_'+god.name+'.png'"
+            <img (click)="removeGod(god)" [src]="'/assets/public/gods/GOD_'+god.image+'.png'"
                  class="godMiniaFiltered prevent-select">
           }</div>
 
@@ -79,14 +81,14 @@
         <div style="display:flex; flex-direction:row; padding: 0 5px;">
           @if (isLoggedIn) {
             <button class="toggleFavoriteButton"
-                    [matTooltip]="favoritesOnly ? 'Afficher tous les decks' : 'Afficher vos favoris'"
+                    matTooltip="{{ (favoritesOnly ? 'searchDeck.toggle.all' : 'searchDeck.toggle.favorites') | translate }}"
                     (click)="toggleFavoriteFilter()">
               <mat-icon [ngStyle]="{color: favoritesOnly ? 'red': 'white'}">favorite
               </mat-icon>
             </button>
           }
           <button class="toggleFavoriteButton"
-                  [matTooltip]="sortFilter == 'RECENT' ?  'Trié par : plus récent.' : 'Trié par : plus aimé.'"
+                  matTooltip="{{ (sortFilter == 'RECENT' ? 'searchDeck.searchBy.recent' : 'searchDeck.searchBy.favorites') | translate }}"
                   (click)="toggleSortFilter()">
             @if (sortFilter == "RECENT") {
               <img style="width:30px;" src="/assets/public/new_filter.png">
@@ -95,7 +97,8 @@
             }
           </button>
 
-          <button class="toggleFavoriteButton" [matTooltip]="'Remettre à zéro les filtres.'"
+          <button class="toggleFavoriteButton"
+                  matTooltip="{{ 'searchDeck.reset' | translate }}"
                   style="width: 50px; height: 50px; cursor:pointer;" (click)="resetFilters()">
             <mat-icon style="color:white;">delete
             </mat-icon>
@@ -109,7 +112,7 @@
       @if (decks() && !decks().length) {
         <div style="display:flex; align-content:center; flex-direction:column; align-items:center; width:100%;">
           <img style="width:250px;" src="/assets/public/nothing_placeholder.png">
-          Aucun deck ne correspond à ces filtres.
+          {{ 'searchDeck.noResult' | translate }}
         </div>
       } @else {
         <div style="align-self: center">
@@ -142,12 +145,12 @@
             </div>
             <div style="display: flex; flex-direction: column; justify-content: center; width: calc(85% - 400px)">
               <div class="title">{{ deck.name }}</div>
-              <div class="author" style="display: flex">par
+              <div class="author" style="display: flex"> {{ 'searchDeck.by' | translate }}
                 <span class="authorName" style="margin-left: 10px"
-                      [matTooltip]="'Ajouter '+deck.owner+' aux filtres de recherche'"
+                      matTooltip="{{ 'searchDeck.addToFilters' | translate:{value: deck.owner} }}"
                       (click)="addUserFilterFromResult(deck.owner, $event);">{{ deck.owner }}</span>
                 <a [routerLink]="['/user',deck.owner]" style="color:white; text-decoration:none;">
-                  <mat-icon [matTooltip]="'Consulter le profil'">contact_page
+                  <mat-icon matTooltip="{{'searchDeck.goToProfile' | translate}}">contact_page
                   </mat-icon>
                 </a>
               </div>
@@ -156,7 +159,7 @@
                 <div style="display:flex; flex-direction:row; height:28px;  z-index: 10;">
                   @for (tag of deck.tags; track tag.id) {
                     <div (click)="addTagFilterFromResult(tag.title , $event);" class="tag"
-                         [matTooltip]="'Ajouter '+tag.title+' aux filtres de recherche'"
+                         matTooltip="{{ 'searchDeck.addToFilters' | translate:{value: tag.title} }}"
                          [ngStyle]="{'background-color': tag.title === 'guide' ? '#FF474D':'#313282'}">
                       @if (tag.iconId) {
                         <img class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId"/>

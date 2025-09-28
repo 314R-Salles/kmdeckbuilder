@@ -5,13 +5,15 @@ import {FormsModule} from '@angular/forms';
 import {NgClass, NgStyle} from '@angular/common';
 import {toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {map, of, switchMap} from 'rxjs';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-card-dropdown',
   imports: [
     FormsModule,
     NgStyle,
-    NgClass
+    NgClass,
+    TranslatePipe
   ],
   templateUrl: './card-dropdown.html',
   styleUrl: './card-dropdown.scss'

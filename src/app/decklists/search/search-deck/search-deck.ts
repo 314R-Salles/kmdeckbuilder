@@ -16,6 +16,7 @@ import {OwnerDropdown} from '../owner-dropdown/owner-dropdown';
 import {CardDropdown} from '../card-dropdown/card-dropdown';
 import {HighlightDisplay} from "../highlight-display/highlight-display";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-search-deck',
@@ -34,7 +35,8 @@ import {toSignal} from "@angular/core/rxjs-interop";
     NgStyle,
     OwnerDropdown,
     CardDropdown,
-    HighlightDisplay
+    HighlightDisplay,
+    TranslatePipe
   ],
   templateUrl: './search-deck.html',
   styleUrl: './search-deck.scss'

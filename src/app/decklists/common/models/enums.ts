@@ -29,20 +29,6 @@ export enum God {
   SADIDA
 }
 
-export const GOD_ARRAY = [
-  {id: 0, name: 'NEUTRE'},
-  {id: 1, name: 'IOP'},
-  {id: 2, name: 'CRA'},
-  {id: 3, name: 'ENIRIPSA'},
-  {id: 4, name: 'ECAFLIP'},
-  {id: 5, name: 'ENUTROF'},
-  {id: 6, name: 'SRAM'},
-  {id: 7, name: 'XELOR'},
-  {id: 8, name: 'SACRIEUR'},
-  {id: 9, name: 'FECA'},
-  {id: 10, name: 'SADIDA'},
-]
-
 
 export enum Language {
   FR = 'FR',

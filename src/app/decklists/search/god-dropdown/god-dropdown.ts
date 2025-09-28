@@ -1,13 +1,14 @@
 import {Component, computed, HostListener, input, output, signal} from '@angular/core';
-import {GOD_ARRAY} from '../../common/models/enums';
 import {FormsModule} from '@angular/forms';
 import {NgStyle} from '@angular/common';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-god-dropdown',
   imports: [
     FormsModule,
-    NgStyle
+    NgStyle,
+    TranslatePipe
   ],
   templateUrl: './god-dropdown.html',
   styleUrl: './god-dropdown.scss'
@@ -23,7 +24,18 @@ export class GodDropdown {
     return r.filter(god => !this.godSearch() || god.name.toLowerCase().indexOf(this.godSearch().toLowerCase()) != -1);
   })
 
-  allGods = GOD_ARRAY.filter(g => g.name != 'NEUTRE')
+  allGods = [
+    {id: 1, image: 'IOP', name: 'gods.iop'},
+    {id: 2, image: 'CRA', name: 'gods.cra'},
+    {id: 3, image: 'ENIRIPSA', name: 'gods.eniripsa'},
+    {id: 4, image: 'ECAFLIP', name: 'gods.ecaflip'},
+    {id: 5, image: 'ENUTROF', name: 'gods.enutrof'},
+    {id: 6, image: 'SRAM', name: 'gods.sram'},
+    {id: 7, image: 'XELOR', name: 'gods.xelor'},
+    {id: 8, image: 'SACRIEUR', name: 'gods.sacrieur'},
+    {id: 9, image: 'FECA', name: 'gods.feca'},
+    {id: 10,image: 'SADIDA',  name: 'gods.sadida'},
+  ]
   displayDropdown = false
 
   dropdownClick() {

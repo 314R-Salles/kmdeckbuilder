@@ -49,11 +49,7 @@ export class StoreService {
   }
 
   useLanguage(language) {
-    if (language === 'FR') {
-      this.translate.use('fr');
-    } else {
-      this.translate.use('en');
-    }
+    this.translate.use(language.toLowerCase());
   }
 
   getLanguage() {
