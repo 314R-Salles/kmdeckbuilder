@@ -12,7 +12,7 @@ export class ApiService {
 
   BASE_API = environment.JAVA_API + '/public';
 
-  constructor(private http: HttpClient, private oauth: OAuthService) {
+  constructor(private readonly http: HttpClient, private readonly oauth: OAuthService) {
   }
 
   private getAuthHeaders() {

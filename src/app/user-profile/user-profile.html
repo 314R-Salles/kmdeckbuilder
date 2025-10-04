@@ -1,36 +1,37 @@
 <app-section [requiresLogin]="!readOnly()">
 
   <ng-container section-header>
-    <div class="sectionTitle">Profil</div>
+    <div class="sectionTitle">{{ 'user.title' | translate }}</div>
   </ng-container>
   @if (readOnly() && routeUser()) {
     <div style="display:flex; flex-direction: column">
       <div>{{ routeUser().username }}</div>
       <div>
         @if (routeUser().twitchUsername) {
-          Compte Twitch :   <a style="color: wheat" [href]="'https://www.twitch.tv/'+routeUser().twitchUsername"
-                               target="_blank"> {{ routeUser().twitchUsername }}</a>
+          {{ 'user.twitch.title' | translate }}  <a style="color: wheat"
+                                                    [href]="'https://www.twitch.tv/'+routeUser().twitchUsername"
+                                                    target="_blank"> {{ routeUser().twitchUsername }}</a>
         } @else {
-          Cet utilisateur n'a pas lié de compte Twitch
+          {{ 'user.twitch.noLink' | translate }}
         }
       </div>
       <span>
-      Aperçu la dernière fois le : {{ routeUser().lastLogin |date : 'mediumDate' }}
+      {{ 'user.lastSeen' | translate }} {{ routeUser().lastLogin |date : 'mediumDate' }}
       </span>
       @if (routeUserdecks().length > 0) {
         <div>
           <hr style="width: 100%">
-          <span>Ses derniers decks :</span>
+          <span>{{ 'user.lastDecks' | translate }}</span>
           <br>
           <div class="listDeck">
             @for (deck of routeUserdecks(); track deck.deckId) {
-              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck" [ngClass]="deck.god">
+              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck"
+                   [ngClass]="deck.god">
                 <div style="display: flex; flex-direction: column; width: 90px">
                   <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
                 </div>
                 <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
-                  <div class="title"
-                       style="display: flex; flex-direction: column; justify-content: space-evenly;">
+                  <div class="title" style="display: flex; flex-direction: column; justify-content: space-evenly;">
                     <span>{{ deck.name }}</span>
                     <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
                       <div style="display:flex; flex-direction:row; height:28px;">
@@ -62,14 +63,14 @@
       <form [formGroup]="form()" (ngSubmit)="updateUser()">
         <div style="display: flex; flex-direction: column">
           <div>
-            Pseudo :
+            <span>{{ 'user.pseudo.title' | translate }}</span>
             <label>
               <input formControlName="username">
             </label>
-            <button type="submit">Enregistrer</button>
+            <button type="submit">{{ 'user.pseudo.save' | translate }}</button>
           </div>
           @if (takenUsername) {
-            <mat-error style="color: red;">Ce pseudo est déjà utilisé</mat-error>
+            <mat-error style="color: red;">{{ 'user.pseudo.error' | translate }}</mat-error>
           }
 
           <br>
@@ -78,10 +79,10 @@
 
       <br>
       @if (connectedUser()?.twitchUsername) {
-        Compte Twitch : {{ connectedUser().twitchUsername }}
-        <button (click)="unlink()">Retirer l'association</button>
+        {{ 'user.twitch.title' | translate }} {{ connectedUser().twitchUsername }}
+        <button (click)="unlink()">{{ 'user.twitch.unLink' | translate }}</button>
       } @else {
-        Lier un compte Twitch  <a [href]=url style="color:white;">
+        {{ 'user.twitch.link' | translate }}<a [href]=url style="color:white;">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitch"
                viewBox="0 0 16 16">
             <path
@@ -97,12 +98,13 @@
       @if (favorites()?.length > 0) {
         <div>
           <hr>
-          Vos derniers favoris :
+          {{ 'user.ownLastFavorites' | translate }}
           <br>
 
           <div class="listDeck">
             @for (deck of favorites(); track deck.deckId) {
-              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck" [ngClass]="deck.god">
+              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck"
+                   [ngClass]="deck.god">
                 <div style="display: flex; flex-direction: column; width: 90px">
                   <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
                 </div>
@@ -136,12 +138,13 @@
       @if (connectedUserDecks()?.length > 0) {
         <div>
           <hr style="width: 100%">
-          <span>Vos derniers decks :</span>
+          <span> {{ 'user.ownLastDecks' | translate }}</span>
           <br>
 
           <div class="listDeck">
             @for (deck of connectedUserDecks(); track deck.deckId) {
-              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck" [ngClass]="deck.god">
+              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck"
+                   [ngClass]="deck.god">
                 <div style="display: flex; flex-direction: column; width: 90px">
                   <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
                 </div>

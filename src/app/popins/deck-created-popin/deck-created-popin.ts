@@ -1,10 +1,12 @@
 import {Component, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogClose} from '@angular/material/dialog';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-deck-created-popin',
   imports: [
-    MatDialogClose
+    MatDialogClose,
+    TranslatePipe
   ],
   templateUrl: './deck-created-popin.html',
   styleUrl: './deck-created-popin.scss'

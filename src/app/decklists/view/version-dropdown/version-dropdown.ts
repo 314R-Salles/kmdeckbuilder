@@ -1,7 +1,8 @@
-import {Component, HostListener, input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {NgStyle} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {MatIcon} from '@angular/material/icon';
+import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent";
 
 @Component({
   selector: 'app-version-dropdown',
@@ -13,33 +14,11 @@ import {MatIcon} from '@angular/material/icon';
   templateUrl: './version-dropdown.html',
   styleUrl: './version-dropdown.scss'
 })
-export class VersionDropdown {
+export class VersionDropdown  extends AbstractDropdownComponent {
 
   deckId = input.required<string>()
   allVersions = input.required<string[]>()
   currentVersion = input.required<number>()
   minorVersion = input.required<number>()
-
-  displayDropdown = false
-
-  clickedInside
-
-  dropdownClick() {
-    this.displayDropdown = !this.displayDropdown
-  }
-
-  @HostListener('click', ['$event'])
-  clickInside(event) {
-    // event.stopPropagation();
-    this.clickedInside = true
-  }
-
-  @HostListener('document:click')
-  clickout() {
-    if (!this.clickedInside) {
-      this.displayDropdown = false;
-    }
-    this.clickedInside = false
-  }
 
 }

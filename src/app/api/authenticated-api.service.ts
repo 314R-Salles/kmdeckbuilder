@@ -12,7 +12,7 @@ export class AuthenticatedApiService {
 
   PRIVATE_BASE_API = environment.JAVA_API + '/authenticated';
 
-  constructor(private http: HttpClient, private oauth: OAuthService) {
+  constructor(private readonly http: HttpClient, private readonly oauth: OAuthService) {
   }
 
   getCurrentUser(): Observable<any> {
@@ -39,7 +39,6 @@ export class AuthenticatedApiService {
   // return deck id and version
   saveDeck(form): Observable<any> {
     let headers = this.getAuthHeaders();
-    // return this.http.post(this.PRIVATE_BASE_API + '/deck', form, {headers, responseType: "text"})
     return this.http.post(this.PRIVATE_BASE_API + '/deck', form, {headers})
   }
 

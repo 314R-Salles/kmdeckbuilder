@@ -1,7 +1,8 @@
-import {Component, computed, HostListener, inject, input, output, signal} from '@angular/core';
+import {Component, computed, inject, input, output} from '@angular/core';
 import {StoreService} from '../../../store.service';
 import {FormsModule} from '@angular/forms';
 import {NgClass, NgStyle} from '@angular/common';
+import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent";
 
 @Component({
   selector: 'app-card-dropdown-from-list',
@@ -13,50 +14,23 @@ import {NgClass, NgStyle} from '@angular/common';
   templateUrl: './card-dropdown-from-list.html',
   styleUrl: './card-dropdown-from-list.scss'
 })
-export class CardDropdownFromList {
+export class CardDropdownFromList extends AbstractDropdownComponent {
 
-  CARD_ILLUSTRATIONS
-  displayDropdown = false
+  storeService = inject(StoreService)
+
+  CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
 
   cardOptions = input<any[]>([]);
   selectedCards = input<any[]>([]);
   onSelectCard = output<any>();
 
-  cardSearch = signal<string>('');
-
   displayedCards = computed(() => {
     let r = this.cardOptions().filter(result => !this.selectedCards().map(c => c.id).includes(result.id));
-    return r.filter(result => !this.cardSearch() || result.name.toLowerCase().includes(this.cardSearch().toLowerCase()));
+    return r.filter(result => !this.search() || result.name.toLowerCase().includes(this.search().toLowerCase()));
   })
-
-  storeService = inject(StoreService)
-
-  constructor() {
-    this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
-  }
-
-  dropdownClick() {
-    this.displayDropdown = !this.displayDropdown
-  }
 
   selectCard(card) {
     this.onSelectCard.emit(card);
-  }
-
-  clickedInside
-
-  @HostListener('click', ['$event'])
-  clickInside(event) {
-    this.clickedInside = true
-  }
-
-  @HostListener('document:click')
-  clickout() {
-    if (!this.clickedInside) {
-      this.cardSearch.set(null);
-      this.displayDropdown = false;
-    }
-    this.clickedInside = false
   }
 
 }

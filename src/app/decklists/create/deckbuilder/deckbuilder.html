@@ -22,7 +22,7 @@
       }
       @if (currentTab() < 2) {
         <button [disabled]="currentTab() == 0 && !god || currentTab() == 1 && selectedCards.length != 45"
-                type="button" id="nextBtn" (click)="nextPrev(1)">  {{ 'deckbuilder.buttons.next' | translate }}
+                type="button" id="nextBtn" (click)="nextPrev(1)"> {{ 'deckbuilder.buttons.next' | translate }}
         </button>
       }
       @if (currentTab() == 2) {
@@ -66,15 +66,16 @@
       <div class="validation">
         <form [formGroup]="deckForm">
           <div style="display: flex; flex-direction: column; padding: 5px;">
-            <label for="name" style="font-size: 20px"> Nom du deck : </label>
+            <label for="name" style="font-size: 20px"> {{ 'deckbuilder.complements.deckName' | translate }} </label>
             <input style="width: 300px;" id="name" formControlName="name">
           </div>
 
           <div style="display: flex; flex-direction: column; height: 300px; padding: 5px;">
-            <label style="font-size: 20px"> Présentation du deck : </label>
+            <label style="font-size: 20px"> {{ 'deckbuilder.complements.presentation' | translate }} </label>
             <div style="display: flex; flex-direction: column; height: 250px; position: relative">
               <div style="display: flex; flex-direction: column; width: 30%">
-                <label style="font-size: 15px; margin-top: 30px"> Template : </label>
+                <label
+                  style="font-size: 15px; margin-top: 30px">{{ 'deckbuilder.complements.template' | translate }}</label>
                 <div>
                   <button (click)="illustDown()">-</button>
                   {{ illustrationsNumber }}
@@ -84,7 +85,8 @@
 
               @if (illustrationsNumber > 0) {
                 <div style="display: flex; flex-direction: column; width: 730px">
-                  <label style="font-size: 15px; margin-top: 30px"> Choix des cartes : </label>
+                  <label
+                    style="font-size: 15px; margin-top: 30px"> {{ 'deckbuilder.complements.highlights' | translate }} </label>
                   <div style="display: flex; flex-direction: row">
                     <div>
                       @if (illustrationsNumber) {
@@ -118,8 +120,8 @@
           </div>
 
           <div style="display: flex; flex-direction: column; width: fit-content; padding: 5px;">
-            <label style="font-size: 20px"> Tags (optionnel) : </label>
-            <div style="">
+            <label style="font-size: 20px"> {{ 'deckbuilder.complements.tags' | translate }} </label>
+            <div>
               <app-tag-dropdown [selectedTags]="selectedTags()" [allTags]="allTags()"
                                 (onSelectTag)="selectTag($event)"/>
             </div>
@@ -134,24 +136,26 @@
           </div>
 
           <div style="display: flex; flex-direction: column; padding: 5px;">
-            <label for="videoLink" style="font-size: 20px"> Lien vidéo (optionnel) : </label>
+            <label for="videoLink"
+                   style="font-size: 20px"> {{ 'deckbuilder.complements.video.title' | translate }} </label>
             <input style="width: 300px;" id="videoLink" formControlName="videoLink">
             @if (videoLinkData?.type) {
-              <span style="margin: 5px 0 0 5px"> Format reconnu : {{ videoLinkData.type }}</span>
+              <span
+                style="margin: 5px 0 0 5px"> {{ 'deckbuilder.complements.video.format' | translate }} {{ videoLinkData.type }}</span>
             }
             @if (videoLinkControl.hasError('unknownHostError')) {
-              <mat-error style="color: red;">Seuls Youtube et Twitch sont tolérés</mat-error>
+              <mat-error style="color: red;">{{ 'deckbuilder.complements.video.sourceError' | translate }}</mat-error>
             }
             @if (videoLinkControl.hasError('invalidFormatError')) {
-              <mat-error style="color: red;">Seuls les Highlights Twitch sont acceptés</mat-error>
+              <mat-error style="color: red;">{{ 'deckbuilder.complements.video.formatError' | translate }}</mat-error>
             }
             @if (videoLinkControl.hasError('invalidLinkError')) {
-              <mat-error style="color: red;">Impossible de récupérer la vidéo</mat-error>
+              <mat-error style="color: red;">{{ 'deckbuilder.complements.video.notFoundError' | translate }}</mat-error>
             }
           </div>
 
           <div style="display: flex; flex-direction: column; width: fit-content; padding: 5px;">
-            <label style="font-size: 20px"> Description (optionnel) : </label>
+            <label style="font-size: 20px"> {{ 'deckbuilder.complements.description' | translate }} </label>
             <!--            la div qui englobe permet de donner un style au background (toolbar + input) et le style de l'editor force pour l'input -->
             <div style="background: #c6f8ff">
               <quill-editor class="content-editor"

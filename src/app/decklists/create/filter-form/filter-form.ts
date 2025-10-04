@@ -5,6 +5,7 @@ import {NgClass} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
 import {PaDropdown} from "../pa-dropdown/pa-dropdown";
 import {RarityDropdown} from "../rarity-dropdown/rarity-dropdown";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-filter-form',
@@ -14,6 +15,7 @@ import {RarityDropdown} from "../rarity-dropdown/rarity-dropdown";
     MatTooltip,
     PaDropdown,
     RarityDropdown,
+    TranslatePipe,
   ],
   templateUrl: './filter-form.html',
   styleUrl: './filter-form.scss'

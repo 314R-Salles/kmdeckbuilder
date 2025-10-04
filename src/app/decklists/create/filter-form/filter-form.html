@@ -8,12 +8,12 @@
       <img [ngClass]="{'grey': !form().get('neutralCards').value}" [src]="'/assets/public/gods/GOD_'+God[0]+'.png'">
     </div>
     <div (click)="typeChange('sort')" class="tile"
-         [matTooltip]="tooltipType['fr_spell_'+ (form().get('isSpell').value ? 'hide' : 'show')]"
+         matTooltip="{{ ('deckbuilder.tooltips.spell.' + (form().get('isSpell').value ? 'hide' : 'show')) | translate }}"
          [ngClass]="{'selected-type' : form().get('isSpell').value}">
       <img [src]="'/assets/public/spellIcon.png'" class="type">
     </div>
     <div (click)="typeChange('crea')" class="tile"
-         [matTooltip]="tooltipType['fr_minion_'+ (form().get('isMinion').value ? 'hide' : 'show')]"
+         matTooltip="{{ ('deckbuilder.tooltips.minion.' + (form().get('isMinion').value ? 'hide' : 'show')) | translate }}"
          [ngClass]="{'selected-type' : form().get('isMinion').value}">
       <img [src]="'/assets/public/creatureIcon.png'" class="type">
     </div>
@@ -40,7 +40,7 @@
                        (onSelectCost)="setFilterValue('apValue', $event)"></app-pa-dropdown>
     </div>
 
-    <input class="search-input appFont2" type="text" placeholder="Nom, effet ..." formControlName="content">
+    <input class="search-input appFont2" type="text" placeholder="{{'deckbuilder.placeholders.cardSearch' | translate}}" formControlName="content">
 
   </div>
 </form>

@@ -3,11 +3,11 @@
     style="border: #FFAE00 solid 2px; border-radius: 10px; box-sizing: border-box; padding: 20px; background: #262241">
     <div style="height: 70px; display: flex; flex-direction: column; justify-content: space-between">
     <span>
-      Êtes-vous sûr de vouloir supprimer ce deck ? Cette action est irréversible et définitive.
+      {{ 'popins.delete.message' | translate }}
     </span>
       <div style="display: flex; align-self: end;">
-        <button [mat-dialog-close]="true">Oui, supprimer le deck.</button>
-        <button [mat-dialog-close]="false">Non.</button>
+        <button [mat-dialog-close]="true"> {{ 'popins.delete.yes' | translate }}</button>
+        <button [mat-dialog-close]="false"> {{ 'popins.delete.no' | translate }}</button>
       </div>
     </div>
   </div>

@@ -1,11 +1,8 @@
-
 .card {
   border: rgba(255, 255, 255, 0.62) solid 1px;
   border-radius: 5px;
   box-sizing: border-box;
-}
 
-.card {
   height: 40px;
   width: 300px;
   box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.62);
@@ -31,6 +28,12 @@
   justify-content: space-around
 }
 
-.card .cardSpec { display:none;}
+.card .cardSpec {
+  display: none;
+}
 
-.card:hover>.cardSpec { display:block; z-index:20;}
+.card:hover > .cardSpec {
+  display: block;
+  z-index: 20;
+  margin-top: -120px; // evite des problemes au survol de la carte "la plus basse dans la liste"
+}

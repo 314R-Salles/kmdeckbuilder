@@ -10,5 +10,13 @@
     "eniripsa": "Aniripsa",
     "sram": "Sram",
     "sacrieur": "Sacrógrito"
+  },
+  "rarities": {
+    "all": "Todos los tipos de carta",
+    "common": "Común",
+    "uncommon": "Poco común",
+    "rare": "Rara",
+    "krosmique": "Krósmica",
+    "infinite": "Infinita"
   }
 }

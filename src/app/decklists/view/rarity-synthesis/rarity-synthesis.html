@@ -1,22 +1,23 @@
 <div style="display: flex; height: 140px; width:230px; flex-direction: column;justify-content: space-evenly;">
   <span style="display:flex; justify-content:flex-end;">
-  <img [src]="'/assets/public/creatureIcon.png'" style="width:15px; height:15px;" class="type">
-  <img [src]="'/assets/public/spellIcon.png'" style="width:15px; height:15px; margin-left:8px;" class="type">
+  <img [src]="'/assets/public/creatureIcon.png'" class="iconType">
+  <img [src]="'/assets/public/spellIcon.png'" style="margin-left:8px;" class="iconType">
     </span>
-  @for (rarity of rarities['fr']; track rarity; ) {
+  @for (rarity of rarities; track rarity; ) {
     <span class="appFont2" [ngClass]="rarity.color"
           style="display: flex;align-items: center; justify-content: space-between">
       <span style="display: flex; align-items: baseline">
         <span [ngClass]="rarity.bgColor"
-               style="display: block; width:14px; height:14px; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
-        <span>{{ rarity.label }}</span>
+              style="display: block; width:14px; height:14px; margin: 0 5px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></span>
+        <span>{{ rarity.label | translate }}</span>
       </span>
       <span style="display:flex;">
-        @for (type of cardType; track type;) {
-        @if (raritySynthesis()[rarity.key][type.key]) {
-          <span style="margin-left:2px; margin-right:2px; display:flex; justify-content:center; width:16px;">{{ raritySynthesis()[rarity.key][type.key] }}</span> }
-        @else {
-          <span style="margin-left:2px; margin-right:2px; display:flex; justify-content:center;  width:16px;"> - </span> }
+        @for (type of cardType; track type; ) {
+          @if (raritySynthesis()[rarity.key][type.key]) {
+            <span class="rarityCount">{{ raritySynthesis()[rarity.key][type.key] }}</span>
+          } @else {
+            <span class="rarityCount"> - </span>
+          }
         }
       </span>
     </span>

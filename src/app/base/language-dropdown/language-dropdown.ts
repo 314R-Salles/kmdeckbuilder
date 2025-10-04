@@ -1,8 +1,9 @@
-import {Component, HostListener, inject} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {Language} from "../../decklists/common/models/enums";
 import {NgStyle} from "@angular/common";
 import {StoreService} from "../../store.service";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {AbstractDropdownComponent} from "../AbstractDropdownComponent";
 
 @Component({
   selector: 'app-language-dropdown',
@@ -12,7 +13,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
   templateUrl: './language-dropdown.html',
   styleUrl: './language-dropdown.scss'
 })
-export class LanguageDropdown {
+export class LanguageDropdown extends AbstractDropdownComponent {
 
   storeService = inject(StoreService)
   currentLanguage = toSignal(this.storeService.getLanguage())
@@ -25,30 +26,9 @@ export class LanguageDropdown {
     Language.RU
   ]
 
-  displayDropdown = false
-
   setLanguage(language) {
     this.storeService.setLanguage(language);
     this.storeService.setStorageLanguage(language);
   }
 
-  clickedInside
-
-  dropdownClick() {
-    this.displayDropdown = !this.displayDropdown
-  }
-
-  @HostListener('click', ['$event'])
-  clickInside(event) {
-    // event.stopPropagation();
-    this.clickedInside = true
-  }
-
-  @HostListener('document:click')
-  clickout() {
-    if (!this.clickedInside) {
-      this.displayDropdown = false;
-    }
-    this.clickedInside = false
-  }
 }

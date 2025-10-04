@@ -12,7 +12,7 @@ export class AdminApiService {
 
   ADMIN_BASE_API = environment.JAVA_API + '/admin';
 
-  constructor(private http: HttpClient, private oauth: OAuthService) {
+  constructor(private readonly http: HttpClient, private readonly oauth: OAuthService) {
   }
 
   getAllNewsIds(): Observable<any[]> {

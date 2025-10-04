@@ -2,9 +2,9 @@
   <div
     style="border: #FFAE00 solid 2px; border-radius: 10px; box-sizing: border-box; padding: 20px; background: #262241">
     <div style="height: 70px; display: flex; flex-direction: column; justify-content: space-between">
-      <span> Le deck a été supprimé. </span>
+      <span>{{ 'popins.deleted' | translate }} </span>
       <div style="display: flex; align-self: end;">
-        <button [mat-dialog-close]="false">Quitter</button>
+        <button [mat-dialog-close]="false">{{ 'popins.ok' | translate }}</button>
       </div>
     </div>
   </div>

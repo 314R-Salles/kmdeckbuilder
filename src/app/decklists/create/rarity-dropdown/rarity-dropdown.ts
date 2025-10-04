@@ -1,5 +1,6 @@
-import {Component, HostListener, input, output} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {NgClass, NgStyle} from "@angular/common";
+import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent";
 
 @Component({
   selector: 'app-rarity-dropdown',
@@ -10,35 +11,14 @@ import {NgClass, NgStyle} from "@angular/common";
   templateUrl: './rarity-dropdown.html',
   styleUrl: './rarity-dropdown.scss'
 })
-export class RarityDropdown {
+export class RarityDropdown  extends AbstractDropdownComponent {
 
-  displayDropdown
   rarities = input<{ key: string, label: string, color: string, bgColor: string }[]>([]);
   selectedRarity = input<{ key: string, label: string, color: string, bgColor: string }>();
   onSelectRarity = output<{ key: string, label: string, color: string, bgColor: string }>();
 
-
-  dropdownClick() {
-    this.displayDropdown = !this.displayDropdown
-  }
-
   selectRarity(cost) {
     this.onSelectRarity.emit(cost);
-  }
-
-  clickedInside
-
-  @HostListener('click', ['$event'])
-  clickInside(event) {
-    this.clickedInside = true
-  }
-
-  @HostListener('document:click')
-  clickout() {
-    if (!this.clickedInside) {
-      this.displayDropdown = false;
-    }
-    this.clickedInside = false
   }
 
 }

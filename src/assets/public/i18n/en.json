@@ -33,11 +33,35 @@
       "god": " --- God selection",
       "complements": " --- Complements"
     },
+    "complements": {
+      "deckName": "Deck name: ",
+      "presentation": "Deck appearance: ",
+      "template": "Template:",
+      "highlights": "Illustration choice: ",
+      "tags": "Tags (optional): ",
+      "video": {
+        "title": "Video link (optional): ",
+        "format": "Video source is ",
+        "sourceError": "Only Youtube and Twitch are managed",
+        "formatError": "Only Twitch Highlights are valid",
+        "notFoundError": "Unable to load the video"
+      },
+      "description": "Description (optional):"
+    },
     "buttons": {
       "previous": "Previous",
       "next": "Next",
       "create": "Create deck",
       "save": "Save"
+    },
+    "tooltips": {
+      "minion.hide": "Hide minions",
+      "minion.show": "Show minions",
+      "spell.hide": "Hide spells",
+      "spell.show": "Show spells"
+    },
+    "placeholders": {
+      "cardSearch": "Name, effect..."
     }
   },
   "placeholders": {
@@ -74,5 +98,52 @@
     "by": "by",
     "addToFilters": "Add {{value}} to the search filters",
     "goToProfile": "Check profile"
+  },
+  "viewDeck": {
+    "by": "by",
+    "duplicate": "Duplicate",
+    "duplicateTooltip": "Create a new deck based on this version",
+    "edit": "Edit",
+    "editTooltip": "Create a new version based on the displayed one",
+    "delete": "Delete",
+    "deleteTooltip": "Delete the deck and all its versions"
+  },
+  "user": {
+    "title": "Profile",
+    "lastSeen": "Last seen: ",
+    "lastDecks": "Their last decks: ",
+    "ownLastDecks": "Your last decks: ",
+    "ownLastFavorites": "Your last favorites: ",
+    "pseudo": {
+      "title": "Pseudo",
+      "error": "This username is taken",
+      "save": "Save"
+    },
+    "twitch": {
+      "title": "Twitch account: ",
+      "link": "Link Twitch account",
+      "noLink": "This user didn't link a Twitch account",
+      "unLink": "Remove link"
+    }
+  },
+  "rarities": {
+    "all": "All rarities",
+    "common": "Common",
+    "uncommon": "Uncommon",
+    "rare": "Rare",
+    "krosmique": "Krosmic",
+    "infinite": "Infinite"
+  },
+  "popins": {
+    "updated": "The deck was updated",
+    "created": "The deck was created",
+    "view": "Check deck",
+    "delete": {
+      "message": "Are you sure you want to delete this deck? This cannot be undone",
+      "yes": "Yes, delete the deck",
+      "no": "No"
+    },
+    "deleted": "The deck got deleted",
+    "ok": "Ok"
   }
 }

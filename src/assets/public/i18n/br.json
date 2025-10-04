@@ -10,5 +10,13 @@
     "eniripsa": "Eniripsa",
     "sram": "Sram",
     "sacrieur": "Sacrier"
+  },
+  "rarities": {
+    "all": "Todas as raridades",
+    "common": "Comum",
+    "uncommon": "Incomum",
+    "rare": "Rara",
+    "krosmique": "Krósmica",
+    "infinite": "Infinita"
   }
 }

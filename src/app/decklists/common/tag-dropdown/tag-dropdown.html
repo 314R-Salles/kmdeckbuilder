@@ -1,6 +1,6 @@
 <div class="dropdown" (click)="dropdownClick()">
   <input class="dropbtn appFont2"
-         [(ngModel)]="tagSearch"
+         [(ngModel)]="search"
          type="text" placeholder="{{'placeholders.tags' | translate}}">
 </div>
 <div class="dropdown-content" [ngStyle]="{'display' : displayDropdown && displayedTags().length ? 'block' : 'none'}">

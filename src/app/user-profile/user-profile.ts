@@ -10,6 +10,7 @@ import {MatError} from '@angular/material/input';
 import {Section} from '../base/section/section';
 import {combineLatest, debounceTime, filter, map, switchMap} from "rxjs";
 import {toObservable, toSignal} from "@angular/core/rxjs-interop";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-user-profile',
@@ -19,7 +20,8 @@ import {toObservable, toSignal} from "@angular/core/rxjs-interop";
     ReactiveFormsModule,
     MatError,
     DatePipe,
-    Section
+    Section,
+    TranslatePipe
   ],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.scss'
@@ -110,7 +112,7 @@ export class UserProfile {
     this.takenUsername = false
     this.authenticatedApiService.updateUser({
       username: this.form().get('username')?.value,
-      iconId: this.form().get('iconId')?.value || 0,
+      iconId: this.form().get('iconId')?.value ?? 0,
     }).subscribe({
       next: user => {
         this.storeService.setUser(user)

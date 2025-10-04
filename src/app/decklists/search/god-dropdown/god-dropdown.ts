@@ -1,7 +1,8 @@
-import {Component, computed, HostListener, input, output, signal} from '@angular/core';
+import {Component, computed, input, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgStyle} from '@angular/common';
 import {TranslatePipe} from "@ngx-translate/core";
+import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent";
 
 @Component({
   selector: 'app-god-dropdown',
@@ -13,15 +14,14 @@ import {TranslatePipe} from "@ngx-translate/core";
   templateUrl: './god-dropdown.html',
   styleUrl: './god-dropdown.scss'
 })
-export class GodDropdown {
+export class GodDropdown extends AbstractDropdownComponent {
 
   selectedGods = input<any[]>([]);
   onSelectGod = output<any>();
-  godSearch = signal<string>('');
 
   displayedGods = computed(() => {
     let r = this.allGods.filter(result => !this.selectedGods().map(c => c.name).includes(result.name));
-    return r.filter(god => !this.godSearch() || god.name.toLowerCase().indexOf(this.godSearch().toLowerCase()) != -1);
+    return r.filter(god => !this.search() || god.name.toLowerCase().indexOf(this.search().toLowerCase()) != -1);
   })
 
   allGods = [
@@ -36,36 +36,14 @@ export class GodDropdown {
     {id: 9, image: 'FECA', name: 'gods.feca'},
     {id: 10,image: 'SADIDA',  name: 'gods.sadida'},
   ]
-  displayDropdown = false
-
-  dropdownClick() {
-    this.displayDropdown = !this.displayDropdown
-  }
 
   selectGod(god) {
     this.onSelectGod.emit(god);
 
     if (this.displayedGods().length == 1) {
-      this.godSearch.set(null);
+      this.search.set(null);
       this.displayDropdown = false
     }
-  }
-
-  clickedInside
-
-  @HostListener('click', ['$event'])
-  clickInside(event) {
-    // event.stopPropagation();
-    this.clickedInside = true
-  }
-
-  @HostListener('document:click')
-  clickout() {
-    if (!this.clickedInside) {
-      this.godSearch.set('');
-      this.displayDropdown = false;
-    }
-    this.clickedInside = false
   }
 
 }

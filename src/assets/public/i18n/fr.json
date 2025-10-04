@@ -33,11 +33,35 @@
       "god": " --- Choix du dieu",
       "complements": " --- Compléments"
     },
+    "complements": {
+      "deckName": "Nom du deck : ",
+      "presentation": "Présentation du deck",
+      "template": "Template :",
+      "highlights": "Choix des cartes : ",
+      "tags": "Tags (optionnel)",
+      "video": {
+        "title": "Lien vidéo (optionnel) : ",
+        "format": "Format reconnu : ",
+        "sourceError": "Seuls Youtube et Twitch sont tolérés",
+        "formatError": "Seuls les Highlights Twitch sont acceptés",
+        "notFoundError": "Impossible de récupérer la vidéo"
+      },
+      "description": "Description (optionnel) :"
+    },
     "buttons": {
       "previous": "Précédent",
       "next": "Suivant",
       "create": "Créer le deck",
       "save": "Enregistrer"
+    },
+    "tooltips": {
+      "minion.hide": "Masquer les invocations",
+      "minion.show": "Afficher les invocations",
+      "spell.hide": "Masquer les sorts",
+      "spell.show": "Afficher les sorts"
+    },
+    "placeholders": {
+      "cardSearch": "Nom, effet..."
     }
   },
   "placeholders": {
@@ -74,5 +98,52 @@
     "by": "par",
     "addToFilters": "Ajouter {{value}} aux filtres de recherche",
     "goToProfile": "Consulter le profil"
+  },
+  "viewDeck": {
+    "by": "par",
+    "duplicate": "Dupliquer",
+    "duplicateTooltip": "Créer un nouveau deck à partir de cette version",
+    "edit": "Editer",
+    "editTooltip": "Modifier le deck existant à partir de cette version",
+    "delete": "Supprimer",
+    "deleteTooltip": "Supprime définitivement ce deck et toutes ses versions"
+  },
+  "user": {
+    "title": "Profil",
+    "lastSeen": "Aperçu la dernière fois le : ",
+    "lastDecks": "Ses derniers decks : ",
+    "ownLastDecks": "Vos derniers decks : ",
+    "ownLastFavorites": "Vos derniers favoris : ",
+    "pseudo": {
+      "title": "Pseudo",
+      "error": "Ce pseudo est déjà utilisé",
+      "save": "Enregistrer"
+    },
+    "twitch": {
+      "title": "Compte Twitch : ",
+      "link": "Lier un compte Twitch",
+      "noLink": "Cet utilisateur n'a pas lié de compte Twitch",
+      "unLink": "Retirer l'association"
+    }
+  },
+  "rarities": {
+    "all": "Toutes les raretés",
+    "common": "Commune",
+    "uncommon": "Peu Commune",
+    "rare": "Rare",
+    "krosmique": "Krosmique",
+    "infinite": "Infinite"
+  },
+  "popins": {
+    "updated": "Le deck a été mis à jour",
+    "created": "Le deck a été enregistré",
+    "view": "Consulter le deck",
+    "delete": {
+      "message": "Êtes-vous sûr de vouloir supprimer ce deck ? Cette action est irréversible et définitive.",
+      "yes": "Oui, supprimer le deck",
+      "no": "Non"
+    },
+    "deleted": "Le deck a été supprimé.",
+    "ok": "Ok"
   }
 }

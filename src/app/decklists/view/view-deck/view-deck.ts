@@ -31,6 +31,7 @@ import {combineLatest, debounceTime, switchMap} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {isValidTwitchURL, isValidYouTubeURL} from "../../../base/models/utils";
 import {YouTubePlayer} from "@angular/youtube-player";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-view-deck',
@@ -45,7 +46,8 @@ import {YouTubePlayer} from "@angular/youtube-player";
     MatIcon,
     RaritySynthesis,
     NgStyle,
-    YouTubePlayer
+    YouTubePlayer,
+    TranslatePipe
   ],
   templateUrl: './view-deck.html',
   styleUrl: './view-deck.scss'
