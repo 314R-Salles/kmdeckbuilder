@@ -23,20 +23,19 @@
           <button mat-menu-item>Users (TODO)</button>
         </mat-menu>
 
-        <!--        <mat-menu #menu1="matMenu">-->
-        <!--          <button mat-menu-item routerLink="news/create">Create</button>-->
-        <!--          <button mat-menu-item routerLink="news/edit">Toggle</button>-->
-        <!--        </mat-menu>-->
       </div>
     </div>
     <div style="display:flex;">
-      <div class="headerBtn" style="padding: 0 2px;">
-        @if (!user()) {
-          <span style="align-self: center;" (click)="login()">Se connecter</span>
-        } @else {
-          <span style="align-self: center;" [routerLink]="['/user', user().username ]">{{ user().username }}</span>
-        }
-      </div>
+
+      @if (!user()) {
+        <div class="headerBtn" style="padding: 0 2px;" (click)="login()">
+          <span style="align-self: center;">{{ 'login.button' | translate }}</span>
+        </div>
+      } @else {
+        <div class="headerBtn" style="padding: 0 2px;" [routerLink]="['/user', user().username ]">
+          <span style="align-self: center;">{{ user().username }}</span>
+        </div>
+      }
       <a href="https://discord.gg/kMEKgxtMS6" target="_blank" class="headerBtn"
          style="width:40px; color:white;align-items:center;">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-discord"

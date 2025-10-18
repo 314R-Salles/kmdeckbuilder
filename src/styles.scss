@@ -49,6 +49,18 @@ body {
   margin-right: 20px;
 }
 
+.actionButton {
+  padding: 5px;
+  border: 2px solid #FFD700;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #FFD700;
+}
+
+.actionButton:hover {
+  background: #474172
+}
+
 
 //////////////
 // COULEURS

@@ -16,8 +16,16 @@
     <div
       style="border: #FFAE00 solid 2px; border-radius: 10px; box-sizing: border-box; padding: 20px; background: #262241">
       @if (requiresLogin() && !isLoggedIn()) {
+        <span style="color: darkorange">
         {{ 'login.required' | translate }}
-        <div style="background: #3e9ef6;" (click)="login()"> {{ 'login.button' | translate }}</div>
+       </span>
+        <span class="actionButton" (click)="login()"> {{ 'login.button' | translate }}</span>
+      } @else if (requiresVerified() && !isVerified()) {
+        <span style="color: darkorange">
+        {{ 'verified.required' | translate }}
+        </span>
+        <span class="actionButton"
+              [routerLink]="['/user', username() ]"> {{ 'verified.button' | translate }} </span>
       } @else {
         <ng-content></ng-content>
       }

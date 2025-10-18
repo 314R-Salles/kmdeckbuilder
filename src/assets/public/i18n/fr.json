@@ -3,6 +3,10 @@
     "required": "Cette fonctionnalité est réservée aux utilisateurs connectés.",
     "button": "Se connecter"
   },
+  "verified": {
+    "required": "Cette fonctionnalité est réservée aux utilisateurs ayant vérifié leur compte.",
+    "button": "Options du profil"
+  },
   "streamList": {
     "noStream": "Aucun live en cours",
     "noVod": "On dirait qu'il n'y a pas de VOD !",
@@ -118,6 +122,16 @@
       "title": "Pseudo",
       "error": "Ce pseudo est déjà utilisé",
       "save": "Enregistrer"
+    },
+    "email": {
+      "warning": "Vous ne pouvez pas utiliser toutes les fonctionnalités du site tant que vous n'avez pas validé votre email",
+      "step1": "Cliquez sur le bouton ci-dessous pour recevoir un nouveau mail de validation",
+      "step2": "Cliquez sur le lien de confirmation dans votre email",
+      "step3": "Vous serez redirigé sur krosmaga.tools et normalement considéré comme vérifié",
+      "step4": "Si, ensuite, la validation n'est pas complète, il peut s'agir d'un problème de synchronisation. Vous pouvez essayer ce bouton pour rafraichir votre statut : ",
+      "step5": "Si cela ne suffit toujours pas, vous pouvez nous contacter à l'adresse contact@krosmaga.tools",
+      "button": "Recevoir un nouveau mail de validation",
+      "message": "Vous avez demandé de renvoyer le mail de validation le : "
     },
     "twitch": {
       "title": "Compte Twitch : ",

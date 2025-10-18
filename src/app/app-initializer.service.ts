@@ -6,6 +6,7 @@ import {AuthenticatedApiService} from "./api/authenticated-api.service";
 import {OAuthService} from "angular-oauth2-oidc";
 import {isPlatformBrowser} from "@angular/common";
 import {environment} from "../environments/environment";
+import {ActivatedRoute} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class AppInitializerService {
               private storeService: StoreService,
               private authenticatedApiService: AuthenticatedApiService,
               private oauthService: OAuthService,
+              private route: ActivatedRoute,
               @Inject(PLATFORM_ID) private platformId: any) {
   }
 
@@ -30,7 +32,11 @@ export class AppInitializerService {
       if (token) {
         this.authenticatedApiService.linkAccount(token).subscribe(user => this.storeService.setUser(user))
       }
-
+      this.route.queryParamMap.subscribe(params => {
+        if (params.get("verified")) {
+          this.authenticatedApiService.refreshMailStatus().subscribe(user => this.storeService.setUser(user))
+        }
+      })
       return this.apiService.getCardIllustrations().pipe(
         switchMap(cardList => {
           this.storeService.setCardIllustrations(cardList)

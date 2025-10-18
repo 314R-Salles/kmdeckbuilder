@@ -11,6 +11,7 @@ import {Section} from '../base/section/section';
 import {combineLatest, debounceTime, filter, map, switchMap} from "rxjs";
 import {toObservable, toSignal} from "@angular/core/rxjs-interop";
 import {TranslatePipe} from "@ngx-translate/core";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-user-profile',
@@ -21,7 +22,8 @@ import {TranslatePipe} from "@ngx-translate/core";
     MatError,
     DatePipe,
     Section,
-    TranslatePipe
+    TranslatePipe,
+    MatIcon
   ],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.scss'
@@ -125,6 +127,14 @@ export class UserProfile {
 
   unlink() {
     this.authenticatedApiService.unlink().subscribe(user => this.storeService.setUser(user))
+  }
+
+  sendEmail() {
+    this.authenticatedApiService.sendValidationEmail().subscribe(user => this.storeService.setUser(user))
+  }
+
+  refreshMailStatus() {
+    this.authenticatedApiService.refreshMailStatus().subscribe(user => this.storeService.setUser(user))
   }
 
 }

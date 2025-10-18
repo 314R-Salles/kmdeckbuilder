@@ -3,6 +3,10 @@
     "required": "This feature requires an account.",
     "button": "Login"
   },
+  "verified": {
+    "required": "This feature requires email validation",
+    "button": "To profile"
+  },
   "streamList": {
     "noStream": "Nobody's streaming",
     "noVod": "There doesn't seem to be any VOD !",
@@ -118,6 +122,16 @@
       "title": "Pseudo",
       "error": "This username is taken",
       "save": "Save"
+    },
+    "email": {
+      "warning": "You can't use all the features without a validated email",
+      "step1": "Click on this button to send a new validation email",
+      "step2": "Click on the confirmation link in the email",
+      "step3": "You will be redirected to krosmaga.tools and should be considered verified",
+      "step4": "Then, if you're still not verified, it might be a synchronization issue and you can try this button to force an update: ",
+      "step5": "If it is not enough, you can contact us at contact@krosmaga.tools",
+      "button": "Send a new validation email",
+      "message": "You asked for a validation email on: "
     },
     "twitch": {
       "title": "Twitch account: ",

@@ -5,6 +5,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {AuthService} from "../auth.service";
 import {LanguageDropdown} from "../base/language-dropdown/language-dropdown";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,7 @@ import {LanguageDropdown} from "../base/language-dropdown/language-dropdown";
     MatMenuTrigger,
     MatMenuItem,
     LanguageDropdown,
+    TranslatePipe,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss'
