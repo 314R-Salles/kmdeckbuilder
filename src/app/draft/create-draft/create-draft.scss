@@ -1,0 +1,18 @@
+@use '@angular/material' as mat;
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+.createMenu {
+  @include mat.expansion-overrides((
+    container-background-color: #d5dcf8,
+  ));
+}
+
+
+.cdk-drop-list-receiving {
+  min-height: 60px;
+  border: solid gold 1px !important;
+}
+.cdk-drop-list-dragging {
+  //min-height: 60px;
+  border: dashed white 1px !important;
+}

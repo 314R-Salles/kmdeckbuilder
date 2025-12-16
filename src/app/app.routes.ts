@@ -5,6 +5,7 @@ import {SearchDeck} from "./decklists/search/search-deck/search-deck";
 import {StreamList} from "./stream-list/stream-list";
 import {ViewDeck} from "./decklists/view/view-deck/view-deck";
 import {Temppage} from "./temppage/temppage";
+import {CreateDraft} from "./draft/create-draft/create-draft";
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -22,6 +23,7 @@ export const routes: Routes = [
   },
   {path: 'decks/browse', component: SearchDeck},
   {path: 'media', component: StreamList},
+  {path: 'draft', component: CreateDraft},
   {path: 'decks/view/:id/:version/:minorVersion', component: ViewDeck},
   {
     path: 'decks/edit/:id/:version/:minorVersion',

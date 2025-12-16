@@ -352,6 +352,12 @@ $infinite: #FFFFEE;
     justify-content: center;
   }
 
+  &.action {
+    width: 300px;
+    height: 60px;
+    justify-content: center;
+  }
+
 }
 
 .dropdown:hover {
@@ -383,6 +389,11 @@ $infinite: #FFFFEE;
   &.PA {
     width: 60px;
   }
+
+  &.action {
+    width: 300px;
+  }
+
 
 }
 
