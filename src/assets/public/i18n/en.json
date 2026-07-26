@@ -101,7 +101,8 @@
     "noResult": "No deck matches your search",
     "by": "by",
     "addToFilters": "Add {{value}} to the search filters",
-    "goToProfile": "Check profile"
+    "goToProfile": "Check profile",
+    "goToVideo": "Open video"
   },
   "viewDeck": {
     "by": "by",

@@ -46,8 +46,7 @@
                 <span style="color: white">{{ 'streamList.noVod' | translate }}</span>
               }
               <div class="stream-thumbnail" style="color:black;">
-                <a href="https://www.twitch.tv/directory/category/krosmaga/videos/all" target="_blank" title=""
-                   style="text-decoration:none;">
+                <a href="https://www.twitch.tv/directory/category/krosmaga/videos/all" target="_blank" title="">
                   <div
                     style="width: 100%; aspect-ratio: 1.74; border-top-left-radius:10px; border-top-right-radius:10px; background-color:#523c7c; display:flex; justify-content:center; align-items:center;">
                     <img style="width:250px;" [src]="'/assets/public/twitch_wordmark.png'"></div>
@@ -72,8 +71,7 @@
                 <li style="color: white">{{ 'streamList.noVideo' | translate }}</li>
               }
               <div class="stream-thumbnail" style="color:black">
-                <a href="https://www.youtube.com/results?search_query=krosmaga&sp=CAI%253D" target="_blank" title=""
-                   style="text-decoration:none;">
+                <a href="https://www.youtube.com/results?search_query=krosmaga&sp=CAI%253D" target="_blank" title="">
                   <div
                     style="width: 100%; aspect-ratio: 1.74; border-top-left-radius:10px; border-top-right-radius:10px; background-color:#FF0000; display:flex; justify-content:center; align-items:center;">
                     <img style="width:250px; height:53px;" src="/assets/public/yt_wordmark.png">
@@ -95,7 +93,7 @@
 <!-- Template live panel -->
 <ng-template #STREAM let-stream="stream">
   <div class="stream-thumbnail">
-    <a [href]="stream.url" target="_blank" [title]=stream.title style="text-decoration:none;">
+    <a [href]="stream.url" target="_blank" [title]=stream.title>
       <div style="position:relative">
         <div style="position:relative">
           <img

@@ -101,7 +101,8 @@
     "noResult": "Aucun deck ne correspond à ces filtres",
     "by": "par",
     "addToFilters": "Ajouter {{value}} aux filtres de recherche",
-    "goToProfile": "Consulter le profil"
+    "goToProfile": "Consulter le profil",
+    "goToVideo": "Consulter la vidéo"
   },
   "viewDeck": {
     "by": "par",

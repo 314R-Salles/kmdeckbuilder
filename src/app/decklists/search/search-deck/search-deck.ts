@@ -4,24 +4,22 @@ import {AuthenticatedApiService} from '../../../api/authenticated-api.service';
 import {StoreService} from '../../../store.service';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {combineLatest, debounceTime, distinctUntilChanged, switchMap} from 'rxjs';
-import {Pagination} from '../../../base/pagination/pagination';
 import {Section} from '../../../base/section/section';
 import {RouterLink} from '@angular/router';
 import {TagDropdown} from '../../common/tag-dropdown/tag-dropdown';
 import {MatIcon} from '@angular/material/icon';
 import {GodDropdown} from '../god-dropdown/god-dropdown';
-import {DatePipe, NgClass, NgStyle} from '@angular/common';
+import {NgClass, NgStyle} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
 import {OwnerDropdown} from '../owner-dropdown/owner-dropdown';
 import {CardDropdown} from '../card-dropdown/card-dropdown';
-import {HighlightDisplay} from "../highlight-display/highlight-display";
+import {DeckList} from '../deck-list/deck-list';
 import {toSignal} from "@angular/core/rxjs-interop";
 import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-search-deck',
   imports: [
-    Pagination,
     ReactiveFormsModule,
     Section,
     RouterLink,
@@ -31,11 +29,10 @@ import {TranslatePipe} from "@ngx-translate/core";
     GodDropdown,
     MatTooltip,
     NgClass,
-    DatePipe,
     NgStyle,
     OwnerDropdown,
     CardDropdown,
-    HighlightDisplay,
+    DeckList,
     TranslatePipe
   ],
   templateUrl: './search-deck.html',
@@ -252,20 +249,16 @@ export class SearchDeck implements OnInit, OnDestroy {
     this.resetPageAndSearch()
   }
 
-  addUserFilterFromResult(username: string, event) {
+  addUserFilterFromResult(username: string) {
     if (!this.selectedUsers().map(u => u.username).includes(username)) {
       this.selectUser(this.allUsers().find(user => user.username === username), false)
     }
-    event.stopPropagation();
-    event.preventDefault()
   }
 
-  addTagFilterFromResult(tagName: string, event) {
+  addTagFilterFromResult(tagName: string) {
     if (!this.selectedTags().map(t => t.title).includes(tagName)) {
       this.selectTag(this.allTags().find(tag => tag.title === tagName), false)
     }
-    event.stopPropagation();
-    event.preventDefault()
   }
 
 

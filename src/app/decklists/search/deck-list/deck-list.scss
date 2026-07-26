@@ -1,0 +1,6 @@
+.listDeck {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start // dans le cas decks impairs, pour bien l'afficher (donc si besoin de centrer, faire autrement)
+}

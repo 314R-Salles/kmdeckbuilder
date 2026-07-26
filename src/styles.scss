@@ -4,7 +4,6 @@
 
 html, body {
   height: 100%;
-  //height: calc(100% - 2px);
 }
 
 html {
@@ -50,6 +49,26 @@ body {
     label-text-weight: --mat-sys-title-small-weight,
     container-height: 48px,
   ));
+}
+
+
+a {
+  text-decoration: none;
+}
+
+//////////////
+//// FLEX ////
+//////////////
+.flex-row-center {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.flex-column-center {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 

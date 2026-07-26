@@ -1,0 +1,23 @@
+<div class="listDeck">
+  @if (decks() && !decks().length) {
+    <div style="display:flex; align-content:center; flex-direction:column; align-items:center; width:100%;">
+      <img style="width:250px;" src="/assets/public/nothing_placeholder.png">
+      {{ 'searchDeck.noResult' | translate }}
+    </div>
+  } @else {
+    <div style="align-self: center">
+      <app-pagination [pageNumber]="searchResults()?.pageNumber +1" [totalPages]="searchResults()?.totalPages"
+                      (pageUp)="pageUp.emit()" (pageDown)="pageDown.emit()" (pageSet)="pageSet.emit($event)"></app-pagination>
+    </div>
+    @for (deck of decks(); track deck.deckId) {
+      <app-deck-list-item [deck]="deck" [isLoggedIn]="isLoggedIn()"
+                          (toggleFavorite)="toggleFavorite.emit($event)"
+                          (addUserFilter)="addUserFilter.emit($event)"
+                          (addTagFilter)="addTagFilter.emit($event)"></app-deck-list-item>
+    }
+  }
+  <div style="align-self: center">
+    <app-pagination [pageNumber]="searchResults()?.pageNumber +1" [totalPages]="searchResults()?.totalPages"
+                    (pageUp)="pageUp.emit()" (pageDown)="pageDown.emit()" (pageSet)="pageSet.emit($event)"></app-pagination>
+  </div>
+</div>
