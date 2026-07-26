@@ -3,6 +3,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+
     "outDir": "./dist/out-tsc",
     "strict": false,
     "strictPropertyInitialization": false,
@@ -30,5 +32,8 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "files": [
+    "node_modules/gsap/types/index.d.ts"
+  ]
 }

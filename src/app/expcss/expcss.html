@@ -1,0 +1,56 @@
+<app-section>
+  <ng-container section-header>
+    <div class="sectionTitle">Pouet</div>
+  </ng-container>
+
+  <div> Du css</div>
+  <br>
+  <br>
+  <br>
+  <div style="display: flex; flex-direction: row" class="container">
+    <div class="box1">
+      <mat-icon class="warnIcon">warning</mat-icon>
+    </div>
+    <div class="box2">
+      <span class="server">SERVER </span>
+      <span class="error">&nbsp;ERROR</span></div>
+  </div>
+
+  <div style=" margin-top:20px;display: flex; flex-direction: row">
+    <!--    <button (click)="tlError.pause();"> pause </button>-->
+    <!--    <button (click)="tlError.resume();"> play </button>-->
+    <button (click)="tlError.seek(0);">></button>
+  </div>
+  <br>
+
+  <div style="display: flex; flex-direction: row" class="containerS">
+    <div class="box1S">
+      <mat-icon class="saveIcon">save</mat-icon>
+    </div>
+    <div class="box2S">
+      <span class="content">CONTENT </span>
+      <span class="updated">&nbsp;UPDATED</span></div>
+  </div>
+
+  <div style=" margin-top:20px;display: flex; flex-direction: row">
+    <button (click)="tlSuccess.pause();"> pause</button>
+    <button (click)="tlSuccess.resume();"> play</button>
+    <button (click)="tlSuccess.seek(0);">></button>
+  </div>
+
+  <br>
+  <br>
+
+
+  <div class="example" style="width: 400px; height: 400px">
+  <div class="window">
+    <div class="containerWindowU"></div>
+    <div class="windowContent"></div>
+    <div class="containerWindowL"></div>
+  </div>
+  </div>
+
+
+  <div  style="width: 100px; height: 100px; background: red" id="dragid"></div>
+
+</app-section>
