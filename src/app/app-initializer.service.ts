@@ -1,7 +1,7 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {ApiService} from "./api/api.service";
 import {StoreService} from "./store.service";
-import {from, of, switchMap, tap} from "rxjs";
+import {catchError, from, Observable, of, switchMap, tap} from "rxjs";
 import {AuthenticatedApiService} from "./api/authenticated-api.service";
 import {OAuthService} from "angular-oauth2-oidc";
 import {isPlatformBrowser} from "@angular/common";
@@ -61,15 +61,30 @@ export class AppInitializerService {
           return from(this.oauthService.loadDiscoveryDocumentAndTryLogin())
         }),
         tap(_ => this.oauthService.setupAutomaticSilentRefresh()),
-        tap(_ => {
-          this.authenticatedApiService.getCurrentUser().subscribe(user => {
-            this.storeService.setUser(user);
-          })
+        switchMap(_ => this.refreshCurrentUser()),
+        catchError(err => {
+          console.error('App init failed', err);
+          this.storeService.setUser(null);
+          return of(true)
         })
       )
     } else {
       return of(true)
     }
+  }
+
+  private refreshCurrentUser(): Observable<any> {
+    if (!this.oauthService.hasValidAccessToken()) {
+      this.storeService.setUser(null);
+      return of(null);
+    }
+    return this.authenticatedApiService.getCurrentUser().pipe(
+      tap(user => this.storeService.setUser(user)),
+      catchError(_ => {
+        this.storeService.setUser(null);
+        return of(null);
+      })
+    )
   }
 
   clearHash() {

@@ -27,8 +27,7 @@
       </div>
     </div>
     <div style="display:flex;">
-
-      @if (!user()) {
+      @if (!user().username) {
         <div class="headerBtn" style="padding: 0 2px;" (click)="login()">
           <span style="align-self: center;">{{ 'login.button' | translate }}</span>
         </div>
