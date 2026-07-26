@@ -7,7 +7,7 @@ import {MatDialog} from '@angular/material/dialog';
 @Component({
   selector: 'app-home',
   imports: [
-    StreamList
+    StreamList,
   ],
   templateUrl: './home.html',
   styleUrl: './home.scss'

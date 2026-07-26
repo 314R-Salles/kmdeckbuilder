@@ -8,7 +8,6 @@ export enum CardRarity {
 
 export const {COMMUNE, PEU_COMMUNE, RARE, KROSMIQUE, INFINITE} = CardRarity;
 
-
 export enum CardType {
   CREA, SORT
 }

@@ -12,7 +12,7 @@
   }
 
 
-  <div id="regForm" style="height: 100%; display:flex; flex-direction:column; align-items:center;">
+  <div id="regForm" style="height: 97%; display:flex; flex-direction:column; align-items:center;">
 
     <div style="display:flex;">
       @if (currentTab() == 2 || currentTab() == 1 && !isUpdate) {
@@ -45,20 +45,85 @@
       </div>
     }
     @if (currentTab() === 1) {
-      <div class="deckbuilder" style="width: 100%; height: calc(100% - 45px)">
-        <div class="container shortScreenContainer ">
-          <button style=" width: 80px; height: 40px;
-        background: #3d1470; color: white;
-        position: absolute;right: 5px; bottom: 20px;">
-            <span [ngStyle]="{'color': 45 === selectedCards.length ? 'white': 'red'}">{{ selectedCards.length }} </span>
-            / 45
-          </button>
+      <div class="deckbuilder">
+        <div style="width: min(80%, calc(100% - 310px)); display: flex; flex-direction: column; justify-content: space-between">
+          <div style="/*height: 10%;*/ background: #b5b3ec">
+            <app-filter-form [god]="god" [form]="form" [shortScreen]="shortScreen"></app-filter-form>
+          </div>
+
+
+          <div style="height: 85%;">
+<!--          <div style="height: 85%; display: flex; justify-content: space-around">-->
+            <div class="cards">
+              @if (displayedCards() && !displayedCards().length) {
+                <div style="display:flex; align-content:center; flex-direction:column; align-items:center; width:100%;">
+                  <img style="width:250px;" src="/assets/public/nothing_placeholder.png">
+                  Aucune carte ne correspond à ces filtres.
+                </div>
+              } @else {
+                @for (card of displayedCards(); track card.id; let idx = $index) {
+                  <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"
+                       (click)="selectCard(card, $event)"
+                       class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
+                }
+              }
+            </div>
+
+          </div>
+          <div style="height: 5%">
+            <app-pagination [pageNumber]="searchResults?.pageNumber +1 " [totalPages]="searchResults?.totalPages"
+                            (pageUp)="pageUp()" (pageDown)="pageDown()" (pageSet)="pageSet($event)"></app-pagination>
+          </div>
         </div>
-        <div class="container largeScreenContainer">
-          <div *ngTemplateOutlet="MAIN"></div>
-          <div *ngTemplateOutlet="SYNTHESIS"></div>
+
+
+        <div style="width: 310px; height: 100%">
+          <div style="display:flex; flex-direction:row; justify-content:space-between;">
+            <div>
+              <img [src]="'/assets/public/picto-PA.png'" style="width:15px; height:15px;"> {{ currentApCost }}
+            </div>
+            <div>
+  <span class="bg-krosmique"
+        style="width:15px; height:15px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); display:inline-block;"></span>
+              <span
+                [ngStyle]="{'color': 7 === syntheseRarete.KROSMIQUE ? 'white': 'orange'}"> {{ syntheseRarete.KROSMIQUE }}
+                / 7</span>
+            </div>
+            <div>
+    <span class="bg-infinite"
+          style="width:15px; height:15px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); display:inline-block;"></span>
+              <span
+                [ngStyle]="{'color': 5 === syntheseRarete.INFINITE ? 'white': 'orange'}">{{ syntheseRarete.INFINITE }}
+                / 5</span>
+            </div>
+            <div>
+                <span
+                  [ngStyle]="{'color': 45 === selectedCards.length ? 'white': 'red'}">{{ selectedCards.length }} </span>
+              /
+              45
+            </div>
+          </div>
+
+          <app-selected-list [synthese]="synthese" [syntheseCost]="syntheseCost" [max]="max"
+                             (removeCard)="removeCard($event)"/>
         </div>
+
+
       </div>
+      <!--      <div class="deckbuilder" style="width: 100%; height: calc(100% - 45px)">-->
+        <!--        <div class="container shortScreenContainer ">-->
+        <!--          <button style=" width: 80px; height: 40px;-->
+        <!--        background: #3d1470; color: white;-->
+        <!--        position: absolute;right: 5px; bottom: 20px;">-->
+        <!--            <span [ngStyle]="{'color': 45 === selectedCards.length ? 'white': 'red'}">{{ selectedCards.length }} </span>-->
+        <!--            / 45-->
+        <!--          </button>-->
+        <!--        </div>-->
+        <!--        <div class="container largeScreenContainer">-->
+        <!--          <div *ngTemplateOutlet="MAIN"></div>-->
+        <!--          <div *ngTemplateOutlet="SYNTHESIS"></div>-->
+        <!--        </div>-->
+
     }
 
     <!--    permet d'avoir l'editeur quill généré et donc le setter à l'init, à voir si ça pose souci-->
@@ -218,8 +283,10 @@
 
 <ng-template #MAIN>
   <div class="formAndCards">
-    <app-filter-form [god]="god" [form]="form"></app-filter-form>
-    <div style="display: flex; justify-content:center; ">
+    <div style="height: 10%">
+      <app-filter-form [god]="god" [form]="form" [shortScreen]="shortScreen"></app-filter-form>
+    </div>
+    <div style="height: 85%">
       <div class="cards">
         @if (displayedCards() && !displayedCards().length) {
           <div style="display:flex; align-content:center; flex-direction:column; align-items:center; width:100%;">
@@ -235,29 +302,31 @@
         }
       </div>
     </div>
-    <app-pagination [pageNumber]="searchResults?.pageNumber +1 " [totalPages]="searchResults?.totalPages"
-                    (pageUp)="pageUp()" (pageDown)="pageDown()" (pageSet)="pageSet($event)"></app-pagination>
-  </div>
-</ng-template>
-
-<ng-template #SHORT_MAIN>
-  <div class="formAndCards">
-    <app-filter-form [god]="god" [form]="form"></app-filter-form>
-    <div style="display: flex; height: calc(100% - 100px)">
-      <button class="buttonChangePage" (click)="pageDown()"> <</button>
-      <div style="display: flex; flex-wrap: wrap; width: 100%; justify-content: center">
-
-        @for (card of displayedCards(); track card.id; let idx = $index) {
-          <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"
-               [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content'}"
-               (click)="selectCard(card, $event)"
-               class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
-        }
-      </div>
-      <button class="buttonChangePage" (click)="pageUp()"> ></button>
+    <div style="height: 5%">
+      <app-pagination [pageNumber]="searchResults?.pageNumber +1 " [totalPages]="searchResults?.totalPages"
+                      (pageUp)="pageUp()" (pageDown)="pageDown()" (pageSet)="pageSet($event)"></app-pagination>
     </div>
   </div>
 </ng-template>
+
+<!--<ng-template #SHORT_MAIN>-->
+<!--  <div class="formAndCards">-->
+<!--    <app-filter-form [god]="god" [form]="form"></app-filter-form>-->
+<!--    <div style="display: flex; height: calc(100% - 100px)">-->
+<!--      <button class="buttonChangePage" (click)="pageDown()"> <</button>-->
+<!--      <div style="display: flex; flex-wrap: wrap; width: 100%; justify-content: center">-->
+
+<!--        @for (card of displayedCards(); track card.id; let idx = $index) {-->
+<!--          <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"-->
+<!--               [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content'}"-->
+<!--               (click)="selectCard(card, $event)"-->
+<!--               class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">-->
+<!--        }-->
+<!--      </div>-->
+<!--      <button class="buttonChangePage" (click)="pageUp()"> ></button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</ng-template>-->
 
 
 <ng-template #SYNTHESIS>

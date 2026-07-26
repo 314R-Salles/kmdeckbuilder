@@ -23,6 +23,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 export class FilterForm  implements OnInit   {
   form = input.required<FormGroup>();
   god = input.required<number>();
+  shortScreen = input.required<boolean>();
 
   ngOnInit() {
     this.form().get('content').valueChanges.subscribe(_ => {this.resetPage()})

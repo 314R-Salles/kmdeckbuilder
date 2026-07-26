@@ -22,6 +22,34 @@ body {
 :root {
   --header-height: 60px;
   --header-menu: 40px;
+
+  @include mat.tabs-overrides((
+    active-indicator-height: 2px, // le trait qui indique la tab active
+    active-focus-indicator-color: #FFAE00, // le trait qui indique la tab active
+    active-focus-label-text-color: white, // le texte de l'onglet sur lequel je clique, mais donc pas actif si swipe
+    divider-height: 2px, // le séparateur tabs/content
+    active-hover-indicator-color: #FFAE00, // dans la tab active, si je clique en dehors, et que je hover l'onglet, remplace la active-focus-indicator-color
+    active-hover-label-text-color: white, // pareil mais le texte active-focus-label-text-color
+    //active-indicator-shape: ???
+    active-indicator-color: #FFAE00, // la couleur du trait de l'onglet actif quand je clique en dehors
+    active-label-text-color: white, // la couleur du texte de l'onglet actif quand je clique en dehors
+    active-ripple-color: #2380cd, // la couleur du ripple quand on clique sur un onglet
+    divider-color: #FFAE00,
+    inactive-focus-label-text-color: white, // la couleur du texte d'un onglet quand on clique sur un onglet inactif (donc 1s le temps que l'onglet devienne actif)
+    inactive-hover-label-text-color: --mat-sys-on-surface,
+    inactive-label-text-color: --mat-sys-on-surface,
+    inactive-ripple-color: --mat-sys-on-surface,
+    pagination-icon-color: --mat-sys-on-surface,
+    disabled-ripple-color: --mat-sys-on-surface-variant,
+    //background-color: red,
+    //foreground-color: blue,
+    //label-text-font: --mat-sys-title-small-font,
+    //label-text-line-height: --mat-sys-title-small-line-height,
+    label-text-size: 1em, //--mat-sys-title-small-size,
+    label-text-tracking: --mat-sys-title-small-tracking,
+    label-text-weight: --mat-sys-title-small-weight,
+    container-height: 48px,
+  ));
 }
 
 

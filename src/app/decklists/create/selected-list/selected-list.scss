@@ -27,4 +27,24 @@
 }
 
 
+::-webkit-scrollbar {
+  width: 9px;
+}
 
+::-webkit-scrollbar-track {
+  background: linear-gradient(
+      to right,
+      transparent calc(50% - 0.5px),
+      rgb(255, 255, 255) calc(50% - 0.5px),
+      rgba(0, 0, 0, 0.2) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+  );
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0C8CDC;
+  //background:    linear-gradient(0deg, rgba(12, 140, 220, 1) 0px, rgba(74, 219, 250, 1) 10px, rgba(52, 194, 235, 1) 15px, rgba(52, 194, 235, 1) calc(100% - 15px), rgba(74, 219, 250, 1) calc(100% - 10px), rgba(12, 140, 220, 1) 100%);
+
+  background: radial-gradient(circle,rgba(52, 194, 235, 1) calc(100% - 15px), rgba(74, 219, 250, 1) calc(100% - 10px), rgba(12, 140, 220, 1) 100%);
+  border-radius: 10px;
+}

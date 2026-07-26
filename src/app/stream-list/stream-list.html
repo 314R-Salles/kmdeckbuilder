@@ -5,78 +5,90 @@
       class="sectionTitle"> {{ (frontPage() ? noLiveStream ? notEnoughLiveStream ? 'streamList.frontPage.title.noLiveStream' : 'streamList.frontPage.title.twitchOnly' : 'streamList.frontPage.title.mixedContent' : 'streamList.mediaPage.title')  | translate }}
     </div>
   </ng-container>
-
   <div>
-    <div id="TwitchLive" style=" display: flex;  flex-direction: column;">
-      <div class="streams-panel">
-        @for (stream of streams(); track stream.url) {
-          @if (stream.fake) {
-            <div class="stream-thumbnail" style="color:black; max-width:320px;">
-              <div
-                style="width:320px; height:180px; border-top-left-radius:10px; border-top-right-radius:10px; background-color:gray; display:flex; justify-content:center; align-items:center;">
-                <img style="width:250px;" [src]="stream.thumbnailUrl"></div>
-              <div
-                style="height:36px; color:white; background-color: gray; border-bottom-left-radius:10px; border-bottom-right-radius:10px; align-content:center; text-align:center;">
-                {{ stream.title | translate }}
+
+    <mat-tab-group [(selectedIndex)]="selectedIndex">
+      <mat-tab label="Lives" [disabled]="!frontPage() && noLiveStream">
+        <ng-template mat-tab-label>
+          @if (!frontPage()) {
+            En direct
+          } @else {
+            Derniers contenus
+          }
+        </ng-template>
+        <div id="TwitchLive" style=" display: flex;  flex-direction: column;">
+          <div class="streams-panel">
+            @for (stream of streams(); track stream.url) {
+              @if (stream.fake) {
+                <div class="stream-thumbnail">
+                  <div
+                    style="width: 100%; aspect-ratio: 1.74; border-top-left-radius:10px; border-top-right-radius:10px; background-color:gray; display:flex; justify-content:center; align-items:center;">
+                    <img [src]="stream.thumbnailUrl" style="width: 78%;"></div>
+                  <div
+                    style="height:36px; color:white; background-color: gray; border-bottom-left-radius:10px; border-bottom-right-radius:10px; align-content:center; text-align:center;">
+                    {{ stream.title | translate }}
+                  </div>
+                </div>
+              } @else {
+                <ng-container [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream}"></ng-container>
+              }
+            }
+          </div>
+        </div>
+      </mat-tab>
+      @if (!frontPage()) {
+        <mat-tab label="Vods">
+          <div id="TwitchVod">
+            <div class="streams-panel">
+              @for (vod of vods(); track vod.url) {
+                <ng-container [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream:vod}"></ng-container>
+              } @empty {
+                <span style="color: white">{{ 'streamList.noVod' | translate }}</span>
+              }
+              <div class="stream-thumbnail" style="color:black;">
+                <a href="https://www.twitch.tv/directory/category/krosmaga/videos/all" target="_blank" title=""
+                   style="text-decoration:none;">
+                  <div
+                    style="width: 100%; aspect-ratio: 1.74; border-top-left-radius:10px; border-top-right-radius:10px; background-color:#523c7c; display:flex; justify-content:center; align-items:center;">
+                    <img style="width:250px;" [src]="'/assets/public/twitch_wordmark.png'"></div>
+
+                  <div
+                    style="height:36px; color:white; background-color: #523c7c; border-bottom-left-radius:10px; border-bottom-right-radius:10px; align-content:center; text-align:center;">
+                    {{ 'streamList.moreVods' | translate }}
+                  </div>
+                </a>
               </div>
             </div>
-          } @else {
-            <div [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream}"></div>
-          }
-        }
-      </div>
-    </div>
-
-    @if (!frontPage()) {
-      <div id="TwitchVod" style="display: flex;  flex-direction: column;">
-        <div class="streams-panel">
-          @for (vod of vods(); track vod.url) {
-            <div [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream:vod}"></div>
-          } @empty {
-            <span style="color: white">{{ 'streamList.noVod' | translate }}</span>
-          }
-          <div class="stream-thumbnail" style="color:black; max-width:320px;">
-            <a href="https://www.twitch.tv/directory/category/krosmaga/videos/all" target="_blank" title=""
-               style="text-decoration:none;">
-              <div
-                style="width:320px; height:180px; border-top-left-radius:10px; border-top-right-radius:10px; background-color:#523c7c; display:flex; justify-content:center; align-items:center;">
-                <img style="width:250px; height:83px;" [src]="'/assets/public/twitch_wordmark.png'"></div>
-
-              <div
-                style="height:36px; color:white; background-color: #523c7c; border-bottom-left-radius:10px; border-bottom-right-radius:10px; align-content:center; text-align:center;">
-                {{ 'streamList.moreVods' | translate }}
-              </div>
-            </a>
           </div>
-        </div>
-      </div>
-    }
-
-    @if (!frontPage()) {
-      <div class="streams-panel" id="YoutubeVod" style="display: flex;  flex-direction: column;">
-        <div class="streams-panel">
-          @for (video of videos(); track video.url) {
-            <div [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream:video}"></div>
-          } @empty {
-            <li style="color: white">{{ 'streamList.noVideo' | translate }}</li>
-          }
-          <div class="stream-thumbnail" style="color:black; max-width:320px;">
-            <a href="https://www.youtube.com/results?search_query=krosmaga&sp=CAI%253D" target="_blank" title=""
-               style="text-decoration:none;">
-              <div
-                style="width:320px; height:180px; border-top-left-radius:10px; border-top-right-radius:10px; background-color:#FF0000; display:flex; justify-content:center; align-items:center;">
-                <img style="width:250px; height:53px;" src="/assets/public/yt_wordmark.png">
+        </mat-tab>
+      }
+      @if (!frontPage()) {
+        <mat-tab label="Youtube">
+          <div class="streams-panel" id="YoutubeVod" style="display: flex;  flex-direction: column;">
+            <div class="streams-panel">
+              @for (video of videos(); track video.url) {
+                <ng-container [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream:video}"></ng-container>
+              } @empty {
+                <li style="color: white">{{ 'streamList.noVideo' | translate }}</li>
+              }
+              <div class="stream-thumbnail" style="color:black">
+                <a href="https://www.youtube.com/results?search_query=krosmaga&sp=CAI%253D" target="_blank" title=""
+                   style="text-decoration:none;">
+                  <div
+                    style="width: 100%; aspect-ratio: 1.74; border-top-left-radius:10px; border-top-right-radius:10px; background-color:#FF0000; display:flex; justify-content:center; align-items:center;">
+                    <img style="width:250px; height:53px;" src="/assets/public/yt_wordmark.png">
+                  </div>
+                  <div
+                    style="height:36px; color:white; background-color: #FF0000; border-bottom-left-radius:10px; border-bottom-right-radius:10px; align-content:center; text-align:center;">
+                    {{ 'streamList.moreVideos' | translate }}
+                  </div>
+                </a>
               </div>
-              <div
-                style="height:36px; color:white; background-color: #FF0000; border-bottom-left-radius:10px; border-bottom-right-radius:10px; align-content:center; text-align:center;">
-                {{ 'streamList.moreVideos' | translate }}
-              </div>
-            </a>
+            </div>
           </div>
-        </div>
-      </div>
-    }
-
+        </mat-tab>
+      }
+    </mat-tab-group>
   </div>
 </app-section>
 
@@ -84,10 +96,10 @@
 <ng-template #STREAM let-stream="stream">
   <div class="stream-thumbnail">
     <a [href]="stream.url" target="_blank" [title]=stream.title style="text-decoration:none;">
-      <div style="position:relative;">
-        <div style="position:relative; height:180px;">
+      <div style="position:relative">
+        <div style="position:relative">
           <img
-            style="border-top-left-radius:10px; border-top-right-radius:10px; outline-offset:-4px;"
+            style="width: 100%;border-top-left-radius:10px; border-top-right-radius:10px; outline-offset:-4px;"
             [src]=stream.thumbnailUrl
             [ngStyle]="{'outline': stream.live ? '4px solid #FF0000':''}">
           <img class="stream-profilePic" src={{stream.profileImage}} style="position:absolute; left:5px; bottom:5px;"

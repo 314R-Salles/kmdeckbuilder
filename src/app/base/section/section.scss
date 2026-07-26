@@ -1,19 +1,36 @@
 
 .section {
+  transition: all 1s ease;
   margin: 0 auto;
   width: 75%;
-  //min-width: 1800px;
 }
 
 @media (max-width: 1700px) {
   .section {
     margin: 0 auto;
-    width: 100%;
-    min-width: 800px;
+    //min() rend la transition fluide en redimensionnant l'écran | 100% jusqu'à 75% de 1700px
+    width: min(100%, 1275px) ;
   }
 }
 
 .forcedSize {
   width: 100% !important;
   height: 100% !important;
+}
+
+
+.content {
+  border: #FFAE00 solid 2px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 20px;
+  background: #262241
+}
+
+
+// sur vraiment petit écran, faire sauter le padding 20px
+@media (max-width: 850px) {
+  .content {
+    padding: 0;
+  }
 }

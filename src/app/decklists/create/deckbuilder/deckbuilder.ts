@@ -21,6 +21,8 @@ import {VideoValidator} from "../../../base/models/utils";
 import {MatError} from "@angular/material/input";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {TranslatePipe} from "@ngx-translate/core";
+import {COPY_LIMIT, QUILL_CONFIG, RARITY_LIMIT} from "../../../base/constants";
+import {ScreenService} from "../../../screen";
 
 @Component({
   selector: 'app-deckbuilder',
@@ -47,8 +49,13 @@ export class Deckbuilder implements OnInit, OnDestroy, AfterViewInit {
   authenticatedApiService = inject(AuthenticatedApiService);
   router = inject(Router);
   storeService = inject(StoreService);
+  screenService = inject(ScreenService);
   route = inject(ActivatedRoute);
   dialog = inject(MatDialog);
+
+  limitationNbrExemplaires = COPY_LIMIT
+  limitationRarete = RARITY_LIMIT
+  quillConfiguration = QUILL_CONFIG
 
   disableSaveButton = false
 
@@ -174,7 +181,37 @@ export class Deckbuilder implements OnInit, OnDestroy, AfterViewInit {
       this.updateState() // rafraichir la liste des cartes selectionnées
       this.getFilteredCards() // recharger les cartes à l'écran (nom différent donc ordre d'affichage différent)
     }))
+
+
+
+    this.subscriptions.push(this.screenService.observer.subscribe(r => {
+
+      if(r.breakpoints[this.screenService.bPoint850px]){
+        this.shortScreen = true
+        this.form.get('pageNumber').setValue(1);
+        this.form.get('pageSize').setValue(9);
+      }
+      if(r.breakpoints[this.screenService.bPoint1050px]){
+        this.shortScreen = false
+        this.form.get('pageNumber').setValue(1);
+        this.form.get('pageSize').setValue(9);
+      }      if(r.breakpoints[this.screenService.bPoint1250px]){
+        this.shortScreen = false
+        this.form.get('pageNumber').setValue(1);
+        this.form.get('pageSize').setValue(15);
+      }
+      if(r.breakpoints[this.screenService.bPoint1600px]){
+        this.form.get('pageNumber').setValue(1);
+        this.form.get('pageSize').setValue(21);
+      }
+      // if(r.breakpoints[this.screenService.bPoint1800px]){
+      //   this.form.get('pageNumber').setValue(1);
+      //   this.form.get('pageSize').setValue(21);
+      // }
+
+    }))
   }
+  shortScreen =  false
 
   selectGod(index: number) {
     this.god = index;
@@ -185,24 +222,12 @@ export class Deckbuilder implements OnInit, OnDestroy, AfterViewInit {
 
   // Envisager de passer de 2 champs minion/spell à un champ TYPE qui vaut Minion/Spell directement
   getFilteredCards() {
-    let type: CardType | null = null;
-    if (this.isMinion && !this.isSpell) type = CardType.CREA;
-    if (this.isSpell && !this.isMinion) type = CardType.SORT;
+    let type = this.getSearchType()
 
     // Pour gérer les options X+ on définit un Min Max
     // Exemple si selection 7+, alors min 7 et max null pour dire pas de max
     const apMin = this.apValue?.value;
     const apMax = this.apValue?.value === 7 ? null : this.apValue?.value;
-
-    // si 1-, min = 0, max = 1
-    const atMin = this.atValue === 1 ? 0 : this.atValue;
-    const atMax = this.atValue === 6 ? null : this.atValue;
-
-    const hpMin = this.hpValue === 1 ? 0 : this.hpValue;
-    const hpMax = this.hpValue === 6 ? null : this.hpValue;
-
-    const mpMin = this.mpValue === 1 ? 0 : this.mpValue;
-    const mpMax = this.mpValue === 4 ? null : this.mpValue;
 
     let gods = []
     if (this.godCards) {
@@ -214,14 +239,9 @@ export class Deckbuilder implements OnInit, OnDestroy, AfterViewInit {
 
     this.apiService.getCards({
       type: type,
-      hpGreaterThan: hpMin,
-      hpLessThan: hpMax,
       apGreaterThan: apMin,
       apLessThan: apMax,
-      mpGreaterThan: mpMin,
-      mpLessThan: mpMax,
-      atGreaterThan: atMin,
-      atLessThan: atMax,
+
       gods: gods,
       rarity: this.rarity != -1 ? this.rarity : null,
       language: this.currentLanguage(),
@@ -583,44 +603,16 @@ export class Deckbuilder implements OnInit, OnDestroy, AfterViewInit {
   // }
 
 
-  ////////////////////////////////////////
-  /**            CONSTANTS              */
-    ////////////////////////////////////////
-
-    // pour limiter le nombre d'exemplaires max d'une carte.
-    // 3 pour tout le monde sauf les krosmiques / infinites à 1
-
-  limitationNbrExemplaires = {
-    COMMUNE: 3,
-    PEU_COMMUNE: 3,
-    RARE: 3,
-    KROSMIQUE: 1,
-    INFINITE: 1
-  }
-
-  // pour limiter les krosmiques à 7 et infinites à 5
-  limitationRarete = {
-    COMMUNE: -1,
-    PEU_COMMUNE: -1,
-    RARE: -1,
-    KROSMIQUE: 7,
-    INFINITE: 5
-  }
-
-  quillConfiguration = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote', 'code-block'],
-      // [{list: 'ordered'}, {list: 'bullet'}],
-      [{
-        header: [1, 2, 3,
-          // 4, 5, 6,
-          false]
-      }],
-      [{color: []}, {background: []}],
-      // ['link'],
-      ['clean'],
-    ],
+  // Si les 2 flags, alors on remonte toutes les cartes
+  // Au moins un flag obligatoire, donc si c'est pas minion c'est sort
+  getSearchType(): CardType {
+    if (this.isMinion && this.isSpell) {
+      return null;
+    } else if (this.isMinion) {
+      return CardType.CREA;
+    } else {
+      return CardType.SORT;
+    }
   }
 
 

@@ -1,11 +1,35 @@
 .streams-panel {
-  display: flex;
-  flex-wrap: wrap;
+  // en fait pas de grid sur très petit écran c'est mieux
+}
+
+@media (min-width: 850px) {
+  .streams-panel {
+    display: grid;
+    gap: 1rem;
+    align-items: stretch;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1250px) {
+  .streams-panel {
+    display: grid;
+    gap: 1rem;
+    align-items: stretch;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1600px) {
+  .streams-panel {
+    display: grid;
+    gap: 1rem;
+    align-items: stretch;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 .stream-thumbnail {
-  width: 320px;
-  height: 100%;
   margin: 10px 10px 15px 10px;
   transition: all 0.35s;
 }
@@ -14,14 +38,15 @@
   transform: scale(1.05);
 }
 
-.stream-thumbnail:hover > a > img {
-  background-color:rgba(255, 255, 255, 0.3);
-}
-
 .stream-displayName {
   font-size: 1.1em;
   font-weight: bolder;
-  color:white;
+  color: white;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 60%;
 }
 
 .stream-title {
@@ -29,11 +54,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color:white;
+  color: white;
 }
 
 .stream-profilePic {
   width: 40px;
   height: 40px;
   border-radius: 20px 20px;
+}
+
+
+#TwitchVod {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; // un scroll horizontal peut apparaitre avec l'effet hover
 }

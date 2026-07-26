@@ -6,6 +6,8 @@ import {Section} from '../base/section/section';
 import {TranslatePipe} from "@ngx-translate/core";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {StoreService} from "../store.service";
+import {MatTabsModule} from "@angular/material/tabs";
+import {AbstractSwipeComponent} from "../base/AbstractSwipeComponent";
 
 @Component({
   selector: 'app-stream-list',
@@ -13,12 +15,15 @@ import {StoreService} from "../store.service";
     NgTemplateOutlet,
     NgStyle,
     Section,
-    TranslatePipe
+    TranslatePipe,
+    MatTabsModule
   ],
   templateUrl: './stream-list.html',
   styleUrl: './stream-list.scss'
 })
-export class StreamList implements AfterViewInit, OnDestroy {
+export class StreamList extends AbstractSwipeComponent implements AfterViewInit, OnDestroy {
+
+  selectedIndex = null
 
   storeService = inject(StoreService);
   apiService = inject(ApiService)
@@ -36,7 +41,20 @@ export class StreamList implements AfterViewInit, OnDestroy {
 
   subscriptions = []
 
+  override swipeRight() {
+    if (this.selectedIndex < 2)
+      this.selectedIndex++;
+  }
+
+  override swipeLeft() {
+    // peut pas swipe gauche si onglet Lives vide
+    if (this.selectedIndex > +!!this.noLiveStream)
+      this.selectedIndex--;
+  }
+
+
   constructor() {
+    super();
     this.subscriptions.push(this.storeService.getLanguage().subscribe(_ => {
       this.updateTimestamps()
     }))
@@ -50,6 +68,8 @@ export class StreamList implements AfterViewInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       this.apiService.getStreams().subscribe(streams => {
         this.noLiveStream = streams.length == 0;
+        // onglet par défaut = VOD si pas de lives
+        this.selectedIndex = +!!this.noLiveStream
 
         if (this.noLiveStream) {
           this.streams.set([PLACEHOLDER]);
@@ -104,8 +124,8 @@ export class StreamList implements AfterViewInit, OnDestroy {
           formattedDate: this.makeDate(stream.created_at),
           thumbnailUrl:
             stream.thumbnailUrl
-              .replace('%{width}', '320').replace('%{height}', '180')
-              .replace('{width}', '320').replace('{height}', '180'),
+              .replace('%{width}', '600').replace('%{height}', '340')
+              .replace('{width}', '600').replace('{height}', '340'),
         }
       }
     );
@@ -156,5 +176,4 @@ export class StreamList implements AfterViewInit, OnDestroy {
   getTranslation(fr, en) {
     return this.currentLanguage() === 'FR' ? fr : en
   }
-
 }

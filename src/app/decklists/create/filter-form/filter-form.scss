@@ -73,3 +73,13 @@
     display: none;
   }
 }
+
+@media (min-width: 850px) {
+  .shortDisplay {
+    display: none;
+  }
+}@media (max-width: 850px) {
+  .bigDisplay {
+    display: none;
+  }
+}
