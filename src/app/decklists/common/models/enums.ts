@@ -42,3 +42,16 @@ export enum Language {
 export const DEFAULT_CARD = {
   id: -1, name: 'empty'
 }
+
+export enum SearchBy {
+  FAVORITE = 'FAVORITE',
+  RECENT = 'RECENT',
+  AP_COST = 'AP_COST',
+  DUST_COST = 'DUST_COST'
+}
+
+export enum OrderBy {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
+

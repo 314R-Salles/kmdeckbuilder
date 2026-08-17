@@ -1,18 +1,40 @@
-.streams-panel {
+$stream-thumbnail-min-width: 300px;
+$stream-panel-column-gap: 10px;
+$stream-panel-max-columns: 4;
+
+.stream-sections {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.streams-panel {
+  display: grid;
+  gap: 15px $stream-panel-column-gap;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 .stream-thumbnail {
-  width: 320px;
+  width: 100%;
+  //min-width: $stream-thumbnail-min-width;
   height: 100%;
-  margin: 10px 10px 15px 10px;
   transition: all 0.35s;
 }
 
-.stream-thumbnail:hover {
-  transform: scale(1.05);
+.stream-media-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
 }
+
+
+// navigateur limité à 500px min. En dessous, sans souris, pas de survol / zoom des minia donc moins besoin du gap latéral
+@media (min-width: 499px) {
+  .stream-thumbnail:hover {
+    transform: scale(1.05);
+  }
+}
+
 
 .stream-thumbnail:hover > a > img {
   background-color:rgba(255, 255, 255, 0.3);

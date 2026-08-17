@@ -1,4 +1,4 @@
-import {Component, computed, inject} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {StoreService} from '../store.service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
@@ -34,6 +34,16 @@ export class Header {
 
   login() {
     this.authService.login();
+  }
+
+  menuOpen = signal(false);
+
+  toggleMenu() {
+    this.menuOpen.update(open => !open);
+  }
+
+  closeMenu() {
+    this.menuOpen.set(false);
   }
 
 }

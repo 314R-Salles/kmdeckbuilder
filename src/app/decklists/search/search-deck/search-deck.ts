@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, computed, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {ApiService} from '../../../api/api.service';
 import {AuthenticatedApiService} from '../../../api/authenticated-api.service';
 import {StoreService} from '../../../store.service';
@@ -17,6 +17,7 @@ import {CardDropdown} from '../card-dropdown/card-dropdown';
 import {HighlightDisplay} from "../highlight-display/highlight-display";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {TranslatePipe} from "@ngx-translate/core";
+import {OrderBy, SearchBy} from "../../common/models/enums";
 
 @Component({
   selector: 'app-search-deck',
@@ -67,7 +68,10 @@ export class SearchDeck implements OnInit, OnDestroy {
   actionPointsCompareSup = true
   dustCompareSup = true
   favoritesOnly = false
-  sortFilter = "RECENT"
+  sortFilter: SearchBy = SearchBy.RECENT
+  sortOrder: OrderBy = OrderBy.DESC
+  protected readonly SearchBy = SearchBy
+  protected readonly OrderBy = OrderBy
   selectedCards = signal<any>([])
   selectedUsers = signal<any>([])
   selectedNegativeUsers = signal<any>([])
@@ -76,6 +80,17 @@ export class SearchDeck implements OnInit, OnDestroy {
   selectedNegativeTags = signal<any>([])
 
   allUsers = signal<any>([])
+
+  filtersOpen = signal(false)
+
+  activeFilterCount = computed(() =>
+    this.selectedCards().length +
+    this.selectedUsers().length +
+    this.selectedNegativeUsers().length +
+    this.selectedGods().length +
+    this.selectedTags().length +
+    this.selectedNegativeTags().length
+  )
 
   allTags = toSignal(
     this.storeService.getLanguage().pipe(
@@ -94,10 +109,17 @@ export class SearchDeck implements OnInit, OnDestroy {
 
   constructor() {
     this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
+
+    // Le backdrop mobile est en position:fixed sans zone scrollable propre : sans ce verrou,
+    // un scroll (molette/tactile) au-dessus de lui remonte jusqu'au body et fait défiler les decks en dessous.
+    effect(() => {
+      document.body.classList.toggle('no-scroll', this.filtersOpen())
+    });
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe())
+    document.body.classList.remove('no-scroll')
   }
 
   ngOnInit() {
@@ -134,7 +156,8 @@ export class SearchDeck implements OnInit, OnDestroy {
     this.selectedNegativeTags.set([]);
     this.selectedUsers.set([]);
     this.selectedNegativeUsers.set([]);
-    this.sortFilter = "RECENT"
+    this.sortFilter = SearchBy.RECENT
+    this.sortOrder = OrderBy.DESC
     this.searchForm.reset()
     this.search()
   }
@@ -157,6 +180,7 @@ export class SearchDeck implements OnInit, OnDestroy {
       favoritesOnly: this.favoritesOnly,
       language: this.currentLanguage(),
       searchBy: this.sortFilter,
+      orderBy: this.sortOrder,
       page: this.currentPage,
       pageSize: this.pageSize,
     };
@@ -285,17 +309,26 @@ export class SearchDeck implements OnInit, OnDestroy {
     this.resetPageAndSearch()
   }
 
+  toggleFilters() {
+    this.filtersOpen.update(open => !open)
+  }
+
+  closeFilters() {
+    this.filtersOpen.set(false)
+  }
+
   toggleFavoriteFilter() {
     this.favoritesOnly = !this.favoritesOnly;
     this.resetPageAndSearch()
   }
 
-  toggleSortFilter() {
-    if (this.sortFilter == "RECENT")
-      this.sortFilter = "FAVORITE";
-    else
-      this.sortFilter = "RECENT";
-
+  setFilter(filter: SearchBy) {
+    if (this.sortFilter === filter) {
+      this.sortOrder = this.sortOrder === OrderBy.DESC ? OrderBy.ASC : OrderBy.DESC;
+    } else {
+      this.sortFilter = filter;
+      this.sortOrder = OrderBy.DESC;
+    }
     this.resetPageAndSearch();
   }
 
@@ -357,7 +390,8 @@ export class SearchDeck implements OnInit, OnDestroy {
     this.setSignalWithStorageValue(this.selectedUsers, 'users')
     this.setSignalWithStorageValue(this.selectedNegativeUsers, 'negativeUsers')
     this.favoritesOnly = JSON.parse(sessionStorage.getItem('favoritesOnly')) || false
-    this.sortFilter = JSON.parse(sessionStorage.getItem('sortFilter')) || "RECENT"
+    this.sortFilter = (JSON.parse(sessionStorage.getItem('sortFilter')) as SearchBy) || SearchBy.RECENT
+    this.sortOrder = (JSON.parse(sessionStorage.getItem('sortOrder')) as OrderBy) || OrderBy.DESC
     this.currentPage = JSON.parse(sessionStorage.getItem('currentPage')) || 0
     this.pageSize = JSON.parse(sessionStorage.getItem('pageSize')) || 20
   }
@@ -370,6 +404,7 @@ export class SearchDeck implements OnInit, OnDestroy {
     sessionStorage.setItem('users', JSON.stringify(this.selectedUsers()))
     sessionStorage.setItem('negativeUsers', JSON.stringify(this.selectedNegativeUsers()))
     sessionStorage.setItem('sortFilter', JSON.stringify(this.sortFilter))
+    sessionStorage.setItem('sortOrder', JSON.stringify(this.sortOrder))
     sessionStorage.setItem('currentPage', JSON.stringify(this.currentPage))
     sessionStorage.setItem('pageSize', JSON.stringify(this.pageSize))
     sessionStorage.setItem('favoritesOnly', JSON.stringify(this.favoritesOnly))

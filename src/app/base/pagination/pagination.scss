@@ -16,3 +16,11 @@
   cursor:pointer;
   background: rgb(165, 190, 255, 0.5) !important;
 }
+
+
+@media (max-width: 499px) {
+  .paginationBtn {
+    width: 34px;
+    height: 34px;
+  }
+}

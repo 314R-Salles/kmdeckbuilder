@@ -23,7 +23,8 @@
         "twitchOnly": "En ce moment sur Twitch",
         "mixedContent": "En ce moment ou presque",
         "noLiveStream": "Récemment"
-      }
+      },
+      "seeMore": "Parcourir"
     }
   },
   "deckbuilder": {
@@ -91,7 +92,9 @@
     "createButton": "Créer un deck",
     "searchBy": {
       "recent": "Trié par : plus récent.",
-      "favorites": "Trié par : plus aimé."
+      "favorites": "Trié par : plus aimé.",
+      "apCost": "Trié par : coût en points d'action.",
+      "dustCost": "Trié par : coût en poussière."
     },
     "toggle": {
       "favorites": "Afficher vos favoris",
@@ -101,7 +104,10 @@
     "noResult": "Aucun deck ne correspond à ces filtres",
     "by": "par",
     "addToFilters": "Ajouter {{value}} aux filtres de recherche",
-    "goToProfile": "Consulter le profil"
+    "goToProfile": "Consulter le profil",
+    "filters": {
+      "toggle": "Filtres"
+    }
   },
   "viewDeck": {
     "by": "par",

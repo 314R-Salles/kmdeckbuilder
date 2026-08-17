@@ -14,6 +14,7 @@ import {provideHttpClient, withFetch} from '@angular/common/http';
 import {AppInitializerService} from './app-initializer.service';
 import {provideTranslateService} from "@ngx-translate/core";
 import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
+import {MatIconRegistry} from '@angular/material/icon';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,6 +28,9 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => {
       const initializerFn = (initApp)(inject(AppInitializerService));
       return initializerFn();
+    }),
+    provideAppInitializer(() => {
+      inject(MatIconRegistry).setDefaultFontSetClass('material-symbols-outlined');
     }),
     provideTranslateService({
       loader: provideTranslateHttpLoader({

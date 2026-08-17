@@ -1,2 +1,6 @@
 <div style="height: 20px"></div>
+<div class="home-quick-links">
+  <div routerLink="/decks/browse" class="actionButton">{{ 'searchDeck.title' | translate }}</div>
+  <div routerLink="/decks/create" class="actionButton">{{ 'searchDeck.createButton' | translate }}</div>
+</div>
 <app-stream-list [frontPage]="true"></app-stream-list>

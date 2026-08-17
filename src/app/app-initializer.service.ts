@@ -60,11 +60,11 @@ export class AppInitializerService {
           });
           return from(this.oauthService.loadDiscoveryDocumentAndTryLogin())
         }),
-        tap(_ => this.oauthService.setupAutomaticSilentRefresh()),
         tap(_ => {
-          this.authenticatedApiService.getCurrentUser().subscribe(user => {
-            this.storeService.setUser(user);
-          })
+          if (this.oauthService.hasValidAccessToken()) {
+            this.oauthService.setupAutomaticSilentRefresh();
+            this.authenticatedApiService.getCurrentUser().subscribe(user => this.storeService.setUser(user));
+          }
         })
       )
     } else {

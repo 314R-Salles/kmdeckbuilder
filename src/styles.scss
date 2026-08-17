@@ -19,9 +19,22 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+// Empêche le scroll de la page derrière un panneau modal (ex: filterBackdrop de search-deck)
+body.no-scroll {
+  overflow: hidden;
+}
+
 :root {
-  --header-height: 60px;
+  --header-height: 45px;
   --header-menu: 40px;
+}
+
+// Header plus épais en mobile portrait pour des zones tactiles plus confortables
+// (logo, hamburger, dropdown langue). Seuil aligné sur $mobile-breakpoint dans header.scss.
+@media (max-width: 768px) {
+  :root {
+    --header-height: 60px;
+  }
 }
 
 
@@ -298,7 +311,7 @@ $infinite: #FFFFEE;
   }
 
   &.language {
-    width: 40px;
+    width: 50px;
     padding-left: 0px;
     justify-content: center;
     background: #262241;
@@ -335,7 +348,7 @@ $infinite: #FFFFEE;
   }
 
   &.language {
-    width: 40px;
+    width: 50px;
     height: 100%;
     justify-content: center;
   }
@@ -379,7 +392,7 @@ $infinite: #FFFFEE;
   }
 
   &.language {
-    width: 40px;
+    width: 50px;
   }
 
   &.rarity {

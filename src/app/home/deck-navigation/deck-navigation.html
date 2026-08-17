@@ -1,27 +1,26 @@
 <app-section>
 
   <ng-container section-header>
-    <div
-      class="sectionTitle"> {{ (frontPage() ? noLiveStream ? notEnoughLiveStream ? 'streamList.frontPage.title.noLiveStream' : 'streamList.frontPage.title.twitchOnly' : 'streamList.frontPage.title.mixedContent' : 'streamList.mediaPage.title')  | translate }}
+    <div class="sectionTitle">
+      <!--      {{ (frontPage() ? noLiveStream ? notEnoughLiveStream ? 'streamList.frontPage.title.noLiveStream' : 'streamList.frontPage.title.twitchOnly' : 'streamList.frontPage.title.mixedContent' : 'streamList.mediaPage.title')  | translate }}-->
+      Derniers decks créés
     </div>
   </ng-container>
 
-  @if (frontPage()) {
-    <ng-container after-section-header>
-      <div routerLink="/media" class="afterSectionTitle">
-        <div class="actionButton">{{ 'streamList.frontPage.seeMore' | translate }}</div>
-      </div>
-    </ng-container>
-  }
+  <ng-container after-section-header>
+    <div routerLink="/decks/browse" class="afterSectionTitle">
+      <div class="actionButton">{{ 'mediaPage.seeMore' | translate }}</div>
+    </div>
+  </ng-container>
 
-  <div class="stream-sections">
-    <div id="TwitchLive">
+  <div>
+    <div id="TwitchLive" style=" display: flex;  flex-direction: column;">
       <div class="streams-panel">
         @for (stream of streams(); track stream.url) {
           @if (stream.fake) {
-            <div class="stream-thumbnail" style="color:black;">
-              <div class="stream-media-box"
-                style="border-top-left-radius:10px; border-top-right-radius:10px; background-color:gray; display:flex; justify-content:center; align-items:center;">
+            <div class="stream-thumbnail" style="color:black; max-width:320px;">
+              <div
+                style="width:320px; height:180px; border-top-left-radius:10px; border-top-right-radius:10px; background-color:gray; display:flex; justify-content:center; align-items:center;">
                 <img style="width:250px;" [src]="stream.thumbnailUrl"></div>
               <div
                 style="height:36px; color:white; background-color: gray; border-bottom-left-radius:10px; border-bottom-right-radius:10px; align-content:center; text-align:center;">
@@ -29,25 +28,25 @@
               </div>
             </div>
           } @else {
-            <ng-container [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream}"></ng-container>
+            <div [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream}"></div>
           }
         }
       </div>
     </div>
 
     @if (!frontPage()) {
-      <div id="TwitchVod">
+      <div id="TwitchVod" style="display: flex;  flex-direction: column;">
         <div class="streams-panel">
           @for (vod of vods(); track vod.url) {
-            <ng-container [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream:vod}"></ng-container>
+            <div [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream:vod}"></div>
           } @empty {
             <span style="color: white">{{ 'streamList.noVod' | translate }}</span>
           }
-          <div class="stream-thumbnail" style="color:black;">
+          <div class="stream-thumbnail" style="color:black; max-width:320px;">
             <a href="https://www.twitch.tv/directory/category/krosmaga/videos/all" target="_blank" title=""
                style="text-decoration:none;">
-              <div class="stream-media-box"
-                style="border-top-left-radius:10px; border-top-right-radius:10px; background-color:#523c7c; display:flex; justify-content:center; align-items:center;">
+              <div
+                style="width:320px; height:180px; border-top-left-radius:10px; border-top-right-radius:10px; background-color:#523c7c; display:flex; justify-content:center; align-items:center;">
                 <img style="width:250px; height:83px;" [src]="'/assets/public/twitch_wordmark.png'"></div>
 
               <div
@@ -61,17 +60,18 @@
     }
 
     @if (!frontPage()) {
-      <div class="streams-panel" id="YoutubeVod">
+      <div class="streams-panel" id="YoutubeVod" style="display: flex;  flex-direction: column;">
+        <div class="streams-panel">
           @for (video of videos(); track video.url) {
-            <ng-container [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream:video}"></ng-container>
+            <div [ngTemplateOutlet]="STREAM" [ngTemplateOutletContext]="{stream:video}"></div>
           } @empty {
             <li style="color: white">{{ 'streamList.noVideo' | translate }}</li>
           }
-          <div class="stream-thumbnail" style="color:black;">
+          <div class="stream-thumbnail" style="color:black; max-width:320px;">
             <a href="https://www.youtube.com/results?search_query=krosmaga&sp=CAI%253D" target="_blank" title=""
                style="text-decoration:none;">
-              <div class="stream-media-box"
-                style="border-top-left-radius:10px; border-top-right-radius:10px; background-color:#FF0000; display:flex; justify-content:center; align-items:center;">
+              <div
+                style="width:320px; height:180px; border-top-left-radius:10px; border-top-right-radius:10px; background-color:#FF0000; display:flex; justify-content:center; align-items:center;">
                 <img style="width:250px; height:53px;" src="/assets/public/yt_wordmark.png">
               </div>
               <div
@@ -80,6 +80,7 @@
               </div>
             </a>
           </div>
+        </div>
       </div>
     }
 
@@ -91,9 +92,9 @@
   <div class="stream-thumbnail">
     <a [href]="stream.url" target="_blank" [title]=stream.title style="text-decoration:none;">
       <div style="position:relative;">
-        <div class="stream-media-box">
+        <div style="position:relative; height:180px;">
           <img
-            style="width:100%; height:100%; display:block; object-fit:cover; border-top-left-radius:10px; border-top-right-radius:10px; outline-offset:-4px;"
+            style="border-top-left-radius:10px; border-top-right-radius:10px; outline-offset:-4px;"
             [src]=stream.thumbnailUrl
             [ngStyle]="{'outline': stream.live ? '4px solid #FF0000':''}">
           <img class="stream-profilePic" src={{stream.profileImage}} style="position:absolute; left:5px; bottom:5px;"
