@@ -198,21 +198,8 @@ input.invalid {
   height: 100%
 }
 
-@media (max-width: 1399px) {
-  .largeScreenContainer {
-    // display: none;
-  }
-  //.viewDeckContainer {
-  //  min-width: unset
-  //}
-}
-
 @media (min-width: 1543px) {
   .shortScreenContainer {
     display: none;
   }
-
-  //.viewDeckContainer {
-  //  min-width: 1400px
-  //}
 }

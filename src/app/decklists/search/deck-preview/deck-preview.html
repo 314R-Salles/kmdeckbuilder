@@ -1,0 +1,44 @@
+<a [routerLink]="['/decks/view', deck().deckId, deck().version, deck().minorVersion]" class="deck"
+   [ngClass]="deck().god"
+   style="display:flex; flex-direction:row; cursor:pointer; text-decoration:none; color:white;">
+
+  <div class="leftBlock">
+    <app-god-crest [god]="deck().god" [costAP]="deck().costAP"></app-god-crest>
+    <div [ngStyle]="{cursor: isLoggedIn() && !deck().isOwner ? 'pointer': 'default'}"
+         style="display: flex; justify-content: center; flex-direction:row;"
+         (click)="onFavoriteClick($event)">
+      <mat-icon class="iconFavorite" [ngStyle]="{color: deck().liked ? 'red': 'white'}">favorite
+      </mat-icon>
+      {{ deck().favoriteCount }}
+    </div>
+  </div>
+  <div class="info">
+    <div class="title">{{ deck().name }}</div>
+    <div class="author"> {{ 'searchDeck.by' | translate }} &nbsp;
+      <span class="authorName" matTooltip="{{ 'searchDeck.addToFilters' | translate:{value: deck().owner} }}"
+            (click)="onAuthorClick($event)">{{ deck().owner }}</span>
+      <a [routerLink]="['/user',deck().owner]" style="color:white; text-decoration:none;">
+        <mat-icon class="profileLinkIcon" matTooltip="{{'searchDeck.goToProfile' | translate}}">contact_page
+        </mat-icon>
+      </a>
+    </div>
+    <div class="creationDate">{{ deck().creationDate | date:'longDate' }}</div>
+    <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
+      <div style="display:flex; flex-direction:row; height:28px;  z-index: 10;">
+        @for (tag of deck().tags; track tag.id) {
+          <div (click)="onTagClick(tag, $event)" class="tag"
+               matTooltip="{{ 'searchDeck.addToFilters' | translate:{value: tag.title} }}"
+               [ngStyle]="{'background-color': tag.title === 'guide' ? '#FF474D':'#313282'}">
+            @if (tag.iconId) {
+              <img class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
+            }
+            <span class="tagLabel">{{ tag.title }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute; right: 5px">
+    <app-highlight-display [illustrations]="deck().highlights"></app-highlight-display>
+  </div>
+</a>

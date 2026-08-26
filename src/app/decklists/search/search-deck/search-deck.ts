@@ -10,11 +10,11 @@ import {RouterLink} from '@angular/router';
 import {TagDropdown} from '../../common/tag-dropdown/tag-dropdown';
 import {MatIcon} from '@angular/material/icon';
 import {GodDropdown} from '../god-dropdown/god-dropdown';
-import {DatePipe, NgClass, NgStyle} from '@angular/common';
+import {NgClass, NgStyle} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
 import {OwnerDropdown} from '../owner-dropdown/owner-dropdown';
 import {CardDropdown} from '../card-dropdown/card-dropdown';
-import {HighlightDisplay} from "../highlight-display/highlight-display";
+import {DeckPreview} from '../deck-preview/deck-preview';
 import {toSignal} from "@angular/core/rxjs-interop";
 import {TranslatePipe} from "@ngx-translate/core";
 import {OrderBy, SearchBy} from "../../common/models/enums";
@@ -32,11 +32,10 @@ import {OrderBy, SearchBy} from "../../common/models/enums";
     GodDropdown,
     MatTooltip,
     NgClass,
-    DatePipe,
     NgStyle,
     OwnerDropdown,
     CardDropdown,
-    HighlightDisplay,
+    DeckPreview,
     TranslatePipe
   ],
   templateUrl: './search-deck.html',
@@ -276,20 +275,16 @@ export class SearchDeck implements OnInit, OnDestroy {
     this.resetPageAndSearch()
   }
 
-  addUserFilterFromResult(username: string, event) {
+  addUserFilterFromResult(username: string) {
     if (!this.selectedUsers().map(u => u.username).includes(username)) {
       this.selectUser(this.allUsers().find(user => user.username === username), false)
     }
-    event.stopPropagation();
-    event.preventDefault()
   }
 
-  addTagFilterFromResult(tagName: string, event) {
+  addTagFilterFromResult(tagName: string) {
     if (!this.selectedTags().map(t => t.title).includes(tagName)) {
       this.selectTag(this.allTags().find(tag => tag.title === tagName), false)
     }
-    event.stopPropagation();
-    event.preventDefault()
   }
 
 

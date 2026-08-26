@@ -1,4 +1,4 @@
-import {Component, computed, inject, input, PLATFORM_ID, signal} from '@angular/core';
+import {afterRenderEffect, Component, computed, ElementRef, inject, input, PLATFORM_ID, Renderer2, signal, viewChild} from '@angular/core';
 import {DeckDeletedPopin} from '../../../popins/deck-deleted-popin/deck-deleted-popin';
 import {DeckDeletionPopin} from '../../../popins/deck-deletion-popin/deck-deletion-popin';
 import {Section} from '../../../base/section/section';
@@ -27,11 +27,21 @@ import {
 } from '../../common/models/enums';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {RaritySynthesis} from '../rarity-synthesis/rarity-synthesis';
+import {GodCrest} from '../../search/god-crest/god-crest';
 import {combineLatest, debounceTime, switchMap} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {isValidTwitchURL, isValidYouTubeURL} from "../../../base/models/utils";
 import {YouTubePlayer} from "@angular/youtube-player";
 import {TranslatePipe} from "@ngx-translate/core";
+import {BreakpointObserver} from "@angular/cdk/layout";
+import {map} from "rxjs";
+import {DeckLinkDecoratorService} from './deck-link-decorator.service';
+
+// même seuil que $mobile-breakpoint dans header.scss / MOBILE_BREAKPOINT dans pagination.ts
+const MOBILE_BREAKPOINT = '(max-width: 768px)';
+// ratio du player par défaut (640x390) conservé pour la version réduite
+const MOBILE_YOUTUBE_PLAYER_WIDTH = 300;
+const MOBILE_YOUTUBE_PLAYER_HEIGHT = 183;
 
 @Component({
   selector: 'app-view-deck',
@@ -47,8 +57,10 @@ import {TranslatePipe} from "@ngx-translate/core";
     RaritySynthesis,
     NgStyle,
     YouTubePlayer,
-    TranslatePipe
+    TranslatePipe,
+    GodCrest
   ],
+  providers: [DeckLinkDecoratorService],
   templateUrl: './view-deck.html',
   styleUrl: './view-deck.scss'
 })
@@ -66,11 +78,19 @@ export class ViewDeck {
   apiService = inject(ApiService)
   authenticatedApiService = inject(AuthenticatedApiService)
   domSanitize = inject(DomSanitizer)
+  renderer = inject(Renderer2)
   storeService = inject(StoreService)
   dialog = inject(MatDialog);
   router = inject(Router);
+  breakpointObserver = inject(BreakpointObserver);
+  deckLinkDecorator = inject(DeckLinkDecoratorService);
 
   user = toSignal(this.storeService.getUser())
+
+  isMobile = toSignal(
+    this.breakpointObserver.observe(MOBILE_BREAKPOINT).pipe(map(state => state.matches)),
+    {initialValue: this.breakpointObserver.isMatched(MOBILE_BREAKPOINT)}
+  )
 
   platformId = inject(PLATFORM_ID);
   metaService = inject(Meta)
@@ -82,6 +102,8 @@ export class ViewDeck {
 
 
   data = signal<any>(null);
+
+  descriptionContainer = viewChild<ElementRef<HTMLElement>>('descriptionContainer');
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
@@ -108,8 +130,15 @@ export class ViewDeck {
     //     ]);
     //   })
     }
-  }
 
+    afterRenderEffect(() => {
+      this.description();
+      const container = this.descriptionContainer()?.nativeElement;
+      if (container) {
+        this.deckLinkDecorator.decorate(container, this.renderer);
+      }
+    });
+  }
 
   title = computed(() => this.data()?.name);
   owner = computed(() => this.data()?.owner);
@@ -117,6 +146,9 @@ export class ViewDeck {
 
   description = computed(() =>
     this.domSanitize.bypassSecurityTrustHtml(this.data()?.description.replaceAll("<p></p>", "<p><br></p>").replaceAll(/&nbsp;/g, ' ').replaceAll(/(?=\s)[^\r\n\t]/g, ' ')));
+
+  // Le contenu Quill vide est du HTML ("<p><br></p>", etc.) et non une chaîne vide : on retire les balises pour juger de la présence de texte.
+  hasDescriptionContent = computed(() => !!this.data()?.description?.replace(/<[^>]*>/g, '').trim());
 
   displayTwitchIframe = computed(() => {
     const twitchCheck = isValidTwitchURL(this.data()?.videoLink)
@@ -134,6 +166,8 @@ export class ViewDeck {
   youtubeVideoId = computed(() => {
     return isValidYouTubeURL(this.data()?.videoLink).id
   })
+  youtubePlayerWidth = computed(() => this.isMobile() ? MOBILE_YOUTUBE_PLAYER_WIDTH : undefined)
+  youtubePlayerHeight = computed(() => this.isMobile() ? MOBILE_YOUTUBE_PLAYER_HEIGHT : undefined)
 
   canEdit = computed(() => this.owner() === this.user()?.username);
   canClone = computed(() => this.user()?.username);

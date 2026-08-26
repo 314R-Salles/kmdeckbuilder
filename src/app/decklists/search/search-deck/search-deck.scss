@@ -160,23 +160,6 @@ $filter-drawer-breakpoint: 900px;
   justify-content: flex-start
 }
 
-.deck {
-  width: 100%;
-  margin: 5px 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  border-radius: 5px;
-  overflow: hidden;
-  height: 160px;
-  position: relative;
-}
-
-.deckImgGod {
-  width: 100px;
-  padding-left: 15px;
-}
-
 .deckImgPa {
   width: 30px;
 }
@@ -187,55 +170,6 @@ $filter-drawer-breakpoint: 900px;
 
 .deckImgHeart {
   width: 80px;
-}
-
-.iconFavorite {
-  transition: all 0.35s;
-}
-
-.iconFavorite:hover {
-  transform: scale(1.3);
-}
-
-.title {
-  font-size: 35px;
-  text-overflow: ellipsis;
-  overflow-x: clip;
-  white-space: nowrap;
-  margin-bottom: 5px;
-}
-
-.author {
-  font-size: 20px;
-  // height: 25%;
-  align-self: flex-start;
-}
-
-.authorName:hover {
-  text-decoration: underline;
-}
-
-.tags {
-  font-size: 35px;
-  // height: 17.5%;
-}
-
-.tag {
-  display: flex;
-  flex-direction: row;
-  background-color: #313282;
-  border-radius: 20px;
-  position: relative;
-  align-content: center;
-  align-items: center;
-  padding: 5px;
-  margin-right: 5px;
-  box-sizing: border-box; //FIXME
-}
-
-.tag:hover {
-
-  border: rgb(255, 255, 255) solid 1px;
 }
 
 .toggleSortOrderBtn {
@@ -251,10 +185,6 @@ $filter-drawer-breakpoint: 900px;
 
 .pictoBtn {
   width: 100%
-}
-
-.creationDate {
-  font-size: 12px;
 }
 
 .card {
@@ -290,4 +220,8 @@ $filter-drawer-breakpoint: 900px;
 
 .godMiniaFiltered:hover {
   filter: grayscale(100%);
+}
+
+app-deck-preview {
+  width: 100%;
 }

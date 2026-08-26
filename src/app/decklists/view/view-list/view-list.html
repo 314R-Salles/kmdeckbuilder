@@ -1,10 +1,10 @@
-<div style="margin: 10px">
+<div style="margin: 10px 0">
   <div class="container">
     <div class="cardColumn">
       <div *ngTemplateOutlet="KROSFI"></div>
       <div *ngTemplateOutlet="NEUTRE"></div>
     </div>
-    <div class="cardColumn" style="display: flex; flex-direction: column; justify-content: flex-start">
+    <div class="cardColumn">
       <div *ngTemplateOutlet="GOD_CREA"></div>
       <div *ngTemplateOutlet="GOD_SPELL"></div>
     </div>
@@ -12,7 +12,7 @@
 
   <ng-template #NEUTRE>
     @if (sortedSynthesis()['NEUTRE'].length) {
-      <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
+      <div class="cardGroup">
         <span style="position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
 
   <img [src]="'/assets/public/creatureIcon.png'" style="width:20px; height:20px;" class="type">
@@ -23,7 +23,8 @@
                style="position:relative;">
             <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]"
                  style="width:60px; height:30px; position:absolute; left:10px;">
-            <div style="position:absolute; left:75px; width:188px;">
+            <div style="position:absolute; left:75px;"
+                 [ngStyle]="{'width': card.count === 1 ? 'calc(100% - 85px)': 'calc(100% - 115px)'}">
               <div
                 style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;">{{ card.name }}
               </div>
@@ -32,10 +33,7 @@
                  style="position:absolute; width:37px; height:40px; left:-5px;">
 
             @if (card.count > 1) {
-              <div
-                style="position:absolute; right:2px; border:2px solid white; background: black; font-family: monospace;">
-                X{{ card.count }}
-              </div>
+              <div class="cardQuantity"> X{{ card.count }}</div>
             }
             <div class="cardSpec">
               <img [src]="'/assets/public/card/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
@@ -48,13 +46,11 @@
   </ng-template>
   <ng-template #GOD_CREA>
     @if (sortedSynthesis()['GOD_CREA'].length) {
-      <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
+      <div class="cardGroup">
       <span style="position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
 
   <img [src]="'/assets/public/creatureIcon.png'" style="width:20px; height:20px;" class="type">
       </span>
-
-
         @for (card of sortedSynthesis()['GOD_CREA']; track card.id) {
           <div [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
                class="card appFont2"
@@ -62,7 +58,8 @@
           >
             <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]"
                  style="width:60px; height:30px; position:absolute; left:10px;">
-            <div style="position:absolute; left:75px; width:188px;">
+            <div style="position:absolute; left:75px;"
+                 [ngStyle]="{'width': card.count === 1 ? 'calc(100% - 85px)': 'calc(100% - 115px)'}">
               <div
                 style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;">{{ card.name }}
               </div>
@@ -71,10 +68,7 @@
                  style="position:absolute; width:37px; height:40px; left:-5px;">
 
             @if (card.count > 1) {
-              <div
-                style="position:absolute; right:2px; border:2px solid white; background: black; font-family: monospace;">
-                X{{ card.count }}
-              </div>
+              <div class="cardQuantity"> X{{ card.count }}</div>
             }
             <div class="cardSpec">
               <img [src]="'/assets/public/card/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
@@ -87,7 +81,7 @@
 
   <ng-template #GOD_SPELL>
     @if (sortedSynthesis()['GOD_SPELL'].length) {
-      <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
+      <div class="cardGroup">
       <span style="position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
 
 <img [src]="'/assets/public/spellIcon.png'" style="width:20px; height:20px;" class="type">
@@ -99,9 +93,8 @@
           >
             <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]"
                  style="width:60px; height:30px; position:absolute; left:10px;">
-            <!--        les krosfi sont en x1 donc pas de compteur donc width 215 au lieu de 188? ou alors c'est si count = 1? -->
             <div style="position:absolute; left:75px;"
-                 [ngStyle]="{'width.px': 'KROSMIQUE' === card.rarity ? 215: 188}">
+                 [ngStyle]="{'width': card.count === 1 ? 'calc(100% - 85px)': 'calc(100% - 115px)'}">
               <div
                 style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;">{{ card.name }}
               </div>
@@ -110,10 +103,7 @@
                  style="position:absolute; width:37px; height:40px; left:-5px;">
 
             @if (card.count > 1) {
-              <div
-                style="position:absolute; right:2px; border:2px solid white; background: black; font-family: monospace;">
-                X{{ card.count }}
-              </div>
+              <div class="cardQuantity"> X{{ card.count }}</div>
             }
             <div class="cardSpec">
               <img [src]="'/assets/public/card/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
@@ -126,7 +116,7 @@
 
   <ng-template #KROSFI>
     @if (sortedSynthesis()['KROSFI'].length) {
-      <div style="border: 2px solid white; margin: 10px; padding:20px 5px 5px 5px; position:relative;">
+      <div class="cardGroup">
       <span
         style="display: flex; align-items: baseline; position:absolute; top:-10px; left:-10px; background:#262241; padding:2px;">
         <span style="
@@ -138,19 +128,17 @@
                style="position:relative;">
             <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]"
                  style="width:60px; height:30px; position:absolute; left:10px;">
-            <div style="position:absolute; left:75px; width:215px;">
+            <div style="position:absolute; left:75px;"
+                 [ngStyle]="{'width': card.count === 1 ? 'calc(100% - 85px)': 'calc(100% - 115px)'}">
               <div
-                style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;">{{ card.name }}
+                style="overflow:hidden; padding :3px 0; text-overflow:ellipsis; white-space:nowrap;">{{ card.name }}
               </div>
             </div>
             <img [src]="'/assets/public/pa/'+card.costAP+'.png'"
                  style="position:absolute; width:37px; height:40px; left:-5px;">
 
             @if (card.count > 1) {
-              <div
-                style="position:absolute; right:2px; border:2px solid white; background: black; font-family: monospace;">
-                X{{ card.count }}
-              </div>
+              <div class="cardQuantity"> X{{ card.count }}</div>
             }
             <div class="cardSpec">
               <img [src]="'/assets/public/card/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">

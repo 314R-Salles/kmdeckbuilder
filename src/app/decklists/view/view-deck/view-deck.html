@@ -20,56 +20,51 @@
       </div>
     </ng-container>
 
-    <div>
-      <div style="display: flex; height: 30px; margin-bottom: 5px">
-
-        <div style="border: solid 2px #594867; display: flex; justify-content: space-around; padding: 0 10px;">
-          <span style="align-content:center; padding-right:5px;"> Version</span>
-          <app-version-dropdown [deckId]="id()" [currentVersion]="version()" [minorVersion]="minorVersion()"
-                                [allVersions]="versions()"/>
-        </div>
-
-        @if (canClone()) {
-          <div [routerLink]="['/decks/create']" [queryParams]="{from: id(), v:version(), mV:minorVersion()}"
-               class="buttonUpdate">
-            <span style="align-content:center;"> {{ 'viewDeck.duplicate' | translate }} </span>
-            <mat-icon style="font-size: 16px;" matTooltip="{{ 'viewDeck.duplicateTooltip' | translate }}">
-              info
-            </mat-icon>
-          </div>
-        }
-
-        @if (canEdit()) {
-          <div [routerLink]="['/decks/edit', id(), version(), minorVersion()]" class="buttonUpdate">
-            <span style="align-content:center;"> {{ 'viewDeck.edit' | translate }} </span>
-            <mat-icon style="font-size: 16px;" matTooltip="{{ 'viewDeck.editTooltip' | translate }}">
-              info
-            </mat-icon>
-          </div>
-        }
-
-        @if (canEdit()) {
-          <div style="color:red; border: solid 2px red;" (click)="deleteDeckConfirmation(data())" class="buttonUpdate">
-            <span style="align-content:center;"> {{ 'viewDeck.delete' | translate }} </span>
-            <mat-icon style="font-size: 16px;" matTooltip="{{ 'viewDeck.deleteTooltip' | translate }}">
-              warning
-            </mat-icon>
-          </div>
-        }
+    <div style="display: flex; margin-bottom: 5px">
+      <div style="display: flex;">
+        <span style="align-content:baseline; padding-right:5px;"> Version</span>
+        <app-version-dropdown [deckId]="id()" [currentVersion]="version()" [minorVersion]="minorVersion()"
+                              [allVersions]="versions()"/>
       </div>
-      <div class="container shortScreenContainer">
+
+      @if (canClone()) {
+        <div [routerLink]="['/decks/create']" [queryParams]="{from: id(), v:version(), mV:minorVersion()}"
+             class="actionButton buttonUpdate">
+          <span style="align-content:center;"> {{ 'viewDeck.duplicate' | translate }} </span>
+          <mat-icon style="font-size: 16px; height: unset;" matTooltip="{{ 'viewDeck.duplicateTooltip' | translate }}">
+            info
+          </mat-icon>
+        </div>
+      }
+
+      @if (canEdit()) {
+        <div [routerLink]="['/decks/edit', id(), version(), minorVersion()]" class="buttonUpdate">
+          <span style="align-content:center;"> {{ 'viewDeck.edit' | translate }} </span>
+          <mat-icon style="font-size: 16px;" matTooltip="{{ 'viewDeck.editTooltip' | translate }}">
+            info
+          </mat-icon>
+        </div>
+      }
+
+      @if (canEdit()) {
+        <div style="color:red; border: solid 2px red;" (click)="deleteDeckConfirmation(data())" class="buttonUpdate">
+          <span style="align-content:center;"> {{ 'viewDeck.delete' | translate }} </span>
+          <mat-icon style="font-size: 16px;" matTooltip="{{ 'viewDeck.deleteTooltip' | translate }}">
+            warning
+          </mat-icon>
+        </div>
+      }
+    </div>
+    <div class="container">
+      <div class="columnContainer">
         <div *ngTemplateOutlet="STATS"></div>
         <div *ngTemplateOutlet="CARDS"></div>
-        <div *ngTemplateOutlet="DESC"></div>
       </div>
-
-      <div class="container largeScreenContainer">
-        <div class="columnContainer">
-          <div *ngTemplateOutlet="STATS"></div>
-          <div *ngTemplateOutlet="CARDS"></div>
+      @if (hasDescriptionContent() || displayTwitchIframe() || displayYoutubeIframe()) {
+        <div class="columnContainer descColumn">
+          <div *ngTemplateOutlet="DESC"></div>
         </div>
-        <div *ngTemplateOutlet="DESC"></div>
-      </div>
+      }
     </div>
   </app-section>
 
@@ -78,23 +73,11 @@
 <!--TEMPLATES-->
 
 <ng-template #STATS>
-  <div
-    style="border: #FFAE00 solid 2px; box-sizing: border-box; display: flex; flex-direction:column; width: 100%; padding: 10px;">
-    <div style="display:flex;">
-      <div style="position:relative;">
-        @if (data()?.god) {
-          <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+ data().god +'.png'"/>
-        }
-        <div style="position:absolute; width:45px; height:45px; right:20px; bottom:20px;">
-          <img [src]="'/assets/public/picto-PA.png'" style="width:45px; height:45px; position:absolute;" class="type">
-          <div
-            style="font-family: 'geo2', 'arial', sans-serif !important; position:absolute; font-size:1.3em; transform: translate(-50%, -50%); left:50%; top:50%; -webkit-text-stroke: 0.7px #000000;">{{ data().costAP }}
-          </div>
-        </div>
-
-      </div>
-      <app-synthesis [syntheseCost]="syntheseCost()" [max]="max()"></app-synthesis>
+  <div class="deckStats">
+    <div style="display:flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 10px 5px">
+      <app-god-crest [god]="data()?.god" [costAP]="data().costAP" [allowResize]="false"></app-god-crest>
       <app-rarity-synthesis [raritySynthesis]="syntheseRarete()"></app-rarity-synthesis>
+      <app-synthesis [syntheseCost]="syntheseCost()" [max]="max()"></app-synthesis>
     </div>
     <div style="display:flex; flex-direction:row; flex-wrap:wrap; margin-top:5px;">
       @for (tag of data().tags; track tag.id) {
@@ -115,8 +98,8 @@
     style="box-sizing: border-box; display: flex; width: 100%; padding: 5px">
     <div style="width: 100%; border: 2px solid white; padding:10px 5px 5px 5px; position:relative;">
       <span
-        style="position:absolute; top:-10px; right:-10px; background:#262241; border: 2px solid white; padding:2px;">Description</span>
-      <div [innerHTML]="description()"></div>
+        style="position:absolute; top:-7px; left:-7px; background:#262241; border: 2px solid white; padding:2px;">Description</span>
+      <div #descriptionContainer [innerHTML]="description()"></div>
 
       @if (displayTwitchIframe()) {
         <div style=" aspect-ratio: 16 / 9;">
@@ -128,7 +111,8 @@
       @if (displayYoutubeIframe()) {
         <div style="width: 100%; background: black; display: flex; justify-content: center">
           <div>
-            <youtube-player [videoId]="youtubeVideoId()"/>
+            <youtube-player [videoId]="youtubeVideoId()" [width]="youtubePlayerWidth()"
+                            [height]="youtubePlayerHeight()"/>
           </div>
         </div>
       }
@@ -137,7 +121,5 @@
 </ng-template>
 
 <ng-template #CARDS>
-  <div style="box-sizing: border-box; display: flex; width: 100%;">
-    <app-view-list style="width: 100%" [cards]="data()?.cards"></app-view-list>
-  </div>
+  <app-view-list [cards]="data()?.cards"></app-view-list>
 </ng-template>

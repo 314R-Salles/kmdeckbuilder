@@ -1,10 +1,3 @@
-.deckImgGod {
-  width: 120px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 10px;
-}
-
 .tag {
   display: flex;
   flex-direction: row;
@@ -18,9 +11,9 @@
 }
 
 .buttonUpdate {
-  border: solid 2px #594867;
+  //border: solid 2px #594867;
   display: flex;
-  cursor: pointer;
+  //cursor: pointer;
   align-items: center;
   padding: 0 10px;
   margin: 0 5px;
@@ -42,63 +35,29 @@
   cursor: pointer;
 }
 
-.viewDeckContainer {
-  margin: 0 auto;
-  width: 75%;
-}
-
 .columnContainer {
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-}
-
-
-@media (max-width: 1700px) {
-  .viewDeckContainer {
-    margin: 0 auto;
-    width: 100%;
-  }
 }
 
 .container {
   width: 100%;
   display: flex;
-}
-
-.shortScreenContainer {
   flex-direction: column;
 }
 
-.largeScreenContainer {
-  flex-direction: row;
-}
-
-@media (max-width: 1399px) {
-  .largeScreenContainer {
-    display: none;
-  }
-  .viewDeckContainer {
-    min-width: unset
-  }
-}
-
 @media (min-width: 1400px) {
-  .shortScreenContainer {
-    display: none;
+  .container {
+    flex-direction: row;
   }
 
-  .viewDeckContainer {
-    min-width: 1400px
-  }
-}
-
-
-@media only screen and (min-width: 1824px) {
-  .cardColumn {
-    width: 25%;
+  .descColumn {
+    flex: 0 1 640px;
+    min-width: 640px;
   }
 }
-
 
 .customAfterSectionTitle:hover {
   -webkit-box-shadow: inset 1px 0px 20px 0px white;
@@ -113,4 +72,34 @@
 .customBeforeSectionTitle:hover {
   -webkit-box-shadow: inset 1px 0px 20px 0px white;
   cursor: pointer;
+}
+
+.deck-link-chip {
+  display: inline-block;
+  border: solid 2px #594867;
+  background-color: #313282;
+
+  border-radius: 6px;
+  padding: 1px 6px;
+  color: white;
+  text-decoration: none;
+}
+
+.deck-link-chip:hover {
+  //-webkit-box-shadow: inset 1px 0px 20px 0px white;
+  -webkit-box-shadow: inset 0px 0px 3px 1px #ffc300;
+}
+
+app-view-list {
+  width: 100%;
+}
+
+.deckStats {
+  border: #FFAE00 solid 2px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1010px;  // double largeur colonnes cartes + gap
+  padding: 10px;
 }
