@@ -11,154 +11,38 @@
       </div>
     </ng-container>
 
-    <div class="filterWrapper">
-      <div class="filterTopRow">
-        <div class="filterPanel" [class.open]="filtersOpen()">
-          <div class="filterGroup">
-            @if (filtersOpen()) {
-              <div>
-                <mat-icon (click)="closeFilters()">right_panel_close</mat-icon>
-              </div>
-              <span>Filtres</span>
-            }
-            <app-god-dropdown [selectedGods]="selectedGods()" (onSelectGod)="selectGod($event)"></app-god-dropdown>
-            <div class="filterGroupChips">
-              @for (god of selectedGods(); track god.id) {
-                <img (click)="removeGod(god)" [src]="'/assets/public/gods/GOD_'+god.image+'.png'"
-                     class="godMiniaFiltered prevent-select">
-              }
-            </div>
-          </div>
-
-          <div class="filterGroup">
-            <app-tag-dropdown [withCount]="true" [selectedTags]="selectedTags()" [allTags]="allTags()"
-                              (onSelectTag)="selectTag($event, false)"
-                              (onNegativeSelectTag)="selectTag($event, true)"></app-tag-dropdown>
-            <div class="filterGroupChips">
-              @for (tag of selectedTags(); track tag.title) {
-                <div class="card filterChip appFont2" (click)="removeTag(tag)">
-                  @if (tag.iconId) {
-                    <img class="tagImg bigger" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
-                  }
-                  <span style="padding: 0 5px"> {{ tag.title }} ({{ tag.count }})</span>
-                </div>
-              }
-              @for (tag of selectedNegativeTags(); track tag.title) {
-                <div class="card filterChip negative appFont2" (click)="removeNegativeTag(tag)">
-                  @if (tag.iconId) {
-                    <img class="tagImg bigger" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
-                  }
-                  <span style="padding: 0 5px"> {{ tag.title }} ({{ tag.count }})</span>
-                </div>
-              }
-            </div>
-          </div>
-
-          <div class="filterGroup">
-            <app-card-dropdown [selectedGods]="selectedGods()" [selectedCards]="selectedCards()"
-                               (onSelectCard)="selectCard($event)"></app-card-dropdown>
-            <div class="filterGroupChips">
-              @for (card of selectedCards(); track card.id) {
-                <div class="card appFont2"
-                     [matTooltip]="card.name + (card.infiniteLevel ? ' ' + card.infiniteLevel : '')"
-                     [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
-                     (click)="removeCard(card)" style="position:relative; overflow: hidden">
-                  <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]">
-                </div>
-              }
-            </div>
-          </div>
-
-          <div class="filterGroup">
-            <app-owner-dropdown [selectedUsers]="selectedUsers()" [allUsers]="allUsers()"
-                                (onSelectUser)="selectUser($event, false)"
-                                (onNegativeSelectUser)="selectUser($event, true)"></app-owner-dropdown>
-            <div class="filterGroupChips">
-              @for (user of selectedUsers(); track user.username) {
-                <div class="card filterChip appFont2" (click)="removeUser(user)">
-                  <span style="padding: 0 5px"> {{ user.username }} - {{ user.count }}</span>
-                </div>
-              }
-              @for (user of selectedNegativeUsers(); track user.username) {
-                <div class="card filterChip negative appFont2" (click)="removeNegativeUser(user)">
-                  <span style="padding: 0 5px"> {{ user.username }} - {{ user.count }}</span>
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-
-        <div class="filterActions">
-          <button type="button" class="toggleSortOrderBtn filterToggleBtn"
-                  [class.open]="filtersOpen()" [attr.aria-expanded]="filtersOpen()"
-                  matTooltip="{{ 'searchDeck.filters.toggle' | translate }}"
-                  (click)="toggleFilters()">
-            <mat-icon style="color:white;">tune</mat-icon>
-            @if (activeFilterCount() > 0) {
-              <span class="badge filter">{{ activeFilterCount() }}</span>
-            }
-          </button>
-
-          @if (isLoggedIn) {
-            <button type="button" class="toggleSortOrderBtn"
-                    matTooltip="{{ (favoritesOnly ? 'searchDeck.toggle.all' : 'searchDeck.toggle.favorites') | translate }}"
-                    style="width: 50px; height: 50px; justify-content: center; align-items: center; cursor:pointer;"
-                    (click)="toggleFavoriteFilter()">
-              <mat-icon [ngStyle]="{color: favoritesOnly ? 'red': 'white'}">favorite</mat-icon>
-            </button>
-          }
-
-          <button type="button" class="toggleSortOrderBtn buttonWithBadge"
-                  matTooltip="{{ 'searchDeck.reset' | translate }}"
-                  style="width: 50px; height: 50px; justify-content: center; align-items: center; cursor:pointer;"
-                  (click)="resetFilters()">
-            <mat-icon style="color:white;">delete
-            </mat-icon>
-          </button>
-
-          <button type="button" class="toggleSortOrderBtn buttonWithBadge"
-                  matTooltip="{{ 'searchDeck.searchBy.recent' | translate }}" (click)="setFilter(SearchBy.RECENT)">
-            <img class="pictoBtn" src="/assets/public/new_filter.png">
-            @if (sortFilter === SearchBy.RECENT) {
-              <mat-icon class="badge sort"> {{ sortOrder === OrderBy.ASC ? 'arrow_upward' : 'arrow_downward' }}
-              </mat-icon>
-            }
-          </button>
-
-          <button type="button" class="toggleSortOrderBtn buttonWithBadge"
-                  matTooltip="{{ 'searchDeck.searchBy.favorites' | translate }}" (click)="setFilter(SearchBy.FAVORITE)">
-            <img class="pictoBtn" src="/assets/public/like_filter.png">
-            @if (sortFilter === SearchBy.FAVORITE) {
-              <mat-icon class="badge sort"> {{ sortOrder === OrderBy.ASC ? 'arrow_upward' : 'arrow_downward' }}
-              </mat-icon>
-            }
-          </button>
-
-          <button type="button" class="toggleSortOrderBtn buttonWithBadge"
-                  matTooltip="{{ 'searchDeck.searchBy.apCost' | translate }}" (click)="setFilter(SearchBy.AP_COST)">
-            <img class="pictoBtn" src="/assets/public/picto-PA.png">
-            @if (sortFilter === SearchBy.AP_COST) {
-              <mat-icon class="badge sort"> {{ sortOrder === OrderBy.ASC ? 'arrow_upward' : 'arrow_downward' }}
-              </mat-icon>
-            }
-          </button>
-
-          <button type="button" class="toggleSortOrderBtn buttonWithBadge"
-                  matTooltip="{{ 'searchDeck.searchBy.dustCost' | translate }}" (click)="setFilter(SearchBy.DUST_COST)">
-            <img class="pictoBtn"  src="/assets/public/reward_fragments.png">
-            @if (sortFilter === SearchBy.DUST_COST) {
-              <mat-icon class="badge sort"> {{ sortOrder === OrderBy.ASC ? 'arrow_upward' : 'arrow_downward' }}
-              </mat-icon>
-            }
-          </button>
-
-        </div>
-      </div>
-
-      @if (filtersOpen()) {
-        <div class="filterBackdrop" (click)="closeFilters()"></div>
-      }
-    </div>
+    <app-search-deck-filters
+      [isLoggedIn]="isLoggedIn"
+      [allTags]="allTags()"
+      [allUsers]="allUsers()"
+      [filtersOpen]="filtersOpen()"
+      [favoritesOnly]="favoritesOnly()"
+      [sortFilter]="sortFilter()"
+      [sortOrder]="sortOrder()"
+      [selectedGods]="selectedGods()"
+      [selectedTags]="selectedTags()"
+      [selectedNegativeTags]="selectedNegativeTags()"
+      [selectedCards]="selectedCards()"
+      [selectedUsers]="selectedUsers()"
+      [selectedNegativeUsers]="selectedNegativeUsers()"
+      (closeFilters)="closeFilters()"
+      (toggleFilters)="toggleFilters()"
+      (resetFilters)="resetFilters()"
+      (toggleFavoriteFilter)="toggleFavoriteFilter()"
+      (setFilter)="setFilter($event)"
+      (selectGod)="selectGod($event)"
+      (removeGod)="removeGod($event)"
+      (selectTag)="selectTag($event)"
+      (selectNegativeTag)="selectNegativeTag($event)"
+      (removeTag)="removeTag($event)"
+      (removeNegativeTag)="removeNegativeTag($event)"
+      (selectCard)="selectCard($event)"
+      (removeCard)="removeCard($event)"
+      (selectUser)="selectUser($event)"
+      (selectNegativeUser)="selectNegativeUser($event)"
+      (removeUser)="removeUser($event)"
+      (removeNegativeUser)="removeNegativeUser($event)">
+    </app-search-deck-filters>
   </app-section>
   <app-section>
     <div class="listDeck">

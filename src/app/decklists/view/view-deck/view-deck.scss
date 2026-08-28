@@ -1,3 +1,5 @@
+@use '../../../../styles/variables' as *;
+
 .tag {
   display: flex;
   flex-direction: row;
@@ -70,7 +72,6 @@
 }
 
 .customBeforeSectionTitle:hover {
-  -webkit-box-shadow: inset 1px 0px 20px 0px white;
   cursor: pointer;
 }
 
@@ -95,7 +96,7 @@ app-view-list {
 }
 
 .deckStats {
-  border: #FFAE00 solid 2px;
+  border: $borderColor solid 2px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

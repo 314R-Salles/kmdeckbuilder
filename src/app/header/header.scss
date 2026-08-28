@@ -1,3 +1,5 @@
+@use '../../styles/variables' as *;
+
 $mobile-breakpoint: 768px;
 
 .header-menu {
@@ -84,7 +86,7 @@ $mobile-breakpoint: 768px;
 }
 
 .headerBtn {
-  border: 1px solid #FFAE00;
+  border: 1px solid $borderColor;
   border-radius: 2px;
   margin-right: 5px;
   height: 40px;
@@ -105,12 +107,12 @@ $mobile-breakpoint: 768px;
 // Revoir les menus dans les headers pour avoir du routerLinkActive?
 .active {
   // border-radius: 10px;
-  background: #FFAE00;
+  background: $borderColor;
 }
 
 .library-button.active:hover {
   // border-radius: 10px;
-  background: #FFAE00;
+  background: $borderColor;
 }
 
 //.header-menu a {

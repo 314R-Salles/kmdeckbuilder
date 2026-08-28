@@ -73,7 +73,7 @@
 
             <div class="dragLimit" style="display: flex; flex-direction: column" cdkDropListGroup>
                 @for (group of groups; track group; let groupIndex = $index) {
-                    <div style="width: 75%;display: flex; flex-direction: row; margin-bottom: 10px; border: solid darkgoldenrod 2px">
+                    <div class="actionGroup">
                         <div
                                 style="display: flex; width: 100%;flex-direction: column; justify-content: space-between; background: #313282"
                                 cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="group">

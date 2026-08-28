@@ -1,10 +1,12 @@
+@use '../../../styles/variables' as *;
+
 .paginationBtn {
   width: 40px;
   height: 40px;
   color: white;
   font-size: 15px;
   font-weight: bolder;
-  border: solid 1px gold;
+  border: solid 1px $borderColor;
   border-radius: 2px;
   box-sizing: border-box;
   padding-left:8px;

@@ -2,6 +2,11 @@ $stream-thumbnail-min-width: 300px;
 $stream-panel-column-gap: 10px;
 $stream-panel-max-columns: 4;
 
+// en dessous de cette largeur, 4 colonnes forceraient une miniature plus étroite que $stream-thumbnail-min-width
+$stream-panel-breakpoint-4-to-2: $stream-panel-max-columns * $stream-thumbnail-min-width + ($stream-panel-max-columns - 1) * $stream-panel-column-gap;
+// même raisonnement pour passer de 2 à 1 colonne
+$stream-panel-breakpoint-2-to-1: 2 * $stream-thumbnail-min-width + $stream-panel-column-gap;
+
 .stream-sections {
   display: flex;
   flex-direction: column;
@@ -11,20 +16,48 @@ $stream-panel-max-columns: 4;
 .streams-panel {
   display: grid;
   gap: 15px $stream-panel-column-gap;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat($stream-panel-max-columns, 1fr);
+}
+
+@media (max-width: $stream-panel-breakpoint-4-to-2) {
+  .streams-panel {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: $stream-panel-breakpoint-2-to-1) {
+  .streams-panel {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .stream-thumbnail {
   width: 100%;
-  //min-width: $stream-thumbnail-min-width;
+  min-width: 0;
   height: 100%;
-  transition: all 0.35s;
+  transition: transform 0.35s;
 }
 
 .stream-media-box {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
+  // aspect-ratio ne fait que fixer la taille "préférée" de la boîte : si un enfant (ex. l'image
+  // placeholder, dont le ratio ne colle pas au 16/9) a un rendu naturellement plus haut, il peut
+  // déborder visuellement au lieu d'être contraint. overflow:hidden garantit que la boîte ne
+  // dépasse jamais 16/9, quel que soit le ratio de l'image affichée dedans.
+  overflow: hidden;
+}
+
+// hauteur commune à toutes les bandes de texte sous une miniature (stream réel, "aucun live",
+// "plus de vods/vidéos") : sans ça chaque variante fixait sa propre hauteur en dur et elles dérivaient
+// les unes par rapport aux autres de quelques pixels selon leur contenu.
+$stream-info-bar-height: 40px;
+
+.stream-info-bar {
+  height: $stream-info-bar-height;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 
@@ -44,6 +77,9 @@ $stream-panel-max-columns: 4;
   font-size: 1.1em;
   font-weight: bolder;
   color:white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .stream-title {
