@@ -44,4 +44,10 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-/src/assets/public/
+
+# Dossiers d'assets images générés (webp) dans src/assets/public/ — le reste
+# du dossier (i18n, icônes, fonts...) doit rester commitable
+/src/assets/public/*_webp/
+
+# Images webp générées dans public/
+/public/**/*.webp
