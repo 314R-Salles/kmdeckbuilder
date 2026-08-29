@@ -1,10 +1,11 @@
-import {Component, computed, inject, input, signal} from '@angular/core';
+import {Component, computed, effect, inject, input, signal} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {StoreService} from '../store.service';
 import {ApiService} from '../api/api.service';
 import {AuthenticatedApiService} from '../api/authenticated-api.service';
 import {Router, RouterLink} from '@angular/router';
+import {Title} from '@angular/platform-browser';
 import {DatePipe, NgClass} from '@angular/common';
 import {MatError} from '@angular/material/input';
 import {Section} from '../base/section/section';
@@ -23,7 +24,6 @@ import {MatIcon} from "@angular/material/icon";
     DatePipe,
     Section,
     TranslatePipe,
-    MatIcon
   ],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.scss'
@@ -37,6 +37,7 @@ export class UserProfile {
   storeService = inject(StoreService);
   apiService = inject(ApiService);
   authenticatedApiService = inject(AuthenticatedApiService);
+  titleService = inject(Title);
 
   username = input.required<string>();
   readOnly = computed(() => !this.connectedUser() || this.username() !== this.connectedUser().username);
@@ -93,6 +94,15 @@ export class UserProfile {
         return this.apiService.getUser(this.username())
       })
     ))
+
+  // Le titre de l'onglet dépend du pseudo chargé côté serveur, pas seulement du paramètre de route :
+  // il doit donc se rafraîchir après un renommage, quand routeUser() reflète le nouveau pseudo.
+  private titleUpdate = effect(() => {
+    const user = this.routeUser();
+    if (user) {
+      this.titleService.setTitle(`${user.username} | Kmtools`);
+    }
+  });
 
   routeUserdecks = toSignal(
     this.combinedObservable.pipe(

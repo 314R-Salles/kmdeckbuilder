@@ -123,16 +123,8 @@ export class ViewDeck implements OnInit {
   }
 
   ngOnInit(): void {
-    // Rendu côté serveur uniquement (SSR) : les bots de prévisualisation de liens (Discord, Twitter/X,
-    // Facebook...) n'exécutent pas le JS, donc ces balises doivent être posées avant sérialisation du HTML,
-    // via un appel léger dédié plutôt que le chargement complet du deck (cf ApiService.getDeckForCrawler,
-    // déjà utilisé par DeckLinkDecoratorService — retourne {title, owner}).
-    // Les `input.required` ne sont garantis disponibles qu'à partir de ngOnInit, pas du constructeur.
-    if (isPlatformBrowser(this.platformId)) {
-      return;
-    }
     this.apiService.getDeckForCrawler({id: this.id(), version: this.version()}).subscribe(({title: deckTitle, owner: deckOwner}) => {
-      const pageTitle = `${deckTitle} — par ${deckOwner} | Kmtools`;
+      const pageTitle = `${deckTitle}  par ${deckOwner} | Kmtools`;
       const pageDescription = `Deck "${deckTitle}" créé par ${deckOwner} sur Kmtools.`;
       this.titleService.setTitle(pageTitle);
       this.metaService.updateTag({name: 'description', content: pageDescription});
