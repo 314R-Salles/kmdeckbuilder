@@ -92,7 +92,7 @@
             </label>
             <button type="submit">{{ 'user.pseudo.save' | translate }}</button>
           </div>
-          @if (takenUsername) {
+          @if (takenUsername()) {
             <mat-error style="color: red;">{{ 'user.pseudo.error' | translate }}</mat-error>
           }
 

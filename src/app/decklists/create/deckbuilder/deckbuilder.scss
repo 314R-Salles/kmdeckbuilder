@@ -120,6 +120,13 @@
   }
 }
 
+// Le [styles] posé sur <quill-editor> (deckbuilder.html) cible l'élément .ql-editor lui-même,
+// pas son pseudo-élément ::before qui affiche le placeholder : quill.snow.css lui donne une
+// couleur noire (rgba(0,0,0,.6)) explicite, il faut donc la surcharger séparément ici.
+::ng-deep .content-editor .ql-editor.ql-blank::before {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 
 /* Style the input fields */
 input {

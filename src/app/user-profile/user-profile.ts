@@ -1,4 +1,4 @@
-import {Component, computed, inject, input} from '@angular/core';
+import {Component, computed, inject, input, signal} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {StoreService} from '../store.service';
@@ -31,7 +31,7 @@ import {MatIcon} from "@angular/material/icon";
 export class UserProfile {
 
   url = environment.TWITCH_AUTH_URL
-  takenUsername: boolean = false;
+  takenUsername = signal(false);
 
   router = inject(Router);
   storeService = inject(StoreService);
@@ -111,7 +111,7 @@ export class UserProfile {
 
 
   updateUser() {
-    this.takenUsername = false
+    this.takenUsername.set(false)
     this.authenticatedApiService.updateUser({
       username: this.form().get('username')?.value,
       iconId: this.form().get('iconId')?.value ?? 0,
@@ -120,7 +120,7 @@ export class UserProfile {
         this.storeService.setUser(user)
         this.router.navigate(['/user', user.username])
       },
-      error: _ => this.takenUsername = true
+      error: _ => this.takenUsername.set(true)
     })
 
   }
