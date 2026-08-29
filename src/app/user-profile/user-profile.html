@@ -62,29 +62,29 @@
     @if (connectedUser()) {
       <form [formGroup]="form()" (ngSubmit)="updateUser()">
         <div style="display: flex; flex-direction: column">
-          @if (!connectedUser().verified) {
-            <div style="display: flex; flex-direction: column; margin-bottom: 30px">
-              <span style="font-weight: bolder; color: darkorange"> {{ 'user.email.warning' | translate }}  </span>
-              <br>
-              <span style="color: darkorange"> {{ 'user.email.step1' | translate }}  </span>
-              <div (click)="sendEmail()" class="actionButton"
-                   style="width: fit-content"> {{ 'user.email.button' | translate }}
-              </div>
-              @if (connectedUser().lastEmail) {
-                <span style="padding: 2px 0 0 0 ">
-                {{ 'user.email.message' | translate }} {{ connectedUser().lastEmail }}
-               </span>
-              }
-              <br>
-              <span style="color: darkorange"> {{ 'user.email.step2' | translate }}  </span>
-              <span style="color: darkorange"> {{ 'user.email.step3' | translate }}  </span>
-              <span style="color: darkorange; display: flex;align-items: center"> {{ 'user.email.step4' | translate }}
-                <mat-icon (click)="refreshMailStatus()">cached</mat-icon> </span>
+<!--          @if (!connectedUser().verified) {-->
+<!--            <div style="display: flex; flex-direction: column; margin-bottom: 30px">-->
+<!--              <span style="font-weight: bolder; color: darkorange"> {{ 'user.email.warning' | translate }}  </span>-->
+<!--              <br>-->
+<!--              <span style="color: darkorange"> {{ 'user.email.step1' | translate }}  </span>-->
+<!--              <div (click)="sendEmail()" class="actionButton"-->
+<!--                   style="width: fit-content"> {{ 'user.email.button' | translate }}-->
+<!--              </div>-->
+<!--              @if (connectedUser().lastEmail) {-->
+<!--                <span style="padding: 2px 0 0 0 ">-->
+<!--                {{ 'user.email.message' | translate }} {{ connectedUser().lastEmail }}-->
+<!--               </span>-->
+<!--              }-->
+<!--              <br>-->
+<!--              <span style="color: darkorange"> {{ 'user.email.step2' | translate }}  </span>-->
+<!--              <span style="color: darkorange"> {{ 'user.email.step3' | translate }}  </span>-->
+<!--              <span style="color: darkorange; display: flex;align-items: center"> {{ 'user.email.step4' | translate }}-->
+<!--                <mat-icon (click)="refreshMailStatus()">cached</mat-icon> </span>-->
 
-              <span style="color: darkorange"> {{ 'user.email.step5' | translate }}  </span>
+<!--              <span style="color: darkorange"> {{ 'user.email.step5' | translate }}  </span>-->
 
-            </div>
-          }
+<!--            </div>-->
+<!--          }-->
           <div>
             <span style="margin-right: 10px">{{ 'user.pseudo.title' | translate }}</span>
             <input formControlName="username">
