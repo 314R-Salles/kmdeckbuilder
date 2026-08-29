@@ -128,6 +128,7 @@
     "pseudo": {
       "title": "Pseudo",
       "error": "Ce pseudo est déjà utilisé",
+      "invalidChars": "Le pseudo ne doit contenir que des lettres et des chiffres",
       "save": "Enregistrer"
     },
     "email": {

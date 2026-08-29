@@ -18,7 +18,7 @@
       <span>
       {{ 'user.lastSeen' | translate }} {{ routeUser().lastLogin |date : 'mediumDate' }}
       </span>
-      @if (routeUserdecks().length > 0) {
+      @if (routeUserdecks()?.length > 0) {
         <div>
           <hr style="width: 100%">
           <span>{{ 'user.lastDecks' | translate }}</span>
@@ -86,16 +86,18 @@
             </div>
           }
           <div>
-            <span>{{ 'user.pseudo.title' | translate }}</span>
-            <label>
-              <input formControlName="username">
-            </label>
-            <button type="submit">{{ 'user.pseudo.save' | translate }}</button>
+            <span style="margin-right: 10px">{{ 'user.pseudo.title' | translate }}</span>
+            <input formControlName="username">
+            <button type="submit" class="actionButton" style="margin: 0 3px;"
+                    [disabled]="form().get('username')?.invalid">{{ 'user.pseudo.save' | translate }}
+            </button>
           </div>
           @if (takenUsername()) {
             <mat-error style="color: red;">{{ 'user.pseudo.error' | translate }}</mat-error>
           }
-
+          @if (form().get('username')?.hasError('pattern') && form().get('username')?.dirty) {
+            <mat-error style="color: red;">{{ 'user.pseudo.invalidChars' | translate }}</mat-error>
+          }
           <br>
         </div>
       </form>
@@ -103,20 +105,21 @@
       <br>
       @if (connectedUser()?.twitchUsername) {
         {{ 'user.twitch.title' | translate }} {{ connectedUser().twitchUsername }}
-        <button (click)="unlink()">{{ 'user.twitch.unLink' | translate }}</button>
+        <button class="actionButton" (click)="unlink()">{{ 'user.twitch.unLink' | translate }}</button>
       } @else {
-        {{ 'user.twitch.link' | translate }}<a [href]=url style="color:white;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitch"
-               viewBox="0 0 16 16">
-            <path
-              d="M3.857 0 1 2.857v10.286h3.429V16l2.857-2.857H9.57L14.714 8V0zm9.714 7.429-2.285 2.285H9l-2 2v-2H4.429V1.143h9.142z"/>
-            <path d="M11.857 3.143h-1.143V6.57h1.143zm-3.143 0H7.571V6.57h1.143z"/>
-          </svg>
-        </a>
+        <div style="display: flex; gap: 10px;">
+          <span>{{ 'user.twitch.link' | translate }}</span>
+          <a [href]=url class="twitchIcon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitch"
+                 viewBox="0 0 16 16">
+              <path
+                d="M3.857 0 1 2.857v10.286h3.429V16l2.857-2.857H9.57L14.714 8V0zm9.714 7.429-2.285 2.285H9l-2 2v-2H4.429V1.143h9.142z"/>
+              <path d="M11.857 3.143h-1.143V6.57h1.143zm-3.143 0H7.571V6.57h1.143z"/>
+            </svg>
+          </a>
+        </div>
       }
-
       <br>
-
 
       @if (favorites()?.length > 0) {
         <div>

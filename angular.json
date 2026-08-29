@@ -35,12 +35,12 @@
               "@angular/material/prebuilt-themes/rose-red.css",
               "src/styles.scss"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "scripts": []
+//            "server": "src/main.server.ts",
+//            "prerender": true,
+//            "ssr": {
+//              "entry": "server.ts"
+//            }
           },
           "configurations": {
             "production": {

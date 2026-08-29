@@ -77,8 +77,11 @@ export class UserProfile {
     ))
 
 
+  static readonly USERNAME_PATTERN = /^[a-zA-Z0-9]+$/;
+
   form = computed(() => new FormGroup({
-    username: new FormControl(this.connectedUser()?.username, Validators.required),
+    username: new FormControl(this.connectedUser()?.username,
+      [Validators.required, Validators.pattern(UserProfile.USERNAME_PATTERN)]),
     iconId: new FormControl(this.connectedUser()?.iconId)
   }));
 
@@ -111,6 +114,9 @@ export class UserProfile {
 
 
   updateUser() {
+    if (this.form().invalid) {
+      return
+    }
     this.takenUsername.set(false)
     this.authenticatedApiService.updateUser({
       username: this.form().get('username')?.value,

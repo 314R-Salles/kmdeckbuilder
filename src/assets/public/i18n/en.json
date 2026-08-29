@@ -128,6 +128,7 @@
     "pseudo": {
       "title": "Pseudo",
       "error": "This username is taken",
+      "invalidChars": "Username can only contain letters and digits",
       "save": "Save"
     },
     "email": {
