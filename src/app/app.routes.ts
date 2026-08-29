@@ -9,7 +9,12 @@ import {CreateDraft} from "./draft/create-draft/create-draft";
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'home', component: Home},
+  {
+    path: 'home',
+    component: Home,
+    title: 'Accueil | Kmtools',
+    data: {description: 'Créez, partagez et explorez des decks Krosmaga sur Kmtools.'}
+  },
   {path: 'temp', component: Temppage},
   {path: 'user', component: UserProfile},
   {path: 'user/:username', component: UserProfile},
@@ -21,8 +26,18 @@ export const routes: Routes = [
     path: 'decks/create',
     loadComponent: () => import('./decklists/create/deckbuilder/deckbuilder').then(mod => mod.Deckbuilder)
   },
-  {path: 'decks/browse', component: SearchDeck},
-  {path: 'media', component: StreamList},
+  {
+    path: 'decks/browse',
+    component: SearchDeck,
+    title: 'Parcourir les decks | Kmtools',
+    data: {description: 'Découvrez et filtrez les decks Krosmaga créés par la communauté.'}
+  },
+  {
+    path: 'media',
+    component: StreamList,
+    title: 'Streams et vidéos Krosmaga | Kmtools',
+    data: {description: 'Retrouvez les lives Twitch et vidéos YouTube Krosmaga.'}
+  },
   {path: 'draft', component: CreateDraft},
   {path: 'decks/view/:id/:version/:minorVersion', component: ViewDeck},
   {

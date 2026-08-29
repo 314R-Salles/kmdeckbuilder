@@ -1,4 +1,4 @@
-import {afterRenderEffect, Component, computed, ElementRef, inject, input, PLATFORM_ID, Renderer2, signal, viewChild} from '@angular/core';
+import {afterRenderEffect, Component, computed, ElementRef, inject, input, OnInit, PLATFORM_ID, Renderer2, signal, viewChild} from '@angular/core';
 import {DeckDeletedPopin} from '../../../popins/deck-deleted-popin/deck-deleted-popin';
 import {DeckDeletionPopin} from '../../../popins/deck-deletion-popin/deck-deletion-popin';
 import {Section} from '../../../base/section/section';
@@ -64,7 +64,7 @@ const MOBILE_YOUTUBE_PLAYER_HEIGHT = 183;
   templateUrl: './view-deck.html',
   styleUrl: './view-deck.scss'
 })
-export class ViewDeck {
+export class ViewDeck implements OnInit {
 
   parent = environment.TWITCH_PARENT;
 
@@ -111,24 +111,6 @@ export class ViewDeck {
         switchMap(([version, language]) => this.apiService.getDeck({id: this.id(), version, language})),
         takeUntilDestroyed(),
       ).subscribe(response => this.data.set(response));
-    // } else {
-    //   this.apiService.getDeckForCrawler({id: this.id(), version: this.version()}).subscribe(deckView => {
-    //     // this.titleService.setTitle(deckView.name)
-    //     this.metaService.removeTag("name='description'");
-    //     this.metaService.addTags([
-    //       {
-    //         name: 'description',
-    //         content: deckView.name,
-    //       },
-    //       {
-    //         property: 'og:image',
-    //         content: `/assets/${this.id()}-${this.version()}-${this.minorVersion()}.png`
-    //       }, {
-    //         property: 'twitter:image',
-    //         content: `/assets/${this.id()}-${this.version()}-${this.minorVersion()}.png`
-    //       },
-    //     ]);
-    //   })
     }
 
     afterRenderEffect(() => {
@@ -137,6 +119,27 @@ export class ViewDeck {
       if (container) {
         this.deckLinkDecorator.decorate(container, this.renderer);
       }
+    });
+  }
+
+  ngOnInit(): void {
+    // Rendu côté serveur uniquement (SSR) : les bots de prévisualisation de liens (Discord, Twitter/X,
+    // Facebook...) n'exécutent pas le JS, donc ces balises doivent être posées avant sérialisation du HTML,
+    // via un appel léger dédié plutôt que le chargement complet du deck (cf ApiService.getDeckForCrawler,
+    // déjà utilisé par DeckLinkDecoratorService — retourne {title, owner}).
+    // Les `input.required` ne sont garantis disponibles qu'à partir de ngOnInit, pas du constructeur.
+    if (isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    this.apiService.getDeckForCrawler({id: this.id(), version: this.version()}).subscribe(({title: deckTitle, owner: deckOwner}) => {
+      const pageTitle = `${deckTitle} — par ${deckOwner} | Kmtools`;
+      const pageDescription = `Deck "${deckTitle}" créé par ${deckOwner} sur Kmtools.`;
+      this.titleService.setTitle(pageTitle);
+      this.metaService.updateTag({name: 'description', content: pageDescription});
+      this.metaService.updateTag({property: 'og:title', content: pageTitle});
+      this.metaService.updateTag({property: 'og:description', content: pageDescription});
+      this.metaService.updateTag({property: 'og:url', content: `${environment.SITE_URL}${this.router.url.split('?')[0]}`});
+      this.metaService.updateTag({name: 'twitter:card', content: 'summary'});
     });
   }
 
