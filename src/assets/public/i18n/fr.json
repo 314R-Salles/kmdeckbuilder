@@ -3,6 +3,12 @@
     "required": "Cette fonctionnalité est réservée aux utilisateurs connectés.",
     "button": "Se connecter"
   },
+  "home": {
+    "latestDecks": {
+      "title": "Derniers decks créés",
+      "seeMore": "Parcourir"
+    }
+  },
   "verified": {
     "required": "Cette fonctionnalité est réservée aux utilisateurs ayant vérifié leur compte.",
     "button": "Options du profil"

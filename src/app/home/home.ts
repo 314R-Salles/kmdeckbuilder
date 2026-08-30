@@ -1,16 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {StreamList} from '../stream-list/stream-list';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {LatestDecks} from './latest-decks/latest-decks';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {TranslatePipe} from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-home',
   imports: [
     StreamList,
-    RouterLink,
-    TranslatePipe
+    LatestDecks,
   ],
   templateUrl: './home.html',
   styleUrl: './home.scss'

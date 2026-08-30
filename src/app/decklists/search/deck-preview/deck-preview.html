@@ -15,19 +15,22 @@
   <div class="info">
     <div class="title">{{ deck().name }}</div>
     <div class="author"> {{ 'searchDeck.by' | translate }} &nbsp;
-      <span class="authorName" matTooltip="{{ 'searchDeck.addToFilters' | translate:{value: deck().owner} }}"
+      <span class="authorName" [class.filtersEnabled]="filtersEnabled()"
+            [matTooltip]="filtersEnabled() ? ('searchDeck.addToFilters' | translate:{value: deck().owner}) : ''"
             (click)="onAuthorClick($event)">{{ deck().owner }}</span>
-      <a [routerLink]="['/user',deck().owner]" style="color:white; text-decoration:none;">
-        <mat-icon class="profileLinkIcon" matTooltip="{{'searchDeck.goToProfile' | translate}}">contact_page
-        </mat-icon>
-      </a>
+      @if (filtersEnabled()) {
+        <a [routerLink]="['/user',deck().owner]" style="color:white; text-decoration:none;">
+          <mat-icon class="profileLinkIcon" matTooltip="{{'searchDeck.goToProfile' | translate}}">contact_page
+          </mat-icon>
+        </a>
+      }
     </div>
     <div class="creationDate">{{ deck().creationDate | date:'longDate' }}</div>
     <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
       <div style="display:flex; flex-direction:row; height:28px;  z-index: 10;">
         @for (tag of deck().tags; track tag.id) {
-          <div (click)="onTagClick(tag, $event)" class="tag"
-               matTooltip="{{ 'searchDeck.addToFilters' | translate:{value: tag.title} }}"
+          <div (click)="onTagClick(tag, $event)" class="tag" [class.filtersEnabled]="filtersEnabled()"
+               [matTooltip]="filtersEnabled() ? ('searchDeck.addToFilters' | translate:{value: tag.title}) : tag.title"
                [ngStyle]="{'background-color': tag.title === 'guide' ? '#FF474D':'#313282'}">
             @if (tag.iconId) {
               <img class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId"/>

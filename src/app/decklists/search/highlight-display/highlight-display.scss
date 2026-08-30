@@ -29,7 +29,9 @@ img {
   }
 }
 
-@media (max-width: 768px) {
+// suit le même seuil que deck-preview.scss (container-type défini sur :host de app-deck-preview,
+// l'ancêtre commun), pour rester cohérent que la carte soit à pleine largeur (mobile) ou étroite dans une grille.
+@container (max-width: 768px) {
   .desktopHighlights {
     display: none;
   }

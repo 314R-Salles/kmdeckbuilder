@@ -3,6 +3,7 @@
 .section {
   margin: 0 auto;
   width: 75%;
+  max-width: 1320px;
   //min-width: 1800px;
 }
 
@@ -33,4 +34,5 @@
 .forcedSize {
   width: 100% !important;
   height: 100% !important;
+  max-width: unset !important
 }

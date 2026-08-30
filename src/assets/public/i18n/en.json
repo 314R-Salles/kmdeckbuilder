@@ -3,6 +3,12 @@
     "required": "This feature requires an account.",
     "button": "Login"
   },
+  "home": {
+    "latestDecks": {
+      "title": "Latest decks",
+      "seeMore": "Browse"
+    }
+  },
   "verified": {
     "required": "This feature requires email validation",
     "button": "To profile"

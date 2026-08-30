@@ -1,4 +1,4 @@
-@if (data()) {
+@if (deck()) {
   <app-section>
     <ng-container section-header>
       <div class="sectionTitle">{{ title() }}</div>
@@ -8,9 +8,9 @@
     <ng-container before-section-header>
       <div class="beforeSectionTitle customBeforeSectionTitle"
            [ngStyle]="{cursor: canClone() && !canEdit() ? 'pointer': 'default'}"
-           (click)="toggleFavorite(data());$event.stopPropagation();$event.preventDefault()">
-        <mat-icon class="iconFavorite" [ngStyle]="{color: data().liked ? 'red': 'white'}">favorite</mat-icon>
-        {{ data().favoriteCount }}
+           (click)="toggleFavorite(deck());$event.stopPropagation();$event.preventDefault()">
+        <mat-icon class="iconFavorite" [ngStyle]="{color: deck().liked ? 'red': 'white'}">favorite</mat-icon>
+        {{ deck().favoriteCount }}
       </div>
     </ng-container>
 
@@ -47,7 +47,7 @@
       }
 
       @if (canEdit()) {
-        <div style="color:red; border: solid 2px red;" (click)="deleteDeckConfirmation(data())" class="buttonUpdate">
+        <div style="color:red; border: solid 2px red;" (click)="deleteDeckConfirmation(deck())" class="buttonUpdate">
           <span style="align-content:center;"> {{ 'viewDeck.delete' | translate }} </span>
           <mat-icon style="font-size: 16px;" matTooltip="{{ 'viewDeck.deleteTooltip' | translate }}">
             warning
@@ -75,12 +75,12 @@
 <ng-template #STATS>
   <div class="deckStats">
     <div style="display:flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 10px 5px">
-      <app-god-crest [god]="data()?.god" [costAP]="data().costAP" [allowResize]="false"></app-god-crest>
+      <app-god-crest [god]="deck()?.god" [costAP]="deck().costAP" [allowResize]="false"></app-god-crest>
       <app-rarity-synthesis [raritySynthesis]="syntheseRarete()"></app-rarity-synthesis>
       <app-synthesis [syntheseCost]="syntheseCost()" [max]="max()"></app-synthesis>
     </div>
     <div style="display:flex; flex-direction:row; flex-wrap:wrap; margin-top:5px;">
-      @for (tag of data().tags; track tag.id) {
+      @for (tag of deck().tags; track tag.id) {
         <div class="tag"
              [ngStyle]="{'background-color': tag.title === 'guide' ? '#FF474D':'#313282'}">
           @if (tag.iconId) {
@@ -121,5 +121,5 @@
 </ng-template>
 
 <ng-template #CARDS>
-  <app-view-list [cards]="data()?.cards"></app-view-list>
+  <app-view-list [cards]="deck()?.cards"></app-view-list>
 </ng-template>

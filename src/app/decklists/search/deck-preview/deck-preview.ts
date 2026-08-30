@@ -26,6 +26,8 @@ import {GodCrest} from '../god-crest/god-crest';
 export class DeckPreview {
   deck = input.required<any>();
   isLoggedIn = input<boolean>();
+  // désactivé sur les aperçus hors page de recherche (ex: accueil), qui n'ont pas de filtres à alimenter
+  filtersEnabled = input<boolean>(true);
 
   toggleFavorite = output<void>();
   addUserFilter = output<string>();
@@ -38,12 +40,18 @@ export class DeckPreview {
   }
 
   onAuthorClick(event: Event) {
+    if (!this.filtersEnabled()) {
+      return;
+    }
     event.stopPropagation();
     event.preventDefault();
     this.addUserFilter.emit(this.deck().owner);
   }
 
   onTagClick(tag: any, event: Event) {
+    if (!this.filtersEnabled()) {
+      return;
+    }
     event.stopPropagation();
     event.preventDefault();
     this.addTagFilter.emit(tag.title);

@@ -168,83 +168,57 @@ $transparency: 0.5;
 .deck {
   &.IOP {
     border: 3px solid $iop;
-  }
-
-  &.IOP:hover {
     background: rgba($iop, $transparency);
   }
 
   &.ECAFLIP {
     border: 3px solid $ecaflip;
-  }
-
-  &.ECAFLIP:hover {
     background: rgba($ecaflip, $transparency);
   }
 
   &.CRA {
     border: 3px solid $cra;
-  }
-
-  &.CRA:hover {
     background: rgba($cra, $transparency);
   }
 
   &.ENIRIPSA {
     border: 3px solid $eniripsa;
-  }
-
-  &.ENIRIPSA:hover {
     background: rgba($eniripsa, $transparency);
   }
 
   &.SACRIEUR {
     border: 3px solid $sacrieur;
-  }
-
-  &.SACRIEUR:hover {
     background: rgba($sacrieur, $transparency);
   }
 
   &.SADIDA {
     border: 3px solid $sadida;
-  }
-
-  &.SADIDA:hover {
     background: rgba($sadida, $transparency);
   }
 
   &.SRAM {
     border: 3px solid $sram;
-  }
-
-  &.SRAM:hover {
     background: rgba($sram, $transparency);
   }
 
   &.XELOR {
     border: 3px solid $xelor;
-  }
-
-  &.XELOR:hover {
     background: rgba($xelor, $transparency);
   }
 
   &.ENUTROF {
     border: 3px solid $enutrof;
-  }
-
-  &.ENUTROF:hover {
     background: rgba($enutrof, $transparency);
   }
 
   &.FECA {
     border: 3px solid $feca;
-  }
-
-  &.FECA:hover {
     background: rgba($feca, $transparency);
   }
+}
+
+.deck:hover {
+  filter: brightness(1.2);
 }
 
 //////////////

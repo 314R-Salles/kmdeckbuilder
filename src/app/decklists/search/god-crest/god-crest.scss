@@ -31,7 +31,9 @@
   -webkit-text-stroke: 1px #157d8e;
 }
 
-@media (max-width: 768px) {
+// suit le même seuil que deck-preview.scss (container-type défini sur :host de app-deck-preview,
+// l'ancêtre commun), pour réagir à la largeur réelle de la carte plutôt qu'à celle du viewport.
+@container (max-width: 768px) {
   .godCrest:not(.godCrest--fixed) {
     .deckImgGod {
       width: 60px;

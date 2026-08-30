@@ -1,6 +1,15 @@
+// le seuil "mobile" doit réagir à la largeur réelle de la carte plutôt qu'à celle du viewport :
+// dans une grille (ex. page d'accueil), la carte peut être étroite sur un écran large.
+// Le conteneur de la @container query est porté par :host (et non par .deck) car un élément
+// ne peut pas se cibler lui-même dans sa propre @container query : les règles qui modifient
+// .deck (height, padding...) seraient alors ignorées par le moteur CSS.
+:host {
+  display: block;
+  container-type: inline-size;
+}
+
 .deck {
   width: 100%;
-  margin: 5px 0;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -8,6 +17,7 @@
   overflow: hidden;
   height: 160px;
   position: relative;
+  transition: filter 0.2s;
 }
 
 .leftBlock {
@@ -32,7 +42,7 @@
   font-size: 20px;
 }
 
-.authorName:hover {
+.authorName.filtersEnabled:hover {
   text-decoration: underline;
 }
 
@@ -61,7 +71,7 @@
   box-sizing: border-box; //FIXME
 }
 
-.tag:hover {
+.tag.filtersEnabled:hover {
   border: rgb(255, 255, 255) solid 1px;
 }
 
@@ -74,10 +84,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  width: calc(85% - 400px);
+  flex: 1;
+  min-width: 0;
+  // réserve la place occupée par la miniature de mise en avant (app-highlight-display, en position:absolute
+  // à droite de la carte) pour que le texte ne passe pas dessous.
+  margin-right: 400px;
 }
 
-@media (max-width: 768px) {
+@container (max-width: 768px) {
   .leftBlock {
     width: 75px;
   }
@@ -89,7 +103,7 @@
     margin-right: 0;
   }
   .info {
-    width: calc(85% - 85px);
+    margin-right: 85px;
     justify-content: space-around;
   }
 
