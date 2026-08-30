@@ -5,7 +5,7 @@
       {{ (data.isUpdate ? 'popins.updated' : 'popins.created') | translate }}
     </span>
       <div style="display: flex; align-self: end;">
-        <button [mat-dialog-close]="true">{{ 'popins.view' | translate }}</button>
+        <button class="actionButton" [mat-dialog-close]="true">{{ 'popins.view' | translate }}</button>
       </div>
     </div>
   </div>

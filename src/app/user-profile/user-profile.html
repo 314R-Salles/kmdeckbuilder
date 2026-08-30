@@ -18,39 +18,15 @@
       <span>
       {{ 'user.lastSeen' | translate }} {{ routeUser().lastLogin |date : 'mediumDate' }}
       </span>
-      @if (routeUserdecks()?.length > 0) {
+      @if (routeUserdecks().length > 0) {
         <div>
           <hr style="width: 100%">
           <span>{{ 'user.lastDecks' | translate }}</span>
           <br>
-          <div class="listDeck">
+          <div class="decks-panel">
             @for (deck of routeUserdecks(); track deck.deckId) {
-              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck"
-                   [ngClass]="deck.god">
-                <div style="display: flex; flex-direction: column; width: 90px">
-                  <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-                </div>
-                <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
-                  <div class="title" style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                    <span>{{ deck.name }}</span>
-                    <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
-                      <div style="display:flex; flex-direction:row; height:28px;">
-                        @for (tag of deck.tags; track tag.id) {
-                          <div
-                            style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
-                            @if (tag.iconId) {
-                              <img class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-                            }
-
-                            <span style="font-size:20px;">{{ tag.title }}</span>
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  </div>
-                  <div class="author">{{ deck.owner }}</div>
-                </div>
-              </div>
+              <app-deck-preview [deck]="deck" [isLoggedIn]="!!connectedUser()" [filtersEnabled]="false"
+                                 (toggleFavorite)="toggleFavorite(deck, routeUserdecks)"></app-deck-preview>
             }
           </div>
         </div>
@@ -121,80 +97,31 @@
       }
       <br>
 
-      @if (favorites()?.length > 0) {
+      @if (favorites().length > 0) {
         <div>
           <hr>
           {{ 'user.ownLastFavorites' | translate }}
           <br>
 
-          <div class="listDeck">
+          <div class="decks-panel">
             @for (deck of favorites(); track deck.deckId) {
-              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck"
-                   [ngClass]="deck.god">
-                <div style="display: flex; flex-direction: column; width: 90px">
-                  <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-                </div>
-                <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
-                  <div class="title"
-                       style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                    <span>{{ deck.name }}</span>
-                    <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
-                      <div style="display:flex; flex-direction:row; height:28px;">
-                        @for (tag of deck.tags; track tag.id) {
-                          <div
-                            style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
-                            @if (tag.iconId) {
-                              <img class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-                            }
-
-                            <span style="font-size:20px;">{{ tag.title }}</span>
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  </div>
-                  <div class="author">{{ deck.owner }}</div>
-                </div>
-              </div>
+              <app-deck-preview [deck]="deck" [isLoggedIn]="!!connectedUser()" [filtersEnabled]="false"
+                                 (toggleFavorite)="toggleFavorite(deck, favorites)"></app-deck-preview>
             }
           </div>
         </div>
       }
 
-      @if (connectedUserDecks()?.length > 0) {
+      @if (connectedUserDecks().length > 0) {
         <div>
           <hr style="width: 100%">
           <span> {{ 'user.ownLastDecks' | translate }}</span>
           <br>
 
-          <div class="listDeck">
+          <div class="decks-panel">
             @for (deck of connectedUserDecks(); track deck.deckId) {
-              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck"
-                   [ngClass]="deck.god">
-                <div style="display: flex; flex-direction: column; width: 90px">
-                  <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-                </div>
-                <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
-                  <div class="title"
-                       style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                    <span>{{ deck.name }}</span>
-                    <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
-                      <div style="display:flex; flex-direction:row; height:28px;">
-                        @for (tag of deck.tags; track tag.id) {
-                          <div
-                            style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
-                            @if (tag.iconId) {
-                              <img class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-                            }
-                            <span style="font-size:20px;">{{ tag.title }}</span>
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  </div>
-                  <div class="author">{{ deck.owner }}</div>
-                </div>
-              </div>
+              <app-deck-preview [deck]="deck" [isLoggedIn]="!!connectedUser()" [filtersEnabled]="false"
+                                 (toggleFavorite)="toggleFavorite(deck, connectedUserDecks)"></app-deck-preview>
             }
           </div>
         </div>

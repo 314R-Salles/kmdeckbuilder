@@ -1,34 +1,33 @@
-import {Component, computed, effect, inject, input, signal} from '@angular/core';
+import {Component, computed, effect, inject, input, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {StoreService} from '../store.service';
 import {ApiService} from '../api/api.service';
 import {AuthenticatedApiService} from '../api/authenticated-api.service';
-import {Router, RouterLink} from '@angular/router';
+import {Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
-import {DatePipe, NgClass} from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {MatError} from '@angular/material/input';
 import {Section} from '../base/section/section';
+import {DeckPreview} from '../decklists/search/deck-preview/deck-preview';
 import {combineLatest, debounceTime, filter, map, switchMap} from "rxjs";
 import {toObservable, toSignal} from "@angular/core/rxjs-interop";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-user-profile',
   imports: [
-    RouterLink,
-    NgClass,
     ReactiveFormsModule,
     MatError,
     DatePipe,
     Section,
+    DeckPreview,
     TranslatePipe,
   ],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.scss'
 })
-export class UserProfile {
+export class UserProfile implements OnInit, OnDestroy {
 
   url = environment.TWITCH_AUTH_URL
   takenUsername = signal(false);
@@ -48,34 +47,13 @@ export class UserProfile {
     = combineLatest([toObservable<string>(this.username), this.storeService.getUser(), this.storeService.getLanguage()])
     .pipe(debounceTime(50))
 
-  connectedUserDecks = toSignal(
-    this.combinedObservable.pipe(
-      filter(([_, user, __]) => !!user),
-      switchMap(([_, user, language]) => {
-        const request = {
-          users: [user.username],
-          language,
-          searchBy: "RECENT",
-          page: 0,
-          pageSize: 20,
-        };
-        return this.apiService.getDecks(request)
-      }),
-      map(searchResults => {
-        return searchResults.content;
-      })
-    ))
+  // signaux modifiables (plutôt que toSignal, en lecture seule) pour permettre à toggleFavorite
+  // de mettre à jour liked/favoriteCount localement sans relancer un appel réseau complet
+  connectedUserDecks = signal<any[]>([])
+  favorites = signal<any[]>([])
+  routeUserdecks = signal<any[]>([])
 
-  favorites = toSignal(
-    this.combinedObservable.pipe(
-      filter(([_, user, __]) => !!user),
-      switchMap(([_, __, language]) => {
-        return this.authenticatedApiService.getRecentFavorites(language)
-      }),
-      map(searchResults => {
-        return searchResults.content;
-      })
-    ))
+  subscriptions = []
 
 
   static readonly USERNAME_PATTERN = /^[a-zA-Z0-9]+$/;
@@ -104,24 +82,72 @@ export class UserProfile {
     }
   });
 
-  routeUserdecks = toSignal(
-    this.combinedObservable.pipe(
-      filter(([username, _, __]) => !!username),
-      switchMap(([username, __, language]) => {
-        const request = {
-          users: [username],
-          searchBy: "RECENT",
-          language,
-          page: 0,
-          pageSize: 20,
-        };
-        return this.apiService.getDecks(request)
-      }),
-      map(searchResults => {
-        return searchResults.content;
-      })
-    ))
+  ngOnInit() {
+    this.subscriptions.push(
+      this.combinedObservable.pipe(
+        filter(([_, user, __]) => !!user),
+        switchMap(([_, user, language]) => {
+          const request = {
+            users: [user.username],
+            language,
+            searchBy: "RECENT",
+            page: 0,
+            pageSize: 20,
+          };
+          return this.apiService.getDecks(request)
+        }),
+        map(searchResults => searchResults.content)
+      ).subscribe(decks => this.connectedUserDecks.set(decks))
+    )
 
+    this.subscriptions.push(
+      this.combinedObservable.pipe(
+        filter(([_, user, __]) => !!user),
+        switchMap(([_, __, language]) => this.authenticatedApiService.getRecentFavorites(language)),
+        map(searchResults => searchResults.content)
+      ).subscribe(decks => this.favorites.set(decks))
+    )
+
+    this.subscriptions.push(
+      this.combinedObservable.pipe(
+        filter(([username, _, __]) => !!username),
+        switchMap(([username, __, language]) => {
+          const request = {
+            users: [username],
+            searchBy: "RECENT",
+            language,
+            page: 0,
+            pageSize: 20,
+          };
+          return this.apiService.getDecks(request)
+        }),
+        map(searchResults => searchResults.content)
+      ).subscribe(decks => this.routeUserdecks.set(decks))
+    )
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe())
+  }
+
+  // update à la main du liked/count pour pas faire un refresh complet de la recherche, même logique que search-deck.ts
+  toggleFavorite(deck: any, decksList: WritableSignal<any[]>) {
+    if (!this.connectedUser() || deck.owned) {
+      return;
+    }
+    const request$ = deck.liked
+      ? this.authenticatedApiService.removeFromFavorites(deck.deckId)
+      : this.authenticatedApiService.addToFavorites(deck.deckId);
+
+    request$.subscribe(() => {
+      decksList.update(values => {
+        const toBeUpdated = values.find(d => d.deckId === deck.deckId);
+        toBeUpdated.favoriteCount += toBeUpdated.liked ? -1 : 1;
+        toBeUpdated.liked = !toBeUpdated.liked;
+        return [...values];
+      });
+    })
+  }
 
   updateUser() {
     if (this.form().invalid) {
