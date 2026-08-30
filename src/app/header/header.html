@@ -1,43 +1,46 @@
 <div class="header-menu">
-  <div
-    style="max-width:1100px; min-width:768px; margin: 0 auto; display:flex; justify-content:space-between; width:100%;">
-    <div style="display:flex;">
-      <span class="logo-button" routerLink="home">KMTOOLS</span>
-      <div style=" display: flex; justify-content: flex-start">
-        <!-- <span class="home-button" routerLink="home" routerLinkActive="active">Home</span> -->
-        <!--    @if (user?.username) {-->
-        <!-- <span class="deckbuilder-button" routerLink="/decks/create" routerLinkActive="active">Deckbuilder</span> -->
-        <!--    }-->
-        <span class="library-button" routerLink="/decks/browse" routerLinkActive="active">Decks</span>
-        <span class="library-button" routerLink="/media" routerLinkActive="active">Media</span>
-
-        @if (isAdmin()) {
-          <span class="dropdown-button library-button"
-                routerLinkActive="active" [matMenuTriggerFor]="admin">Admin</span>
-        }
-
-        <mat-menu #admin="matMenu">
-          <!--          <button mat-menu-item [matMenuTriggerFor]="menu1">News</button>-->
-          <button mat-menu-item routerLink="tags/edit">Tags</button>
-          <button mat-menu-item>Videos (TODO)</button>
-          <button mat-menu-item>Users (TODO)</button>
-        </mat-menu>
-
-      </div>
+  <div class="header-inner">
+    <div class="header-left">
+      <button type="button" class="hamburger-btn" [class.open]="menuOpen()" (click)="toggleMenu()"
+              [attr.aria-expanded]="menuOpen()" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <span class="logo-button" routerLink="home" (click)="closeMenu()">KMTOOLS</span>
     </div>
-    <div style="display:flex;">
 
+    <nav class="nav-links" [class.open]="menuOpen()">
+      <span class="library-button" routerLink="/decks/browse" routerLinkActive="active"
+            (click)="closeMenu()">Decks</span>
+      <span class="library-button" routerLink="/media" routerLinkActive="active" (click)="closeMenu()">Media</span>
+<!--      <span class="library-button" routerLink="/draft" routerLinkActive="active"-->
+<!--            (click)="closeMenu()">CreateDraft</span>-->
+
+      @if (isAdmin()) {
+        <span class="dropdown-button library-button"
+              routerLinkActive="active" [matMenuTriggerFor]="admin">Admin</span>
+      }
+
+      <mat-menu #admin="matMenu">
+        <!--          <button mat-menu-item [matMenuTriggerFor]="menu1">News</button>-->
+        <button mat-menu-item routerLink="tags/edit" (click)="closeMenu()">Tags</button>
+        <button mat-menu-item>Videos (TODO)</button>
+        <button mat-menu-item>Users (TODO)</button>
+      </mat-menu>
+    </nav>
+
+    <div class="nav-actions">
       @if (!user()) {
-        <div class="headerBtn" style="padding: 0 2px;" (click)="login()">
+        <div class="headerBtn" (click)="login()">
           <span style="align-self: center;">{{ 'login.button' | translate }}</span>
         </div>
       } @else {
-        <div class="headerBtn" style="padding: 0 2px;" [routerLink]="['/user', user().username ]">
+        <div class="headerBtn" [routerLink]="['/user', user().username ]" (click)="closeMenu()">
           <span style="align-self: center;">{{ user().username }}</span>
         </div>
       }
-      <a href="https://discord.gg/kMEKgxtMS6" target="_blank" class="headerBtn"
-         style="width:40px; color:white;align-items:center;">
+      <a href="https://discord.gg/kMEKgxtMS6" target="_blank" class="headerBtn discord-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-discord"
              viewBox="0 0 16 16">
           <path
@@ -48,7 +51,7 @@
     </div>
   </div>
 
+  @if (menuOpen()) {
+    <div class="menu-backdrop" (click)="closeMenu()"></div>
+  }
 </div>
-
-
-

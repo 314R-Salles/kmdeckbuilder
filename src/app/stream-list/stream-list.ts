@@ -6,6 +6,7 @@ import {Section} from '../base/section/section';
 import {TranslatePipe} from "@ngx-translate/core";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {StoreService} from "../store.service";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-stream-list',
@@ -13,7 +14,8 @@ import {StoreService} from "../store.service";
     NgTemplateOutlet,
     NgStyle,
     Section,
-    TranslatePipe
+    TranslatePipe,
+    RouterLink
   ],
   templateUrl: './stream-list.html',
   styleUrl: './stream-list.scss'

@@ -1,19 +1,38 @@
+@use '../../../styles/variables' as *;
 
 .section {
   margin: 0 auto;
   width: 75%;
+  max-width: 1320px;
   //min-width: 1800px;
+}
+
+
+.section-content {
+  border: $borderColor solid 2px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 20px;
+  background: #262241
 }
 
 @media (max-width: 1700px) {
   .section {
     margin: 0 auto;
     width: 100%;
-    min-width: 800px;
+    //min-width: 800px;
+  }
+}
+
+// navigateur limité à 500px min. En dessous, sans souris, pas de survol / zoom des minia donc moins besoin du gap latéral
+@media (max-width: 499px) {
+  .section-content {
+    padding: 5px;
   }
 }
 
 .forcedSize {
   width: 100% !important;
   height: 100% !important;
+  max-width: unset !important
 }

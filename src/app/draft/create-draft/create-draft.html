@@ -1,0 +1,128 @@
+<app-section>
+    <ng-container section-header>
+        <div class="sectionTitle">{{ 'draft.title' | translate }}</div>
+    </ng-container>
+
+    <div> Définir la draft</div>
+
+<!--      <mat-expansion-panel>-->
+<!--        <mat-expansion-panel-header>-->
+<!--          <mat-panel-title> Utiliser un modèle prédéfini</mat-panel-title>-->
+<!--        </mat-expansion-panel-header>-->
+<!--        La liste des modèles gérés par le site (admin)-->
+<!--      </mat-expansion-panel>-->
+
+<!--      <mat-expansion-panel>-->
+<!--        <mat-expansion-panel-header>-->
+<!--          <mat-panel-title> Réutiliser le modèle d'une draft précédente</mat-panel-title>-->
+<!--        </mat-expansion-panel-header>-->
+<!--        La liste des modèles des anciennes drafts de l'user (éviter les doublons / cacher si pas connecté-->
+<!--      </mat-expansion-panel>-->
+
+
+    <div class="createMenu">
+
+
+        <!--  <mat-expansion-panel disabled hideToggle expanded>-->
+        <!--    <mat-expansion-panel-header>-->
+        <!--      <mat-panel-title> Définir un nouveau modèle</mat-panel-title>-->
+        <!--    </mat-expansion-panel-header>-->
+
+        <div>
+            Définir un nouveau modèle de draft
+            <br>
+            Une draft est définie par un ensemble d'actions : Pick, Bannir chez l'adversaire, Bannir du pool de dieux
+            disponibles.
+            Les actions sont séparées en tours (groupes). Les résultats des actions d'un même tour ne sont partagés à l'adversaire
+            que quand les 2 jours ont validé.
+
+            Exemple, une draft avec 2 lignes d'actions dans 2 groupes différents.
+            J1 et J2 choisissent leur premier dieu et valident.
+            Les dieux sélectionnés sont révélés.
+            J1 et J2 choisissent leur deuxième dieu et valident.
+            Les dieux sélectionnés sont révélés.
+
+            A présent, une draft avec 2 lignes d'actions dans un seul groupe.
+            J1 et J2 choisissent leurs deux dieux et valident.
+            Les dieux sélectionnés sont révélés.
+
+            Par conséquence, avoir un pool de dieux partagé n'est pas compatible avec des actions simultannées.
+            Par action / groupe d'action, un seul joueur peut effectuer une action.
+
+
+            <mat-checkbox
+                    class="example-margin"
+                    [checked]="sharedPool"
+                    (change)="setSharedPool($event.checked)"
+            />
+            {{ 'draft.sharedPool.checkbox' | translate }}
+            <mat-icon style="font-size: 16px;" matTooltip="{{ 'draft.sharedPool.tooltip' | translate }}">
+                info
+            </mat-icon>
+        </div>
+
+
+        <div style="display:flex; flex-direction: column">
+
+            <div id="header" style="display: flex;">
+                <div style="width: 35%"> Actions J1</div>
+                <div style="width: 35%"> Actions J2</div>
+                <div style="width: 10%"> + / -</div>
+
+            </div>
+
+            <div class="dragLimit" style="display: flex; flex-direction: column" cdkDropListGroup>
+                @for (group of groups; track group; let groupIndex = $index) {
+                    <div class="actionGroup">
+                        <div
+                                style="display: flex; width: 100%;flex-direction: column; justify-content: space-between; background: #313282"
+                                cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="group">
+                            @for (action of group; track action; let actionIdx = $index) {
+                                <div style="display: flex; width: 100%; background: #4fcce1;" cdkDrag
+                                     cdkDragBoundary=".dragLimit">
+                                    <div style="width: 45%">
+                                        <app-action-dropdown [selectedAction]="groups[groupIndex][actionIdx].actionJ1"
+                                                             (onSelectAction)="setAction($event, groupIndex, actionIdx, 1)"/>
+                                    </div>
+                                    <div style="width:45%">
+                                        <app-action-dropdown [selectedAction]="groups[groupIndex][actionIdx].actionJ2"
+                                                             (onSelectAction)="setAction($event, groupIndex, actionIdx, 2)"/>
+                                    </div>
+
+                                    <div style="width:10%; display: flex; flex-direction: column; justify-content: flex-end">
+                                        @if (group.length > 1) {
+                                            <button style="width: 20px; height: 20px"
+                                                    (click)="deleteAction(groupIndex, actionIdx)"> -
+                                            </button>
+                                        }
+                                        @if (group.length == actionIdx + 1) {
+                                            <button style="width: 20px; height: 20px" (click)="addAction(groupIndex)">
+                                                +
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div style="width:40px; display: flex; flex-direction: column; justify-content: flex-end; margin-left: 5px">
+                            @if (groups.length > 1) {
+                                <button style="width: 40px; height: 30px" (click)="deleteGroup(groupIndex)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            }
+                            @if (groups.length == groupIndex + 1) {
+                                <button style="width: 40px; height: 30px" (click)="addGroup()">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+        <button (click)="save()">Enregistrer</button>
+
+        <!--  </mat-expansion-panel>-->
+    </div>
+</app-section>

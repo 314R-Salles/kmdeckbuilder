@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Header} from './header/header';
+import {SeoService} from './seo.service';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +10,5 @@ import {Header} from './header/header';
   styleUrl: './app.scss'
 })
 export class App {
+  private seo = inject(SeoService);
 }

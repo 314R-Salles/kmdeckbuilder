@@ -1,4 +1,4 @@
-<div style="height: 200px; width: 380px; position:relative;" class="fadeout">
+<div style="height: 200px; width: 380px; position:relative;" class="fadeout desktopHighlights">
   @if (illustrationsNumber() === 1) {
     <div style="position: absolute;">
       <div *ngTemplateOutlet="ONE_ILLUST"></div>
@@ -12,6 +12,16 @@
   @if (illustrationsNumber() === 3) {
     <div style="position: absolute;">
       <div *ngTemplateOutlet="THREE_ILLUST"></div>
+    </div>
+  }
+</div>
+
+<div class="mobileHighlights">
+  @for (illustration of illustrations(); track illustration.cardId) {
+    <div class="miniHighlightCard">
+      <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[illustration.cardId]"
+           [matTooltip]="cardNames()[illustration.cardId]"
+      >
     </div>
   }
 </div>

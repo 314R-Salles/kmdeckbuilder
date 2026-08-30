@@ -1,0 +1,11 @@
+<div class="dropdown action " (click)="dropdownClick()">
+  <div class="dropbtn  appFont2">
+    <div class=""> {{ selectedAction().label }}</div>
+  </div>
+</div>
+
+<div class="dropdown-content action " [ngStyle]="{'display' : displayDropdown ? 'block' : 'none'}">
+  @for (action of choices; track action.type) {
+    <span class="tile appFont2" (click)="selectAction(action)"> {{ action.label }}      </span>
+  }
+</div>

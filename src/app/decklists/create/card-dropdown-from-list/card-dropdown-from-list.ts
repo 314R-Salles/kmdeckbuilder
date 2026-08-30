@@ -3,13 +3,15 @@ import {StoreService} from '../../../store.service';
 import {FormsModule} from '@angular/forms';
 import {NgClass, NgStyle} from '@angular/common';
 import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-card-dropdown-from-list',
   imports: [
     FormsModule,
     NgStyle,
-    NgClass
+    NgClass,
+    TranslatePipe
   ],
   templateUrl: './card-dropdown-from-list.html',
   styleUrl: './card-dropdown-from-list.scss'

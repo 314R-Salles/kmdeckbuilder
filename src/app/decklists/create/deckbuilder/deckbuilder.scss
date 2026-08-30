@@ -98,6 +98,36 @@
   margin: auto;
 }
 
+// Le toolbar quill est posé sur un fond foncé (voir deckbuilder.html) : le texte des pickers
+// (ex: "Normal"/"Titre 1/2/3" pour le picker "header") et les icônes SVG sont en gris foncé (#444)
+// par défaut dans quill.snow.css, donc illisibles sur ce fond.
+// Le contenu de la toolbar est généré dynamiquement par ngx-quill (pas via le template Angular du
+// composant), donc les styles scoped classiques ne l'atteignent pas : ::ng-deep est nécessaire ici.
+// ngx-quill met à jour les classes ql-* dynamiquement (sélection en cours, picker ouvert...),
+// d'où le !important pour rester prioritaire sur quill.snow.css dans tous ces états.
+::ng-deep .content-editor .ql-toolbar {
+  .ql-picker-label {
+    color: white !important;
+  }
+
+  .ql-stroke {
+    stroke: white !important;
+  }
+
+  .ql-fill,
+  .ql-stroke.ql-fill {
+    fill: white !important;
+  }
+}
+
+// Le [styles] posé sur <quill-editor> (deckbuilder.html) cible l'élément .ql-editor lui-même,
+// pas son pseudo-élément ::before qui affiche le placeholder : quill.snow.css lui donne une
+// couleur noire (rgba(0,0,0,.6)) explicite, il faut donc la surcharger séparément ici.
+::ng-deep .content-editor .ql-editor.ql-blank::before {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+
 /* Style the input fields */
 input {
   padding: 10px;
@@ -198,21 +228,8 @@ input.invalid {
   height: 100%
 }
 
-@media (max-width: 1399px) {
-  .largeScreenContainer {
-    // display: none;
-  }
-  //.viewDeckContainer {
-  //  min-width: unset
-  //}
-}
-
 @media (min-width: 1543px) {
   .shortScreenContainer {
     display: none;
   }
-
-  //.viewDeckContainer {
-  //  min-width: 1400px
-  //}
 }

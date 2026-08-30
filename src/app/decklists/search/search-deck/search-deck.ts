@@ -1,22 +1,17 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, effect, inject, OnDestroy, OnInit, signal, untracked} from '@angular/core';
 import {ApiService} from '../../../api/api.service';
 import {AuthenticatedApiService} from '../../../api/authenticated-api.service';
 import {StoreService} from '../../../store.service';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {combineLatest, debounceTime, distinctUntilChanged, switchMap} from 'rxjs';
+import {combineLatest, debounceTime, distinctUntilChanged, Subject, switchMap} from 'rxjs';
 import {Pagination} from '../../../base/pagination/pagination';
 import {Section} from '../../../base/section/section';
 import {RouterLink} from '@angular/router';
-import {TagDropdown} from '../../common/tag-dropdown/tag-dropdown';
-import {MatIcon} from '@angular/material/icon';
-import {GodDropdown} from '../god-dropdown/god-dropdown';
-import {DatePipe, NgClass, NgStyle} from '@angular/common';
-import {MatTooltip} from '@angular/material/tooltip';
-import {OwnerDropdown} from '../owner-dropdown/owner-dropdown';
-import {CardDropdown} from '../card-dropdown/card-dropdown';
-import {HighlightDisplay} from "../highlight-display/highlight-display";
+import {DeckPreview} from '../deck-preview/deck-preview';
 import {toSignal} from "@angular/core/rxjs-interop";
 import {TranslatePipe} from "@ngx-translate/core";
+import {OrderBy, SearchBy} from "../../common/models/enums";
+import {SearchDeckFilters} from '../search-deck-filters/search-deck-filters';
 
 @Component({
   selector: 'app-search-deck',
@@ -25,18 +20,9 @@ import {TranslatePipe} from "@ngx-translate/core";
     ReactiveFormsModule,
     Section,
     RouterLink,
-    TagDropdown,
-    CardDropdown,
-    MatIcon,
-    GodDropdown,
-    MatTooltip,
-    NgClass,
-    DatePipe,
-    NgStyle,
-    OwnerDropdown,
-    CardDropdown,
-    HighlightDisplay,
-    TranslatePipe
+    DeckPreview,
+    TranslatePipe,
+    SearchDeckFilters
   ],
   templateUrl: './search-deck.html',
   styleUrl: './search-deck.scss'
@@ -61,13 +47,11 @@ export class SearchDeck implements OnInit, OnDestroy {
     totalElements: number,
     totalPages: number
   }
-  CARD_ILLUSTRATIONS
 
   decks = signal<any>(null)
-  actionPointsCompareSup = true
-  dustCompareSup = true
-  favoritesOnly = false
-  sortFilter = "RECENT"
+  favoritesOnly = signal(false)
+  sortFilter = signal<SearchBy>(SearchBy.RECENT)
+  sortOrder = signal<OrderBy>(OrderBy.DESC)
   selectedCards = signal<any>([])
   selectedUsers = signal<any>([])
   selectedNegativeUsers = signal<any>([])
@@ -76,6 +60,8 @@ export class SearchDeck implements OnInit, OnDestroy {
   selectedNegativeTags = signal<any>([])
 
   allUsers = signal<any>([])
+
+  filtersOpen = signal(false)
 
   allTags = toSignal(
     this.storeService.getLanguage().pipe(
@@ -86,18 +72,52 @@ export class SearchDeck implements OnInit, OnDestroy {
 
   searchForm = new FormGroup({
     content: new FormControl(''),
-    actionPointsCost: new FormControl(''),
-    dustCost: new FormControl('')
   })
 
   subscriptions = []
 
+  // point d'entrée commun pour déclencher une recherche, debounced plus bas
+  private searchTrigger = new Subject<void>();
+
   constructor() {
-    this.CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap();
+    // Le backdrop mobile est en position:fixed sans zone scrollable propre : sans ce verrou,
+    // un scroll (molette/tactile) au-dessus de lui remonte jusqu'au body et fait défiler les decks en dessous.
+    effect(() => {
+      document.body.classList.toggle('no-scroll', this.filtersOpen())
+    });
+
+    // Un seul point d'écoute pour tous les filtres : chaque setter n'a plus qu'à modifier son
+    // signal, la recherche se relance automatiquement au lieu d'être appelée à la main partout.
+    let isFirstRun = true;
+    effect(() => {
+      this.selectedGods();
+      this.selectedCards();
+      this.selectedTags();
+      this.selectedNegativeTags();
+      this.selectedUsers();
+      this.selectedNegativeUsers();
+      this.favoritesOnly();
+      this.sortFilter();
+      this.sortOrder();
+
+      if (isFirstRun) {
+        // les effects se déclenchent une première fois à l'init (trop tot)
+        isFirstRun = false;
+        return;
+      }
+
+      // untracked : search() lit d'autres signaux (currentLanguage...) qui ne doivent pas devenir
+      // des dépendances de cet effet, sous peine de doubler les appels avec le combineLatest user/langue.
+      untracked(() => {
+        this.currentPage = 0;
+        this.searchTrigger.next();
+      });
+    });
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe())
+    document.body.classList.remove('no-scroll')
   }
 
   ngOnInit() {
@@ -118,25 +138,28 @@ export class SearchDeck implements OnInit, OnDestroy {
 
     this.reloadFilters();
 
-    this.searchForm.valueChanges.pipe(
-      debounceTime(50),
-      distinctUntilChanged()
-    ).subscribe(_ => this.search())
+    this.subscriptions.push(
+      this.searchForm.valueChanges
+        .pipe(distinctUntilChanged())
+        .subscribe(_ => this.searchTrigger.next())
+    )
+
+    this.subscriptions.push(
+      this.searchTrigger.pipe(debounceTime(50)).subscribe(() => this.search())
+    )
   }
 
   resetFilters() {
     this.selectedGods.set([])
-    this.dustCompareSup = true;
-    this.actionPointsCompareSup = true;
-    this.favoritesOnly = false;
+    this.favoritesOnly.set(false);
     this.selectedCards.set([]);
     this.selectedTags.set([]);
     this.selectedNegativeTags.set([]);
     this.selectedUsers.set([]);
     this.selectedNegativeUsers.set([]);
-    this.sortFilter = "RECENT"
+    this.sortFilter.set(SearchBy.RECENT)
+    this.sortOrder.set(OrderBy.DESC)
     this.searchForm.reset()
-    this.search()
   }
 
   search() {
@@ -149,14 +172,11 @@ export class SearchDeck implements OnInit, OnDestroy {
       negativeTags: this.selectedNegativeTags().length ? this.selectedNegativeTags().map(c => c.id) : null,
       users: this.selectedUsers().length ? this.selectedUsers().map(u => u.username) : null,
       negativeUsers: this.selectedNegativeUsers().length ? this.selectedNegativeUsers().map(u => u.username) : null,
-      actionPointCost: this.searchForm.get('actionPointsCost').value,
-      actionCostGeq: this.actionPointsCompareSup,
-      dustGeq: this.dustCompareSup,
-      dustCost: this.searchForm.get('dustCost').value,
       content: this.searchForm.get('content').value,
-      favoritesOnly: this.favoritesOnly,
+      favoritesOnly: this.favoritesOnly(),
       language: this.currentLanguage(),
-      searchBy: this.sortFilter,
+      searchBy: this.sortFilter(),
+      orderBy: this.sortOrder(),
       page: this.currentPage,
       pageSize: this.pageSize,
     };
@@ -179,7 +199,6 @@ export class SearchDeck implements OnInit, OnDestroy {
     this.selectedCards.update(values => {
       return [...values, card];
     });
-    this.resetPageAndSearch()
   }
 
   removeCard(card) {
@@ -188,19 +207,18 @@ export class SearchDeck implements OnInit, OnDestroy {
       values.splice(index, 1)
       return [...values];
     });
-    this.resetPageAndSearch()
   }
 
-  selectUser(user, negative) {
-    if (!negative)
-      this.selectedUsers.update(values => {
-        return [...values, user];
-      });
-    else
-      this.selectedNegativeUsers.update(values => {
-        return [...values, user];
-      });
-    this.resetPageAndSearch()
+  selectUser(user) {
+    this.selectedUsers.update(values => {
+      return [...values, user];
+    });
+  }
+
+  selectNegativeUser(user) {
+    this.selectedNegativeUsers.update(values => {
+      return [...values, user];
+    });
   }
 
 
@@ -210,7 +228,6 @@ export class SearchDeck implements OnInit, OnDestroy {
       values.splice(index, 1)
       return [...values];
     });
-    this.resetPageAndSearch()
   }
 
   removeNegativeUser(user) {
@@ -219,19 +236,18 @@ export class SearchDeck implements OnInit, OnDestroy {
       values.splice(index, 1)
       return [...values];
     });
-    this.resetPageAndSearch()
   }
 
-  selectTag(tag, negative) {
-    if (!negative)
-      this.selectedTags.update(values => {
-        return [...values, tag];
-      });
-    else
-      this.selectedNegativeTags.update(values => {
-        return [...values, tag];
-      });
-    this.resetPageAndSearch()
+  selectTag(tag) {
+    this.selectedTags.update(values => {
+      return [...values, tag];
+    });
+  }
+
+  selectNegativeTag(tag) {
+    this.selectedNegativeTags.update(values => {
+      return [...values, tag];
+    });
   }
 
   removeTag(tag) {
@@ -240,7 +256,6 @@ export class SearchDeck implements OnInit, OnDestroy {
       values.splice(index, 1)
       return [...values];
     });
-    this.resetPageAndSearch()
   }
 
   removeNegativeTag(tag) {
@@ -249,23 +264,18 @@ export class SearchDeck implements OnInit, OnDestroy {
       values.splice(index, 1)
       return [...values];
     });
-    this.resetPageAndSearch()
   }
 
-  addUserFilterFromResult(username: string, event) {
+  addUserFilterFromResult(username: string) {
     if (!this.selectedUsers().map(u => u.username).includes(username)) {
-      this.selectUser(this.allUsers().find(user => user.username === username), false)
+      this.selectUser(this.allUsers().find(user => user.username === username))
     }
-    event.stopPropagation();
-    event.preventDefault()
   }
 
-  addTagFilterFromResult(tagName: string, event) {
+  addTagFilterFromResult(tagName: string) {
     if (!this.selectedTags().map(t => t.title).includes(tagName)) {
-      this.selectTag(this.allTags().find(tag => tag.title === tagName), false)
+      this.selectTag(this.allTags().find(tag => tag.title === tagName))
     }
-    event.stopPropagation();
-    event.preventDefault()
   }
 
 
@@ -273,7 +283,6 @@ export class SearchDeck implements OnInit, OnDestroy {
     this.selectedGods.update(values => {
       return [...values, god];
     });
-    this.resetPageAndSearch()
   }
 
   removeGod(god) {
@@ -282,21 +291,27 @@ export class SearchDeck implements OnInit, OnDestroy {
       values.splice(index, 1)
       return [...values];
     });
-    this.resetPageAndSearch()
+  }
+
+  toggleFilters() {
+    this.filtersOpen.update(open => !open)
+  }
+
+  closeFilters() {
+    this.filtersOpen.set(false)
   }
 
   toggleFavoriteFilter() {
-    this.favoritesOnly = !this.favoritesOnly;
-    this.resetPageAndSearch()
+    this.favoritesOnly.update(value => !value);
   }
 
-  toggleSortFilter() {
-    if (this.sortFilter == "RECENT")
-      this.sortFilter = "FAVORITE";
-    else
-      this.sortFilter = "RECENT";
-
-    this.resetPageAndSearch();
+  setFilter(filter: SearchBy) {
+    if (this.sortFilter() === filter) {
+      this.sortOrder.set(this.sortOrder() === OrderBy.DESC ? OrderBy.ASC : OrderBy.DESC);
+    } else {
+      this.sortFilter.set(filter);
+      this.sortOrder.set(OrderBy.DESC);
+    }
   }
 
   // update à la main  du liked/count pour pas faire un refresh complet de la recherche
@@ -332,7 +347,7 @@ export class SearchDeck implements OnInit, OnDestroy {
   }
 
   pageDown() {
-    if (this.currentPage > 0) { // validation en doublon puisque géré par le composant pagination
+    if (this.currentPage > 0) {
       this.currentPage--
       this.search()
     }
@@ -343,12 +358,6 @@ export class SearchDeck implements OnInit, OnDestroy {
     this.search();
   }
 
-
-  resetPageAndSearch() {
-    this.currentPage = 0;
-    this.search()
-  }
-
   reloadFilters() {
     this.setSignalWithStorageValue(this.selectedGods, 'gods')
     this.setSignalWithStorageValue(this.selectedCards, 'cards')
@@ -356,8 +365,9 @@ export class SearchDeck implements OnInit, OnDestroy {
     this.setSignalWithStorageValue(this.selectedNegativeTags, 'negativeTags')
     this.setSignalWithStorageValue(this.selectedUsers, 'users')
     this.setSignalWithStorageValue(this.selectedNegativeUsers, 'negativeUsers')
-    this.favoritesOnly = JSON.parse(sessionStorage.getItem('favoritesOnly')) || false
-    this.sortFilter = JSON.parse(sessionStorage.getItem('sortFilter')) || "RECENT"
+    this.favoritesOnly.set(JSON.parse(sessionStorage.getItem('favoritesOnly')) || false)
+    this.sortFilter.set((JSON.parse(sessionStorage.getItem('sortFilter')) as SearchBy) || SearchBy.RECENT)
+    this.sortOrder.set((JSON.parse(sessionStorage.getItem('sortOrder')) as OrderBy) || OrderBy.DESC)
     this.currentPage = JSON.parse(sessionStorage.getItem('currentPage')) || 0
     this.pageSize = JSON.parse(sessionStorage.getItem('pageSize')) || 20
   }
@@ -369,10 +379,11 @@ export class SearchDeck implements OnInit, OnDestroy {
     sessionStorage.setItem('negativeTags', JSON.stringify(this.selectedNegativeTags()))
     sessionStorage.setItem('users', JSON.stringify(this.selectedUsers()))
     sessionStorage.setItem('negativeUsers', JSON.stringify(this.selectedNegativeUsers()))
-    sessionStorage.setItem('sortFilter', JSON.stringify(this.sortFilter))
+    sessionStorage.setItem('sortFilter', JSON.stringify(this.sortFilter()))
+    sessionStorage.setItem('sortOrder', JSON.stringify(this.sortOrder()))
     sessionStorage.setItem('currentPage', JSON.stringify(this.currentPage))
     sessionStorage.setItem('pageSize', JSON.stringify(this.pageSize))
-    sessionStorage.setItem('favoritesOnly', JSON.stringify(this.favoritesOnly))
+    sessionStorage.setItem('favoritesOnly', JSON.stringify(this.favoritesOnly()))
   }
 
 

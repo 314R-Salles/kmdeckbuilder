@@ -3,6 +3,12 @@
     "required": "This feature requires an account.",
     "button": "Login"
   },
+  "home": {
+    "latestDecks": {
+      "title": "Latest decks",
+      "seeMore": "Browse"
+    }
+  },
   "verified": {
     "required": "This feature requires email validation",
     "button": "To profile"
@@ -23,7 +29,8 @@
         "twitchOnly": "Live on Twitch",
         "mixedContent": "Live (mostly)",
         "noLiveStream": "Last"
-      }
+      },
+      "seeMore": "Browse"
     }
   },
   "deckbuilder": {
@@ -72,7 +79,8 @@
     "gods": "Gods",
     "tags": "Tags",
     "cards": "Contains ...",
-    "authors": "Authors"
+    "authors": "Authors",
+    "select": "Select"
   },
   "gods": {
     "sadida": "Sadida",
@@ -91,7 +99,9 @@
     "createButton": "Create deck",
     "searchBy": {
       "recent": "Sort by: most recent",
-      "favorites": "Sort by: most liked"
+      "favorites": "Sort by: most liked",
+      "apCost": "Sort by: action point cost",
+      "dustCost": "Sort by: dust cost"
     },
     "toggle": {
       "favorites": "Display your favorites",
@@ -101,7 +111,10 @@
     "noResult": "No deck matches your search",
     "by": "by",
     "addToFilters": "Add {{value}} to the search filters",
-    "goToProfile": "Check profile"
+    "goToProfile": "Check profile",
+    "filters": {
+      "toggle": "Filters"
+    }
   },
   "viewDeck": {
     "by": "by",
@@ -121,6 +134,7 @@
     "pseudo": {
       "title": "Pseudo",
       "error": "This username is taken",
+      "invalidChars": "Username can only contain letters and digits",
       "save": "Save"
     },
     "email": {

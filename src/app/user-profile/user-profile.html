@@ -23,34 +23,10 @@
           <hr style="width: 100%">
           <span>{{ 'user.lastDecks' | translate }}</span>
           <br>
-          <div class="listDeck">
+          <div class="decks-panel">
             @for (deck of routeUserdecks(); track deck.deckId) {
-              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck"
-                   [ngClass]="deck.god">
-                <div style="display: flex; flex-direction: column; width: 90px">
-                  <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-                </div>
-                <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
-                  <div class="title" style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                    <span>{{ deck.name }}</span>
-                    <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
-                      <div style="display:flex; flex-direction:row; height:28px;">
-                        @for (tag of deck.tags; track tag.id) {
-                          <div
-                            style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
-                            @if (tag.iconId) {
-                              <img class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-                            }
-
-                            <span style="font-size:20px;">{{ tag.title }}</span>
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  </div>
-                  <div class="author">{{ deck.owner }}</div>
-                </div>
-              </div>
+              <app-deck-preview [deck]="deck" [isLoggedIn]="!!connectedUser()" [filtersEnabled]="false"
+                                 (toggleFavorite)="toggleFavorite(deck, routeUserdecks)"></app-deck-preview>
             }
           </div>
         </div>
@@ -62,40 +38,42 @@
     @if (connectedUser()) {
       <form [formGroup]="form()" (ngSubmit)="updateUser()">
         <div style="display: flex; flex-direction: column">
-          @if (!connectedUser().verified) {
-            <div style="display: flex; flex-direction: column; margin-bottom: 30px">
-              <span style="font-weight: bolder; color: darkorange"> {{ 'user.email.warning' | translate }}  </span>
-              <br>
-              <span style="color: darkorange"> {{ 'user.email.step1' | translate }}  </span>
-              <div (click)="sendEmail()" class="actionButton"
-                   style="width: fit-content"> {{ 'user.email.button' | translate }}
-              </div>
-              @if (connectedUser().lastEmail) {
-                <span style="padding: 2px 0 0 0 ">
-                {{ 'user.email.message' | translate }} {{ connectedUser().lastEmail }}
-               </span>
-              }
-              <br>
-              <span style="color: darkorange"> {{ 'user.email.step2' | translate }}  </span>
-              <span style="color: darkorange"> {{ 'user.email.step3' | translate }}  </span>
-              <span style="color: darkorange; display: flex;align-items: center"> {{ 'user.email.step4' | translate }}
-                <mat-icon (click)="refreshMailStatus()">cached</mat-icon> </span>
+<!--          @if (!connectedUser().verified) {-->
+<!--            <div style="display: flex; flex-direction: column; margin-bottom: 30px">-->
+<!--              <span style="font-weight: bolder; color: darkorange"> {{ 'user.email.warning' | translate }}  </span>-->
+<!--              <br>-->
+<!--              <span style="color: darkorange"> {{ 'user.email.step1' | translate }}  </span>-->
+<!--              <div (click)="sendEmail()" class="actionButton"-->
+<!--                   style="width: fit-content"> {{ 'user.email.button' | translate }}-->
+<!--              </div>-->
+<!--              @if (connectedUser().lastEmail) {-->
+<!--                <span style="padding: 2px 0 0 0 ">-->
+<!--                {{ 'user.email.message' | translate }} {{ connectedUser().lastEmail }}-->
+<!--               </span>-->
+<!--              }-->
+<!--              <br>-->
+<!--              <span style="color: darkorange"> {{ 'user.email.step2' | translate }}  </span>-->
+<!--              <span style="color: darkorange"> {{ 'user.email.step3' | translate }}  </span>-->
+<!--              <span style="color: darkorange; display: flex;align-items: center"> {{ 'user.email.step4' | translate }}-->
+<!--                <mat-icon (click)="refreshMailStatus()">cached</mat-icon> </span>-->
 
-              <span style="color: darkorange"> {{ 'user.email.step5' | translate }}  </span>
+<!--              <span style="color: darkorange"> {{ 'user.email.step5' | translate }}  </span>-->
 
-            </div>
-          }
+<!--            </div>-->
+<!--          }-->
           <div>
-            <span>{{ 'user.pseudo.title' | translate }}</span>
-            <label>
-              <input formControlName="username">
-            </label>
-            <button type="submit">{{ 'user.pseudo.save' | translate }}</button>
+            <span style="margin-right: 10px">{{ 'user.pseudo.title' | translate }}</span>
+            <input formControlName="username">
+            <button type="submit" class="actionButton" style="margin: 0 3px;"
+                    [disabled]="form().get('username')?.invalid">{{ 'user.pseudo.save' | translate }}
+            </button>
           </div>
-          @if (takenUsername) {
+          @if (takenUsername()) {
             <mat-error style="color: red;">{{ 'user.pseudo.error' | translate }}</mat-error>
           }
-
+          @if (form().get('username')?.hasError('pattern') && form().get('username')?.dirty) {
+            <mat-error style="color: red;">{{ 'user.pseudo.invalidChars' | translate }}</mat-error>
+          }
           <br>
         </div>
       </form>
@@ -103,95 +81,47 @@
       <br>
       @if (connectedUser()?.twitchUsername) {
         {{ 'user.twitch.title' | translate }} {{ connectedUser().twitchUsername }}
-        <button (click)="unlink()">{{ 'user.twitch.unLink' | translate }}</button>
+        <button class="actionButton" (click)="unlink()">{{ 'user.twitch.unLink' | translate }}</button>
       } @else {
-        {{ 'user.twitch.link' | translate }}<a [href]=url style="color:white;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitch"
-               viewBox="0 0 16 16">
-            <path
-              d="M3.857 0 1 2.857v10.286h3.429V16l2.857-2.857H9.57L14.714 8V0zm9.714 7.429-2.285 2.285H9l-2 2v-2H4.429V1.143h9.142z"/>
-            <path d="M11.857 3.143h-1.143V6.57h1.143zm-3.143 0H7.571V6.57h1.143z"/>
-          </svg>
-        </a>
+        <div style="display: flex; gap: 10px;">
+          <span>{{ 'user.twitch.link' | translate }}</span>
+          <a [href]=url class="twitchIcon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitch"
+                 viewBox="0 0 16 16">
+              <path
+                d="M3.857 0 1 2.857v10.286h3.429V16l2.857-2.857H9.57L14.714 8V0zm9.714 7.429-2.285 2.285H9l-2 2v-2H4.429V1.143h9.142z"/>
+              <path d="M11.857 3.143h-1.143V6.57h1.143zm-3.143 0H7.571V6.57h1.143z"/>
+            </svg>
+          </a>
+        </div>
       }
-
       <br>
 
-
-      @if (favorites()?.length > 0) {
+      @if (favorites().length > 0) {
         <div>
           <hr>
           {{ 'user.ownLastFavorites' | translate }}
           <br>
 
-          <div class="listDeck">
+          <div class="decks-panel">
             @for (deck of favorites(); track deck.deckId) {
-              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck"
-                   [ngClass]="deck.god">
-                <div style="display: flex; flex-direction: column; width: 90px">
-                  <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-                </div>
-                <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
-                  <div class="title"
-                       style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                    <span>{{ deck.name }}</span>
-                    <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
-                      <div style="display:flex; flex-direction:row; height:28px;">
-                        @for (tag of deck.tags; track tag.id) {
-                          <div
-                            style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
-                            @if (tag.iconId) {
-                              <img class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-                            }
-
-                            <span style="font-size:20px;">{{ tag.title }}</span>
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  </div>
-                  <div class="author">{{ deck.owner }}</div>
-                </div>
-              </div>
+              <app-deck-preview [deck]="deck" [isLoggedIn]="!!connectedUser()" [filtersEnabled]="false"
+                                 (toggleFavorite)="toggleFavorite(deck, favorites)"></app-deck-preview>
             }
           </div>
         </div>
       }
 
-      @if (connectedUserDecks()?.length > 0) {
+      @if (connectedUserDecks().length > 0) {
         <div>
           <hr style="width: 100%">
           <span> {{ 'user.ownLastDecks' | translate }}</span>
           <br>
 
-          <div class="listDeck">
+          <div class="decks-panel">
             @for (deck of connectedUserDecks(); track deck.deckId) {
-              <div [routerLink]="['/decks/view', deck.deckId, deck.version, deck.minorVersion]" class="deck"
-                   [ngClass]="deck.god">
-                <div style="display: flex; flex-direction: column; width: 90px">
-                  <img class="deckImgGod" [src]="'/assets/public/gods/GOD_'+deck.god+'.png'"/>
-                </div>
-                <div style="display: flex; flex-direction: row; justify-content: space-between; width: 90%">
-                  <div class="title"
-                       style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                    <span>{{ deck.name }}</span>
-                    <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
-                      <div style="display:flex; flex-direction:row; height:28px;">
-                        @for (tag of deck.tags; track tag.id) {
-                          <div
-                            style="display:flex; flex-direction:row; background-color:#313282; border-radius:20px; position:relative; align-content:center; align-items:center; padding:5px; margin-left:5px">
-                            @if (tag.iconId) {
-                              <img class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId+''"/>
-                            }
-                            <span style="font-size:20px;">{{ tag.title }}</span>
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  </div>
-                  <div class="author">{{ deck.owner }}</div>
-                </div>
-              </div>
+              <app-deck-preview [deck]="deck" [isLoggedIn]="!!connectedUser()" [filtersEnabled]="false"
+                                 (toggleFavorite)="toggleFavorite(deck, connectedUserDecks)"></app-deck-preview>
             }
           </div>
         </div>

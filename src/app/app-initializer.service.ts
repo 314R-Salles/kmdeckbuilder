@@ -32,11 +32,11 @@ export class AppInitializerService {
       if (token) {
         this.authenticatedApiService.linkAccount(token).subscribe(user => this.storeService.setUser(user))
       }
-      this.route.queryParamMap.subscribe(params => {
-        if (params.get("verified")) {
-          this.authenticatedApiService.refreshMailStatus().subscribe(user => this.storeService.setUser(user))
-        }
-      })
+      // this.route.queryParamMap.subscribe(params => {
+      //   if (params.get("verified")) {
+      //     this.authenticatedApiService.refreshMailStatus().subscribe(user => this.storeService.setUser(user))
+      //   }
+      // })
       return this.apiService.getCardIllustrations().pipe(
         switchMap(cardList => {
           this.storeService.setCardIllustrations(cardList)
@@ -60,11 +60,11 @@ export class AppInitializerService {
           });
           return from(this.oauthService.loadDiscoveryDocumentAndTryLogin())
         }),
-        tap(_ => this.oauthService.setupAutomaticSilentRefresh()),
         tap(_ => {
-          this.authenticatedApiService.getCurrentUser().subscribe(user => {
-            this.storeService.setUser(user);
-          })
+          if (this.oauthService.hasValidAccessToken()) {
+            this.oauthService.setupAutomaticSilentRefresh();
+            this.authenticatedApiService.getCurrentUser().subscribe(user => this.storeService.setUser(user));
+          }
         })
       )
     } else {

@@ -3,6 +3,12 @@
     "required": "Cette fonctionnalité est réservée aux utilisateurs connectés.",
     "button": "Se connecter"
   },
+  "home": {
+    "latestDecks": {
+      "title": "Derniers decks créés",
+      "seeMore": "Parcourir"
+    }
+  },
   "verified": {
     "required": "Cette fonctionnalité est réservée aux utilisateurs ayant vérifié leur compte.",
     "button": "Options du profil"
@@ -23,7 +29,8 @@
         "twitchOnly": "En ce moment sur Twitch",
         "mixedContent": "En ce moment ou presque",
         "noLiveStream": "Récemment"
-      }
+      },
+      "seeMore": "Parcourir"
     }
   },
   "deckbuilder": {
@@ -72,7 +79,8 @@
     "gods": "Dieux",
     "tags": "Tags",
     "cards": "Contient ...",
-    "authors": "Auteurs"
+    "authors": "Auteurs",
+    "select": "Sélectionner"
   },
   "gods": {
     "sadida": "Sadida",
@@ -91,7 +99,9 @@
     "createButton": "Créer un deck",
     "searchBy": {
       "recent": "Trié par : plus récent.",
-      "favorites": "Trié par : plus aimé."
+      "favorites": "Trié par : plus aimé.",
+      "apCost": "Trié par : coût en points d'action.",
+      "dustCost": "Trié par : coût en poussière."
     },
     "toggle": {
       "favorites": "Afficher vos favoris",
@@ -101,7 +111,10 @@
     "noResult": "Aucun deck ne correspond à ces filtres",
     "by": "par",
     "addToFilters": "Ajouter {{value}} aux filtres de recherche",
-    "goToProfile": "Consulter le profil"
+    "goToProfile": "Consulter le profil",
+    "filters": {
+      "toggle": "Filtres"
+    }
   },
   "viewDeck": {
     "by": "par",
@@ -121,6 +134,7 @@
     "pseudo": {
       "title": "Pseudo",
       "error": "Ce pseudo est déjà utilisé",
+      "invalidChars": "Le pseudo ne doit contenir que des lettres et des chiffres",
       "save": "Enregistrer"
     },
     "email": {

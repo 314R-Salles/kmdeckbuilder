@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
+@use 'styles/variables' as *;
 @import '../node_modules/quill/dist/quill.snow.css';
 
 html, body {
@@ -19,9 +20,22 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+// Empêche le scroll de la page derrière un panneau modal (ex: filterBackdrop de search-deck)
+body.no-scroll {
+  overflow: hidden;
+}
+
 :root {
-  --header-height: 60px;
+  --header-height: 45px;
   --header-menu: 40px;
+}
+
+// Header plus épais en mobile portrait pour des zones tactiles plus confortables
+// (logo, hamburger, dropdown langue). Seuil aligné sur $mobile-breakpoint dans header.scss.
+@media (max-width: 768px) {
+  :root {
+    --header-height: 60px;
+  }
 }
 
 
@@ -31,60 +45,25 @@ body {
 
 .sectionTitle {
   font-weight: bolder;
-  font-size: 30px;
-  padding: 15px;
+  font-size: clamp(20px, 5vw, 30px);
+  padding: 0 10px;
 }
 
 .sectionSubtitle {
   font-weight: bolder;
-  font-size: 22px;
+  font-size: clamp(18px, 4vw, 22px);
 }
 
 .beforeSectionTitle {
-  border-radius: 4px;
+  //border-radius: 4px;
 }
 
 .afterSectionTitle {
-  border-radius: 4px;
+  //border-radius: 4px;
   margin-right: 20px;
 }
 
-.actionButton {
-  padding: 5px;
-  border: 2px solid #FFD700;
-  cursor: pointer;
-  border-radius: 4px;
-  color: #FFD700;
-}
-
-.actionButton:hover {
-  background: #474172
-}
-
-
-//////////////
-// COULEURS
-//////////////
-
 $transparency: 0.5;
-
-$iop: #A3210E;
-$ecaflip: #6C1084;
-$cra: #424617;
-$eniripsa: #B54C3C;
-$sacrieur: #302821;
-$sadida: #6B7200;
-$sram: #39405A;
-$xelor: #263578;
-$enutrof: #9B7400;
-$feca: #523C39FF;
-$neutre: #b7a17a;
-
-$common: #B8A27B;
-$uncommon: #88B6EA;
-$rare: #FFAE00;
-$krosmique: #D46EEA;
-$infinite: #FFFFEE;
 
 .grey {
   filter: grayscale(1);
@@ -189,83 +168,57 @@ $infinite: #FFFFEE;
 .deck {
   &.IOP {
     border: 3px solid $iop;
-  }
-
-  &.IOP:hover {
     background: rgba($iop, $transparency);
   }
 
   &.ECAFLIP {
     border: 3px solid $ecaflip;
-  }
-
-  &.ECAFLIP:hover {
     background: rgba($ecaflip, $transparency);
   }
 
   &.CRA {
     border: 3px solid $cra;
-  }
-
-  &.CRA:hover {
     background: rgba($cra, $transparency);
   }
 
   &.ENIRIPSA {
     border: 3px solid $eniripsa;
-  }
-
-  &.ENIRIPSA:hover {
     background: rgba($eniripsa, $transparency);
   }
 
   &.SACRIEUR {
     border: 3px solid $sacrieur;
-  }
-
-  &.SACRIEUR:hover {
     background: rgba($sacrieur, $transparency);
   }
 
   &.SADIDA {
     border: 3px solid $sadida;
-  }
-
-  &.SADIDA:hover {
     background: rgba($sadida, $transparency);
   }
 
   &.SRAM {
     border: 3px solid $sram;
-  }
-
-  &.SRAM:hover {
     background: rgba($sram, $transparency);
   }
 
   &.XELOR {
     border: 3px solid $xelor;
-  }
-
-  &.XELOR:hover {
     background: rgba($xelor, $transparency);
   }
 
   &.ENUTROF {
     border: 3px solid $enutrof;
-  }
-
-  &.ENUTROF:hover {
     background: rgba($enutrof, $transparency);
   }
 
   &.FECA {
     border: 3px solid $feca;
-  }
-
-  &.FECA:hover {
     background: rgba($feca, $transparency);
   }
+}
+
+.deck:hover {
+  filter: brightness(1.2);
 }
 
 //////////////
@@ -298,7 +251,7 @@ $infinite: #FFFFEE;
   }
 
   &.language {
-    width: 40px;
+    width: 50px;
     padding-left: 0px;
     justify-content: center;
     background: #262241;
@@ -324,7 +277,7 @@ $infinite: #FFFFEE;
   position: relative;
   //display: inline-block;
 
-  border: solid 1px gold;
+  border: solid 1px $borderColor;
   border-radius: 2px;
   //box-sizing: border-box;
 
@@ -335,7 +288,7 @@ $infinite: #FFFFEE;
   }
 
   &.language {
-    width: 40px;
+    width: 50px;
     height: 100%;
     justify-content: center;
   }
@@ -352,6 +305,12 @@ $infinite: #FFFFEE;
     justify-content: center;
   }
 
+  &.action {
+    width: 300px;
+    height: 60px;
+    justify-content: center;
+  }
+
 }
 
 .dropdown:hover {
@@ -363,7 +322,7 @@ $infinite: #FFFFEE;
   width: 300px;
   position: absolute;
   background: #313282;
-  border: solid 1px gold;
+  border: solid 1px $borderColor;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 20;
   margin-top: 5px;
@@ -373,7 +332,7 @@ $infinite: #FFFFEE;
   }
 
   &.language {
-    width: 40px;
+    width: 50px;
   }
 
   &.rarity {
@@ -384,8 +343,25 @@ $infinite: #FFFFEE;
     width: 60px;
   }
 
+  &.action {
+    width: 300px;
+  }
+
+
 }
 
+
+//////////////
+// POPINS
+//////////////
+
+.popin-box {
+  border: $borderColor solid 2px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 20px;
+  background: #262241;
+}
 
 //////////////
 // TAGS
@@ -445,5 +421,25 @@ $infinite: #FFFFEE;
     border-radius: unset;
     background-color: unset;
   }
+}
 
+mat-icon.iconFavorite {
+  transition: all 0.3s;
+}
+
+mat-icon.iconFavorite:hover {
+  transform: scale(1.3);
+}
+
+.actionButton {
+  background: transparent;
+  padding: 5px;
+  border: 2px solid $borderColor;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #ffffff;
+}
+
+.actionButton:hover {
+  background: #474172
 }

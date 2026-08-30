@@ -1,5 +1,5 @@
 <app-section [forceSize]="currentTab() ===1"
-             [requiresLogin]="true" [requiresVerified]="true">
+             [requiresLogin]="true">
 
   @if (currentTab() !== 1) {
     <ng-container section-header>
@@ -157,11 +157,11 @@
           <div style="display: flex; flex-direction: column; width: fit-content; padding: 5px;">
             <label style="font-size: 20px"> {{ 'deckbuilder.complements.description' | translate }} </label>
             <!--            la div qui englobe permet de donner un style au background (toolbar + input) et le style de l'editor force pour l'input -->
-            <div style="background: #c6f8ff">
+            <div style="background: #313282;">
               <quill-editor class="content-editor"
                             formControlName="description"
                             [modules]="quillConfiguration"
-                            [styles]="{'min-height': '200px', 'max-height':'500px', 'min-width': '500px', 'max-width':'1000px', background:'white', color: 'black'}"
+                            [styles]="{'min-height': '200px', 'max-height':'500px', 'min-width': '500px', 'max-width':'1000px', background:'#262241', color: 'white'}"
               ></quill-editor>
             </div>
           </div>
