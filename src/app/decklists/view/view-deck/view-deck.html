@@ -2,7 +2,13 @@
   <app-section>
     <ng-container section-header>
       <div class="sectionTitle">{{ title() }}</div>
-      <div class="sectionSubtitle">{{ 'viewDeck.by' | translate }} {{ owner() }}</div>
+      <div class="sectionSubtitle customSectionSubtitle">{{ 'viewDeck.by' | translate }} {{ owner() }}
+        <a [routerLink]="['/user', owner()]" style="color:white; text-decoration:none;">
+          <mat-icon class="profileLinkIcon" matTooltip="{{'searchDeck.goToProfile' | translate}}">contact_page
+          </mat-icon>
+        </a>
+
+      </div>
     </ng-container>
 
     <ng-container before-section-header>
@@ -20,8 +26,8 @@
       </div>
     </ng-container>
 
-    <div style="display: flex; margin-bottom: 5px">
-      <div style="display: flex;">
+    <div style="display: flex; margin-bottom: 5px; gap:5px ;">
+      <div style="display: flex; align-items: center;">
         <span style="align-content:baseline; padding-right:5px;"> Version</span>
         <app-version-dropdown [deckId]="id()" [currentVersion]="version()" [minorVersion]="minorVersion()"
                               [allVersions]="versions()"/>
@@ -38,7 +44,7 @@
       }
 
       @if (canEdit()) {
-        <div [routerLink]="['/decks/edit', id(), version(), minorVersion()]" class="buttonUpdate">
+        <div [routerLink]="['/decks/edit', id(), version(), minorVersion()]" class="actionButton buttonUpdate">
           <span style="align-content:center;"> {{ 'viewDeck.edit' | translate }} </span>
           <mat-icon style="font-size: 16px;" matTooltip="{{ 'viewDeck.editTooltip' | translate }}">
             info
@@ -47,7 +53,8 @@
       }
 
       @if (canEdit()) {
-        <div style="color:red; border: solid 2px red;" (click)="deleteDeckConfirmation(deck())" class="buttonUpdate">
+        <div style="color:red; border: solid 2px red;" (click)="deleteDeckConfirmation(deck())"
+             class="actionButton buttonUpdate">
           <span style="align-content:center;"> {{ 'viewDeck.delete' | translate }} </span>
           <mat-icon style="font-size: 16px;" matTooltip="{{ 'viewDeck.deleteTooltip' | translate }}">
             warning

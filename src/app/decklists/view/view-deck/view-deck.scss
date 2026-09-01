@@ -13,12 +13,9 @@
 }
 
 .buttonUpdate {
-  //border: solid 2px #594867;
   display: flex;
-  //cursor: pointer;
   align-items: center;
   padding: 0 10px;
-  margin: 0 5px;
 }
 
 .buttonUpdate span {
@@ -61,6 +58,12 @@
   }
 }
 
+.customSectionSubtitle {
+  display: flex;
+  gap: 5px;
+  align-items: flex-start;
+}
+
 .customAfterSectionTitle:hover {
   -webkit-box-shadow: inset 1px 0px 20px 0px white;
   cursor: pointer;
@@ -87,7 +90,6 @@
 }
 
 .deck-link-chip:hover {
-  //-webkit-box-shadow: inset 1px 0px 20px 0px white;
   -webkit-box-shadow: inset 0px 0px 3px 1px #ffc300;
 }
 
@@ -101,6 +103,6 @@ app-view-list {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 1010px;  // double largeur colonnes cartes + gap
+  max-width: 1010px; // double largeur colonnes cartes + gap
   padding: 10px;
 }
