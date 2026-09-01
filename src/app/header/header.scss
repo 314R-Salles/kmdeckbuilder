@@ -2,6 +2,14 @@
 
 $mobile-breakpoint: 768px;
 
+
+.logo {
+  height: 40px;
+  cursor: pointer;
+  margin: 0 10px;
+  filter: drop-shadow(0 0 4px #FFFFFF)
+}
+
 .header-menu {
   position: fixed;
   top: 0;
@@ -104,27 +112,16 @@ $mobile-breakpoint: 768px;
   color: white;
 }
 
-// Revoir les menus dans les headers pour avoir du routerLinkActive?
-.active {
-  // border-radius: 10px;
-  background: $borderColor;
-}
-
+.active,
 .library-button.active:hover {
-  // border-radius: 10px;
   background: $borderColor;
 }
-
-//.header-menu a {
-//  text-decoration: none;
-//}
 
 .logo-button {
   left: 10px;
   min-width: 160px;
   font-size: xx-large;
   cursor: pointer;
-  //color: #ffd8eb !important; // theme material par defaut
 }
 
 .home-button {
@@ -154,10 +151,6 @@ $mobile-breakpoint: 768px;
   background-color: rgba(255, 174, 0, 0.7);
 }
 
-.mat-menu-content {
-  //background-color: darkgrey !important;
-}
-
 .mat-menu-content a {
   text-decoration: none;
 }
@@ -174,6 +167,7 @@ $mobile-breakpoint: 768px;
   .logo-button {
     min-width: unset;
     font-size: x-large;
+    display: none;
   }
 
   .hamburger-btn {

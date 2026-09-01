@@ -100,7 +100,7 @@
                [ngStyle]="{'outline': stream.youtube || stream.live ? '4px solid #FF0000':'4px solid #523c7c'}">
           @if (!stream.live) {
             <div
-              style="position:absolute; padding:0px 0.4rem; color:white; bottom:0px; right:0px; border-top-left-radius:5px;"
+              style="position:absolute; padding:0 0.4rem; color:white; bottom:0px; right:0px; border-top-left-radius:5px;"
               [ngStyle]="{'background-color': !stream.youtube ? '#523c7c':'#FF0000'}">{{ stream.duration }}
             </div>
           }

@@ -37,7 +37,7 @@
         <div id="sortDiv">
           @for (godIndex of [1, 4, 2, 3, 8, 10, 6, 7, 5, 9]; track godIndex) {
             <div class="imgContainer prevent-select">
-              <img [src]="'/assets/public/gods/GOD_'+God[godIndex]+'.png'" (click)="selectGod(godIndex)"
+              <img [src]="'/assets/public/gods_webp/GOD_'+God[godIndex]+'.webp'" (click)="selectGod(godIndex)"
                    [ngClass]="{'isSelected' : god === godIndex}" class="prevent-select" [alt]="God[godIndex]">
             </div>
           }
@@ -174,7 +174,7 @@
 
 <ng-template #ONE_ILLUST>
   <div>
-    <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
+    <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
          style="position: absolute;"
          [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 0 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
          (click)="selectIndex(0)"
@@ -183,12 +183,12 @@
 </ng-template>
 <ng-template #TWO_ILLUST>
   <div>
-    <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
+    <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
          style="position: absolute; rotate: -8deg"
          [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 0 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
          (click)="selectIndex(0)"
          class="imgDeckBuilder">
-    <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[1].id]"
+    <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[1].id]"
          style="position: absolute;margin-left: 130px; rotate: 8deg"
          [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 1 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
          (click)="selectIndex(1)"
@@ -197,17 +197,17 @@
 </ng-template>
 <ng-template #THREE_ILLUST>
   <div>
-    <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
+    <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
          style="position: absolute; rotate: -15deg; top: 8px"
          [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 0 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
          (click)="selectIndex(0)"
          class="imgDeckBuilder">
-    <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[1].id]"
+    <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[1].id]"
          style="position: absolute; left: 100px; z-index: 5"
          [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 1 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
          (click)="selectIndex(1)"
          class="imgDeckBuilder">
-    <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[2].id]"
+    <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[2].id]"
          style="position: absolute;left: 200px; rotate: 15deg; top: 8px"
          [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 2 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
          (click)="selectIndex(2)"
@@ -228,7 +228,7 @@
           </div>
         } @else {
           @for (card of displayedCards(); track card.id; let idx = $index) {
-            <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"
+            <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"
                  (click)="selectCard(card, $event)"
                  class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
           }
@@ -248,7 +248,7 @@
       <div style="display: flex; flex-wrap: wrap; width: 100%; justify-content: center">
 
         @for (card of displayedCards(); track card.id; let idx = $index) {
-          <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"
+          <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"
                [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content'}"
                (click)="selectCard(card, $event)"
                class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">

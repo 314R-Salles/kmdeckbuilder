@@ -11,7 +11,7 @@
         <app-god-dropdown [selectedGods]="selectedGods()" (onSelectGod)="selectGod.emit($event)"></app-god-dropdown>
         <div class="filterGroupChips">
           @for (god of selectedGods(); track god.id) {
-            <img (click)="removeGod.emit(god)" [src]="'/assets/public/gods/GOD_'+god.image+'.png'"
+            <img (click)="removeGod.emit(god)" [src]="'/assets/public/gods_webp/GOD_'+god.image+'.webp'"
                  class="godMiniaFiltered prevent-select">
           }
         </div>
@@ -50,7 +50,7 @@
                  [matTooltip]="card.name + (card.infiniteLevel ? ' ' + card.infiniteLevel : '')"
                  [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
                  (click)="removeCard.emit(card)" style="position:relative; overflow: hidden">
-              <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]">
+              <img [src]="'/assets/public/minia_webp/'+CARD_ILLUSTRATIONS[card.id]">
             </div>
           }
         </div>

@@ -94,10 +94,10 @@ export class StoreService {
 
   getCardIllustrationsAsMap() {
     let result = this.cardIllustrations.reduce(function (map, obj) {
-      map[obj.id] = obj.cardName;
+      map[obj.id] = obj.cardName + '.webp';
       return map;
     }, {});
-    result[-1] = '../cardback_basic.png'
+    result[-1] = '../cardback_basic.webp'
     return result
   }
 }

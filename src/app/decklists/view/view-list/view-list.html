@@ -21,7 +21,7 @@
           <div [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
                class="card appFont2"
                style="position:relative;">
-            <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]"
+            <img [src]="'/assets/public/minia_webp/'+CARD_ILLUSTRATIONS[card.id]"
                  style="width:60px; height:30px; position:absolute; left:10px;">
             <div style="position:absolute; left:75px;"
                  [ngStyle]="{'width': card.count === 1 ? 'calc(100% - 85px)': 'calc(100% - 115px)'}">
@@ -29,14 +29,14 @@
                 style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;">{{ card.name }}
               </div>
             </div>
-            <img [src]="'/assets/public/pa/'+card.costAP+'.png'"
+            <img [src]="'/assets/public/pa_webp/'+card.costAP+'.webp'"
                  style="position:absolute; width:37px; height:40px; left:-5px;">
 
             @if (card.count > 1) {
               <div class="cardQuantity"> X{{ card.count }}</div>
             }
             <div class="cardSpec">
-              <img [src]="'/assets/public/card/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
+              <img [src]="'/assets/public/card_webp/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
             </div>
           </div>
         }
@@ -56,7 +56,7 @@
                class="card appFont2"
                style="position:relative;"
           >
-            <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]"
+            <img [src]="'/assets/public/minia_webp/'+CARD_ILLUSTRATIONS[card.id]"
                  style="width:60px; height:30px; position:absolute; left:10px;">
             <div style="position:absolute; left:75px;"
                  [ngStyle]="{'width': card.count === 1 ? 'calc(100% - 85px)': 'calc(100% - 115px)'}">
@@ -64,14 +64,14 @@
                 style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;">{{ card.name }}
               </div>
             </div>
-            <img [src]="'/assets/public/pa/'+card.costAP+'.png'"
+            <img [src]="'/assets/public/pa_webp/'+card.costAP+'.webp'"
                  style="position:absolute; width:37px; height:40px; left:-5px;">
 
             @if (card.count > 1) {
               <div class="cardQuantity"> X{{ card.count }}</div>
             }
             <div class="cardSpec">
-              <img [src]="'/assets/public/card/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
+              <img [src]="'/assets/public/card_webp/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
             </div>
           </div>
         }
@@ -91,7 +91,7 @@
                class="card appFont2"
                style="position:relative;"
           >
-            <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]"
+            <img [src]="'/assets/public/minia_webp/'+CARD_ILLUSTRATIONS[card.id]"
                  style="width:60px; height:30px; position:absolute; left:10px;">
             <div style="position:absolute; left:75px;"
                  [ngStyle]="{'width': card.count === 1 ? 'calc(100% - 85px)': 'calc(100% - 115px)'}">
@@ -99,14 +99,14 @@
                 style="overflow:hidden; padding-bottom:3px; padding-top:3px; text-overflow:ellipsis; white-space:nowrap;">{{ card.name }}
               </div>
             </div>
-            <img [src]="'/assets/public/pa/'+card.costAP+'.png'"
+            <img [src]="'/assets/public/pa_webp/'+card.costAP+'.webp'"
                  style="position:absolute; width:37px; height:40px; left:-5px;">
 
             @if (card.count > 1) {
               <div class="cardQuantity"> X{{ card.count }}</div>
             }
             <div class="cardSpec">
-              <img [src]="'/assets/public/card/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
+              <img [src]="'/assets/public/card_webp/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
             </div>
           </div>
         }
@@ -126,7 +126,7 @@
           <div [ngClass]="['KROSMIQUE','INFINITE'].includes(card.rarity)? card.rarity : card.godType"
                class="card appFont2"
                style="position:relative;">
-            <img [src]="'/assets/public/minia/'+CARD_ILLUSTRATIONS[card.id]"
+            <img [src]="'/assets/public/minia_webp/'+CARD_ILLUSTRATIONS[card.id]"
                  style="width:60px; height:30px; position:absolute; left:10px;">
             <div style="position:absolute; left:75px;"
                  [ngStyle]="{'width': card.count === 1 ? 'calc(100% - 85px)': 'calc(100% - 115px)'}">
@@ -134,14 +134,14 @@
                 style="overflow:hidden; padding :3px 0; text-overflow:ellipsis; white-space:nowrap;">{{ card.name }}
               </div>
             </div>
-            <img [src]="'/assets/public/pa/'+card.costAP+'.png'"
+            <img [src]="'/assets/public/pa_webp/'+card.costAP+'.webp'"
                  style="position:absolute; width:37px; height:40px; left:-5px;">
 
             @if (card.count > 1) {
               <div class="cardQuantity"> X{{ card.count }}</div>
             }
             <div class="cardSpec">
-              <img [src]="'/assets/public/card/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
+              <img [src]="'/assets/public/card_webp/'+currentLanguage() +'/'+CARD_ILLUSTRATIONS[card.id]">
             </div>
           </div>
         }
