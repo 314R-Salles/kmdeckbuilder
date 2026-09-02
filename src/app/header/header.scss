@@ -3,11 +3,20 @@
 $mobile-breakpoint: 768px;
 
 
+
+.logo-link {
+  display: flex;
+  text-decoration: none;
+  color: white;
+  align-items: flex-end
+}
+
 .logo {
+  display: flex;
   height: 40px;
   cursor: pointer;
   margin: 0 10px;
-  filter: drop-shadow(0 0 4px #FFFFFF)
+  filter: drop-shadow(0 0 4px #FFFFFF);
 }
 
 .header-menu {
@@ -145,6 +154,8 @@ $mobile-breakpoint: 768px;
   cursor: pointer;
   margin-right: 2px;
   margin-left: 2px;
+  text-decoration: none;
+  color: white;
 }
 
 .library-button:hover {

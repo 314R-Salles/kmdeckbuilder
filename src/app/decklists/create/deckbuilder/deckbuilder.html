@@ -125,14 +125,16 @@
               <app-tag-dropdown [selectedTags]="selectedTags()" [allTags]="allTags()"
                                 (onSelectTag)="selectTag($event)"/>
             </div>
-            <div style="display: flex; flex-wrap: wrap; width: 500px">
+            <div class="filterGroupChips">
               @for (tag of selectedTags(); track tag.title) {
-                <div class="card appFont2" (click)="removeTag(tag)"
-                     style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
- height: 40px; font-size: 16px;  font-weight: 400;">
-                  <span style="padding: 0 5px"> {{ tag.title }} </span>
+                <div class="chip filterChip appFont2" (click)="removeTag(tag)">
+                  @if (tag.iconId) {
+                    <img class="tagImg bigger" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
+                  }
+                  <span style="padding: 0 5px"> {{ tag.title }} ({{ tag.count }})</span>
                 </div>
-              }</div>
+              }
+            </div>
           </div>
 
           <div style="display: flex; flex-direction: column; padding: 5px;">

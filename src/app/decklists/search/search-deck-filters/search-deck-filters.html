@@ -18,7 +18,8 @@
       </div>
 
       <div class="filterGroup">
-        <app-tag-dropdown [withCount]="true" [selectedTags]="selectedTags()" [allTags]="allTags()"
+        <app-tag-dropdown [asFilter]="true" [selectedTags]="selectedTags()"
+                          [removedTags]="selectedNegativeTags()" [allTags]="allTags()"
                           (onSelectTag)="selectTag.emit($event)"
                           (onNegativeSelectTag)="selectNegativeTag.emit($event)"></app-tag-dropdown>
         <div class="filterGroupChips">
@@ -57,7 +58,9 @@
       </div>
 
       <div class="filterGroup">
-        <app-owner-dropdown [selectedUsers]="selectedUsers()" [allUsers]="allUsers()"
+        <app-owner-dropdown [selectedUsers]="selectedUsers()"
+                            [removedUsers]="selectedNegativeUsers()"
+                            [allUsers]="allUsers()"
                             (onSelectUser)="selectUser.emit($event)"
                             (onNegativeSelectUser)="selectNegativeUser.emit($event)"></app-owner-dropdown>
         <div class="filterGroupChips">

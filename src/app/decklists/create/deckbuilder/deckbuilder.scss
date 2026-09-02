@@ -233,3 +233,39 @@ input.invalid {
     display: none;
   }
 }
+
+.filterGroupChips {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 4px;
+}
+
+// s'utilise en complément de .card (border/box-shadow/text-stroke communs), ne porte que la couleur de fond
+.filterChip {
+  background: #88B6EA;
+
+  &.negative {
+    background: red;
+  }
+}
+
+.chip {
+  height: 40px;
+  border: rgba(255, 255, 255, 0.62) solid 1px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.62);
+  display: flex;
+  align-items: center;
+
+  color: white;
+  font-size: 16px;
+  font-weight: 400;
+  -webkit-text-stroke: 0.7px #000000;
+}
+
+.chip:hover {
+  filter: grayscale(100%);
+  cursor: pointer;
+}

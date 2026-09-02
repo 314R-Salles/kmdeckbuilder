@@ -27,3 +27,14 @@
 .user:hover {
   background: rgb(165, 190, 255, 0.5) !important;
 }
+
+.removeButton {
+  position: absolute;
+  right: 5px;
+  padding: 0px 10px 6px 10px;
+  height: 15px;
+  border-radius: 3px;
+  background-color: red;
+  cursor: pointer;
+}
+

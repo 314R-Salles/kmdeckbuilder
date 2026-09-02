@@ -16,9 +16,11 @@
           ({{ tag.count }})
         </div>
       </div>
-      <div style="position:absolute; right:5px; padding:5px;background-color:red;"
-           (click)="selectTag(tag, true);$event.stopPropagation();$event.preventDefault()">-
-      </div>
+      @if (asFilter()) {
+        <div class="removeButton"
+             (click)="selectTag(tag, true);$event.stopPropagation();$event.preventDefault()">-
+        </div>
+      }
     </div>
   }
 </div>

@@ -17,13 +17,15 @@ import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent
 export class TagDropdown extends AbstractDropdownComponent {
 
   selectedTags = input<{ title: string, count: number, iconId: string }[]>([]);
+  removedTags = input<{ title: string, count: number, iconId: string }[]>([]);
   allTags = input<{ title: string, count: number, iconId: string }[]>([]);
-  withCount = input<boolean>(false);
+  asFilter = input<boolean>(false);
   onSelectTag = output<{ title: string, count: number, iconId: string }>();
   onNegativeSelectTag = output<{ title: string, count: number, iconId: string }>();
 
   displayedTags = computed(() => {
-    let r = (this.allTags() || []).filter(result => !this.selectedTags().map(c => c.title).includes(result.title));
+    const allSelected = this.selectedTags().concat(this.removedTags())
+    let r = (this.allTags() || []).filter(result => !allSelected.map(c => c.title).includes(result.title));
     return r.filter(tag => !this.search() || tag.title.toLowerCase().indexOf(this.search().toLowerCase()) != -1);
   })
 
