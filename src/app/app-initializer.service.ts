@@ -1,7 +1,7 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {ApiService} from "./api/api.service";
 import {StoreService} from "./store.service";
-import {from, of, switchMap, tap} from "rxjs";
+import {catchError, from, Observable, of, switchMap, tap} from "rxjs";
 import {AuthenticatedApiService} from "./api/authenticated-api.service";
 import {OAuthService} from "angular-oauth2-oidc";
 import {isPlatformBrowser} from "@angular/common";
@@ -23,10 +23,7 @@ export class AppInitializerService {
 
   initApp() {
     if (isPlatformBrowser(this.platformId)) {
-      if (this.storeService.getStorageLanguage() == null) {
-        this.storeService.setStorageLanguage('FR')
-      }
-      this.storeService.setLanguage(this.storeService.getStorageLanguage())
+      this.storeService.initLanguage()
 
       let token = this.extractToken();
       if (token) {
@@ -50,26 +47,28 @@ export class AppInitializerService {
             silentRefreshRedirectUri: window.location.origin,
             useSilentRefresh: true,
             customQueryParams: {
-              /**
-               * replace with your API-Audience
-               * This is very important to retrieve a valid access_token for our API
-               * */
               audience: environment.AUDIENCE,
             },
 
           });
           return from(this.oauthService.loadDiscoveryDocumentAndTryLogin())
         }),
-        tap(_ => {
-          if (this.oauthService.hasValidAccessToken()) {
-            this.oauthService.setupAutomaticSilentRefresh();
-            this.authenticatedApiService.getCurrentUser().subscribe(user => this.storeService.setUser(user));
-          }
-        })
+        switchMap(() => this.loadCurrentUserIfLoggedIn())
       )
     } else {
       return of(true)
     }
+  }
+
+  private loadCurrentUserIfLoggedIn(): Observable<unknown> {
+    if (!this.oauthService.hasValidAccessToken()) {
+      return of(null);
+    }
+    this.oauthService.setupAutomaticSilentRefresh();
+    return this.authenticatedApiService.getCurrentUser().pipe(
+      tap(user => this.storeService.setUser(user)),
+      catchError(() => of(null))
+    );
   }
 
   clearHash() {

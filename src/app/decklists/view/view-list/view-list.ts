@@ -1,9 +1,22 @@
 import {Component, computed, inject, input} from '@angular/core';
 import {StoreService} from '../../../store.service';
-import {CardType, CREA, SORT} from '../../common/models/enums';
+import {CardType, SORT} from '../../common/models/enums';
 import {NgClass, NgStyle, NgTemplateOutlet} from '@angular/common';
-import {customSort} from "../../../base/models/utils";
+import {customSort} from "../../../common/utils";
 import {toSignal} from "@angular/core/rxjs-interop";
+
+type CardCategory = 'NEUTRE' | 'GOD_CREA' | 'GOD_SPELL' | 'KROSFI';
+const CARD_CATEGORIES: CardCategory[] = ['NEUTRE', 'GOD_CREA', 'GOD_SPELL', 'KROSFI'];
+
+function getCardCategory(card: any): CardCategory {
+  if (card.rarity === 'INFINITE') {
+    return 'KROSFI';
+  }
+  if (card.godType === 'NEUTRE') {
+    return 'NEUTRE';
+  }
+  return card.cardType === CardType[SORT] ? 'GOD_SPELL' : 'GOD_CREA';
+}
 
 @Component({
   selector: 'app-view-list',
@@ -22,28 +35,17 @@ export class ViewList {
   cards = input<any[]>();
 
   sortedSynthesis = computed(() => {
-    let synthese = {NEUTRE: [], GOD_CREA: [], GOD_SPELL: [], KROSFI: []}
-    if (this.cards() != null) {
-      this.cards().reduce((acc, card) => {
-        if (["INFINITE"].includes(card.rarity)) {
-          acc['KROSFI'].push(card)
-        } else if (card.godType === "NEUTRE") {
-          acc['NEUTRE'].push(card)
-        } else {
-          if (card.cardType === CardType[CREA]) {
-            acc['GOD_CREA'].push(card)
-          }
-          if (card.cardType === CardType[SORT]) {
-            acc['GOD_SPELL'].push(card)
-          }
-        }
-        return acc;
-      }, synthese)
+    const synthese: Record<CardCategory, any[]> = {NEUTRE: [], GOD_CREA: [], GOD_SPELL: [], KROSFI: []};
+    const cards = this.cards();
+    if (cards == null) {
+      return synthese;
+    }
 
-      synthese['KROSFI'].sort(customSort);
-      synthese['NEUTRE'].sort(customSort);
-      synthese['GOD_CREA'].sort(customSort);
-      synthese['GOD_SPELL'].sort(customSort);
+    for (const card of cards) {
+      synthese[getCardCategory(card)].push(card);
+    }
+    for (const category of CARD_CATEGORIES) {
+      synthese[category].sort(customSort);
     }
     return synthese;
   })

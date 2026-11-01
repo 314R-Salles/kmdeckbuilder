@@ -38,3 +38,8 @@
   cursor: pointer;
 }
 
+.dropdown-content {
+  max-height: 400px;
+  overflow-y: auto;
+}
+

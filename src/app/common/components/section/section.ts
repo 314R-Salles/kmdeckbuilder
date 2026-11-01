@@ -1,7 +1,7 @@
 import {Component, inject, input, OnInit, signal} from '@angular/core';
-import {StoreService} from '../../store.service';
+import {StoreService} from '../../../store.service';
 import {NgClass} from '@angular/common';
-import {AuthService} from "../../auth.service";
+import {AuthService} from "../../../auth.service";
 import {TranslatePipe} from "@ngx-translate/core";
 import {RouterLink} from "@angular/router";
 

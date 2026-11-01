@@ -12,7 +12,6 @@
   color: white;
   font-size: 1.6rem;
   font-weight: 400;
-  -webkit-text-stroke: 0.7px #000000;
 }
 
 .card > img {
@@ -21,6 +20,15 @@
   margin-right: 10px;
   margin-left: 1px;
   border-radius: 3px;
+}
+
+.cardName {
+  overflow: hidden;
+  padding-bottom: 3px;
+  padding-top: 3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  -webkit-text-stroke: 0.7px #000000;
 }
 
 .container {
@@ -50,7 +58,7 @@
   right: 2px;
   border: 2px solid white;
   border-radius: 3px;
-  font-weight: bold;
+  font-weight: 400;
   background: black;
   font-family: monospace;
 }

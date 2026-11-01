@@ -3,6 +3,7 @@ import {StoreService} from '../../../store.service';
 import {NgTemplateOutlet} from "@angular/common";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {MatTooltip} from "@angular/material/tooltip";
+import {DeckHighlight} from '../../../common/models/deck.model';
 
 @Component({
   selector: 'app-highlight-display',
@@ -18,7 +19,7 @@ export class HighlightDisplay {
   storeService = inject(StoreService);
 
   currentLanguage = toSignal(this.storeService.getLanguage())
-  illustrations = input<{ highlightOrder: number; cardId: number }[]>();
+  illustrations = input<DeckHighlight[]>();
   illustrationsNumber = computed(() => this.illustrations()?.length)
   CARD_ILLUSTRATIONS = this.storeService.getCardIllustrationsAsMap()
   cardNames = computed(() => this.storeService.getCardNamesAsMap(this.currentLanguage()))

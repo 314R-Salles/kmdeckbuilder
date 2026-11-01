@@ -2,7 +2,7 @@ import {Component, computed, inject, input, output} from '@angular/core';
 import {StoreService} from '../../../store.service';
 import {FormsModule} from '@angular/forms';
 import {NgClass, NgStyle} from '@angular/common';
-import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent";
+import {AbstractDropdownComponent} from "../../../common/components/AbstractDropdownComponent";
 import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({

@@ -16,7 +16,8 @@ export function app(): express.Express {
   const browserDistFolder = resolve(serverDistFolder, '../browser');
   const indexHtml = join(serverDistFolder, 'index.server.html');
 
-  const commonEngine = new CommonEngine();
+  // Sinon erreur et fallback en CSR
+  const commonEngine = new CommonEngine({allowedHosts: ['krosmaga.tools', 'www.krosmaga.tools']});
 
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);

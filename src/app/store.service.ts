@@ -30,15 +30,22 @@ export class StoreService {
     this.userSubject.next({...user})
   }
 
+  clearUser() {
+    this.userSubject.next(null)
+  }
+
   getUser(): Observable<any> {
     return this.user
   }
 
+  private static readonly DEFAULT_LANGUAGE = 'FR';
+
   // en fait charger les tags ici de la meme façon? //FIXME
   setLanguage(language: string) {
+    this.persistLanguage(language)
     if (this.getCardNames(language).length === 0) {
       this.apiService.getCardNamesByLanguage(language).subscribe(cards => {
-        this.setCardNames(this.getStorageLanguage(), cards)
+        this.setCardNames(language, cards)
         this.languageSubject.next(language)
         this.useLanguage(language)
       })
@@ -48,7 +55,12 @@ export class StoreService {
     }
   }
 
-  useLanguage(language) {
+  // A appeler une seule fois au démarrage : reprend la langue persistée, ou la langue par défaut.
+  initLanguage() {
+    this.setLanguage(this.getStorageLanguage() ?? StoreService.DEFAULT_LANGUAGE)
+  }
+
+  private useLanguage(language) {
     this.translate.use(language.toLowerCase());
   }
 
@@ -56,11 +68,11 @@ export class StoreService {
     return this.language
   }
 
-  setStorageLanguage(language: string) {
+  private persistLanguage(language: string) {
     localStorage.setItem('language', language)
   }
 
-  getStorageLanguage() {
+  private getStorageLanguage(): string | null {
     return localStorage.getItem('language')
   }
 

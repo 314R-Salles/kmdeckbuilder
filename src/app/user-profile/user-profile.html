@@ -16,7 +16,7 @@
         }
       </div>
       <span>
-      {{ 'user.lastSeen' | translate }} {{ routeUser().lastLogin |date : 'mediumDate' }}
+      {{ 'user.lastSeen' | translate }} {{ routeUser().lastLogin | date:'mediumDate':undefined:dateLocale() }}
       </span>
       @if (routeUserdecks().length > 0) {
         <div>
@@ -77,6 +77,20 @@
           <br>
         </div>
       </form>
+
+      <br>
+      <div style="display: flex; flex-direction: column">
+        <button class="actionButton" style="width: fit-content" (click)="requestPasswordChange()"
+                [disabled]="passwordCooldownActive()"
+                [matTooltip]="passwordCooldownActive() ? ('user.password.cooldownTooltip' | translate) : ''">
+          {{ 'user.password.button' | translate }}
+        </button>
+        @if (connectedUser()?.passwordChange) {
+          <span style="padding: 2px 0 0 0; white-space: pre-line">
+            {{ 'user.password.message' | translate: {date: (connectedUser().passwordChange | date:'medium':undefined:dateLocale())} }}
+          </span>
+        }
+      </div>
 
       <br>
       @if (connectedUser()?.twitchUsername) {

@@ -8,17 +8,18 @@ import {
   OnInit,
   PLATFORM_ID,
   Renderer2,
+  Signal,
   signal,
   viewChild
 } from '@angular/core';
 import {DeckDeletedPopin} from '../../../popins/deck-deleted-popin/deck-deleted-popin';
 import {DeckDeletionPopin} from '../../../popins/deck-deletion-popin/deck-deletion-popin';
-import {Section} from '../../../base/section/section';
+import {Section} from '../../../common/components/section/section';
 import {Router, RouterLink} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {AuthenticatedApiService} from '../../../api/authenticated-api.service';
 import {VersionDropdown} from '../version-dropdown/version-dropdown';
-import {isPlatformBrowser, NgStyle, NgTemplateOutlet} from '@angular/common';
+import {isPlatformBrowser, Location, NgStyle, NgTemplateOutlet} from '@angular/common';
 import {Synthesis} from '../../common/synthesis/synthesis';
 import {ViewList} from '../view-list/view-list';
 import {MatTooltip} from '@angular/material/tooltip';
@@ -39,14 +40,16 @@ import {
 } from '../../common/models/enums';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {RaritySynthesis} from '../rarity-synthesis/rarity-synthesis';
-import {GodCrest} from '../../search/god-crest/god-crest';
+import {GodCrest} from '../../common/god-crest/god-crest';
 import {combineLatest, debounceTime, map, switchMap} from "rxjs";
 import {environment} from "../../../../environments/environment";
-import {isValidTwitchURL, isValidYouTubeURL} from "../../../base/models/utils";
+import {isValidTwitchURL, isValidYouTubeURL} from "../../../common/utils";
 import {YouTubePlayer} from "@angular/youtube-player";
 import {TranslatePipe} from "@ngx-translate/core";
 import {BreakpointObserver} from "@angular/cdk/layout";
 import {DeckLinkDecoratorService} from './deck-link-decorator.service';
+import {LikeButton} from "../../common/like-button/like-button";
+import {NavigationHistoryService} from '../../../navigation-history.service';
 
 // même seuil que $mobile-breakpoint dans header.scss / MOBILE_BREAKPOINT dans pagination.ts
 const MOBILE_BREAKPOINT = '(max-width: 768px)';
@@ -69,7 +72,8 @@ const MOBILE_YOUTUBE_PLAYER_HEIGHT = 183;
     NgStyle,
     YouTubePlayer,
     TranslatePipe,
-    GodCrest
+    GodCrest,
+    LikeButton
   ],
   providers: [DeckLinkDecoratorService],
   templateUrl: './view-deck.html',
@@ -92,15 +96,18 @@ export class ViewDeck implements OnInit {
   storeService = inject(StoreService)
   dialog = inject(MatDialog);
   router = inject(Router);
+  location = inject(Location);
   breakpointObserver = inject(BreakpointObserver);
   deckLinkDecorator = inject(DeckLinkDecoratorService);
+  navigationHistory = inject(NavigationHistoryService);
 
-  user = toSignal(this.storeService.getUser())
-
-  isMobile = toSignal(
-    this.breakpointObserver.observe(MOBILE_BREAKPOINT).pipe(map(state => state.matches)),
-    {initialValue: this.breakpointObserver.isMatched(MOBILE_BREAKPOINT)}
+  isLoggedIn: Signal<boolean> = toSignal(
+    this.storeService.getUser().pipe(map(user => !!user)),
+    {initialValue: false}
   )
+
+  canEdit = computed(() => this.deck().owned);
+  canClone = computed(() => this.isLoggedIn());
 
   platformId = inject(PLATFORM_ID);
   metaService = inject(Meta)
@@ -177,11 +184,13 @@ export class ViewDeck implements OnInit {
   youtubeVideoId = computed(() => {
     return isValidYouTubeURL(this.deck()?.videoLink).id
   })
+
+  isMobile = toSignal(
+    this.breakpointObserver.observe(MOBILE_BREAKPOINT).pipe(map(state => state.matches)),
+    {initialValue: this.breakpointObserver.isMatched(MOBILE_BREAKPOINT)}
+  )
   youtubePlayerWidth = computed(() => this.isMobile() ? MOBILE_YOUTUBE_PLAYER_WIDTH : undefined)
   youtubePlayerHeight = computed(() => this.isMobile() ? MOBILE_YOUTUBE_PLAYER_HEIGHT : undefined)
-
-  canEdit = computed(() => this.owner() === this.user()?.username);
-  canClone = computed(() => this.user()?.username);
 
   syntheseRarete = computed(() => {
     let result = {
@@ -237,6 +246,22 @@ export class ViewDeck implements OnInit {
         })
       }
     }
+  }
+
+  // location.back() (popstate) est la seule navigation pour laquelle le Router fournit la position
+  // de scroll à restaurer ; un router.navigate() est une nouvelle navigation qui repart en haut.
+  navigateBack(): void {
+    if (this.cameFromDeckListPage()) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/decks/browse']);
+    }
+  }
+
+  private cameFromDeckListPage(): boolean {
+    const DECK_LIST_URLS = [/^\/user(\/|$|\?)/, /^\/decks\/browse(\/|$|\?)/];
+    const previousUrl = this.navigationHistory.previousUrl() ?? '';
+    return DECK_LIST_URLS.some(url => url.test(previousUrl));
   }
 
   deleteDeckConfirmation(deck) {

@@ -1,6 +1,6 @@
 import {Component, computed, effect, inject, input, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {environment} from '../../environments/environment';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors} from '@angular/forms';
 import {StoreService} from '../store.service';
 import {ApiService} from '../api/api.service';
 import {AuthenticatedApiService} from '../api/authenticated-api.service';
@@ -8,11 +8,12 @@ import {Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {DatePipe} from '@angular/common';
 import {MatError} from '@angular/material/input';
-import {Section} from '../base/section/section';
+import {Section} from '../common/components/section/section';
 import {DeckPreview} from '../decklists/search/deck-preview/deck-preview';
 import {combineLatest, debounceTime, filter, map, switchMap} from "rxjs";
 import {toObservable, toSignal} from "@angular/core/rxjs-interop";
 import {TranslatePipe} from "@ngx-translate/core";
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-user-profile',
@@ -23,6 +24,7 @@ import {TranslatePipe} from "@ngx-translate/core";
     Section,
     DeckPreview,
     TranslatePipe,
+    MatTooltip,
   ],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.scss'
@@ -38,9 +40,34 @@ export class UserProfile implements OnInit, OnDestroy {
   authenticatedApiService = inject(AuthenticatedApiService);
   titleService = inject(Title);
 
+  // même logique que DeckPreview : seule la langue FR a une locale de date dédiée, les autres restent en EN
+  private currentLanguage = toSignal(this.storeService.getLanguage());
+  dateLocale = computed(() => this.currentLanguage() === 'FR' ? 'fr' : 'en-US');
+
   username = input.required<string>();
   readOnly = computed(() => !this.connectedUser() || this.username() !== this.connectedUser().username);
   connectedUser = toSignal(this.storeService.getUser())
+
+  private static readonly PASSWORD_REQUEST_COOLDOWN_MS = 60 * 60 * 1000;
+  passwordCooldownActive = signal(false);
+
+  // Un setTimeout unique plutôt qu'un interval qui poll en continu : il n'y a qu'un seul instant qui nous
+  // intéresse (la fin du cooldown), pas besoin de vérifier l'état à intervalle régulier pour l'atteindre.
+  private passwordCooldownTimer = effect(onCleanup => {
+    const passwordChange = this.connectedUser()?.passwordChange;
+    if (!passwordChange) {
+      this.passwordCooldownActive.set(false);
+      return;
+    }
+    const remainingMs = new Date(passwordChange).getTime() + UserProfile.PASSWORD_REQUEST_COOLDOWN_MS - Date.now();
+    if (remainingMs <= 0) {
+      this.passwordCooldownActive.set(false);
+      return;
+    }
+    this.passwordCooldownActive.set(true);
+    const timerId = setTimeout(() => this.passwordCooldownActive.set(false), remainingMs);
+    onCleanup(() => clearTimeout(timerId));
+  });
 
 
   combinedObservable
@@ -56,18 +83,34 @@ export class UserProfile implements OnInit, OnDestroy {
   subscriptions = []
 
 
-  static readonly USERNAME_PATTERN = /^[a-zA-Z0-9]+$/;
+  // Le pseudo est injecté tel quel dans le chemin de l'URL (voir ApiService.getUser) : seuls les caractères qui
+  // changeraient la structure d'une URL sont interdits (délimiteurs génériques de la RFC 3986, "\" que les
+  // navigateurs normalisent en "/", et "%" qui déclenche le décodage pourcentage). Le reste, espaces internes
+  // compris, est toléré.
+  static readonly USERNAME_PATTERN = /^[^:/?#\[\]@\\%]+$/;
+
+  private static isBlankAfterTrim(value: string): boolean {
+    return value.trim().length === 0;
+  }
+
+  // Un seul point de vérité pour "qu'est-ce qu'un pseudo valide" : évite d'avoir Validators.required et
+  // Validators.pattern qui statuent chacun sur une version différente de la valeur (brute vs. trim).
+  static usernameValidator(control: AbstractControl<string>): ValidationErrors | null {
+    const value = control.value ?? '';
+    if (UserProfile.isBlankAfterTrim(value)) {
+      return {required: true};
+    }
+    return UserProfile.USERNAME_PATTERN.test(value) ? null : {pattern: true};
+  }
 
   form = computed(() => new FormGroup({
-    username: new FormControl(this.connectedUser()?.username,
-      [Validators.required, Validators.pattern(UserProfile.USERNAME_PATTERN)]),
+    username: new FormControl(this.connectedUser()?.username, UserProfile.usernameValidator),
     iconId: new FormControl(this.connectedUser()?.iconId)
   }));
 
 
   routeUser = toSignal(
     this.combinedObservable.pipe(
-      // filter(([username, _, __]) => !!username),
       switchMap(([username, _, __]) => {
         return this.apiService.getUser(this.username())
       })
@@ -155,7 +198,10 @@ export class UserProfile implements OnInit, OnDestroy {
     }
     this.takenUsername.set(false)
     this.authenticatedApiService.updateUser({
-      username: this.form().get('username')?.value,
+      // Trim explicite plutôt que de compter sur le fait qu'une URL supprime silencieusement les espaces
+      // en début/fin de chaîne : ce comportement ne s'applique que si le pseudo est le tout dernier segment
+      // de l'URL, il ne faut pas en dépendre.
+      username: this.form().get('username')?.value.trim(),
       iconId: this.form().get('iconId')?.value ?? 0,
     }).subscribe({
       next: user => {
@@ -177,6 +223,10 @@ export class UserProfile implements OnInit, OnDestroy {
 
   refreshMailStatus() {
     this.authenticatedApiService.refreshMailStatus().subscribe(user => this.storeService.setUser(user))
+  }
+
+  requestPasswordChange() {
+    this.authenticatedApiService.requestPasswordChange().subscribe(user => this.storeService.setUser(user))
   }
 
 }

@@ -1,4 +1,4 @@
-@use '../../../styles/variables' as *;
+@use '../../../../styles/variables' as *;
 
 .section {
   margin: 0 auto;
@@ -16,11 +16,18 @@
   background: #262241
 }
 
+.section-header-start {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  flex-wrap: wrap;
+  padding: 5px
+}
+
 @media (max-width: 1700px) {
   .section {
     margin: 0 auto;
     width: 100%;
-    //min-width: 800px;
   }
 }
 

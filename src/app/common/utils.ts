@@ -1,5 +1,5 @@
 import {AbstractControl, AsyncValidatorFn, ValidationErrors} from "@angular/forms";
-import {ApiService} from "../../api/api.service";
+import {ApiService} from "../api/api.service";
 import {delay, map, Observable, of, switchMap} from "rxjs";
 
 export const customSort = (cardA, cardB) => {

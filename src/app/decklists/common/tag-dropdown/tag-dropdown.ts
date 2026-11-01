@@ -2,7 +2,8 @@ import {Component, computed, input, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgStyle} from '@angular/common';
 import {TranslatePipe} from "@ngx-translate/core";
-import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent";
+import {AbstractDropdownComponent} from "../../../common/components/AbstractDropdownComponent";
+import {DeckTag} from "../../../common/models/deck.model";
 
 @Component({
   selector: 'app-tag-dropdown',
@@ -16,12 +17,12 @@ import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent
 })
 export class TagDropdown extends AbstractDropdownComponent {
 
-  selectedTags = input<{ title: string, count: number, iconId: string }[]>([]);
-  removedTags = input<{ title: string, count: number, iconId: string }[]>([]);
-  allTags = input<{ title: string, count: number, iconId: string }[]>([]);
+  selectedTags = input<DeckTag[]>([]);
+  removedTags = input<DeckTag[]>([]);
+  allTags = input<DeckTag[]>([]);
   asFilter = input<boolean>(false);
-  onSelectTag = output<{ title: string, count: number, iconId: string }>();
-  onNegativeSelectTag = output<{ title: string, count: number, iconId: string }>();
+  onSelectTag = output<DeckTag>();
+  onNegativeSelectTag = output<DeckTag>();
 
   displayedTags = computed(() => {
     const allSelected = this.selectedTags().concat(this.removedTags())

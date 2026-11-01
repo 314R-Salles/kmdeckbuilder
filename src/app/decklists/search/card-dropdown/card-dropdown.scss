@@ -22,3 +22,8 @@
   margin-left: 1px;
   border-radius: 3px;
 }
+
+.dropdown-content {
+  max-height: 400px;
+  overflow-y: auto;
+}

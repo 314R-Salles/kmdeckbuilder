@@ -2,7 +2,7 @@ import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {ApiService} from '../../api/api.service';
 import {AuthenticatedApiService} from '../../api/authenticated-api.service';
 import {StoreService} from '../../store.service';
-import {Section} from '../../base/section/section';
+import {Section} from '../../common/components/section/section';
 import {DeckPreview} from '../../decklists/search/deck-preview/deck-preview';
 import {TranslatePipe} from '@ngx-translate/core';
 import {RouterLink} from '@angular/router';

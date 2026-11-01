@@ -7,60 +7,63 @@
           <mat-icon class="profileLinkIcon" matTooltip="{{'searchDeck.goToProfile' | translate}}">contact_page
           </mat-icon>
         </a>
-
       </div>
     </ng-container>
 
     <ng-container before-section-header>
-      <div class="beforeSectionTitle customBeforeSectionTitle"
-           [ngStyle]="{cursor: canClone() && !canEdit() ? 'pointer': 'default'}"
-           (click)="toggleFavorite(deck());$event.stopPropagation();$event.preventDefault()">
-        <mat-icon class="iconFavorite" [ngStyle]="{color: deck().liked ? 'red': 'white'}">favorite</mat-icon>
-        {{ deck().favoriteCount }}
+      <div class="beforeSectionTitle customBeforeSectionTitle">
+        <app-like-button [isLoggedIn]="isLoggedIn()" [owned]="deck().owned" [liked]="deck().liked"
+                         [favoriteCount]="deck().favoriteCount"
+                         (toggleFavorite)="toggleFavorite(deck())"></app-like-button>
       </div>
     </ng-container>
 
     <ng-container after-section-header>
-      <div class="afterSectionTitle customAfterSectionTitle" [routerLink]="'/decks/browse'">
+      <div class="afterSectionTitle customAfterSectionTitle" (click)="navigateBack()">
         <mat-icon>keyboard_backspace</mat-icon>
       </div>
     </ng-container>
 
     <div style="display: flex; margin-bottom: 5px; gap:5px ;">
-      <div style="display: flex; align-items: center;">
-        <span style="align-content:baseline; padding-right:5px;"> Version</span>
-        <app-version-dropdown [deckId]="id()" [currentVersion]="version()" [minorVersion]="minorVersion()"
-                              [allVersions]="versions()"/>
+      <div style="display: flex; flex-wrap: wrap; row-gap: 5px">
+        <div style="display: flex; align-items: center;">
+          <span style="align-content:baseline; padding-right:5px;"> Version</span>
+          <app-version-dropdown [deckId]="id()" [currentVersion]="version()" [minorVersion]="minorVersion()"
+                                [allVersions]="versions()"/>
+        </div>
+
+        <div style="display: flex; flex-direction: row; gap: 5px">
+          @if (canClone()) {
+            <div [routerLink]="['/decks/create']" [queryParams]="{from: id(), v:version(), mV:minorVersion()}"
+                 class="actionButton buttonUpdate">
+              <span style="align-content:center;"> {{ 'viewDeck.duplicate' | translate }} </span>
+              <mat-icon style="font-size: 16px; height: unset;"
+                        matTooltip="{{ 'viewDeck.duplicateTooltip' | translate }}">
+                info
+              </mat-icon>
+            </div>
+          }
+
+          @if (canEdit()) {
+            <div [routerLink]="['/decks/edit', id(), version(), minorVersion()]" class="actionButton buttonUpdate">
+              <span style="align-content:center;"> {{ 'viewDeck.edit' | translate }} </span>
+              <mat-icon style="font-size: 16px;" matTooltip="{{ 'viewDeck.editTooltip' | translate }}">
+                info
+              </mat-icon>
+            </div>
+          }
+
+          @if (canEdit()) {
+            <div style="color:red; border: solid 2px red;" (click)="deleteDeckConfirmation(deck())"
+                 class="actionButton buttonUpdate">
+              <span style="align-content:center;"> {{ 'viewDeck.delete' | translate }} </span>
+              <mat-icon style="font-size: 16px;" matTooltip="{{ 'viewDeck.deleteTooltip' | translate }}">
+                warning
+              </mat-icon>
+            </div>
+          }
+        </div>
       </div>
-
-      @if (canClone()) {
-        <div [routerLink]="['/decks/create']" [queryParams]="{from: id(), v:version(), mV:minorVersion()}"
-             class="actionButton buttonUpdate">
-          <span style="align-content:center;"> {{ 'viewDeck.duplicate' | translate }} </span>
-          <mat-icon style="font-size: 16px; height: unset;" matTooltip="{{ 'viewDeck.duplicateTooltip' | translate }}">
-            info
-          </mat-icon>
-        </div>
-      }
-
-      @if (canEdit()) {
-        <div [routerLink]="['/decks/edit', id(), version(), minorVersion()]" class="actionButton buttonUpdate">
-          <span style="align-content:center;"> {{ 'viewDeck.edit' | translate }} </span>
-          <mat-icon style="font-size: 16px;" matTooltip="{{ 'viewDeck.editTooltip' | translate }}">
-            info
-          </mat-icon>
-        </div>
-      }
-
-      @if (canEdit()) {
-        <div style="color:red; border: solid 2px red;" (click)="deleteDeckConfirmation(deck())"
-             class="actionButton buttonUpdate">
-          <span style="align-content:center;"> {{ 'viewDeck.delete' | translate }} </span>
-          <mat-icon style="font-size: 16px;" matTooltip="{{ 'viewDeck.deleteTooltip' | translate }}">
-            warning
-          </mat-icon>
-        </div>
-      }
     </div>
     <div class="container">
       <div class="columnContainer">

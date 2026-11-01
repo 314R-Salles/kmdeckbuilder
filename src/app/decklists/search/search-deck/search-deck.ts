@@ -1,17 +1,19 @@
-import {Component, effect, inject, OnDestroy, OnInit, signal, untracked} from '@angular/core';
+import {afterNextRender, Component, effect, inject, Injector, OnDestroy, OnInit, signal, untracked} from '@angular/core';
 import {ApiService} from '../../../api/api.service';
 import {AuthenticatedApiService} from '../../../api/authenticated-api.service';
 import {StoreService} from '../../../store.service';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {combineLatest, debounceTime, distinctUntilChanged, Subject, switchMap} from 'rxjs';
-import {Pagination} from '../../../base/pagination/pagination';
-import {Section} from '../../../base/section/section';
-import {RouterLink} from '@angular/router';
+import {combineLatest, debounceTime, distinctUntilChanged, filter, Subject, switchMap} from 'rxjs';
+import {Pagination} from '../../../common/components/pagination/pagination';
+import {Section} from '../../../common/components/section/section';
+import {Router, RouterLink, Scroll} from '@angular/router';
 import {DeckPreview} from '../deck-preview/deck-preview';
 import {toSignal} from "@angular/core/rxjs-interop";
 import {TranslatePipe} from "@ngx-translate/core";
 import {OrderBy, SearchBy} from "../../common/models/enums";
 import {SearchDeckFilters} from '../search-deck-filters/search-deck-filters';
+import {Deck, DeckTag} from "../../../common/models/deck.model";
+import {ViewportScroller} from "@angular/common";
 
 @Component({
   selector: 'app-search-deck',
@@ -31,8 +33,17 @@ export class SearchDeck implements OnInit, OnDestroy {
   apiService = inject(ApiService)
   authenticatedApiService = inject(AuthenticatedApiService)
   storeService = inject(StoreService)
-
+  viewportScroller = inject(ViewportScroller);
+  router = inject(Router);
+  private injector = inject(Injector);
   currentLanguage = toSignal(this.storeService.getLanguage())
+
+  // Position à restaurer au retour sur la page (ex: bouton précédent). Le routing peut émettre
+  // cette position avant que les decks ne soient chargés : on la garde de côté (propriété simple,
+  // pas un signal, pour ne pas redéclencher l'effect des filtres) et on ne l'applique qu'une fois
+  // les decks disponibles. La remettre à null après application empêche à la fois de la réappliquer
+  // sur les recherches suivantes et sert de marqueur "déjà fait".
+  private pendingScrollPosition: [number, number] | null = null;
 
   isLoggedIn
 
@@ -48,7 +59,7 @@ export class SearchDeck implements OnInit, OnDestroy {
     totalPages: number
   }
 
-  decks = signal<any>(null)
+  decks = signal<Deck[]>(null)
   favoritesOnly = signal(false)
   sortFilter = signal<SearchBy>(SearchBy.RECENT)
   sortOrder = signal<OrderBy>(OrderBy.DESC)
@@ -56,8 +67,8 @@ export class SearchDeck implements OnInit, OnDestroy {
   selectedUsers = signal<any>([])
   selectedNegativeUsers = signal<any>([])
   selectedGods = signal<any>([])
-  selectedTags = signal<any>([])
-  selectedNegativeTags = signal<any>([])
+  selectedTags = signal<DeckTag[]>([])
+  selectedNegativeTags = signal<DeckTag[]>([])
 
   allUsers = signal<any>([])
 
@@ -113,6 +124,16 @@ export class SearchDeck implements OnInit, OnDestroy {
         this.searchTrigger.next();
       });
     });
+
+    this.subscriptions.push(
+      this.router.events.pipe(
+        filter((event): event is Scroll => event instanceof Scroll),
+        filter(event => !!event.position),
+      ).subscribe(event => {
+        this.pendingScrollPosition = event.position;
+        this.tryRestoreScroll();
+      })
+    );
   }
 
   ngOnDestroy() {
@@ -183,6 +204,7 @@ export class SearchDeck implements OnInit, OnDestroy {
 
     this.apiService.getDecks(request).subscribe(searchResults => {
       this.decks.set(searchResults.content);
+      this.tryRestoreScroll();
       this.searchResults = {
         pageNumber: searchResults.pageable.pageNumber,
         empty: searchResults.empty,
@@ -194,6 +216,24 @@ export class SearchDeck implements OnInit, OnDestroy {
     })
   }
 
+
+  // N'applique le scroll que si une position est en attente ET que les decks sont chargés :
+  // selon le timing, l'event de routing ou la recherche peut arriver en premier. Une fois appliquée,
+  // pendingScrollPosition repasse à null, donc les recherches suivantes (filtres, pagination) ne
+  // re-scrollent plus.
+  // afterNextRender : en zoneless, decks.set() ne peint pas le DOM de façon synchrone, donc scroller
+  // immédiatement clampe sur la hauteur (encore courte) d'avant rendu. On attend qu'Angular ait
+  // effectivement peint la liste des decks pour que la page ait sa hauteur finale.
+  private tryRestoreScroll() {
+    if (!this.pendingScrollPosition || !this.decks()) {
+      return;
+    }
+    const position = this.pendingScrollPosition;
+    this.pendingScrollPosition = null;
+    afterNextRender(() => {
+      this.viewportScroller.scrollToPosition(position);
+    }, {injector: this.injector});
+  }
 
   selectCard(card) {
     this.selectedCards.update(values => {
@@ -238,19 +278,19 @@ export class SearchDeck implements OnInit, OnDestroy {
     });
   }
 
-  selectTag(tag) {
+  selectTag(tag: DeckTag) {
     this.selectedTags.update(values => {
       return [...values, tag];
     });
   }
 
-  selectNegativeTag(tag) {
+  selectNegativeTag(tag: DeckTag) {
     this.selectedNegativeTags.update(values => {
       return [...values, tag];
     });
   }
 
-  removeTag(tag) {
+  removeTag(tag: DeckTag) {
     this.selectedTags.update(values => {
       const index = values.findIndex(u => u.id === tag.id)
       values.splice(index, 1)
@@ -258,7 +298,7 @@ export class SearchDeck implements OnInit, OnDestroy {
     });
   }
 
-  removeNegativeTag(tag) {
+  removeNegativeTag(tag: DeckTag) {
     this.selectedNegativeTags.update(values => {
       const index = values.findIndex(u => u.id === tag.id)
       values.splice(index, 1)
@@ -272,12 +312,23 @@ export class SearchDeck implements OnInit, OnDestroy {
     }
   }
 
+  addNegativeUserFilterFromResult(username: string) {
+    if (!this.selectedNegativeUsers().map(u => u.username).includes(username)) {
+      this.selectNegativeUser(this.allUsers().find(user => user.username === username))
+    }
+  }
+
   addTagFilterFromResult(tagName: string) {
     if (!this.selectedTags().map(t => t.title).includes(tagName)) {
       this.selectTag(this.allTags().find(tag => tag.title === tagName))
     }
   }
 
+  addNegativeTagFilterFromResult(tagName: string) {
+    if (!this.selectedNegativeTags().map(t => t.title).includes(tagName)) {
+      this.selectNegativeTag(this.allTags().find(tag => tag.title === tagName))
+    }
+  }
 
   selectGod(god) {
     this.selectedGods.update(values => {
@@ -315,7 +366,7 @@ export class SearchDeck implements OnInit, OnDestroy {
   }
 
   // update à la main  du liked/count pour pas faire un refresh complet de la recherche
-  toggleFavorite(deck) {
+  toggleFavorite(deck: Deck) {
     if (this.isLoggedIn && !deck.owned) {
       if (!deck.liked) {
         this.authenticatedApiService.addToFavorites(deck.deckId).subscribe(r => {

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {AdminApiService} from "../../api/admin-api.service";
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Section} from "../../base/section/section";
+import {Section} from "../../common/components/section/section";
 
 @Component({
   selector: 'app-tag-management',

@@ -1,5 +1,5 @@
 import {Component, computed, inject, input, output} from '@angular/core';
-import {NgClass, NgStyle} from '@angular/common';
+import {NgClass} from '@angular/common';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {map} from 'rxjs';
@@ -22,25 +22,21 @@ function buildPagination(pageNumber: number, totalPages: number, edgeCount: numb
     for (let i = 1; i <= edgeCount; i++)
       pagination.push(i);
 
-    pagination.push(-1);
-    pagination.push(totalPages);
+    pagination.push(-1, totalPages);
   }
   // Cas : fin = 1 ... TOTALPAGES-edgeCount+1 ... TOTALPAGES
   else if (pageNumber > totalPages - (edgeCount - radius)) {
-    pagination.push(1);
-    pagination.push(-1);
+    pagination.push(1, -1);
 
     for (let i = totalPages - (edgeCount - 1); i <= totalPages; i++)
       pagination.push(i);
   }
   // Cas : milieu = 1 ... PAGENUMBER-radius ... PAGENUMBER ... PAGENUMBER+radius ... TOTALPAGES
   else {
-    pagination.push(1);
-    pagination.push(-1);
+    pagination.push(1, -1);
     for (let i = pageNumber - radius; i <= pageNumber + radius; i++)
       pagination.push(i);
-    pagination.push(-2);
-    pagination.push(totalPages);
+    pagination.push(-2, totalPages);
   }
   return pagination;
 }
@@ -48,7 +44,6 @@ function buildPagination(pageNumber: number, totalPages: number, edgeCount: numb
 @Component({
   selector: 'app-pagination',
   imports: [
-    NgStyle,
     NgClass
   ],
   templateUrl: './pagination.html',

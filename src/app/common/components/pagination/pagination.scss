@@ -1,4 +1,4 @@
-@use '../../../styles/variables' as *;
+@use '../../../../styles/variables' as *;
 
 .paginationBtn {
   width: 40px;
@@ -9,13 +9,17 @@
   border: solid 1px $borderColor;
   border-radius: 2px;
   box-sizing: border-box;
-  padding-left:8px;
-  padding-right:8px;
+  padding-left: 8px;
+  padding-right: 8px;
   background: #313282;
 }
 
-.paginationBtn:hover:not(.disabledBtn)  {
-  cursor:pointer;
+.selectedPage {
+  background-color: #FF474D
+}
+
+.paginationBtn:hover:not(.disabledBtn):not(.selectedPage) {
+  cursor: pointer;
   background: rgb(165, 190, 255, 0.5) !important;
 }
 

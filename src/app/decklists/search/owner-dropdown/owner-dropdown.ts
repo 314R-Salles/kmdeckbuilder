@@ -2,7 +2,7 @@ import {Component, computed, input, output} from '@angular/core';
 import {NgStyle} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from "@ngx-translate/core";
-import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent";
+import {AbstractDropdownComponent} from "../../../common/components/AbstractDropdownComponent";
 
 @Component({
   selector: 'app-owner-dropdown',

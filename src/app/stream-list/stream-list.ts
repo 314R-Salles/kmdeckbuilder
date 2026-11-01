@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, inject, input, OnDestroy, PLATFORM_ID, signal} from '@angular/core';
-import {MediaModel, PLACEHOLDER} from '../base/models/media.model';
+import {MediaModel, PLACEHOLDER} from '../common/models/media.model';
 import {ApiService} from '../api/api.service';
 import {isPlatformBrowser, NgStyle, NgTemplateOutlet} from '@angular/common';
-import {Section} from '../base/section/section';
+import {Section} from '../common/components/section/section';
 import {TranslatePipe} from "@ngx-translate/core";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {StoreService} from "../store.service";

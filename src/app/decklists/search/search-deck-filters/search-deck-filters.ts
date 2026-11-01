@@ -9,6 +9,7 @@ import {CardDropdown} from '../card-dropdown/card-dropdown';
 import {OwnerDropdown} from '../owner-dropdown/owner-dropdown';
 import {OrderBy, SearchBy} from '../../common/models/enums';
 import {StoreService} from '../../../store.service';
+import {DeckTag} from '../../../common/models/deck.model';
 
 @Component({
   selector: 'app-search-deck-filters',
@@ -36,9 +37,9 @@ export class SearchDeckFilters {
   sortOrder = input<OrderBy>(OrderBy.DESC);
 
   selectedGods = input<any[]>([]);
-  selectedTags = input<any[]>([]);
-  selectedNegativeTags = input<any[]>([]);
-  allTags = input<any[]>([]);
+  selectedTags = input<DeckTag[]>([]);
+  selectedNegativeTags = input<DeckTag[]>([]);
+  allTags = input<DeckTag[]>([]);
   selectedCards = input<any[]>([]);
   selectedUsers = input<any[]>([]);
   selectedNegativeUsers = input<any[]>([]);
@@ -64,10 +65,10 @@ export class SearchDeckFilters {
   selectGod = output<any>();
   removeGod = output<any>();
 
-  selectTag = output<any>();
-  selectNegativeTag = output<any>();
-  removeTag = output<any>();
-  removeNegativeTag = output<any>();
+  selectTag = output<DeckTag>();
+  selectNegativeTag = output<DeckTag>();
+  removeTag = output<DeckTag>();
+  removeNegativeTag = output<DeckTag>();
 
   selectCard = output<any>();
   removeCard = output<any>();

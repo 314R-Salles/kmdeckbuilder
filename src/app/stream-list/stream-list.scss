@@ -1,3 +1,5 @@
+@use '../../styles/variables' as *;
+
 $stream-thumbnail-min-width: 300px;
 $stream-panel-column-gap: 10px;
 $stream-panel-max-columns: 4;
@@ -60,6 +62,14 @@ $stream-info-bar-height: 40px;
   overflow: hidden;
 }
 
+.youtube-background {
+  background-color: $youtubeColor;
+}
+
+.twitch-background {
+  background-color: $twitchColor;
+}
+
 
 // navigateur limité à 500px min. En dessous, sans souris, pas de survol / zoom des minia donc moins besoin du gap latéral
 @media (min-width: 499px) {
@@ -70,13 +80,13 @@ $stream-info-bar-height: 40px;
 
 
 .stream-thumbnail:hover > a > img {
-  background-color:rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .stream-displayName {
   font-size: 1.1em;
   font-weight: bolder;
-  color:white;
+  color: white;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -87,11 +97,15 @@ $stream-info-bar-height: 40px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color:white;
+  color: white;
 }
 
 .stream-profilePic {
   width: 40px;
   height: 40px;
   border-radius: 20px 20px;
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  outline: 1px solid #000000
 }

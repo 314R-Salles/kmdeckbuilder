@@ -2,7 +2,7 @@ import {Component, input} from '@angular/core';
 import {NgStyle} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {MatIcon} from '@angular/material/icon';
-import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent";
+import {AbstractDropdownComponent} from "../../../common/components/AbstractDropdownComponent";
 
 @Component({
   selector: 'app-version-dropdown',

@@ -3,6 +3,9 @@
     "required": "This feature requires an account.",
     "button": "Login"
   },
+  "logout": {
+    "button": "Logout"
+  },
   "home": {
     "latestDecks": {
       "title": "Latest decks",
@@ -134,7 +137,7 @@
     "pseudo": {
       "title": "Pseudo",
       "error": "This username is taken",
-      "invalidChars": "Username can only contain letters and digits",
+      "invalidChars": "Username cannot contain these characters: : / ? # [ ] @ \\ %",
       "save": "Save"
     },
     "email": {
@@ -146,6 +149,11 @@
       "step5": "If it is not enough, you can contact us at contact@krosmaga.tools",
       "button": "Send a new validation email",
       "message": "You asked for a validation email on: "
+    },
+    "password": {
+      "button": "Request a password change",
+      "message": "Your last password change request was on {{date}}.\nPlease check your spam folder if you haven't received anything from contact@krosmaga.tools",
+      "cooldownTooltip": "Your last request was less than an hour ago"
     },
     "twitch": {
       "title": "Twitch account: ",

@@ -60,7 +60,10 @@
           <app-deck-preview [deck]="deck" [isLoggedIn]="isLoggedIn"
                              (toggleFavorite)="toggleFavorite(deck)"
                              (addUserFilter)="addUserFilterFromResult($event)"
-                             (addTagFilter)="addTagFilterFromResult($event)"></app-deck-preview>
+                             (addNegativeUserFilter)="addNegativeUserFilterFromResult($event)"
+                             (addTagFilter)="addTagFilterFromResult($event)"
+                             (addNegativeTagFilter)="addNegativeTagFilterFromResult($event)"
+          ></app-deck-preview>
         }
       }
       <div style="align-self: center">

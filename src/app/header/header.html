@@ -41,6 +41,10 @@
         <div class="headerBtn" [routerLink]="['/user', user().username ]" (click)="closeMenu()">
           <span style="align-self: center;">{{ user().username }}</span>
         </div>
+        <div class="headerBtn logout-btn" (click)="logout()"
+             [attr.aria-label]="'logout.button' | translate" [title]="'logout.button' | translate">
+          <mat-icon>logout</mat-icon>
+        </div>
       }
       <a href="https://discord.gg/kMEKgxtMS6" target="_blank" class="headerBtn discord-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-discord"

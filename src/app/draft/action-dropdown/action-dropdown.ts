@@ -1,6 +1,6 @@
 import {Component, computed, input, output} from '@angular/core';
-import {NgClass, NgStyle} from "@angular/common";
-import {AbstractDropdownComponent} from "../../base/AbstractDropdownComponent";
+import {NgStyle} from "@angular/common";
+import {AbstractDropdownComponent} from "../../common/components/AbstractDropdownComponent";
 
 @Component({
   selector: 'app-action-dropdown',

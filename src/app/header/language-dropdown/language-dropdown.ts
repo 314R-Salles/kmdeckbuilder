@@ -3,7 +3,7 @@ import {Language} from "../../decklists/common/models/enums";
 import {NgStyle} from "@angular/common";
 import {StoreService} from "../../store.service";
 import {toSignal} from "@angular/core/rxjs-interop";
-import {AbstractDropdownComponent} from "../AbstractDropdownComponent";
+import {AbstractDropdownComponent} from "../../common/components/AbstractDropdownComponent";
 
 @Component({
   selector: 'app-language-dropdown',
@@ -28,7 +28,6 @@ export class LanguageDropdown extends AbstractDropdownComponent {
 
   setLanguage(language) {
     this.storeService.setLanguage(language);
-    this.storeService.setStorageLanguage(language);
   }
 
 }

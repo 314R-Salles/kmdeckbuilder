@@ -4,20 +4,17 @@
 
   <div class="leftBlock">
     <app-god-crest [god]="deck().god" [costAP]="deck().costAP"></app-god-crest>
-    <div [ngStyle]="{cursor: isLoggedIn() && !deck().isOwner ? 'pointer': 'default'}"
-         style="display: flex; justify-content: center; flex-direction:row;"
-         (click)="onFavoriteClick($event)">
-      <mat-icon class="iconFavorite" [ngStyle]="{color: deck().liked ? 'red': 'white'}">favorite
-      </mat-icon>
-      {{ deck().favoriteCount }}
-    </div>
+    <app-like-button [isLoggedIn]="isLoggedIn()" [owned]="deck().owned" [liked]="deck().liked"
+                      [favoriteCount]="deck().favoriteCount"
+                      (toggleFavorite)="toggleFavorite.emit()"></app-like-button>
   </div>
   <div class="info">
-    <div class="title">{{ deck().name }}</div>
+    <div class="title" [appTooltipIfTruncated]="deck().name">{{ deck().name }}</div>
     <div class="author"> {{ 'searchDeck.by' | translate }} &nbsp;
       <span class="authorName" [class.filtersEnabled]="filtersEnabled()"
             [matTooltip]="filtersEnabled() ? ('searchDeck.addToFilters' | translate:{value: deck().owner}) : ''"
-            (click)="onAuthorClick($event)">{{ deck().owner }}</span>
+            (click)="onAuthorClick($event)"
+            (rightClick)="onAuthorRightClick($event)">{{ deck().owner }}</span>
       @if (filtersEnabled()) {
         <a [routerLink]="['/user',deck().owner]" style="color:white; text-decoration:none;">
           <mat-icon class="profileLinkIcon" matTooltip="{{'searchDeck.goToProfile' | translate}}">contact_page
@@ -25,11 +22,13 @@
         </a>
       }
     </div>
-    <div class="creationDate">{{ deck().creationDate | date:'longDate' }}</div>
+    <div class="creationDate">{{ deck().creationDate | date:'longDate':undefined:dateLocale() }}</div>
     <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
       <div style="display:flex; flex-direction:row; height:28px;  z-index: 10;">
         @for (tag of deck().tags; track tag.id) {
-          <div (click)="onTagClick(tag, $event)" class="tag" [class.filtersEnabled]="filtersEnabled()"
+          <div (click)="onTagClick(tag, $event)"
+               (rightClick)="onTagRightClick(tag, $event)"
+               class="tag" [class.filtersEnabled]="filtersEnabled()"
                [matTooltip]="filtersEnabled() ? ('searchDeck.addToFilters' | translate:{value: tag.title}) : tag.title"
                [ngStyle]="{'background-color': tag.title === 'guide' ? '#FF474D':'#313282'}">
             @if (tag.iconId) {

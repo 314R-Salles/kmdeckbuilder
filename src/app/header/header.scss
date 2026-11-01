@@ -121,6 +121,11 @@ $mobile-breakpoint: 768px;
   color: white;
 }
 
+.logout-btn {
+  width: 40px;
+  color: white;
+}
+
 .active,
 .library-button.active:hover {
   background: $borderColor;

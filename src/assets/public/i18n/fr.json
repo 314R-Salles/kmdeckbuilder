@@ -3,6 +3,9 @@
     "required": "Cette fonctionnalité est réservée aux utilisateurs connectés.",
     "button": "Se connecter"
   },
+  "logout": {
+    "button": "Se déconnecter"
+  },
   "home": {
     "latestDecks": {
       "title": "Derniers decks créés",
@@ -134,7 +137,7 @@
     "pseudo": {
       "title": "Pseudo",
       "error": "Ce pseudo est déjà utilisé",
-      "invalidChars": "Le pseudo ne doit contenir que des lettres et des chiffres",
+      "invalidChars": "Le pseudo ne peut pas contenir les caractères : / ? # [ ] @ \\ %",
       "save": "Enregistrer"
     },
     "email": {
@@ -146,6 +149,11 @@
       "step5": "Si cela ne suffit toujours pas, vous pouvez nous contacter à l'adresse contact@krosmaga.tools",
       "button": "Recevoir un nouveau mail de validation",
       "message": "Vous avez demandé de renvoyer le mail de validation le : "
+    },
+    "password": {
+      "button": "Demander un changement de mot de passe",
+      "message": "Votre dernière demande de changement de mot de passe date du {{date}}.\nPensez à vérifier votre dossier spam si vous n'avez rien reçu de contact@krosmaga.tools",
+      "cooldownTooltip": "Votre dernière requête date de moins d'une heure"
     },
     "twitch": {
       "title": "Compte Twitch : ",
