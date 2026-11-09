@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {StreamList} from '../stream-list/stream-list';
+import {LatestDecks} from './latest-decks/latest-decks';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 
@@ -7,7 +8,8 @@ import {MatDialog} from '@angular/material/dialog';
 @Component({
   selector: 'app-home',
   imports: [
-    StreamList
+    StreamList,
+    LatestDecks,
   ],
   templateUrl: './home.html',
   styleUrl: './home.scss'

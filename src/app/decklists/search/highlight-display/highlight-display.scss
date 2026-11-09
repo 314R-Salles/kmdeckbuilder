@@ -10,3 +10,35 @@ img {
   width: 140px;
   height: fit-content;
 }
+
+.mobileHighlights {
+  display: none;
+}
+
+.miniHighlightCard {
+  border: rgba(255, 255, 255, 0.62) solid 1px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  box-shadow: inset 0 0 1px 1px rgba(255, 255, 255, 0.62);
+  overflow: hidden;
+  line-height: 0;
+
+  img {
+    width: 60px;
+    height: 30px;
+  }
+}
+
+// suit le même seuil que deck-preview.scss (container-type défini sur :host de app-deck-preview,
+// l'ancêtre commun), pour rester cohérent que la carte soit à pleine largeur (mobile) ou étroite dans une grille.
+@container (max-width: 768px) {
+  .desktopHighlights {
+    display: none;
+  }
+
+  .mobileHighlights {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}

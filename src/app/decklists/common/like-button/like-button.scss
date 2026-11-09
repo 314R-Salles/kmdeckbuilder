@@ -1,0 +1,15 @@
+.likeButton {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: flex-end
+}
+
+mat-icon.iconFavorite.interactive {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+mat-icon.iconFavorite.interactive:hover {
+  transform: scale(1.3);
+}

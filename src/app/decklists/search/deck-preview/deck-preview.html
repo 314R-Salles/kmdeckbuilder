@@ -1,0 +1,46 @@
+<a [routerLink]="['/decks/view', deck().deckId, deck().version, deck().minorVersion]" class="deck"
+   [ngClass]="deck().god"
+   style="display:flex; flex-direction:row; cursor:pointer; text-decoration:none; color:white;">
+
+  <div class="leftBlock">
+    <app-god-crest [god]="deck().god" [costAP]="deck().costAP"></app-god-crest>
+    <app-like-button [isLoggedIn]="isLoggedIn()" [owned]="deck().owned" [liked]="deck().liked"
+                      [favoriteCount]="deck().favoriteCount"
+                      (toggleFavorite)="toggleFavorite.emit()"></app-like-button>
+  </div>
+  <div class="info">
+    <div class="title" [appTooltipIfTruncated]="deck().name">{{ deck().name }}</div>
+    <div class="author"> {{ 'searchDeck.by' | translate }} &nbsp;
+      <span class="authorName" [class.filtersEnabled]="filtersEnabled()"
+            [matTooltip]="filtersEnabled() ? ('searchDeck.addToFilters' | translate:{value: deck().owner}) : ''"
+            (click)="onAuthorClick($event)"
+            (rightClick)="onAuthorRightClick($event)">{{ deck().owner }}</span>
+      @if (filtersEnabled()) {
+        <a [routerLink]="['/user',deck().owner]" style="color:white; text-decoration:none;">
+          <mat-icon class="profileLinkIcon" matTooltip="{{'searchDeck.goToProfile' | translate}}">contact_page
+          </mat-icon>
+        </a>
+      }
+    </div>
+    <div class="creationDate">{{ deck().creationDate | date:'longDate':undefined:dateLocale() }}</div>
+    <div class="tags" style="display:flex; flex-direction:row;align-items:center;">
+      <div style="display:flex; flex-direction:row; height:28px;  z-index: 10;">
+        @for (tag of deck().tags; track tag.id) {
+          <div (click)="onTagClick(tag, $event)"
+               (rightClick)="onTagRightClick(tag, $event)"
+               class="tag" [class.filtersEnabled]="filtersEnabled()"
+               [matTooltip]="filtersEnabled() ? ('searchDeck.addToFilters' | translate:{value: tag.title}) : tag.title"
+               [ngStyle]="{'background-color': tag.title === 'guide' ? '#FF474D':'#313282'}">
+            @if (tag.iconId) {
+              <img class="tagImg" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
+            }
+            <span class="tagLabel">{{ tag.title }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute; right: 5px">
+    <app-highlight-display [illustrations]="deck().highlights"></app-highlight-display>
+  </div>
+</a>

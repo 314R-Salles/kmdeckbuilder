@@ -2,7 +2,9 @@ import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {MediaModel} from "../base/models/media.model";
+import {MediaModel} from "../common/models/media.model";
+import {Deck, DeckTag} from "../common/models/deck.model";
+import {Page} from "../common/models/page.model";
 import {OAuthService} from "angular-oauth2-oidc";
 
 @Injectable({
@@ -75,12 +77,12 @@ export class ApiService {
     return this.http.get<any>(this.BASE_API + `/cards/names/${language}`);
   }
 
-  getDecks(form: any): Observable<any> {
+  getDecks(form: any): Observable<Page<Deck>> {
     if (this.oauth.hasValidAccessToken()) {
       let headers = this.getAuthHeaders();
-      return this.http.post<any>(this.BASE_API + `/decks`, form, {headers})
+      return this.http.post<Page<Deck>>(this.BASE_API + `/decks`, form, {headers})
     } else {
-      return this.http.post<any>(this.BASE_API + `/decks`, form)
+      return this.http.post<Page<Deck>>(this.BASE_API + `/decks`, form)
     }
   }
 
@@ -102,8 +104,8 @@ export class ApiService {
   }
 
 
-  getTagsByLanguage(language): Observable<any> {
-    return this.http.get<any>(this.BASE_API + `/tags/language/${language}`);
+  getTagsByLanguage(language): Observable<DeckTag[]> {
+    return this.http.get<DeckTag[]>(this.BASE_API + `/tags/language/${language}`);
   }
 
 

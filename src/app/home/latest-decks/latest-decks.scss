@@ -1,0 +1,25 @@
+// même logique de grille responsive que stream-list.scss (4 -> 2 -> 1 colonnes selon la largeur disponible)
+$deck-thumbnail-min-width: 300px;
+$deck-panel-column-gap: 10px;
+$deck-panel-max-columns: 4;
+
+$deck-panel-breakpoint-4-to-2: $deck-panel-max-columns * $deck-thumbnail-min-width + ($deck-panel-max-columns - 1) * $deck-panel-column-gap;
+$deck-panel-breakpoint-2-to-1: 2 * $deck-thumbnail-min-width + $deck-panel-column-gap;
+
+.decks-panel {
+  display: grid;
+  gap: 15px $deck-panel-column-gap;
+  grid-template-columns: repeat($deck-panel-max-columns, 1fr);
+}
+
+@media (max-width: $deck-panel-breakpoint-4-to-2) {
+  .decks-panel {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: $deck-panel-breakpoint-2-to-1) {
+  .decks-panel {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

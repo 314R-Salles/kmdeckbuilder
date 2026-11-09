@@ -1,0 +1,12 @@
+@if (totalPages() > 1) {
+  <div style="display:flex; justify-content:center;align-items: center">
+    <button class="paginationBtn" type="button" (click)="down()">«</button>
+    @for (page of pagination(); track page) {
+      <button class="paginationBtn" type="button" (click)="set(page)"
+              [ngClass]="{'disabledBtn': page < 0, 'selectedPage' :  page === pageNumber() }">
+        {{ page > 0 ? page : '...' }}
+      </button>
+    }
+    <button class="paginationBtn" type="button" (click)="up()">»</button>
+  </div>
+}

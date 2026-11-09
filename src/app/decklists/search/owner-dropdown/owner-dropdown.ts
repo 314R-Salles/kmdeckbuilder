@@ -2,7 +2,7 @@ import {Component, computed, input, output} from '@angular/core';
 import {NgStyle} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from "@ngx-translate/core";
-import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent";
+import {AbstractDropdownComponent} from "../../../common/components/AbstractDropdownComponent";
 
 @Component({
   selector: 'app-owner-dropdown',
@@ -18,11 +18,14 @@ export class OwnerDropdown extends AbstractDropdownComponent {
 
   allUsers = input<{ username: string, count: number }[]>([]);
   selectedUsers = input<{ username: string, count: number }[]>([]);
+  removedUsers = input<{ username: string, count: number }[]>([]);
   onSelectUser = output<any>();
   onNegativeSelectUser = output<any>();
 
   displayedUsers = computed(() => {
-    let r = this.allUsers().filter(result => !this.selectedUsers().map(c => c.username).includes(result.username));
+    const allSelected = this.selectedUsers().concat(this.removedUsers())
+
+    let r = this.allUsers().filter(result => !allSelected.map(c => c.username).includes(result.username));
     return r.filter(user => !this.search() || user.username.toLowerCase().indexOf(this.search().toLowerCase()) != -1);
   })
 

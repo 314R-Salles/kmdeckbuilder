@@ -9,15 +9,15 @@ import {AuthenticatedApiService} from '../../../api/authenticated-api.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {StoreService} from '../../../store.service';
 import {MatDialog} from '@angular/material/dialog';
-import {Section} from '../../../base/section/section';
+import {Section} from '../../../common/components/section/section';
 import {NgClass, NgStyle, NgTemplateOutlet} from '@angular/common';
 import {FilterForm} from '../filter-form/filter-form';
 import {CardDropdownFromList} from '../card-dropdown-from-list/card-dropdown-from-list';
 import {TagDropdown} from '../../common/tag-dropdown/tag-dropdown';
 import {SelectedList} from '../selected-list/selected-list';
 import {QuillEditorComponent} from 'ngx-quill';
-import {Pagination} from '../../../base/pagination/pagination';
-import {VideoValidator} from "../../../base/models/utils";
+import {Pagination} from '../../../common/components/pagination/pagination';
+import {VideoValidator} from "../../../common/utils";
 import {MatError} from "@angular/material/input";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -99,8 +99,9 @@ export class Deckbuilder implements OnInit, OnDestroy, AfterViewInit {
   videoLinkData = {type: null}
 
   deckForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required, Validators.maxLength(200)]),
     videoLink: new FormControl('', {
+      validators: [Validators.maxLength(255)],
       asyncValidators: [VideoValidator.createValidator(this.apiService, this.videoLinkData)]
     }),
     description: new FormControl('', [])

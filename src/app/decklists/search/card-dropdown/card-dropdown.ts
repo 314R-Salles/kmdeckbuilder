@@ -6,7 +6,7 @@ import {NgClass, NgStyle} from '@angular/common';
 import {toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {map, of, switchMap} from 'rxjs';
 import {TranslatePipe} from "@ngx-translate/core";
-import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent";
+import {AbstractDropdownComponent} from "../../../common/components/AbstractDropdownComponent";
 
 @Component({
   selector: 'app-card-dropdown',

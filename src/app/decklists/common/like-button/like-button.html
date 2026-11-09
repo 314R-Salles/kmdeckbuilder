@@ -1,0 +1,6 @@
+<div  class="likeButton" (click)="onClick($event)">
+  <mat-icon class="iconFavorite"
+            [ngClass]="{'interactive' : isLoggedIn() && !owned() }"
+            [ngStyle]="{color: liked() ? 'red': 'white'}">favorite</mat-icon>
+  <span>{{ favoriteCount() }}</span>
+</div>

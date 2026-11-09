@@ -30,6 +30,11 @@ export class AuthenticatedApiService {
     return this.http.post<any>(this.PRIVATE_BASE_API + '/user/email/refresh', null, {headers});
   }
 
+  requestPasswordChange(): Observable<any> {
+    let headers = this.getAuthHeaders();
+    return this.http.post<any>(this.PRIVATE_BASE_API + '/user/password', null, {headers});
+  }
+
   updateUser(user: any): Observable<any> {
     let headers = this.getAuthHeaders();
     return this.http.post<any>(this.PRIVATE_BASE_API + '/user', user, {headers});

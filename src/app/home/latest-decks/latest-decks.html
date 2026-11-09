@@ -1,0 +1,19 @@
+<app-section>
+
+  <ng-container section-header>
+    <div class="sectionTitle">{{ 'home.latestDecks.title' | translate }}</div>
+  </ng-container>
+
+  <ng-container after-section-header>
+    <div routerLink="/decks/browse" class="afterSectionTitle">
+      <div class="actionButton">{{ 'home.latestDecks.seeMore' | translate }}</div>
+    </div>
+  </ng-container>
+
+  <div class="decks-panel">
+    @for (deck of decks(); track deck.deckId) {
+      <app-deck-preview [deck]="deck" [isLoggedIn]="isLoggedIn()" [filtersEnabled]="false"
+                         (toggleFavorite)="toggleFavorite(deck)"></app-deck-preview>
+    }
+  </div>
+</app-section>

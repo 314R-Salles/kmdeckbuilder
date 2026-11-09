@@ -2,7 +2,7 @@ import {Component, computed, inject, input, output} from '@angular/core';
 import {StoreService} from '../../../store.service';
 import {NgClass} from '@angular/common';
 import {Synthesis} from '../../common/synthesis/synthesis';
-import { customSort } from '../../../base/models/utils';
+import { customSort } from '../../../common/utils';
 
 @Component({
   selector: 'app-selected-list',

@@ -2,7 +2,7 @@ import {Component, computed, input, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgStyle} from '@angular/common';
 import {TranslatePipe} from "@ngx-translate/core";
-import {AbstractDropdownComponent} from "../../../base/AbstractDropdownComponent";
+import {AbstractDropdownComponent} from "../../../common/components/AbstractDropdownComponent";
 
 @Component({
   selector: 'app-god-dropdown',

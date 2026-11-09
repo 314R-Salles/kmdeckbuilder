@@ -1,0 +1,32 @@
+@use '../../../../styles/variables' as *;
+
+.paginationBtn {
+  width: 40px;
+  height: 40px;
+  color: white;
+  font-size: 15px;
+  font-weight: bolder;
+  border: solid 1px $borderColor;
+  border-radius: 2px;
+  box-sizing: border-box;
+  padding-left: 8px;
+  padding-right: 8px;
+  background: #313282;
+}
+
+.selectedPage {
+  background-color: #FF474D
+}
+
+.paginationBtn:hover:not(.disabledBtn):not(.selectedPage) {
+  cursor: pointer;
+  background: rgb(165, 190, 255, 0.5) !important;
+}
+
+
+@media (max-width: 499px) {
+  .paginationBtn {
+    width: 34px;
+    height: 34px;
+  }
+}

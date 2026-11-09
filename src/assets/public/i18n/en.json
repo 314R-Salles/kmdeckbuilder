@@ -3,6 +3,15 @@
     "required": "This feature requires an account.",
     "button": "Login"
   },
+  "logout": {
+    "button": "Logout"
+  },
+  "home": {
+    "latestDecks": {
+      "title": "Latest decks",
+      "seeMore": "Browse"
+    }
+  },
   "verified": {
     "required": "This feature requires email validation",
     "button": "To profile"
@@ -23,7 +32,8 @@
         "twitchOnly": "Live on Twitch",
         "mixedContent": "Live (mostly)",
         "noLiveStream": "Last"
-      }
+      },
+      "seeMore": "Browse"
     }
   },
   "deckbuilder": {
@@ -72,7 +82,8 @@
     "gods": "Gods",
     "tags": "Tags",
     "cards": "Contains ...",
-    "authors": "Authors"
+    "authors": "Authors",
+    "select": "Select"
   },
   "gods": {
     "sadida": "Sadida",
@@ -91,7 +102,9 @@
     "createButton": "Create deck",
     "searchBy": {
       "recent": "Sort by: most recent",
-      "favorites": "Sort by: most liked"
+      "favorites": "Sort by: most liked",
+      "apCost": "Sort by: action point cost",
+      "dustCost": "Sort by: dust cost"
     },
     "toggle": {
       "favorites": "Display your favorites",
@@ -101,7 +114,10 @@
     "noResult": "No deck matches your search",
     "by": "by",
     "addToFilters": "Add {{value}} to the search filters",
-    "goToProfile": "Check profile"
+    "goToProfile": "Check profile",
+    "filters": {
+      "toggle": "Filters"
+    }
   },
   "viewDeck": {
     "by": "by",
@@ -121,6 +137,7 @@
     "pseudo": {
       "title": "Pseudo",
       "error": "This username is taken",
+      "invalidChars": "Username cannot contain these characters: : / ? # [ ] @ \\ %",
       "save": "Save"
     },
     "email": {
@@ -132,6 +149,11 @@
       "step5": "If it is not enough, you can contact us at contact@krosmaga.tools",
       "button": "Send a new validation email",
       "message": "You asked for a validation email on: "
+    },
+    "password": {
+      "button": "Request a password change",
+      "message": "Your last password change request was on {{date}}.\nPlease check your spam folder if you haven't received anything from contact@krosmaga.tools",
+      "cooldownTooltip": "Your last request was less than an hour ago"
     },
     "twitch": {
       "title": "Twitch account: ",

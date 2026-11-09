@@ -1,0 +1,11 @@
+@use '../../../../styles/variables' as *;
+
+.synthesis-box {
+  display: flex;
+  width: 300px;
+  background: #100B37;
+  border-radius: 5px;
+  justify-content: center;
+  box-sizing: border-box;
+  border: solid $borderColor 2px;
+}

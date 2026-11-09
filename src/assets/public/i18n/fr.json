@@ -3,6 +3,15 @@
     "required": "Cette fonctionnalité est réservée aux utilisateurs connectés.",
     "button": "Se connecter"
   },
+  "logout": {
+    "button": "Se déconnecter"
+  },
+  "home": {
+    "latestDecks": {
+      "title": "Derniers decks créés",
+      "seeMore": "Parcourir"
+    }
+  },
   "verified": {
     "required": "Cette fonctionnalité est réservée aux utilisateurs ayant vérifié leur compte.",
     "button": "Options du profil"
@@ -23,7 +32,8 @@
         "twitchOnly": "En ce moment sur Twitch",
         "mixedContent": "En ce moment ou presque",
         "noLiveStream": "Récemment"
-      }
+      },
+      "seeMore": "Parcourir"
     }
   },
   "deckbuilder": {
@@ -72,7 +82,8 @@
     "gods": "Dieux",
     "tags": "Tags",
     "cards": "Contient ...",
-    "authors": "Auteurs"
+    "authors": "Auteurs",
+    "select": "Sélectionner"
   },
   "gods": {
     "sadida": "Sadida",
@@ -91,7 +102,9 @@
     "createButton": "Créer un deck",
     "searchBy": {
       "recent": "Trié par : plus récent.",
-      "favorites": "Trié par : plus aimé."
+      "favorites": "Trié par : plus aimé.",
+      "apCost": "Trié par : coût en points d'action.",
+      "dustCost": "Trié par : coût en poussière."
     },
     "toggle": {
       "favorites": "Afficher vos favoris",
@@ -101,7 +114,10 @@
     "noResult": "Aucun deck ne correspond à ces filtres",
     "by": "par",
     "addToFilters": "Ajouter {{value}} aux filtres de recherche",
-    "goToProfile": "Consulter le profil"
+    "goToProfile": "Consulter le profil",
+    "filters": {
+      "toggle": "Filtres"
+    }
   },
   "viewDeck": {
     "by": "par",
@@ -121,6 +137,7 @@
     "pseudo": {
       "title": "Pseudo",
       "error": "Ce pseudo est déjà utilisé",
+      "invalidChars": "Le pseudo ne peut pas contenir les caractères : / ? # [ ] @ \\ %",
       "save": "Enregistrer"
     },
     "email": {
@@ -132,6 +149,11 @@
       "step5": "Si cela ne suffit toujours pas, vous pouvez nous contacter à l'adresse contact@krosmaga.tools",
       "button": "Recevoir un nouveau mail de validation",
       "message": "Vous avez demandé de renvoyer le mail de validation le : "
+    },
+    "password": {
+      "button": "Demander un changement de mot de passe",
+      "message": "Votre dernière demande de changement de mot de passe date du {{date}}.\nPensez à vérifier votre dossier spam si vous n'avez rien reçu de contact@krosmaga.tools",
+      "cooldownTooltip": "Votre dernière requête date de moins d'une heure"
     },
     "twitch": {
       "title": "Compte Twitch : ",

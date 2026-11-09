@@ -1,5 +1,5 @@
 <app-section [forceSize]="currentTab() ===1"
-             [requiresLogin]="true" [requiresVerified]="true">
+             [requiresLogin]="true">
 
   @if (currentTab() !== 1) {
     <ng-container section-header>
@@ -37,7 +37,7 @@
         <div id="sortDiv">
           @for (godIndex of [1, 4, 2, 3, 8, 10, 6, 7, 5, 9]; track godIndex) {
             <div class="imgContainer prevent-select">
-              <img [src]="'/assets/public/gods/GOD_'+God[godIndex]+'.png'" (click)="selectGod(godIndex)"
+              <img [src]="'/assets/public/gods_webp/GOD_'+God[godIndex]+'.webp'" (click)="selectGod(godIndex)"
                    [ngClass]="{'isSelected' : god === godIndex}" class="prevent-select" [alt]="God[godIndex]">
             </div>
           }
@@ -125,14 +125,16 @@
               <app-tag-dropdown [selectedTags]="selectedTags()" [allTags]="allTags()"
                                 (onSelectTag)="selectTag($event)"/>
             </div>
-            <div style="display: flex; flex-wrap: wrap; width: 500px">
+            <div class="filterGroupChips">
               @for (tag of selectedTags(); track tag.title) {
-                <div class="card appFont2" (click)="removeTag(tag)"
-                     style="background: #88B6EA;   border: solid 1px #ffffff7a;  border-radius: 5px;
- height: 40px; font-size: 16px;  font-weight: 400;">
-                  <span style="padding: 0 5px"> {{ tag.title }} </span>
+                <div class="chip filterChip appFont2" (click)="removeTag(tag)">
+                  @if (tag.iconId) {
+                    <img class="tagImg bigger" [src]="'/assets/public/tagIcon/'+tag.iconId"/>
+                  }
+                  <span style="padding: 0 5px"> {{ tag.title }} ({{ tag.count }})</span>
                 </div>
-              }</div>
+              }
+            </div>
           </div>
 
           <div style="display: flex; flex-direction: column; padding: 5px;">
@@ -157,11 +159,11 @@
           <div style="display: flex; flex-direction: column; width: fit-content; padding: 5px;">
             <label style="font-size: 20px"> {{ 'deckbuilder.complements.description' | translate }} </label>
             <!--            la div qui englobe permet de donner un style au background (toolbar + input) et le style de l'editor force pour l'input -->
-            <div style="background: #c6f8ff">
+            <div style="background: #313282;">
               <quill-editor class="content-editor"
                             formControlName="description"
                             [modules]="quillConfiguration"
-                            [styles]="{'min-height': '200px', 'max-height':'500px', 'min-width': '500px', 'max-width':'1000px', background:'white', color: 'black'}"
+                            [styles]="{'min-height': '200px', 'max-height':'500px', 'min-width': '500px', 'max-width':'1000px', background:'#262241', color: 'white'}"
               ></quill-editor>
             </div>
           </div>
@@ -174,7 +176,7 @@
 
 <ng-template #ONE_ILLUST>
   <div>
-    <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
+    <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
          style="position: absolute;"
          [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 0 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
          (click)="selectIndex(0)"
@@ -183,12 +185,12 @@
 </ng-template>
 <ng-template #TWO_ILLUST>
   <div>
-    <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
+    <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
          style="position: absolute; rotate: -8deg"
          [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 0 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
          (click)="selectIndex(0)"
          class="imgDeckBuilder">
-    <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[1].id]"
+    <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[1].id]"
          style="position: absolute;margin-left: 130px; rotate: 8deg"
          [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 1 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
          (click)="selectIndex(1)"
@@ -197,17 +199,17 @@
 </ng-template>
 <ng-template #THREE_ILLUST>
   <div>
-    <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
+    <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[0].id]"
          style="position: absolute; rotate: -15deg; top: 8px"
          [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 0 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
          (click)="selectIndex(0)"
          class="imgDeckBuilder">
-    <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[1].id]"
+    <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[1].id]"
          style="position: absolute; left: 100px; z-index: 5"
          [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 1 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
          (click)="selectIndex(1)"
          class="imgDeckBuilder">
-    <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[2].id]"
+    <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[illustrations[2].id]"
          style="position: absolute;left: 200px; rotate: 15deg; top: 8px"
          [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content', 'filter' : selectedIndex === 2 ? 'drop-shadow(0 0 15px #FAC800FF)' : ''}"
          (click)="selectIndex(2)"
@@ -228,7 +230,7 @@
           </div>
         } @else {
           @for (card of displayedCards(); track card.id; let idx = $index) {
-            <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"
+            <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"
                  (click)="selectCard(card, $event)"
                  class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">
           }
@@ -248,7 +250,7 @@
       <div style="display: flex; flex-wrap: wrap; width: 100%; justify-content: center">
 
         @for (card of displayedCards(); track card.id; let idx = $index) {
-          <img [src]="'/assets/public/card/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"
+          <img [src]="'/assets/public/card_webp/'+currentLanguage()+'/'+CARD_ILLUSTRATIONS[card.id]"
                [ngStyle]="{ 'width.px' : '160', 'height': 'fit-content'}"
                (click)="selectCard(card, $event)"
                class="imgDeckBuilder" [ngClass]="{'selected-type': false, 'grey': isDisabled(card)}">

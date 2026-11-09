@@ -1,11 +1,12 @@
-import {Component, computed, inject} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {StoreService} from '../store.service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {AuthService} from "../auth.service";
-import {LanguageDropdown} from "../base/language-dropdown/language-dropdown";
+import {LanguageDropdown} from "./language-dropdown/language-dropdown";
 import {TranslatePipe} from "@ngx-translate/core";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,7 @@ import {TranslatePipe} from "@ngx-translate/core";
     MatMenuItem,
     LanguageDropdown,
     TranslatePipe,
+    MatIcon,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss'
@@ -34,6 +36,22 @@ export class Header {
 
   login() {
     this.authService.login();
+  }
+
+  logout() {
+    this.closeMenu();
+    this.storeService.clearUser();
+    this.authService.logout();
+  }
+
+  menuOpen = signal(false);
+
+  toggleMenu() {
+    this.menuOpen.update(open => !open);
+  }
+
+  closeMenu() {
+    this.menuOpen.set(false);
   }
 
 }

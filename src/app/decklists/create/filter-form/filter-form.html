@@ -1,11 +1,11 @@
 <form [formGroup]="form()">
   <div class="container">
     <div class="tile" [ngClass]="{'selected-type' : form().get('godCards').value}" (click)="factionChange('dieu')">
-      <img [ngClass]="{'grey': !form().get('godCards').value}" [src]="'/assets/public/gods/GOD_'+God[god()]+'.png'">
+      <img [ngClass]="{'grey': !form().get('godCards').value}" [src]="'/assets/public/gods_webp/GOD_'+God[god()]+'.webp'">
     </div>
     <div class="tile" [ngClass]="{'selected-type' : form().get('neutralCards').value} "
          (click)="factionChange('neutre')">
-      <img [ngClass]="{'grey': !form().get('neutralCards').value}" [src]="'/assets/public/gods/GOD_'+God[0]+'.png'">
+      <img [ngClass]="{'grey': !form().get('neutralCards').value}" [src]="'/assets/public/gods_webp/GOD_'+God[0]+'.webp'">
     </div>
     <div (click)="typeChange('sort')" class="tile"
          matTooltip="{{ ('deckbuilder.tooltips.spell.' + (form().get('isSpell').value ? 'hide' : 'show')) | translate }}"
@@ -28,7 +28,7 @@
         @for (cost of costs; track cost; let idx = $index, e = $even) {
           <div class="tile" [ngClass]="{'selected-type' : apValue == cost}"
                (click)="setFilterValue('apValue', cost)">
-            <img [src]="'/assets/public/pa/'+cost.label+'.png'"
+            <img [src]="'/assets/public/pa_webp/'+cost.label+'.webp'"
                  [ngClass]="{'grey': apValue != cost}"></div>
         }
       </div>
